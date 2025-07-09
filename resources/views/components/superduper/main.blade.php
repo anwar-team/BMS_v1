@@ -270,7 +270,7 @@
                 </div>
             </div>
         @endif
-    @endif
+    <!--@endif -->
 
     <!-- Vite compiled JS -->
     @vite([

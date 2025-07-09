@@ -7,7 +7,7 @@ use App\Models\Book;
 use Filament\Forms;
 use Filament\Tables;
 use Filament\Forms\Form;
-use Filament\Resources\Table;
+use Filament\Tables\Table;
 use Filament\Resources\Resource;
 use Filament\Forms\Components\Wizard;
 use Filament\Forms\Components\Wizard\Step;
