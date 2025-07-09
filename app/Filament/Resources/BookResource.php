@@ -7,7 +7,7 @@ use App\Models\Book;
 use Filament\Forms;
 use Filament\Tables;
 use Filament\Forms\Form;
-use Filament\Tables\Table;
+use Filament\Resources\Table;
 use Filament\Resources\Resource;
 use Filament\Forms\Components\Wizard;
 use Filament\Forms\Components\Wizard\Step;
@@ -24,7 +24,7 @@ class BookResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-book-open';
 
-    public static function form(Form $form): Form
+    public static function form(Form $form): \Filament\Forms\Form
     {
         return $form->schema([
             Wizard::make([
@@ -49,10 +49,9 @@ class BookResource extends Resource
 
                     Select::make('authors')
                         ->multiple()
-                        ->relationship('authors', 'fname')
+                        ->relationship('authors', 'full_name')
                         ->label('المؤلفون')
                         ->searchable()
-                        ->getOptionLabelFromRecordUsing(fn ($record) => $record->full_name)
                         ->createOptionForm([
                             TextInput::make('fname')->label('الاسم الأول')->required(),
                             TextInput::make('lname')->label('الكنية')->required(),
@@ -102,15 +101,6 @@ class BookResource extends Resource
         return $table->columns([
             Tables\Columns\TextColumn::make('title')->searchable()->label('العنوان'),
             Tables\Columns\TextColumn::make('published_year')->label('السنة'),
-            Tables\Columns\TextColumn::make('publisher')->label('الناشر'),
-            Tables\Columns\TextColumn::make('book_section.name')->label('قسم الكتاب'),
-            Tables\Columns\TextColumn::make('authors.fname')->label('المؤلفون')
-                ->searchable()
-                ->getStateUsing(fn ($record) => $record->authors->pluck('full_name')->implode(', ')),
-            
-                
-            Tables\Columns\TextColumn::make('created_at')->dateTime()->label('تاريخ الإنشاء'),
-            Tables\Columns\TextColumn::make('updated_at')->dateTime()->label('تاريخ التحديث'),
         ])->filters([]);
     }
 
