@@ -11,7 +11,7 @@ use Filament\Notifications\Notification;
 use Filament\Pages\SettingsPage;
 use Filament\Support\Facades\FilamentView;
 use Illuminate\Contracts\Support\Htmlable;
-use TimoDeWinter\FilamentMonacoEditor\Filament\Forms\Components\MonacoEditor;
+use AbdelhamidErrahmouni\FilamentMonacoEditor\MonacoEditor;
 
 use function Filament\Support\is_app_url;
 
@@ -155,12 +155,10 @@ class ManageGeneral extends SettingsPage
                                     MonacoEditor::make('theme-editor')
                                         ->label('theme.css')
                                         ->language('css')
-                                        ->height('24rem')
                                         ->helperText('Edit the CSS theme directly (changes will be applied after saving)'),
                                     MonacoEditor::make('tw-config-editor')
                                         ->label('tailwind.config.js')
                                         ->language('javascript')
-                                        ->height('24rem')
                                         ->helperText('Edit the Tailwind configuration (changes will be applied after saving)'),
                                 ])->columns(1)
                             ]),

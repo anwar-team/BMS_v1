@@ -8,7 +8,7 @@
   --transition-speed: 0.2s;
   --primary-rgb: 45, 43, 141; /* #2D2B8D */
   --secondary-rgb: 255, 201, 3; /* #FFC903 */
-  --primary-gradient: linear-gradient(145deg, #524ED5, #2D2B8D);
+  --primary-gradient: linear-gradient(145deg, #2C6E4A, #2C6E4A);
   --secondary-gradient: linear-gradient(145deg, #FFD333, #FFC903);
   --hover-gradient: linear-gradient(145deg, rgba(var(--primary-rgb), 0.08), rgba(var(--secondary-rgb), 0.08));
   --dark-hover-gradient: linear-gradient(145deg, rgba(var(--primary-rgb), 0.15), rgba(var(--secondary-rgb), 0.05));

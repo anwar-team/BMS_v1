@@ -24,6 +24,7 @@ use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\AuthenticateSession;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
 
 class AdminPanelProvider extends PanelProvider
@@ -64,7 +65,7 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->navigationItems([
                 Navigation\NavigationItem::make(__('menu.nav_group.item.log_viewer'))
-                    ->visible(fn(): bool => auth()->user()->can('access_log_viewer'))
+                    ->visible(fn(): bool => true)
                     ->url(config('app.url') . '/' . config('log-viewer.route_path'), shouldOpenInNewTab: true)
                     ->icon('fluentui-document-bullet-list-multiple-20-o')
                     ->group(__('menu.nav_group.activities'))
