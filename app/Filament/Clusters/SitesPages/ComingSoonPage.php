@@ -5,7 +5,6 @@ namespace App\Filament\Clusters\SitesPages;
 use Filament\Pages\Page;
 use Illuminate\Support\Facades\File;
 use Filament\Notifications\Notification;
-use Riodwanto\FilamentAceEditor\AceEditor;
 use BezhanSalleh\FilamentShield\Traits\HasPageShield;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
@@ -244,11 +243,10 @@ class ComingSoonPage extends Page implements HasForms
     {
         return $form
             ->schema([
-                AceEditor::make('fileContent')
+                \Filament\Forms\Components\Textarea::make('fileContent')
                     ->label('Coming Soon Page Content')
                     ->hiddenLabel()
-                    ->mode('html')
-                    ->height('768px')
+                    ->rows(30)
                     // ->helperText('Edit the coming soon page content. HTML is allowed, but scripts and PHP code are not permitted for security reasons.')
                     ->required()
                     ->rules([

@@ -10,7 +10,6 @@ use Filament\Notifications\Notification;
 use Filament\Pages\SettingsPage;
 use Filament\Support\Facades\FilamentView;
 use Illuminate\Contracts\Support\Htmlable;
-use Riodwanto\FilamentAceEditor\AceEditor;
 
 use function Filament\Support\is_app_url;
 
@@ -55,34 +54,30 @@ class ManageSiteScript extends SettingsPage
                                 Forms\Components\Section::make('Header Scripts')
                                     ->description('Scripts to be placed in the <head> section')
                                     ->schema([
-                                        AceEditor::make('header_scripts')
+                                        Forms\Components\Textarea::make('header_scripts')
                                             ->label('Header Scripts')
-                                            ->mode('html')
-                                            ->height('200px')
+                                            ->rows(8)
                                             ->helperText('These scripts will be added to the <head> section of your site'),
                                     ]),
                                 Forms\Components\Section::make('Body Scripts')
                                     ->description('Scripts to be placed in the <body> section')
                                     ->schema([
-                                        AceEditor::make('body_start_scripts')
+                                        Forms\Components\Textarea::make('body_start_scripts')
                                             ->label('Body Start Scripts')
-                                            ->mode('html')
-                                            ->height('150px')
+                                            ->rows(6)
                                             ->helperText('These scripts will be added right after the opening <body> tag'),
 
-                                        AceEditor::make('body_end_scripts')
+                                        Forms\Components\Textarea::make('body_end_scripts')
                                             ->label('Body End Scripts')
-                                            ->mode('html')
-                                            ->height('150px')
+                                            ->rows(6)
                                             ->helperText('These scripts will be added right before the closing </body> tag'),
                                     ]),
                                 Forms\Components\Section::make('Footer Scripts')
                                     ->description('Scripts to be placed in the footer')
                                     ->schema([
-                                        AceEditor::make('footer_scripts')
+                                        Forms\Components\Textarea::make('footer_scripts')
                                             ->label('Footer Scripts')
-                                            ->mode('html')
-                                            ->height('150px')
+                                            ->rows(6)
                                             ->helperText('These scripts will be added to the footer section of your site'),
                                     ]),
                             ]),
@@ -120,16 +115,14 @@ class ManageSiteScript extends SettingsPage
                                 Forms\Components\Section::make('Custom CSS and JavaScript')
                                     ->description('Add custom styles and scripts')
                                     ->schema([
-                                        AceEditor::make('custom_css')
+                                        Forms\Components\Textarea::make('custom_css')
                                             ->label('Custom CSS')
-                                            ->mode('css')
-                                            ->height('300px')
+                                            ->rows(12)
                                             ->helperText('Custom CSS styles will be added to the head of your site'),
 
-                                        AceEditor::make('custom_js')
+                                        Forms\Components\Textarea::make('custom_js')
                                             ->label('Custom JavaScript')
-                                            ->mode('javascript')
-                                            ->height('300px')
+                                            ->rows(12)
                                             ->helperText('Custom JavaScript will be added before the closing body tag'),
                                     ]),
                             ]),
