@@ -252,6 +252,7 @@
         </main>
 
         <x-superduper.footer />
+    @endif
 
         <!-- Cookie Consent -->
         @if(isset($scriptSettings->cookie_consent_enabled) && $scriptSettings->cookie_consent_enabled)
