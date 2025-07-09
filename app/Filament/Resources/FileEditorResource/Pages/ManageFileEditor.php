@@ -9,7 +9,7 @@ use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Actions;
 use Filament\Notifications\Notification;
-use AbdelhamidErrahmouni\FilamentMonacoEditor\Components\MonacoEditor;
+use AbdelhamidErrahmouni\FilamentMonacoEditor\MonacoEditor;
 use Illuminate\Support\Facades\File;
 
 class ManageFileEditor extends ManageRecords
@@ -54,8 +54,8 @@ class ManageFileEditor extends ManageRecords
                                     ->language(fn () => $this->getFileLanguage())
                                     ->theme('blackboard')
                                     ->fontSize('14px')
-                                    ->enablePreview(false)
-                                    ->showFullScreenButton(true)
+                                    ->disablePreview()
+                                    ->showFullScreenToggle(true)
                                     ->placeholderText('Select a file to start editing...')
                                     ->visible(fn () => !empty($this->selectedFile))
                             ])
