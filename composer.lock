@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "f7fc61b4d757b16bd6c903c26e8bb885",
+    "content-hash": "abeb7d9a379a5660ed28655a4a3d6811",
     "packages": [
         {
             "name": "anourvalar/eloquent-serialize",
@@ -6292,6 +6292,88 @@
                 "source": "https://github.com/ramsey/uuid/tree/4.9.0"
             },
             "time": "2025-06-25T14:20:11+00:00"
+        },
+        {
+            "name": "redberry/page-builder-plugin",
+            "version": "v1.1.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/RedberryProducts/filament-page-builder-plugin.git",
+                "reference": "017c3380614d3c4dc0a52a9ae38905de2a302c81"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/RedberryProducts/filament-page-builder-plugin/zipball/017c3380614d3c4dc0a52a9ae38905de2a302c81",
+                "reference": "017c3380614d3c4dc0a52a9ae38905de2a302c81",
+                "shasum": ""
+            },
+            "require": {
+                "filament/filament": "^3.",
+                "php": "^8.1|^8.2|^8.3|^8.4",
+                "spatie/laravel-package-tools": "^1.15.0"
+            },
+            "require-dev": {
+                "laravel/pint": "^1.0",
+                "nunomaduro/collision": "^7.9||^8.0",
+                "nunomaduro/larastan": "^2.0.1||^3.0",
+                "orchestra/testbench": "^10.0.0||^9.0||^8.35",
+                "pestphp/pest": "^3.1||^2.0",
+                "pestphp/pest-plugin-arch": "^3.0||^2.0",
+                "pestphp/pest-plugin-laravel": "^3.0||^2.0",
+                "pestphp/pest-plugin-livewire": "^2.1||^3.0",
+                "phpstan/extension-installer": "^1.1||^2.0",
+                "phpstan/phpstan-deprecation-rules": "^2.0||^1.0",
+                "phpstan/phpstan-phpunit": "^2.0||^1.0",
+                "spatie/laravel-ray": "^1.26"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "aliases": {
+                        "PageBuilderPlugin": "Redberry\\PageBuilderPlugin\\Facades\\PageBuilderPlugin"
+                    },
+                    "providers": [
+                        "Redberry\\PageBuilderPlugin\\PageBuilderPluginServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Redberry\\PageBuilderPlugin\\": "src/",
+                    "Redberry\\PageBuilderPlugin\\Database\\Factories\\": "database/factories/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "redberry",
+                    "email": "hello@redberry.ge",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Page builder plugin for filamentphp admin panel to build pages using blocks.",
+            "homepage": "https://github.com/redberryproducts/page-builder-plugin",
+            "keywords": [
+                "filament",
+                "filamnetphp",
+                "laravel",
+                "page-builder-plugin",
+                "redberry"
+            ],
+            "support": {
+                "issues": "https://github.com/redberryproducts/page-builder-plugin/issues",
+                "source": "https://github.com/redberryproducts/page-builder-plugin"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/RedberryProducts",
+                    "type": "github"
+                }
+            ],
+            "time": "2025-07-08T15:24:08+00:00"
         },
         {
             "name": "ryangjchandler/blade-capture-directive",
