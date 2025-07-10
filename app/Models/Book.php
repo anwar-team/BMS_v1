@@ -23,6 +23,7 @@ class Book extends Model
         'cover_image',
         'published_year',
         'publisher',
+        'publisher_id',
         'pages_count',
         'volumes_count',
         'status',

@@ -20,7 +20,7 @@ return new class extends Migration
             $table->year('published_year')->nullable();
             $table->string('publisher', 200)->nullable();
             $table->integer('pages_count')->nullable();
-            $table->integer('volumes_count')->default(1);
+            $table->integer('volumes_count')->default(1)->nullable();
             $table->enum('status', ['draft', 'review', 'published', 'archived'])->default('draft');
             $table->enum('visibility', ['public', 'private', 'restricted'])->default('public');
             //$table->string('cover_image_url', 500)->nullable();
