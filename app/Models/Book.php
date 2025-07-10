@@ -81,6 +81,14 @@ class Book extends Model
     }
 
     /**
+     * العلاقة مع جدول المؤلفين والكتب (pivot table)
+     */
+    public function authorBooks(): HasMany
+    {
+        return $this->hasMany(AuthorBook::class, 'book_id');
+    }
+
+    /**
      * الحصول على المؤلفين الرئيسيين
      */
     public function mainAuthors(): BelongsToMany

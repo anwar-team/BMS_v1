@@ -14,6 +14,7 @@ class Author extends Model
         'fname',
         'mname',
         'lname',
+        'Nickname',
         'biography',
         'nationality',
         'madhhab',
