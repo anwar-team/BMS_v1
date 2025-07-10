@@ -47,7 +47,86 @@ class BookResource extends Resource
                                     }
                                 })
                                 ->columnSpan(2),
+                        ]),
+                        
+                        Textarea::make('description')
+                            ->label('وصف الكتاب')
+                            ->rows(4)
+                            ->maxLength(1000)
+                            ->columnSpanFull(),
+                        
+Forms\Components\Grid::make(3)->schema([
+    FileUpload::make('cover_image')
+        ->label('صورة الغلاف')
+        ->image()
+        ->imageEditor()
+        ->imageEditorAspectRatios([
+            '3:4',
+            '2:3',
+        ])
+        ->maxSize(5120)
+        ->directory('books/covers')
+        ->visibility('public')
+        ->columnSpan(1),
+    
+    TextInput::make('published_year')
+        ->label('سنة النشر')
+        ->numeric()
+        ->minValue(1)
+        ->maxValue(date('Y'))
+        ->placeholder('مثال: ' . date('Y'))
+        ->columnSpan(1),
+    
+    TextInput::make('publisher')
+        ->label('الناشر')
+        ->maxLength(255)
+        ->placeholder('مثال: دار النشر')
+        ->columnSpan(1),
+    
+    TextInput::make('volumes_count')
+        ->label('عدد المجلدات')
+        ->numeric()
+        ->minValue(1)
+        ->placeholder('مثال: 5')
+        ->columnSpan(1),
+    
+    TextInput::make('source_url')
+        ->label('رابط المصدر')
+        ->url()
+        ->placeholder('https://example.com')
+        ->columnSpan(1),
+    
+    Select::make('visibility')
+        ->label('الرؤية')
+        ->options([
+            'public' => 'عام',
+            'private' => 'خاص',
+        ])
+        ->required()
+        ->columnSpan(1),
+    
+    Select::make('status')
+        ->label('الحالة')
+        ->options([
+            'draft' => 'مسودة',
+            'published' => 'منشور',
+            'archived' => 'مؤرشف',
+        ])
+        ->required()
+        ->columnSpan(1),
+]),
+                        
+                        Forms\Components\Grid::make(3)->schema([
+                            TextInput::make('isbn')
+                                ->label('رقم ISBN')
+                                ->maxLength(20)
+                                ->placeholder('978-0-123456-78-9'),
                             
+                            TextInput::make('pages_count')
+                                ->label('عدد الصفحات')
+                                ->numeric()
+                                ->minValue(1)
+                                ->placeholder('مثال: 300'),
                             TextInput::make('slug')
                                 ->label('الرابط الثابت')
                                 ->required()
@@ -64,61 +143,9 @@ class BookResource extends Resource
                                             }
                                         })
                                 )
-                                ->columnSpan(2),
+                               
                         ]),
                         
-                        Textarea::make('description')
-                            ->label('وصف الكتاب')
-                            ->rows(4)
-                            ->maxLength(1000)
-                            ->columnSpanFull(),
-                        
-                        Forms\Components\Grid::make(3)->schema([
-                            FileUpload::make('cover_image')
-                                ->label('صورة الغلاف')
-                                ->image()
-                                ->imageEditor()
-                                ->imageEditorAspectRatios([
-                                    '3:4',
-                                    '2:3',
-                                ])
-                                ->maxSize(5120)
-                                ->directory('books/covers')
-                                ->visibility('public')
-                                ->columnSpan(1),
-                            
-                            TextInput::make('published_year')
-                                ->label('سنة النشر')
-                                ->numeric()
-                                ->minValue(1)
-                                ->maxValue(date('Y'))
-                                ->placeholder('مثال: ' . date('Y'))
-                                ->columnSpan(1),
-                            
-                            TextInput::make('publisher')
-                                ->label('الناشر')
-                                ->maxLength(255)
-                                ->placeholder('مثال: دار النشر')
-                                ->columnSpan(1),
-                        ]),
-                        
-                        Forms\Components\Grid::make(2)->schema([
-                            TextInput::make('isbn')
-                                ->label('رقم ISBN')
-                                ->maxLength(20)
-                                ->placeholder('978-0-123456-78-9'),
-                            
-                            TextInput::make('pages_count')
-                                ->label('عدد الصفحات')
-                                ->numeric()
-                                ->minValue(1)
-                                ->placeholder('مثال: 300'),
-                        ]),
-                        
-                        Forms\Components\Toggle::make('is_published')
-                            ->label('منشور')
-                            ->default(true)
-                            ->inline(false),
                     ]),
 
                 Step::make('التصنيفات والمؤلفين')
