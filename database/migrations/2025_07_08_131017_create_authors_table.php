@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('authors', function (Blueprint $table) {
             $table->id();
-            $table->string('nickname', 255)->nullable();
+            //$table->string('Nickname', 255)->nullable();
             $table->string('fname', 255);
             $table->string('mname', 255)->nullable();
             $table->string('lname', 255);

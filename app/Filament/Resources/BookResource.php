@@ -322,10 +322,10 @@ class BookResource extends Resource
                                                         $set('full_name', trim($fname . ' ' . $mname . ' ' . $lname));
                                                     }
                                                 }),
-                                            TextInput::make('nickname')
-                                                ->label('الكنية')
-                                                ->maxLength(100)
-                                                ->placeholder('مثال: أبو محمد، تاج الإسلام'),
+                                            //TextInput::make('nickname')
+                                            //    ->label('الكنية')
+                                            //    ->maxLength(100)
+                                            //    ->placeholder('مثال: أبو محمد، تاج الإسلام'),
                                         ]),
 
                                         Forms\Components\Grid::make(2)->schema([
