@@ -130,7 +130,7 @@ class BookResource extends Resource
                                     Select::make('publisher_id')
                                         ->label('الناشر')
                                         ->relationship('publisher', 'name')
-                                        ->searchable()
+                                        ->searchable('publisher', 'name')
                                         ->createOptionForm([
                                             TextInput::make('name')->label('اسم الناشر')->required(),
                                             TextInput::make('country')->label('البلد')->required(),
