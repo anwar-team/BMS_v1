@@ -11,7 +11,7 @@ return [
     | to any Pusher-compatible websockets server.
     |
     | This will allow your users to receive real-time notifications.
-    |
+    |   
     */
 
     'broadcasting' => [

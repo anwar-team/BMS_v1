@@ -77,11 +77,20 @@ Forms\Components\Grid::make(3)->schema([
         ->placeholder('مثال: ' . date('Y'))
         ->columnSpan(1),
     
-    TextInput::make('publisher')
-        ->label('الناشر')
-        ->maxLength(255)
-        ->placeholder('مثال: دار النشر')
-        ->columnSpan(1),
+Select::make('publisher_id')
+    ->label('الناشر')
+    ->relationship('publisher', 'name')
+    ->searchable()
+    ->createOptionForm([
+        TextInput::make('name')->label('اسم الناشر')->required(),
+        TextInput::make('country')->label('البلد')->required(),
+        TextInput::make('email')->label('البريد الإلكتروني')->email(),
+        TextInput::make('phone')->label('رقم الهاتف'),
+        Textarea::make('description')->label('الوصف'),
+        TextInput::make('website_url')->label('رابط الموقع')->url(),
+        Forms\Components\Toggle::make('is_active')->label('نشط')->default(true),
+    ])
+    ->columnSpan(1),
     
     TextInput::make('volumes_count')
         ->label('عدد المجلدات')
