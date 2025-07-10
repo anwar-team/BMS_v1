@@ -23,10 +23,11 @@ return new class extends Migration
             $table->integer('volumes_count')->default(1);
             $table->enum('status', ['draft', 'review', 'published', 'archived'])->default('draft');
             $table->enum('visibility', ['public', 'private', 'restricted'])->default('public');
-            $table->string('cover_image_url', 500)->nullable();
+            //$table->string('cover_image_url', 500)->nullable();
             $table->string('source_url', 255)->nullable();
             $table->bigInteger('book_section_id')->unsigned()->nullable();
-            $table->timestamps();
+            $table->foreignId('publisher_id')->nullable()->constrained('publishers')->nullOnDelete();
+$table->timestamps();
 
             $table->foreign('book_section_id')->references('id')->on('book_sections')->onDelete('set null');
         });

@@ -160,8 +160,7 @@ return [
          * Package Service Providers...
          */
         App\Providers\UserStampServiceProvider::class,
-        AbdelhamidErrahmouni\FilamentMonacoEditor\MonacoEditorServiceProvider::class,
-
+        //
         /*
          * Application Service Providers...
          */
