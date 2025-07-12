@@ -33,6 +33,7 @@
         "php": "^8.2",
         "abdelhamiderrahmouni/filament-monaco-editor": "^0.2.5",
         "andreia/filament-nord-theme": "^1.0",
+        "aymanalhattami/filament-slim-scrollbar": "^2.1",
         "bezhansalleh/filament-exceptions": "^2.1",
         "bezhansalleh/filament-shield": "^3.2",
         "codeat3/blade-fluentui-system-icons": "^1.32",
