@@ -13,8 +13,8 @@ use Filament\Tables;
 use Filament\Forms\Form;
 use Filament\Tables\Table;
 use Filament\Resources\Resource;
-use Filament\Forms\Components\Wizard;
-use Filament\Forms\Components\Wizard\Step;
+use Filament\Forms\Components\Tabs;
+use Filament\Forms\Components\Tabs\Tab;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\FileUpload;
@@ -51,43 +51,42 @@ class BookResource extends Resource
     public static function form(Form $form): Form
     {
         return $form->schema([
-            Wizard::make([
-                // Step 1: معلومات الكتاب الأساسية
-                Step::make('معلومات الكتاب')
-                    ->description('أدخل المعلومات الأساسية للكتاب')
-                    ->icon('heroicon-o-book-open')
-                    ->schema([
-                        self::getBasicInfoSection(),
-                        self::getPublishingDetailsSection(),
-                        self::getBookPropertiesSection(),
-                        self::getCoverImageSection(),
-                    ]),
+            Tabs::make('BookTabs')
+                ->tabs([
+                    // Tab 1: معلومات الكتاب الأساسية
+                    Tab::make('معلومات الكتاب')
+                        ->icon('heroicon-o-book-open')
+                        ->schema([
+                            self::getBasicInfoSection(),
+                            self::getPublishingDetailsSection(),
+                            self::getBookPropertiesSection(),
+                            self::getCoverImageSection(),
+                        ]),
 
-                // Step 2: التصنيفات والمؤلفين
-                Step::make('التصنيفات والمؤلفين')
-                    ->description('اختر قسم الكتاب والمؤلفين')
-                    ->icon('heroicon-o-tag')
-                    ->schema([
-                        self::getBookSectionSelect(),
-                        self::getAuthorsRepeater(),
-                    ]),
+                    // Tab 2: التصنيفات والمؤلفين
+                    Tab::make('التصنيفات والمؤلفين')
+                        ->icon('heroicon-o-tag')
+                        ->schema([
+                            self::getBookSectionSelect(),
+                            self::getAuthorsRepeater(),
+                        ]),
 
-                // Step 3: المجلدات والفصول
-                Step::make('المجلدات والفصول')
-                    ->description('نظم الكتاب إلى مجلدات وفصول')
-                    ->icon('heroicon-o-folder-open')
-                    ->schema([
-                        self::getVolumesRepeater(),
-                    ]),
+                    // Tab 3: المجلدات والفصول
+                    Tab::make('المجلدات والفصول')
+                        ->icon('heroicon-o-folder-open')
+                        ->schema([
+                            self::getVolumesRepeater(),
+                        ]),
 
-                // Step 4: الصفحات
-                Step::make('الصفحات')
-                    ->description('أضف صفحات الكتاب ومحتواها')
-                    ->icon('heroicon-o-document-text')
-                    ->schema([
-                        self::getPagesRepeater(),
-                    ]),
-            ])->columnSpanFull(),
+                    // Tab 4: الصفحات
+                    Tab::make('الصفحات')
+                        ->icon('heroicon-o-document-text')
+                        ->schema([
+                            self::getPagesRepeater(),
+                        ]),
+                ])
+                ->columnSpanFull()
+                ->persistTabInQueryString(),
         ]);
     }
 
@@ -684,8 +683,8 @@ class BookResource extends Resource
         }
         return 'مؤلف جديد';
     }
-
-
+        
+ 
     public static function table(Table $table): Table
     {
         return $table
