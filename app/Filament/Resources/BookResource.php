@@ -21,6 +21,8 @@ use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\Actions\Action;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Str;
+
 
 class BookResource extends Resource
 {
