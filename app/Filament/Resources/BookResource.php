@@ -23,7 +23,6 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 
-
 class BookResource extends Resource
 {
     protected static ?string $model = Book::class;
@@ -45,11 +44,45 @@ class BookResource extends Resource
                                     Forms\Components\Grid::make(2)->schema([
                                         TextInput::make('title')
                                             ->label('عنوان الكتاب')
-                                            // ... باقي سكيم المعلومات الأساسية ...
+                                            ->required()
+                                            ->maxLength(255),
+                                        TextInput::make('subtitle')
+                                            ->label('العنوان الفرعي')
+                                            ->maxLength(255),
+                                        Textarea::make('description')
+                                            ->label('وصف الكتاب')
+                                            ->rows(3)
+                                            ->columnSpanFull(),
+                                        TextInput::make('isbn')
+                                            ->label('رقم ISBN')
+                                            ->maxLength(20),
+                                        TextInput::make('publisher')
+                                            ->label('الناشر')
+                                            ->maxLength(255),
+                                        TextInput::make('published_year')
+                                            ->label('سنة النشر')
+                                            ->numeric()
+                                            ->minValue(1)
+                                            ->maxValue(date('Y')),
+                                        TextInput::make('pages_count')
+                                            ->label('عدد الصفحات')
+                                            ->numeric()
+                                            ->minValue(1),
+                                        TextInput::make('volumes_count')
+                                            ->label('عدد المجلدات')
+                                            ->numeric()
+                                            ->minValue(1)
+                                            ->default(1),
+                                        FileUpload::make('cover_image')
+                                            ->label('صورة الغلاف')
+                                            ->image()
+                                            ->directory('book-covers')
+                                            ->columnSpanFull(),
                                     ]),
                                 ])
                                 ->collapsible(),
                         ]),
+                    
                     Forms\Components\Tabs\Tab::make('التصنيفات والمؤلفين')
                         ->icon('heroicon-o-tag')
                         ->schema([
@@ -58,8 +91,13 @@ class BookResource extends Resource
                                 ->label('قسم الكتاب')
                                 ->searchable()
                                 ->createOptionForm([
-                                    TextInput::make('name')->label('اسم القسم')->required(),
-                                    Textarea::make('description')->label('وصف القسم'),
+                                    TextInput::make('name')
+                                        ->label('اسم القسم')
+                                        ->required()
+                                        ->maxLength(255),
+                                    Textarea::make('description')
+                                        ->label('وصف القسم')
+                                        ->rows(3),
                                     Forms\Components\Select::make('parent_id')
                                         ->relationship('parent', 'name')
                                         ->label('القسم الرئيسي')
@@ -70,33 +108,34 @@ class BookResource extends Resource
                                         ->numeric()
                                         ->default(0),
                                     Forms\Components\Toggle::make('is_active')
-                                        ->label('نشط')  
-                                        ->required(),
+                                        ->label('نشط')
+                                        ->default(true),
                                     TextInput::make('slug')
                                         ->label('الرابط الثابت')
                                         ->required()
                                         ->maxLength(255)
                                         ->unique(ignoreRecord: true)
-                                        ->lazy()
+                                        ->live(onBlur: true)
                                         ->suffixAction(
                                             Action::make('generateSlug')
                                                 ->icon('heroicon-m-sparkles')
                                                 ->tooltip('توليد تلقائي من الاسم')
                                                 ->action(function ($state, callable $set, callable $get) {
                                                     if ($get('name')) {
-                                                        $slug = \Str::slug($get('name'));
+                                                        $slug = Str::slug($get('name'));
                                                         $set('slug', $slug);
                                                     }
                                                 })
                                         )
-                                        ->afterStateUpdated(function ($state, callable $set, $get) {
+                                        ->afterStateUpdated(function ($state, callable $set, callable $get) {
                                             if (empty($state) && $get('name')) {
-                                                $slug = \Str::slug($get('name'));
+                                                $slug = Str::slug($get('name'));
                                                 $set('slug', $slug);
                                             }
                                         }),
                                 ])
                                 ->required(),
+                            
                             Repeater::make('authorBooks')
                                 ->label('المؤلفون ودورهم')
                                 ->relationship('authorBooks')
@@ -125,7 +164,6 @@ class BookResource extends Resource
                                                         }),
                                                     TextInput::make('mname')
                                                         ->label('اسم الأب')
-                                                        ->required()
                                                         ->maxLength(100)
                                                         ->live(onBlur: true)
                                                         ->afterStateUpdated(function ($state, callable $set, callable $get) {
@@ -149,10 +187,55 @@ class BookResource extends Resource
                                                                 $set('full_name', trim($fname . ' ' . $mname . ' ' . $lname));
                                                             }
                                                         }),
+                                                    TextInput::make('full_name')
+                                                        ->label('الاسم الكامل')
+                                                        ->maxLength(255)
+                                                        ->columnSpanFull(),
+                                                    Textarea::make('bio')
+                                                        ->label('نبذة عن المؤلف')
+                                                        ->rows(3)
+                                                        ->columnSpanFull(),
+                                                    TextInput::make('birth_year')
+                                                        ->label('سنة الميلاد')
+                                                        ->numeric()
+                                                        ->minValue(1)
+                                                        ->maxValue(date('Y')),
+                                                    TextInput::make('death_year')
+                                                        ->label('سنة الوفاة')
+                                                        ->numeric()
+                                                        ->minValue(1)
+                                                        ->maxValue(date('Y')),
                                                 ]),
-                                                // ... باقي سكيم المؤلفين ...
-                                            ]),
-                                        ]),
+                                            ])
+                                            ->required()
+                                            ->columnSpan(2),
+                                        
+                                        Select::make('role')
+                                            ->label('الدور')
+                                            ->options([
+                                                'author' => 'مؤلف',
+                                                'co_author' => 'مؤلف مشارك',
+                                                'editor' => 'محرر',
+                                                'translator' => 'مترجم',
+                                                'reviewer' => 'مراجع',
+                                                'commentator' => 'معلق',
+                                            ])
+                                            ->required()
+                                            ->default('author')
+                                            ->columnSpan(1),
+                                        
+                                        Forms\Components\Toggle::make('is_main')
+                                            ->label('مؤلف رئيسي')
+                                            ->helperText('حدد المؤلف الرئيسي للكتاب')
+                                            ->default(false)
+                                            ->columnSpan(1),
+                                        
+                                        TextInput::make('display_order')
+                                            ->label('ترتيب العرض')
+                                            ->numeric()
+                                            ->default(0)
+                                            ->helperText('ترتيب ظهور المؤلف في قائمة المؤلفين')
+                                            ->columnSpan(1),
                                     ]),
                                 ])
                                 ->addActionLabel('إضافة مؤلف')
@@ -166,271 +249,55 @@ class BookResource extends Resource
                                 ->defaultItems(1)
                                 ->minItems(1)
                                 ->columnSpanFull(),
-                        ])
-                        ->columnSpanFull(),
-                    // ... باقي التبويبات الأخرى هنا ...
-                ])
-                                Textarea::make('description')->label('وصف القسم'),
-                                Forms\Components\Select::make('parent_id')
-                                    ->relationship('parent', 'name')
-                                    ->label('القسم الرئيسي')
-                                    ->default(null),
-                                TextInput::make('sort_order')
-                                    ->label('ترتيب القسم')
-                                    ->required()
-                                    ->numeric()
-                                    ->default(0),
-                                Forms\Components\Toggle::make('is_active')
-                                    ->label('نشط')  
+                        ]),
+                    
+                    Forms\Components\Tabs\Tab::make('معلومات إضافية')
+                        ->icon('heroicon-o-information-circle')
+                        ->schema([
+                            Forms\Components\Grid::make(2)->schema([
+                                Select::make('status')
+                                    ->label('حالة الكتاب')
+                                    ->options([
+                                        'draft' => 'مسودة',
+                                        'published' => 'منشور',
+                                        'archived' => 'مؤرشف',
+                                    ])
+                                    ->default('draft')
                                     ->required(),
-                                TextInput::make('slug')
-                                  ->label('الرابط الثابت')
-                                  ->required()
-                                  ->maxLength(255)
-                                  ->unique(ignoreRecord: true)
-                                  ->lazy()
-                                  ->suffixAction(
-                                      Action::make('generateSlug')
-                                          ->icon('heroicon-m-sparkles')
-                                          ->tooltip('توليد تلقائي من الاسم')
-                                          ->action(function ($state, callable $set, callable $get) {
-                                              if ($get('name')) {
-                                                  $slug = \Str::slug($get('name'));
-                                                  $set('slug', $slug);
-                                              }
-                                          })
-                                  )
-                                  ->afterStateUpdated(function ($state, callable $set, $get) {
-                                      if (empty($state) && $get('name')) {
-                                          $slug = \Str::slug($get('name'));
-                                          $set('slug', $slug);
-                                      }
-                                  }),
-                            ])
-                            ->required(),
-/////////////////////////////////////////////////////////////////////////////////////////////
-///////// Step for selecting authors and creating new ones //////////
-/////////////////////////////////////////////////////////////////////////////////////////////
-                        Repeater::make('authorBooks')
-                            ->label('المؤلفون ودورهم')
-                            ->relationship('authorBooks')
-                            ->schema([
-                                Forms\Components\Grid::make(4)->schema([
-                                    Select::make('author_id')
-                                        ->label('المؤلف')
-                                        ->relationship('author', 'fname')
-                                        ->searchable()
-                                        ->preload()
-                                        ->getOptionLabelFromRecordUsing(fn ($record) => trim($record->fname . ' ' . $record->lname))
-                                        ->createOptionForm([
-                                            Forms\Components\Grid::make(2)->schema([
-                                                TextInput::make('fname')
-                                                    ->label('الاسم الأول')
-                                                    ->required()
-                                                    ->maxLength(100)
-                                                    ->live(onBlur: true)
-                                                    ->afterStateUpdated(function ($state, callable $set, callable $get) {
-                                                        $fname = $get('fname');
-                                                        $mname = $get('mname');
-                                                        $lname = $get('lname');
-                                                        if ($fname && $lname && $mname) {
-                                                            $set('full_name', trim($fname . ' ' . $mname . ' ' . $lname));
-                                                        }
-                                                    }),
-                                                TextInput::make('mname')
-                                                    ->label('اسم الأب')
-                                                    ->required()
-                                                    ->maxLength(100)
-                                                    ->live(onBlur: true)
-                                                    ->afterStateUpdated(function ($state, callable $set, callable $get) {
-                                                        $fname = $get('fname');
-                                                        $mname = $get('mname');
-                                                        $lname = $get('lname');
-                                                        if ($fname && $lname && $mname) {
-                                                            $set('full_name', trim($fname . ' ' . $mname . ' ' . $lname));
-                                                        }
-                                                    }),
-                                                TextInput::make('lname')
-                                                    ->label('الاسم الأخير')
-                                                    ->required()
-                                                    ->maxLength(100)
-                                                    ->live(onBlur: true)
-                                                    ->afterStateUpdated(function ($state, callable $set, callable $get) {
-                                                        $fname = $get('fname');
-                                                        $mname = $get('mname');
-                                                        $lname = $get('lname');
-                                                        if ($fname && $lname && $mname) {
-                                                            $set('full_name', trim($fname . ' ' . $mname . ' ' . $lname));
-                                                        }
-                                                    }),
-                                                //TextInput::make('nickname')
-                                                //    ->label('الكنية')
-                                                //    ->maxLength(100)
-                                                //    ->placeholder('مثال: أبو محمد، تاج الإسلام'),
-                                            ]),
-
-                                            Forms\Components\Grid::make(2)->schema([
-                                                TextInput::make('nationality')
-                                                    ->label('الجنسية')
-                                                    ->maxLength(100)
-                                                    ->placeholder('مثال: سعودي، مصري، سوري'),
-                                                Select::make('madhhab')
-                                                    ->label('المذهب')
-                                                    ->options([
-                                                        'المذهب الحنفي' => 'المذهب الحنفي',
-                                                        'المذهب المالكي' => 'المذهب المالكي',
-                                                        'المذهب الشافعي' => 'المذهب الشافعي',
-                                                        'المذهب الحنبلي' => 'المذهب الحنبلي',
-                                                        'آخرون' => 'آخرون',
-                                                    ])
-                                                    ->placeholder('اختر المذهب'),
-                                            ]),
-
-                                            Textarea::make('biography')
-                                                ->label('السيرة الذاتية')
-                                                ->rows(4)
-                                                ->columnSpanFull(),
-                                            
-                                            // نوع التاريخ للمؤلف
-                                            Select::make('birth_year_type')
-                                                ->label('نوع تقويم الميلاد')
-                                                ->options([
-                                                    'gregorian' => 'ميلادي',
-                                                    'hijri' => 'هجري',
-                                                ])
-                                                ->default('gregorian')
-                                                ->live()
-                                                ->columnSpan(1),
-                                            
-                                            TextInput::make('birth_year')
-                                                ->label(fn ($get) => $get('birth_year_type') === 'hijri' ? 'سنة الميلاد (هجري)' : 'سنة الميلاد (ميلادي)')
-                                                ->numeric()
-                                                ->minValue(1)
-                                                ->maxValue(fn ($get) => $get('birth_year_type') === 'hijri' ? DateHelper::getCurrentHijriYear() : date('Y'))
-                                                ->placeholder(fn ($get) => $get('birth_year_type') === 'hijri' ? 'مثال: 1400' : 'مثال: 1980')
-                                                ->helperText(fn ($get) => $get('birth_year_type') === 'hijri' ? 'أدخل السنة بالتقويم الهجري' : 'أدخل السنة بالتقويم الميلادي')
-                                                ->rules([
-                                                    fn ($get) => function (string $attribute, $value, callable $fail) use ($get) {
-                                                        if (!$value) return;
-                                                        
-                                                        $type = $get('birth_year_type') ?? 'gregorian';
-                                                        
-                                                        if ($type === 'hijri' && !DateHelper::isValidHijriYear((int) $value)) {
-                                                            $fail('السنة الهجرية غير صحيحة للميلاد. يجب أن تكون بين 1 و ' . DateHelper::getCurrentHijriYear());
-                                                        } elseif ($type === 'gregorian' && !DateHelper::isValidGregorianYear((int) $value)) {
-                                                            $fail('السنة الميلادية غير صحيحة للميلاد. يجب أن تكون بين 1 و ' . date('Y'));
-                                                        }
-                                                    },
-                                                ])
-                                                ->columnSpan(1),
-                                            
-                                            Forms\Components\Toggle::make('is_living')
-                                                ->label('هل المؤلف على قيد الحياة؟')
-                                                ->default(true)
-                                                ->live()
-                                                ->inline(true)
-                                                ->columnSpan(2),
-                                            
-                                            Select::make('death_year_type')
-                                                ->label('نوع تقويم الوفاة')
-                                                ->options([
-                                                    'gregorian' => 'ميلادي',
-                                                    'hijri' => 'هجري',
-                                                ])
-                                                ->default('gregorian')
-                                                ->live()
-                                                ->visible(fn ($get) => !$get('is_living'))
-                                                ->columnSpan(1),
-                                            
-                                            TextInput::make('death_year')
-                                                ->label(fn ($get) => $get('death_year_type') === 'hijri' ? 'سنة الوفاة (هجري)' : 'سنة الوفاة (ميلادي)')
-                                                ->numeric()
-                                                ->minValue(1)
-                                                ->maxValue(fn ($get) => $get('death_year_type') === 'hijri' ? DateHelper::getCurrentHijriYear() : date('Y'))
-                                                ->placeholder(fn ($get) => $get('death_year_type') === 'hijri' ? 'مثال: 1440' : 'مثال: 2020')
-                                                ->helperText(fn ($get) => $get('death_year_type') === 'hijri' ? 'أدخل السنة بالتقويم الهجري' : 'أدخل السنة بالتقويم الميلادي')
-                                                ->rules([
-                                                    fn ($get) => function (string $attribute, $value, callable $fail) use ($get) {
-                                                        if (!$value) return;
-                                                        
-                                                        $deathType = $get('death_year_type') ?? 'gregorian';
-                                                        $birthYear = $get('birth_year');
-                                                        $birthType = $get('birth_year_type') ?? 'gregorian';
-                                                        
-                                                        // التحقق من صحة السنة
-                                                        if ($deathType === 'hijri' && !DateHelper::isValidHijriYear((int) $value)) {
-                                                            $fail('السنة الهجرية غير صحيحة للوفاة. يجب أن تكون بين 1 و ' . DateHelper::getCurrentHijriYear());
-                                                        } elseif ($deathType === 'gregorian' && !DateHelper::isValidGregorianYear((int) $value)) {
-                                                            $fail('السنة الميلادية غير صحيحة للوفاة. يجب أن تكون بين 1 و ' . date('Y'));
-                                                        }
-                                                        
-                                                        // التحقق من منطقية التاريخ (الوفاة بعد الميلاد)
-                                                        if ($birthYear && !DateHelper::isLogicalDateRange((int) $birthYear, $birthType, (int) $value, $deathType)) {
-                                                            $fail('سنة الوفاة يجب أن تكون بعد سنة الميلاد');
-                                                        }
-                                                    },
-                                                ])
-                                                ->visible(fn ($get) => !$get('is_living'))
-                                                ->nullable()
-                                                ->columnSpan(1),
-                                        ])
-                                        ->createOptionAction(function (Action $action) {
-                                            return $action
-                                                ->modalHeading('إضافة مؤلف جديد')
-                                                ->modalSubmitActionLabel('إضافة المؤلف')
-                                                ->modalWidth('lg');
-                                        })
-                                        ->required()
-                                        ->columnSpan(2),
-                                    
-                                    Select::make('role')
-                                        ->label('الدور')
-                                        ->options([
-                                            'author' => 'مؤلف',
-                                            'co_author' => 'مؤلف مشارك',
-                                            'editor' => 'محرر',
-                                            'translator' => 'مترجم',
-                                            'reviewer' => 'مراجع',
-                                            'commentator' => 'معلق',
-                                        ])
-                                        ->required()
-                                        ->default('author')
-                                        ->columnSpan(1),
-                                    
-                                    Forms\Components\Toggle::make('is_main')
-                                        ->label('مؤلف رئيسي')
-                                        ->helperText('حدد المؤلف الرئيسي للكتاب')
-                                        ->default(false)
-                                        ->columnSpan(1),
-                                ]),
                                 
-                                TextInput::make('display_order')
-                                    ->label('ترتيب العرض')
-                                    ->numeric()
-                                    ->default(0)
-                                    ->helperText('ترتيب ظهور المؤلف في قائمة المؤلفين')
-                                    ->columnSpan(1),
-                            ])
-                            ->addActionLabel('إضافة مؤلف')
-                            ->reorderableWithButtons()
-                            ->collapsible()
-                            ->itemLabel(fn (array $state): ?string =>
-                                isset($state['author_id']) && $state['author_id']
-                                    ? \App\Models\Author::find($state['author_id'])?->fname . ' ' . \App\Models\Author::find($state['author_id'])?->lname . ' (' . ($state['role'] ?? 'مؤلف') . ')' . ($state['is_main'] ? ' - رئيسي' : '')
-                                    : 'مؤلف جديد'
-                            )
-                            ->defaultItems(1)
-                            ->minItems(1)
-                            ->columnSpanFull()
-                        ])
-                        ->columnSpanFull()
+                                Select::make('visibility')
+                                    ->label('مستوى الرؤية')
+                                    ->options([
+                                        'public' => 'عام',
+                                        'private' => 'خاص',
+                                    ])
+                                    ->default('public')
+                                    ->required(),
+                                
+                                TextInput::make('source_url')
+                                    ->label('رابط المصدر')
+                                    ->url()
+                                    ->maxLength(500)
+                                    ->columnSpanFull(),
+                                
+                                RichEditor::make('notes')
+                                    ->label('ملاحظات')
+                                    ->toolbarButtons([
+                                        'bold',
+                                        'italic',
+                                        'underline',
+                                        'bulletList',
+                                        'orderedList',
+                                        'link',
+                                    ])
+                                    ->columnSpanFull(),
+                            ]),
+                        ]),
                 ])
-            ])
-        );
+                ->columnSpanFull(),
+        ]);
     }
-////////////////////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////////////////
+
     public static function table(Table $table): Table
     {
         return $table
@@ -646,7 +513,7 @@ class BookResource extends Resource
                         ->color('success')
                         ->action(function (Collection $records) {
                             $records->each(function ($record) {
-                                $record->update(['is_published' => true]);
+                                $record->update(['status' => 'published']);
                             });
                         }),
                     Tables\Actions\BulkAction::make('unpublish')
@@ -655,7 +522,7 @@ class BookResource extends Resource
                         ->color('danger')
                         ->action(function (Collection $records) {
                             $records->each(function ($record) {
-                                $record->update(['is_published' => false]);
+                                $record->update(['status' => 'draft']);
                             });
                         }),
                 ]),
