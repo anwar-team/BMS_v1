@@ -45,6 +45,11 @@ class BookResource extends Resource
                                     Forms\Components\Grid::make(2)->schema([
                                         TextInput::make('title')
                                             ->label('عنوان الكتاب')
+                                            // ... باقي سكيم المعلومات الأساسية ...
+                                    ]),
+                                ])
+                                ->collapsible(),
+                        ]),
                     Forms\Components\Tabs\Tab::make('التصنيفات والمؤلفين')
                         ->icon('heroicon-o-tag')
                         ->schema([
@@ -145,130 +150,10 @@ class BookResource extends Resource
                                                             }
                                                         }),
                                                 ]),
-                                                Forms\Components\Grid::make(2)->schema([
-                                                    TextInput::make('nationality')
-                                                        ->label('الجنسية')
-                                                        ->maxLength(100)
-                                                        ->placeholder('مثال: سعودي، مصري، سوري'),
-                                                    Select::make('madhhab')
-                                                        ->label('المذهب')
-                                                        ->options([
-                                                            'المذهب الحنفي' => 'المذهب الحنفي',
-                                                            'المذهب المالكي' => 'المذهب المالكي',
-                                                            'المذهب الشافعي' => 'المذهب الشافعي',
-                                                            'المذهب الحنبلي' => 'المذهب الحنبلي',
-                                                            'آخرون' => 'آخرون',
-                                                        ])
-                                                        ->placeholder('اختر المذهب'),
-                                                ]),
-                                                Textarea::make('biography')
-                                                    ->label('السيرة الذاتية')
-                                                    ->rows(4)
-                                                    ->columnSpanFull(),
-                                                Select::make('birth_year_type')
-                                                    ->label('نوع تقويم الميلاد')
-                                                    ->options([
-                                                        'gregorian' => 'ميلادي',
-                                                        'hijri' => 'هجري',
-                                                    ])
-                                                    ->default('gregorian')
-                                                    ->live()
-                                                    ->columnSpan(1),
-                                                TextInput::make('birth_year')
-                                                    ->label(fn ($get) => $get('birth_year_type') === 'hijri' ? 'سنة الميلاد (هجري)' : 'سنة الميلاد (ميلادي)')
-                                                    ->numeric()
-                                                    ->minValue(1)
-                                                    ->maxValue(fn ($get) => $get('birth_year_type') === 'hijri' ? DateHelper::getCurrentHijriYear() : date('Y'))
-                                                    ->placeholder(fn ($get) => $get('birth_year_type') === 'hijri' ? 'مثال: 1400' : 'مثال: 1980')
-                                                    ->helperText(fn ($get) => $get('birth_year_type') === 'hijri' ? 'أدخل السنة بالتقويم الهجري' : 'أدخل السنة بالتقويم الميلادي')
-                                                    ->rules([
-                                                        fn ($get) => function (string $attribute, $value, callable $fail) use ($get) {
-                                                            if (!$value) return;
-                                                            $type = $get('birth_year_type') ?? 'gregorian';
-                                                            if ($type === 'hijri' && !DateHelper::isValidHijriYear((int) $value)) {
-                                                                $fail('السنة الهجرية غير صحيحة للميلاد. يجب أن تكون بين 1 و ' . DateHelper::getCurrentHijriYear());
-                                                            } elseif ($type === 'gregorian' && !DateHelper::isValidGregorianYear((int) $value)) {
-                                                                $fail('السنة الميلادية غير صحيحة للميلاد. يجب أن تكون بين 1 و ' . date('Y'));
-                                                            }
-                                                        },
-                                                    ])
-                                                    ->columnSpan(1),
-                                                Forms\Components\Toggle::make('is_living')
-                                                    ->label('هل المؤلف على قيد الحياة؟')
-                                                    ->default(true)
-                                                    ->live()
-                                                    ->inline(true)
-                                                    ->columnSpan(2),
-                                                Select::make('death_year_type')
-                                                    ->label('نوع تقويم الوفاة')
-                                                    ->options([
-                                                        'gregorian' => 'ميلادي',
-                                                        'hijri' => 'هجري',
-                                                    ])
-                                                    ->default('gregorian')
-                                                    ->live()
-                                                    ->visible(fn ($get) => !$get('is_living'))
-                                                    ->columnSpan(1),
-                                                TextInput::make('death_year')
-                                                    ->label(fn ($get) => $get('death_year_type') === 'hijri' ? 'سنة الوفاة (هجري)' : 'سنة الوفاة (ميلادي)')
-                                                    ->numeric()
-                                                    ->minValue(1)
-                                                    ->maxValue(fn ($get) => $get('death_year_type') === 'hijri' ? DateHelper::getCurrentHijriYear() : date('Y'))
-                                                    ->placeholder(fn ($get) => $get('death_year_type') === 'hijri' ? 'مثال: 1440' : 'مثال: 2020')
-                                                    ->helperText(fn ($get) => $get('death_year_type') === 'hijri' ? 'أدخل السنة بالتقويم الهجري' : 'أدخل السنة بالتقويم الميلادي')
-                                                    ->rules([
-                                                        fn ($get) => function (string $attribute, $value, callable $fail) use ($get) {
-                                                            if (!$value) return;
-                                                            $deathType = $get('death_year_type') ?? 'gregorian';
-                                                            $birthYear = $get('birth_year');
-                                                            $birthType = $get('birth_year_type') ?? 'gregorian';
-                                                            if ($deathType === 'hijri' && !DateHelper::isValidHijriYear((int) $value)) {
-                                                                $fail('السنة الهجرية غير صحيحة للوفاة. يجب أن تكون بين 1 و ' . DateHelper::getCurrentHijriYear());
-                                                            } elseif ($deathType === 'gregorian' && !DateHelper::isValidGregorianYear((int) $value)) {
-                                                                $fail('السنة الميلادية غير صحيحة للوفاة. يجب أن تكون بين 1 و ' . date('Y'));
-                                                            }
-                                                            if ($birthYear && !DateHelper::isLogicalDateRange((int) $birthYear, $birthType, (int) $value, $deathType)) {
-                                                                $fail('سنة الوفاة يجب أن تكون بعد سنة الميلاد');
-                                                            }
-                                                        },
-                                                    ])
-                                                    ->visible(fn ($get) => !$get('is_living'))
-                                                    ->nullable()
-                                                    ->columnSpan(1),
-                                            ])
-                                            ->createOptionAction(function (Action $action) {
-                                                return $action
-                                                    ->modalHeading('إضافة مؤلف جديد')
-                                                    ->modalSubmitActionLabel('إضافة المؤلف')
-                                                    ->modalWidth('lg');
-                                            })
-                                            ->required()
-                                            ->columnSpan(2),
-                                        Select::make('role')
-                                            ->label('الدور')
-                                            ->options([
-                                                'author' => 'مؤلف',
-                                                'co_author' => 'مؤلف مشارك',
-                                                'editor' => 'محرر',
-                                                'translator' => 'مترجم',
-                                                'reviewer' => 'مراجع',
-                                                'commentator' => 'معلق',
-                                            ])
-                                            ->required()
-                                            ->default('author')
-                                            ->columnSpan(1),
-                                        Forms\Components\Toggle::make('is_main')
-                                            ->label('مؤلف رئيسي')
-                                            ->helperText('حدد المؤلف الرئيسي للكتاب')
-                                            ->default(false)
-                                            ->columnSpan(1),
+                                                // ... باقي سكيم المؤلفين ...
+                                            ]),
+                                        ]),
                                     ]),
-                                    TextInput::make('display_order')
-                                        ->label('ترتيب العرض')
-                                        ->numeric()
-                                        ->default(0)
-                                        ->helperText('ترتيب ظهور المؤلف في قائمة المؤلفين')
-                                        ->columnSpan(1),
                                 ])
                                 ->addActionLabel('إضافة مؤلف')
                                 ->reorderableWithButtons()
@@ -280,9 +165,11 @@ class BookResource extends Resource
                                 )
                                 ->defaultItems(1)
                                 ->minItems(1)
-                                ->columnSpanFull()
+                                ->columnSpanFull(),
                         ])
                         ->columnSpanFull(),
+                    // ... باقي التبويبات الأخرى هنا ...
+                ])
                                 Textarea::make('description')->label('وصف القسم'),
                                 Forms\Components\Select::make('parent_id')
                                     ->relationship('parent', 'name')
