@@ -51,7 +51,7 @@ body {
 }
 
 .dark .fi-sidebar {
-  background: linear-gradient(180deg, #181A20 0%, #23263A 100%);
+  background: linear-gradient(180deg, #181A20 0%, #0a0b0e 100%);
 }
 
 .fi-sidebar.fi-sidebar-open {
@@ -545,7 +545,7 @@ body {
 /* Global navigation hover improvements */
 .fi-topbar button:hover,
 .fi-icon-btn:hover {
-   @apply bg-primary-50 dark:bg-primary-900/30;
+  /* @apply bg-primary-50 dark:bg-primary-900/30; */
 }
 
 /* Breadcrumb item hover */
