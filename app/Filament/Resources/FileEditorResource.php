@@ -12,15 +12,15 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class FileEditorResource extends Resource
 {
-    protected static ?string $model = null;
+   // protected static ?string $model = null;
 
-    protected static ?string $navigationIcon = 'heroicon-o-document-text';
+   // protected static ?string $navigationIcon = 'heroicon-o-document-text';
 
-    protected static ?string $navigationLabel = 'File Editor';
+   // protected static ?string $navigationLabel = 'File Editor';
 
-    protected static ?string $slug = 'file-editor';
+    //protected static ?string $slug = 'file-editor';
 
-    protected static ?string $navigationGroup = 'System';
+    //protected static ?string $navigationGroup = 'System';
 
     public static function table(Table $table): Table
     {
