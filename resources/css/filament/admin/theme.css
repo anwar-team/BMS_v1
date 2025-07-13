@@ -6,7 +6,7 @@
 :root {
   --sidebar-width: 280px;
   --transition-speed: 0.2s;
-  --primary-rgb: 45, 43, 141; /* #2D2B8D */
+  --primary-rgb: 186, 71, 73; /* #2D2B8D */
   --secondary-rgb: 255, 201, 3; /* #FFC903 */
   --primary-gradient: linear-gradient(145deg, #2C6E4A, #2C6E4A);
   --secondary-gradient: linear-gradient(145deg, #FFD333, #FFC903);
