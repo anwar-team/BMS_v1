@@ -1,115 +1,303 @@
 <x-superduper.main>
-
     <div class="page-wrapper relative z-[1]">
         <main class="relative overflow-hidden main-wrapper">
-
             <x-superduper.components.hero />
             
-            <x-superduper.components.value-proposition />
-
-            <x-superduper.components.packages-plugins />
-
-            {{-- Showcases --}}
-            <div class="relative py-8 overflow-hidden">
-                <div class="absolute inset-0 bg-gradient-to-b from-background-white to-background-wheat dark:from-primary-900 dark:to-primary-800 -z-10"></div>
-                
-                <div class="container px-4 py-16 mx-auto">
-                    <div class="mb-16 text-center">
-                        <span class="inline-block px-4 py-1 mb-3 text-sm font-medium rounded-full bg-secondary-100 text-secondary-800 dark:bg-secondary-900 dark:text-secondary-200">Content Management</span>
-                        <h2 class="mb-4 font-bold">Feature-Rich Blog Platform, Ready to Publish</h2>
-                        <p class="max-w-2xl mx-auto text-lg text-gray-600 dark:text-gray-300">Launch your content strategy immediately with SuperDuper's integrated blog system</p>
+            <!-- Categories Section -->
+            <section class="categories-section">
+                <div class="container mx-auto px-4">
+                    <div class="flex items-center justify-between mb-8">
+                        <div class="section-title">
+                            <span>أقسام الكتب</span>
+                            <div class="ornament-icon">
+                                <img src="{{ asset('images/figma/ornament_vector1.svg') }}" alt="Ornament">
+                            </div>
+                        </div>
                     </div>
                     
-                    <!-- Blog Showcase -->
-                    <div class="mb-16">
-                        <livewire:super-duper.blog-section-slider
-                            :limit="6"
-                            :featured-only="false"
-                            :category-slug="null"
-                        />
+                    <div class="category-grid">
+                        <!-- Category 1 -->
+                        <div class="category-card" style="background: linear-gradient(135deg, #FFFFFF, #FCF6F4);">
+                            <div class="category-card-content">
+                                <div class="category-info">
+                                    <h3 class="category-name">العقيدة</h3>
+                                    <p class="category-count">1035 كتاب</p>
+                                </div>
+                                <div class="category-icon">
+                                    <img src="{{ asset('images/figma/aqeeda_icon1.svg') }}" alt="العقيدة">
+                                </div>
+                            </div>
+                            <div class="category-decoration">
+                                <div style="background-color: rgba(0, 0, 0, 0.8); width: 100%; height: 100%; opacity: 0.8; border-radius: 10px;"></div>
+                                <div style="background-color: #BA4749; width: 100%; height: 100%; position: absolute; bottom: -1px; left: -1px;"></div>
+                            </div>
+                        </div>
+                        
+                        <!-- Category 2 -->
+                        <div class="category-card" style="background: linear-gradient(135deg, #FFFFFF, #FCF6F4);">
+                            <div class="category-card-content">
+                                <div class="category-info">
+                                    <h3 class="category-name">فقه عام</h3>
+                                    <p class="category-count">1194 كتاب</p>
+                                </div>
+                                <div class="category-icon">
+                                    <img src="{{ asset('images/figma/fiqh_icon1.svg') }}" alt="فقه عام">
+                                </div>
+                            </div>
+                            <div class="category-decoration">
+                                <div style="background-color: rgba(0, 0, 0, 0.8); width: 100%; height: 100%; opacity: 0.8; border-radius: 10px;"></div>
+                                <div style="background-color: #BA4749; width: 100%; height: 100%; position: absolute; bottom: -1px; left: -1px;"></div>
+                            </div>
+                        </div>
+                        
+                        <!-- Category 3 -->
+                        <div class="category-card" style="background: linear-gradient(135deg, #FFFFFF, #FCF6F4);">
+                            <div class="category-card-content">
+                                <div class="category-info">
+                                    <h3 class="category-name">علوم القرآن</h3>
+                                    <p class="category-count">1386 كتاب</p>
+                                </div>
+                                <div class="category-icon">
+                                    <img src="{{ asset('images/figma/quran_icon1.svg') }}" alt="علوم القرآن">
+                                </div>
+                            </div>
+                            <div class="category-decoration">
+                                <div style="background-color: rgba(0, 0, 0, 0.8); width: 100%; height: 100%; opacity: 0.8; border-radius: 10px;"></div>
+                                <div style="background-color: #BA4749; width: 100%; height: 100%; position: absolute; bottom: -1px; left: -1px;"></div>
+                            </div>
+                        </div>
+                        
+                        <!-- Category 4 -->
+                        <div class="category-card" style="background: linear-gradient(135deg, #FFFFFF, #FCF6F4);">
+                            <div class="category-card-content">
+                                <div class="category-info">
+                                    <h3 class="category-name">كتب إسلامية عامة</h3>
+                                    <p class="category-count">1412 كتاب</p>
+                                </div>
+                                <div class="category-icon">
+                                    <img src="{{ asset('images/figma/islamic_books_icon.svg') }}" alt="كتب إسلامية عامة">
+                                </div>
+                            </div>
+                            <div class="category-decoration">
+                                <div style="background-color: rgba(0, 0, 0, 0.8); width: 100%; height: 100%; opacity: 0.8; border-radius: 10px;"></div>
+                                <div style="background-color: #BA4749; width: 100%; height: 100%; position: absolute; bottom: -1px; left: -1px;"></div>
+                            </div>
+                        </div>
+                        
+                        <!-- Category 5 -->
+                        <div class="category-card" style="background: linear-gradient(135deg, #FCF6F4, #FFFFFF);">
+                            <div class="category-card-content">
+                                <div class="category-info">
+                                    <h3 class="category-name">الأذكار والأوراد والأدعية</h3>
+                                    <p class="category-count">123 كتاب</p>
+                                </div>
+                                <div class="category-icon">
+                                    <img src="{{ asset('images/figma/athkar_icon.svg') }}" alt="الأذكار والأوراد والأدعية">
+                                </div>
+                            </div>
+                            <div class="category-decoration">
+                                <div style="background-color: rgba(0, 0, 0, 0.8); width: 100%; height: 100%; opacity: 0.8; border-radius: 10px;"></div>
+                                <div style="background-color: #BA4749; width: 100%; height: 100%; position: absolute; bottom: -1px; left: -1px;"></div>
+                            </div>
+                        </div>
+                        
+                        <!-- Category 6 -->
+                        <div class="category-card" style="background: linear-gradient(135deg, #FCF6F4, #FFFFFF);">
+                            <div class="category-card-content">
+                                <div class="category-info">
+                                    <h3 class="category-name">بحوث ومسائل فقهية</h3>
+                                    <p class="category-count">3126 كتاب</p>
+                                </div>
+                                <div class="category-icon">
+                                    <img src="{{ asset('images/figma/fiqh_research_icon1.svg') }}" alt="بحوث ومسائل فقهية">
+                                </div>
+                            </div>
+                            <div class="category-decoration">
+                                <div style="background-color: rgba(0, 0, 0, 0.8); width: 100%; height: 100%; opacity: 0.8; border-radius: 10px;"></div>
+                                <div style="background-color: #BA4749; width: 100%; height: 100%; position: absolute; bottom: -1px; left: -1px;"></div>
+                            </div>
+                        </div>
                     </div>
                     
-                    <!-- Banner Showcase -->
-                    <div class="pt-8 border-t border-background-light dark:border-primary-700">
-                        <div class="mb-10 text-center">
-                            <span class="inline-block px-4 py-1 mb-3 text-sm font-medium rounded-full bg-secondary-100 text-secondary-800 dark:bg-secondary-900 dark:text-secondary-200">Banner Management</span>
-                            <h2 class="mb-4 text-3xl font-bold">Engaging Banner System</h2>
-                            <p class="max-w-2xl mx-auto text-lg text-gray-600 dark:text-gray-300">Create eye-catching banners with intuitive management interface</p>
+                    <div class="view-all-btn">
+                        <span>عرض جميع الأقسام</span>
+                        <img src="{{ asset('images/figma/arrow_circle_left.svg') }}" alt="Arrow" width="24" height="24">
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Books Section -->
+            <section class="books-section">
+                <div class="container mx-auto px-4">
+                    <div class="flex items-center justify-between mb-8">
+                        <div class="section-title">
+                            <span>الكتب</span>
+                            <div class="ornament-icon">
+                                <img src="{{ asset('images/figma/ornament_vector1.svg') }}" alt="Ornament">
+                            </div>
                         </div>
-                        
-                        <div class="max-w-5xl mx-auto overflow-hidden bg-white rounded-lg shadow-lg">
-                            <x-superduper.components.banner />
+                    </div>
+                    
+                    <div class="books-tabs">
+                        <button class="books-tab inactive">الكتب المفتوحة مؤخراً</button>
+                        <button class="books-tab inactive">أكثر الكتب قراءةً</button>
+                        <button class="books-tab inactive">كتب مضافة حديثاً</button>
+                        <button class="books-tab active">جميع الكتب</button>
+                    </div>
+                    
+                    <div class="overflow-x-auto">
+                        <table class="books-table">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>المؤلف</th>
+                                    <th>اسم الكتاب</th>
+                                    <th>التصنيف</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>1</td>
+                                    <td>عبد الله عزام</td>
+                                    <td>أذكار الصباح والمساء</td>
+                                    <td>الأذكار والأوراد والأدعية</td>
+                                </tr>
+                                <tr>
+                                    <td>2</td>
+                                    <td>عبد الله عزام</td>
+                                    <td>أذكار الصباح والمساء</td>
+                                    <td>الأذكار والأوراد والأدعية</td>
+                                </tr>
+                                <tr>
+                                    <td>3</td>
+                                    <td>عبد الله عزام</td>
+                                    <td>أذكار الصباح والمساء</td>
+                                    <td>الأذكار والأوراد والأدعية</td>
+                                </tr>
+                                <tr>
+                                    <td>4</td>
+                                    <td>عبد الله عزام</td>
+                                    <td>أذكار الصباح والمساء</td>
+                                    <td>الأذكار والأوراد والأدعية</td>
+                                </tr>
+                                <tr>
+                                    <td>5</td>
+                                    <td>عبد الله عزام</td>
+                                    <td>أذكار الصباح والمساء</td>
+                                    <td>الأذكار والأوراد والأدعية</td>
+                                </tr>
+                                <tr>
+                                    <td>6</td>
+                                    <td>عبد الله عزام</td>
+                                    <td>أذكار الصباح والمساء</td>
+                                    <td>الأذكار والأوراد والأدعية</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <div class="table-footer">
+                        <div class="pagination-controls">
+                            <img src="{{ asset('images/figma/chevron_left.svg') }}" alt="Previous" width="24" height="24">
+                            <img src="{{ asset('images/figma/chevron_right.svg') }}" alt="Next" width="24" height="24">
                         </div>
-                        
-                        <div class="mt-8 text-center">
-                            <div class="inline-flex items-center justify-center px-4 py-2 font-medium rounded-lg text-primary-700 bg-primary-100 dark:bg-primary-900 dark:text-primary-200">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                </svg>
-                                <span>Both blog and banner modules are fully customizable through our admin interface</span>
+                        <div class="pagination-info">5-1 من 100</div>
+                        <div class="rows-per-page">
+                            <span>عدد الصفوف في الصفحة:</span>
+                            <div class="flex items-center">
+                                <span>10</span>
+                                <img src="{{ asset('images/figma/arrow_dropdown.svg') }}" alt="Dropdown" width="24" height="24">
                             </div>
                         </div>
                     </div>
                 </div>
-                
-                <div class="absolute bottom-0 left-0 right-0 h-16 bg-white dark:bg-gray-800 -z-10" style="clip-path: polygon(0 100%, 100% 0, 100% 100%, 0% 100%);"></div>
-            </div>
-
-            <div class="container px-4 py-16 mx-auto">
-                <div class="mb-16 text-center">
-                    <h2 class="mb-4 text-3xl font-bold">Frequently Asked Questions</h2>
-                    <p class="max-w-2xl mx-auto text-lg">Get answers to the most common questions about SuperDuper Starter Kit</p>
+            </section>
+            
+            <!-- Authors Section -->
+            <section class="authors-section">
+                <div class="container mx-auto px-4">
+                    <div class="flex items-center justify-between mb-8">
+                        <div class="section-title">
+                            <span>المؤلفين</span>
+                            <div class="ornament-icon">
+                                <img src="{{ asset('images/figma/ornament_vector1.svg') }}" alt="Ornament">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="books-tabs">
+                        <button class="books-tab inactive">أكثر المؤلفين قراءةً</button>
+                        <button class="books-tab inactive">مؤلفين جدد</button>
+                        <button class="books-tab active">جميع المؤلفين</button>
+                    </div>
+                    
+                    <div class="overflow-x-auto">
+                        <table class="books-table">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>المؤلف</th>
+                                    <th>اسم الكتاب</th>
+                                    <th>التصنيف</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>1</td>
+                                    <td>عبد الله عزام</td>
+                                    <td>أذكار الصباح والمساء</td>
+                                    <td>الأذكار والأوراد والأدعية</td>
+                                </tr>
+                                <tr>
+                                    <td>2</td>
+                                    <td>عبد الله عزام</td>
+                                    <td>أذكار الصباح والمساء</td>
+                                    <td>الأذكار والأوراد والأدعية</td>
+                                </tr>
+                                <tr>
+                                    <td>3</td>
+                                    <td>عبد الله عزام</td>
+                                    <td>أذكار الصباح والمساء</td>
+                                    <td>الأذكار والأوراد والأدعية</td>
+                                </tr>
+                                <tr>
+                                    <td>4</td>
+                                    <td>عبد الله عزام</td>
+                                    <td>أذكار الصباح والمساء</td>
+                                    <td>الأذكار والأوراد والأدعية</td>
+                                </tr>
+                                <tr>
+                                    <td>5</td>
+                                    <td>عبد الله عزام</td>
+                                    <td>أذكار الصباح والمساء</td>
+                                    <td>الأذكار والأوراد والأدعية</td>
+                                </tr>
+                                <tr>
+                                    <td>6</td>
+                                    <td>عبد الله عزام</td>
+                                    <td>أذكار الصباح والمساء</td>
+                                    <td>الأذكار والأوراد والأدعية</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <div class="table-footer">
+                        <div class="pagination-controls">
+                            <img src="{{ asset('images/figma/chevron_left.svg') }}" alt="Previous" width="24" height="24">
+                            <img src="{{ asset('images/figma/chevron_right.svg') }}" alt="Next" width="24" height="24">
+                        </div>
+                        <div class="pagination-info">5-1 من 100</div>
+                        <div class="rows-per-page">
+                            <span>عدد الصفوف في الصفحة:</span>
+                            <div class="flex items-center">
+                                <span>10</span>
+                                <img src="{{ asset('images/figma/arrow_dropdown.svg') }}" alt="Dropdown" width="24" height="24">
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                
-                <div class="max-w-4xl mx-auto divide-y divide-gray-200 dark:divide-gray-700">
-                    <div class="py-6">
-                        <div class="flex items-center justify-between cursor-pointer">
-                            <h3 class="text-xl font-semibold">What makes this different from other Filament starter kits?</h3>
-                        </div>
-                        <div class="mt-4" x-show="open">
-                            <p class="text-gray-700 dark:text-gray-300">SuperDuper provides a complete ecosystem, not just scaffolding. It includes integrated modules for content management, user management, media handling, and more. Our focus on developer experience means cleaner code organization, better documentation, and pre-built solutions for common requirements like multilingual support and SEO optimization.</p>
-                        </div>
-                    </div>
-                    
-                    <div class="py-6">
-                        <div class="flex items-center justify-between cursor-pointer">
-                            <h3 class="text-xl font-semibold">Can I use this for commercial projects?</h3>
-                        </div>
-                        <div class="mt-4" x-show="open">
-                            <p class="text-gray-700 dark:text-gray-300">Yes! SuperDuper is released under the MIT license, which means you can use it for personal or commercial projects without restrictions. You're free to modify, distribute, and use it in your own work without attribution, though a shoutout is always appreciated!</p>
-                        </div>
-                    </div>
-                    
-                    <div class="py-6">
-                        <div class="flex items-center justify-between cursor-pointer">
-                            <h3 class="text-xl font-semibold">Do I need to know Laravel or Filament to use this?</h3>
-                        </div>
-                        <div class="mt-4" x-show="open">
-                            <p class="text-gray-700 dark:text-gray-300">Basic familiarity with Laravel and Filament is recommended. However, the starter kit is designed to be intuitive, with thorough documentation to help you understand the structure. If you're new to Filament, this kit actually makes it easier to learn by providing working examples of best practices.</p>
-                        </div>
-                    </div>
-                    
-                    <div class="py-6">
-                        <div class="flex items-center justify-between cursor-pointer">
-                            <h3 class="text-xl font-semibold">How do updates work with this starter kit?</h3>
-                        </div>
-                        <div class="mt-4" x-show="open">
-                            <p class="text-gray-700 dark:text-gray-300">Once you create a project from the starter kit, it becomes your own codebase. We regularly release updates to the template itself, but applying these to an existing project is manual. For critical updates, we provide migration guides in our documentation to help you integrate new features or security patches.</p>
-                        </div>
-                    </div>
-                    
-                    <div class="py-6">
-                        <div class="flex items-center justify-between cursor-pointer">
-                            <h3 class="text-xl font-semibold">Is there support available if I run into issues?</h3>
-                        </div>
-                        <div class="mt-4" x-show="open">
-                            <p class="text-gray-700 dark:text-gray-300">Yes, you can open issues on our GitHub repository and you can often find answers to common questions in our documentation or from other developers. For dedicated support or custom development, you can contact the maintainers directly.</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
+            </section>
         </main>
     </div>
-
 </x-superduper.main>

@@ -9,15 +9,15 @@
     @php
         $favicon = $generalSettings->site_favicon ?? null;
         $brandLogo = $generalSettings->brand_logo ?? null;
-        $siteName = $generalSettings->brand_name ?? $siteSettings->name ?? config('app.name', 'SuperDuper Starter Kit');
+        $siteName = $generalSettings->brand_name ?? $siteSettings->name ?? config('app.name', 'المكتبة المتكاملة');
         
         $title = $title ?? $siteName;
     @endphp
 
     <!-- SEO Meta Tags -->
     <title>{{ $title }}</title>
-    <meta name="description" content="{{ $pageDescription ?? $siteSettings->description ?? 'SuperDuper Starter Kit' }}">
-    <meta name="keywords" content="{{ $metaKeywords ?? 'starter kit, development, templates' }}">
+    <meta name="description" content="{{ $pageDescription ?? $siteSettings->description ?? 'المكتبة المتكاملة' }}">
+    <meta name="keywords" content="{{ $metaKeywords ?? 'كتب, مكتبة, إسلامية, قراءة, مؤلفين' }}">
     
     <!-- Favicon -->
     @if($favicon)
@@ -28,7 +28,7 @@
 
     <!-- Open Graph Meta Tags -->
     <meta property="og:title" content="{{ $title }}">
-    <meta property="og:description" content="{{ $pageDescription ?? $siteSettings->description ?? 'SuperDuper Starter Kit' }}">
+    <meta property="og:description" content="{{ $pageDescription ?? $siteSettings->description ?? 'المكتبة المتكاملة' }}">
     <meta property="og:type" content="website">
     <meta property="og:url" content="{{ url()->current() }}">
     @if($brandLogo)
@@ -38,7 +38,7 @@
     <!-- Twitter Card Meta Tags -->
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="{{ $title }}">
-    <meta name="twitter:description" content="{{ $pageDescription ?? $siteSettings->description ?? 'SuperDuper Starter Kit' }}">
+    <meta name="twitter:description" content="{{ $pageDescription ?? $siteSettings->description ?? 'المكتبة المتكاملة' }}">
     @if($brandLogo)
         <meta name="twitter:image" content="{{ Storage::url($brandLogo) }}">
     @endif
@@ -56,6 +56,9 @@
     <link rel="stylesheet" href="{{ asset('superduper/css/vendors/swiper-bundle.min.css') }}" />
     <link rel="stylesheet" href="{{ asset('superduper/css/vendors/jos.css') }}" />
     <link rel="stylesheet" href="{{ asset('superduper/css/style.min.css') }}" />
+    
+    <!-- Custom RTL CSS for Arabic -->
+    <link rel="stylesheet" href="{{ asset('superduper/css/rtl-custom.css') }}" />
 
     <style>
         [x-cloak] {
