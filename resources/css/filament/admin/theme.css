@@ -6,7 +6,7 @@
 :root {
   --sidebar-width: 280px;
   --transition-speed: 0.2s;
-  --primary-rgb: 186, 71, 73; /* #2D2B8D */
+  --primary-rgb: 186, 71, 73; /* #BA4749 */
   --secondary-rgb: 255, 201, 3; /* #FFC903 */
   --primary-gradient: linear-gradient(145deg, #2C6E4A, #2C6E4A);
   --secondary-gradient: linear-gradient(145deg, #FFD333, #FFC903);
@@ -14,7 +14,7 @@
   --dark-hover-gradient: linear-gradient(145deg, rgba(var(--primary-rgb), 0.15), rgba(var(--secondary-rgb), 0.05));
 }
 
-body {
+body { 
   @apply antialiased;
 }
 
