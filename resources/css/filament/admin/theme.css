@@ -535,17 +535,17 @@ body {
 }
 
 .fi-sidebar::-webkit-scrollbar-thumb {
-  @apply bg-red-200 dark:bg-red-800 rounded-full;
+  @apply bg-primary-200 dark:bg-primary-800 rounded-full;
 }
 
 .fi-sidebar::-webkit-scrollbar-thumb:hover {
-  @apply bg-red-300 dark:bg-red-700;
+  @apply bg-primary-300 dark:bg-primary-700;
 }
 
 /* Global navigation hover improvements */
 .fi-topbar button:hover,
 .fi-icon-btn:hover {
-  /* @apply bg-primary-50 dark:bg-primary-900/30; */
+   @apply bg-primary-50 dark:bg-primary-900/30;
 }
 
 /* Breadcrumb item hover */
