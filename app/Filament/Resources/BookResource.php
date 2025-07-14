@@ -36,9 +36,9 @@ use Filament\Tables\Actions\BulkActionGroup;
 use Filament\Tables\Actions\DeleteBulkAction;
 use Filament\Tables\Actions\BulkAction;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Builder as EloquentBuilder;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
+use Filament\Forms\Components\Hidden;
 
 class BookResource extends Resource
 {
@@ -398,15 +398,7 @@ class BookResource extends Resource
     {
         return Repeater::make('chapters')
             ->label('فصول هذا المجلد')
-            ->relationship(
-                name: 'chapters',
-                modifyQueryUsing: fn (EloquentBuilder $query, $record) => $query,
-                mutateRelationshipDataBeforeCreateUsing: function (array $data, $record): array {
-                    // Ensure book_id is set when creating a new chapter
-                    $data['book_id'] = $record->id;
-                    return $data;
-                },
-            )
+            ->relationship('chapters')
             ->schema([
                 Grid::make(2)->schema([
                     TextInput::make('chapter_number')
@@ -440,6 +432,10 @@ class BookResource extends Resource
                         ->minValue(1)
                         ->gte('start_page'),
                 ]),
+                
+                // Hidden field to ensure book_id is set
+                Hidden::make('book_id')
+                    ->default(fn ($livewire) => $livewire->record->id),
             ])
             ->addActionLabel('إضافة فصل جديد')
             ->reorderableWithButtons()
