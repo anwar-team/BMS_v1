@@ -1,6 +1,9 @@
 <div>
+    <!-- Include the main site header -->
+    <x-superduper.header />
+
     <div class="bg-gray-50 min-h-screen" dir="rtl">
-        <!-- Header with book title and author -->
+        <!-- Book-specific header with title and author -->
         <header class="bg-white shadow-sm border-b border-gray-200">
             <div class="container mx-auto px-4 py-4 sm:px-6 lg:px-8">
                 <div class="flex flex-col md:flex-row justify-between items-start md:items-center">
@@ -133,6 +136,9 @@
             </div>
         </div>
     </div>
+
+    <!-- Include the main site footer -->
+    <x-superduper.footer />
 
     <style>
         /* Custom scrollbar for webkit browsers */
