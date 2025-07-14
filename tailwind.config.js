@@ -13,28 +13,28 @@ export default {
         extend: {
             colors: {
                 primary: {
-                    50: '#EEEEFB',
-                    100: '#DCDCF7',
-                    200: '#B9B8EF',
-                    300: '#9795E6',
-                    400: '#7471DE',
-                    500: '#524ED5',
-                    600: '#413CAD',
-                    700: '#342F8A',
-                    800: '#2D2B8D', // base primary
-                    900: '#1E1C5A',
+                    50: '#f8f9e8',
+                    100: '#f0f2d0',
+                    200: '#e6e9b6',
+                    300: '#d3d88a',
+                    400: '#b9c05c',
+                    500: '#8a903c',
+                    600: '#5D6019', // base primary
+                    700: '#4a4d14',
+                    800: '#3c3f10',
+                    900: '#2e300c',
                 },
                 secondary: {
-                    50: '#FFFBEB',
-                    100: '#FFF6D6',
-                    200: '#FFEDAD',
-                    300: '#FFE585',
-                    400: '#FFDC5C',
-                    500: '#FFD333',
-                    600: '#FFC903', // base secondary
-                    700: '#E6B500',
-                    800: '#BF9600',
-                    900: '#997800',
+                    50: '#fff8e6',
+                    100: '#ffedc4',
+                    200: '#ffdb94',
+                    300: '#ffc25a',
+                    400: '#ffaa33',
+                    500: '#FF7300', // secondary accent
+                    600: '#e65a00',
+                    700: '#b34700',
+                    800: '#39100C', // secondary dark
+                    900: '#2b0c09',
                 },
                 background: {
                     white: '#FFFFFF',
@@ -46,6 +46,10 @@ export default {
                 error: '#EF4444',
                 warning: '#F59E0B',
                 info: '#3B82F6',
+            },
+            fontFamily: {
+                'tajawal': ['Tajawal', 'sans-serif'],
+                'naskh': ['Noto Naskh Arabic', 'serif'],
             },
         },
     },

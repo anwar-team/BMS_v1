@@ -3,6 +3,8 @@
 use App\Livewire\SuperDuper\BlogList;
 use App\Livewire\SuperDuper\BlogDetails;
 use App\Livewire\SuperDuper\Pages\ContactUs;
+use App\Livewire\BookReader;
+use App\Livewire\AdvancedSearch;
 use Illuminate\Support\Facades\Route;
 use Lab404\Impersonate\Services\ImpersonateManager;
 
@@ -26,6 +28,12 @@ Route::get('/blog', BlogList::class)->name('blog');
 Route::get('/blog/{slug}', BlogDetails::class)->name('blog.show');
 
 Route::get('/contact-us', ContactUs::class)->name('contact-us');
+
+// Book reader route
+Route::get('/book/{slug}', BookReader::class)->name('book.show');
+
+// Advanced search route
+Route::get('/search', AdvancedSearch::class)->name('search');
 
 Route::get('/privacy-policy', function () {
     return view('components.superduper.pages.coming-soon', ['page_type' => 'privacy']);

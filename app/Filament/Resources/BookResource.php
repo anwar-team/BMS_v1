@@ -886,11 +886,16 @@ class BookResource extends Resource
                             );
                     }),
             ])
-            ->actions([
-                Tables\Actions\ViewAction::make(),
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
-            ])
+                            ->actions([
+                    Tables\Actions\ViewAction::make(),
+                    Tables\Actions\Action::make('view_on_frontend')
+                        ->label('عرض في الواجهة')
+                        ->icon('heroicon-o-eye')
+                        ->url(fn ($record) => route('book.show', $record->slug))
+                        ->openUrlInNewTab(),
+                    Tables\Actions\EditAction::make(),
+                    Tables\Actions\DeleteAction::make(),
+                ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
@@ -924,6 +929,7 @@ class BookResource extends Resource
         return [
             'index' => Pages\ListBooks::route('/'),
             'create' => Pages\CreateBook::route('/create'),
+            'view' => Pages\ViewBook::route('/{record}'),
             'edit' => Pages\EditBook::route('/{record}/edit'),
         ];
     }
