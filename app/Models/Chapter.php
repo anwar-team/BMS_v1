@@ -105,7 +105,7 @@ class Chapter extends Model
         if ($this->chapter_number) {
             $title .= "الفصل {$this->chapter_number}: ";
         }
-        $title .= $this->title;
+        $title .= $this->title ?? '';
         return $title;
     }
 }

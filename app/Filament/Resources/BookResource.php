@@ -472,13 +472,15 @@ class BookResource extends Resource
                     
                     Select::make('volume_id')
                         ->label('المجلد')
-                        ->relationship('volume', 'title')
+                        ->relationship('volume', 'number')
+                        ->getOptionLabelFromRecordUsing(fn ($record) => $record->fullTitle ?? "المجلد {$record->number}")
                         ->searchable()
                         ->preload(),
                     
                     Select::make('chapter_id')
                         ->label('الفصل')
                         ->relationship('chapter', 'title')
+                        ->getOptionLabelFromRecordUsing(fn ($record) => $record->fullTitle ?? '')
                         ->searchable()
                         ->preload(),
                 ]),
@@ -527,6 +529,18 @@ class BookResource extends Resource
                     ->label('منشورة')
                     ->default(true)
                     ->inline(false),
+                
+                // Hidden field to ensure book_id is set
+                Hidden::make('book_id')
+                    ->default(function ($livewire, $state, $get) {
+                        // First try to get the book ID from the current record
+                        if (isset($livewire->record) && $livewire->record) {
+                            return $livewire->record->id;
+                        }
+                        
+                        // Fallback to parent container data
+                        return $get('../../id');
+                    }),
             ])
             ->addActionLabel('إضافة صفحة جديدة')
             ->reorderableWithButtons()
