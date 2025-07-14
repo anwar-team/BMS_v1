@@ -45,7 +45,7 @@
         </div>
 
         <!-- Main content -->
-        <div style="display: flex; flex-direction: column; gap: 24px; align-items: flex-end; justify-content: flex-start; width: 1170px; position: relative; right: 135px; top: 150px; margin: 0 auto; padding-bottom: 50px;">
+        <div style="display: flex; flex-direction: column; gap: 24px; align-items: flex-end; justify-content: flex-start; width: 1170px; position: relative; right: 135px; top: 150px; margin: 0 auto; padding-bottom: 100px;">
             <div style="display: flex; flex-direction: column; gap: 40px; align-items: flex-end; justify-content: flex-start; align-self: stretch; flex-shrink: 0; position: relative;">
                 <!-- Book title with icon -->
                 <div style="display: flex; flex-direction: row; gap: 12px; align-items: center; justify-content: flex-start; flex-shrink: 0; position: relative;">
@@ -204,6 +204,23 @@
                 </div>
             </div>
         </div>
+        
+        <!-- Footer -->
+        <div style="width: 100%; margin-top: 80px; position: relative; clear: both; padding-top: 100px;">
+            <footer class="footer" style="background-color: #f8f9fa; padding: 30px 0; text-align: center; border-top: 1px solid #e8e8e9; width: 100%;">
+                <div class="footer-content" style="max-width: 1170px; margin: 0 auto; padding: 0 20px;">
+                    <div class="flex justify-center">
+                        <div class="footer-logo" style="width: 120px; height: 120px; margin: 0 auto 20px auto; overflow: hidden; border-radius: 50%;">
+                            <img src="{{ asset('images/figma/logo.jpg') }}" alt="Logo" class="w-full h-full" style="width: 100%; height: 100%; object-fit: cover;">
+                        </div>
+                    </div>
+                    <div class="footer-divider" style="height: 1px; background-color: #e8e8e9; margin: 20px 0;"></div>
+                    <div class="footer-copyright" style="font-family: 'Tajawal', sans-serif; color: #666; font-size: 14px;">
+                        © حقوق الطبع والنشر {{ date('Y') }}. جميع الحقوق محفوظة.
+                    </div>
+                </div>
+            </footer>
+        </div>
     </div>
 
     <style>
@@ -246,6 +263,13 @@
         
         .font-naskh {
             font-family: 'Noto Naskh Arabic', serif;
+        }
+        
+        /* Footer specific styles */
+        .footer {
+            clear: both;
+            position: relative;
+            z-index: 10;
         }
     </style>
 </div> 
