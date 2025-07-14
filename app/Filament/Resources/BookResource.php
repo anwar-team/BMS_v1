@@ -36,6 +36,7 @@ use Filament\Tables\Actions\BulkActionGroup;
 use Filament\Tables\Actions\DeleteBulkAction;
 use Filament\Tables\Actions\BulkAction;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Builder as EloquentBuilder;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 
@@ -397,7 +398,15 @@ class BookResource extends Resource
     {
         return Repeater::make('chapters')
             ->label('فصول هذا المجلد')
-            ->relationship('chapters')
+            ->relationship(
+                name: 'chapters',
+                modifyQueryUsing: fn (EloquentBuilder $query, $record) => $query,
+                mutateRelationshipDataBeforeCreateUsing: function (array $data, $record): array {
+                    // Ensure book_id is set when creating a new chapter
+                    $data['book_id'] = $record->id;
+                    return $data;
+                },
+            )
             ->schema([
                 Grid::make(2)->schema([
                     TextInput::make('chapter_number')
