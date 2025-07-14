@@ -435,7 +435,15 @@ class BookResource extends Resource
                 
                 // Hidden field to ensure book_id is set
                 Hidden::make('book_id')
-                    ->default(fn ($livewire) => $livewire->record->id),
+                    ->default(function ($livewire, $state, $get) {
+                        // First try to get the book ID from the current record
+                        if (isset($livewire->record) && $livewire->record) {
+                            return $livewire->record->id;
+                        }
+                        
+                        // Fallback to parent container data
+                        return $get('../../id');
+                    }),
             ])
             ->addActionLabel('إضافة فصل جديد')
             ->reorderableWithButtons()
