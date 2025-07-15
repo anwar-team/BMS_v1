@@ -1,12 +1,36 @@
 {
+  "public/superduper/fonts/tajawal/Tajawal-Regular.ttf": {
+    "file": "assets/Tajawal-Regular-BF6-vjr0.ttf",
+    "src": "public/superduper/fonts/tajawal/Tajawal-Regular.ttf"
+  },
   "resources/css/app.css": {
-    "file": "assets/app-7RFLpdw-.css",
+    "file": "assets/app-DRYJDoda.css",
     "src": "resources/css/app.css",
     "isEntry": true
   },
+  "resources/css/auto-html/style.css": {
+    "file": "assets/style-CLwE9JBw.css",
+    "src": "resources/css/auto-html/style.css",
+    "isEntry": true
+  },
+  "resources/css/auto-html/vars.css": {
+    "file": "assets/vars-tn0RQdqM.css",
+    "src": "resources/css/auto-html/vars.css",
+    "isEntry": true
+  },
+  "resources/css/base.css": {
+    "file": "assets/base-wjD0fAL2.css",
+    "src": "resources/css/base.css",
+    "isEntry": true
+  },
   "resources/css/filament/admin/theme.css": {
-    "file": "assets/theme-FlFKBM-w.css",
+    "file": "assets/theme-D0zqo1o0.css",
     "src": "resources/css/filament/admin/theme.css",
+    "isEntry": true
+  },
+  "resources/css/tables.scss": {
+    "file": "assets/tables-Bnhubs2D.css",
+    "src": "resources/css/tables.scss",
     "isEntry": true
   },
   "resources/js/app.js": {

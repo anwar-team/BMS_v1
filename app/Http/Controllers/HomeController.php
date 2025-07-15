@@ -13,28 +13,28 @@ class HomeController extends Controller
     {
         // Get book counts by category
         $bookCounts = [
-            'aqeedah' => Book::whereHas('sections', function($query) {
+            'aqeedah' => Book::whereHas('bookSection', function($query) {
                 $query->where('name', 'like', '%عقيدة%');
             })->count(),
-            'fiqh' => Book::whereHas('sections', function($query) {
+            'fiqh' => Book::whereHas('bookSection', function($query) {
                 $query->where('name', 'like', '%فقه%');
             })->count(),
-            'quran' => Book::whereHas('sections', function($query) {
+            'quran' => Book::whereHas('bookSection', function($query) {
                 $query->where('name', 'like', '%قرآن%');
             })->count(),
-            'islamic' => Book::whereHas('sections', function($query) {
+            'islamic' => Book::whereHas('bookSection', function($query) {
                 $query->where('name', 'like', '%إسلامية%');
             })->count(),
-            'adhkar' => Book::whereHas('sections', function($query) {
+            'adhkar' => Book::whereHas('bookSection', function($query) {
                 $query->where('name', 'like', '%أذكار%');
             })->count(),
-            'research' => Book::whereHas('sections', function($query) {
+            'research' => Book::whereHas('bookSection', function($query) {
                 $query->where('name', 'like', '%بحوث%');
             })->count(),
         ];
 
         // Get recent books with pagination
-        $books = Book::with(['author', 'sections'])
+        $books = Book::with(['authors', 'bookSection'])
             ->orderBy('created_at', 'desc')
             ->take(6)
             ->get();

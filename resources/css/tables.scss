@@ -1,5 +1,8 @@
 /* Filament Table Styling to Match Auto-HTML Theme */
 
+// Import SASS color functions
+@use "sass:color";
+
 // Import the base theme colors
 $primary-color: #2c6e4a;
 $secondary-color: #1a3a2a;
@@ -143,8 +146,8 @@ $text-secondary: rgba(79, 81, 83, 0.8);
             color: white;
             
             &:hover {
-                background: darken($primary-color, 10%);
-                border-color: darken($primary-color, 10%);
+                background: color.adjust($primary-color, $lightness: -10%);
+                border-color: color.adjust($primary-color, $lightness: -10%);
             }
         }
         
