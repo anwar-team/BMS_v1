@@ -1,9 +1,14 @@
+<!-- =================== بداية مكون القارئ =================== -->
 <div>
+
+    <!-- =================== رأس الصفحة/التنقل =================== -->
     <div style="background: #ffffff; position: relative; overflow: hidden;">
-        <!-- Header/Navigation -->
+
+        <!-- شريط التنقل العلوي -->
         <div style="background: #ffffff; border-style: solid; border-color: #e8e8e9; border-width: 0px 0px 1px 0px; padding: 16px 135px 16px 135px; display: flex; flex-direction: column; gap: 10px; align-items: flex-start; justify-content: flex-start; width: 100%; position: relative;">
             <div style="display: flex; flex-direction: row; align-items: center; justify-content: space-between; align-self: stretch; flex-shrink: 0; position: relative; width: 100%;">
                 <div style="display: flex; flex-direction: row; align-items: center; justify-content: space-between; flex-shrink: 0; position: relative; width: 100%;">
+                    <!-- روابط التنقل الرئيسية -->
                     <div style="display: flex; flex-direction: row; gap: 24px; align-items: center; justify-content: flex-start; flex-shrink: 0; position: relative;">
                         <div style="color: var(--neutral-dark-1, #0f0f0f); text-align: left; font-family: 'Tajawal-Regular', sans-serif; font-size: 16px; line-height: 24px; font-weight: 400; position: relative;">
                             الكتب
@@ -24,6 +29,8 @@
                             <div style="margin-top: -2px; border-style: solid; border-color: #2c6e4a; border-width: 2px 0 0 0; align-self: stretch; flex-shrink: 0; height: 0px; position: relative;"></div>
                         </div>
                     </div>
+
+                    <!-- شعارات المكتبة -->
                     <div style="display: flex; flex-direction: row; gap: 8px; align-items: center; justify-content: flex-end; flex-shrink: 0; position: relative;">
                         <img style="flex-shrink: 0; width: 145px; height: 44px; position: relative; object-fit: cover; aspect-ratio: 145/44;" src="{{ asset('storage/icon/untitled-design-7-20.png') }}" alt="Logo 1" />
                         <img style="flex-shrink: 0; width: 44px; height: 44px; position: relative; object-fit: cover; aspect-ratio: 1;" src="{{ asset('storage/icon/untitled-design-8-10.png') }}" alt="Logo 2" />
@@ -32,27 +39,104 @@
             </div>
         </div>
 
-        <!-- Background patterns -->
-        <img style="opacity: 0.23; width: 188px; height: 0px; position: absolute; left: -53px; top: 76px; overflow: visible;" src="{{ asset('storage/icon/pattern-ff-18-e-023-20.svg') }}" alt="Pattern 1" />
-        <img style="opacity: 0.33; width: 188px; height: 0px; position: absolute; left: -53px; top: 335px; overflow: visible;" src="{{ asset('storage/icon/pattern-ff-18-e-023-30.svg') }}" alt="Pattern 2" />
-        <img style="opacity: 0.43; width: 188px; height: 0px; position: absolute; left: -53px; top: 594px; overflow: visible;" src="{{ asset('storage/icon/pattern-ff-18-e-023-40.svg') }}" alt="Pattern 3" />
-        
-        <div style="opacity: 0.4; display: flex; flex-direction: row; gap: 0px; align-items: center; justify-content: flex-start; position: absolute; left: 50%; translate: -50%; top: 76px;">
-            <img style="flex-shrink: 0; width: 323px; height: 444px; position: relative; overflow: visible;" src="{{ asset('storage/icon/pattern-ff-18-e-023-50.svg') }}" alt="Pattern 4" />
-            <img style="flex-shrink: 0; width: 323px; height: 446px; position: relative; overflow: visible;" src="{{ asset('storage/icon/pattern-ff-18-e-023-60.svg') }}" alt="Pattern 5" />
-            <img style="flex-shrink: 0; width: 323px; height: 444px; position: relative; overflow: visible;" src="{{ asset('storage/icon/pattern-ff-18-e-023-70.svg') }}" alt="Pattern 6" />
-            <img style="flex-shrink: 0; width: 323px; height: 444px; position: relative; overflow: visible;" src="{{ asset('storage/icon/pattern-ff-18-e-023-71.svg') }}" alt="Pattern 7" />
-            <img style="flex-shrink: 0; width: 323px; height: 446px; position: relative; overflow: visible;" src="{{ asset('storage/icon/pattern-ff-18-e-023-60.svg') }}" alt="Pattern 5" />
-            <img style="flex-shrink: 0; width: 323px; height: 444px; position: relative; overflow: visible;" src="{{ asset('storage/icon/pattern-ff-18-e-023-70.svg') }}" alt="Pattern 6" />
-            <img style="flex-shrink: 0; width: 323px; height: 444px; position: relative; overflow: visible;" src="{{ asset('storage/icon/pattern-ff-18-e-023-71.svg') }}" alt="Pattern 7" />
-        
-        
+        <!-- =================== أنماط الخلفية (زخارف) =================== -->
+        <style>
+            .full-bg-patterns {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100vw;
+                height: 100vh;
+                z-index: 0;
+                pointer-events: none;
+                overflow: hidden;
+            }
+            .full-bg-patterns .side-patterns {
+                position: absolute;
+                left: 0;
+                top: 0;
+                height: 100%;
+                display: flex;
+                flex-direction: column;
+                gap: 40px;
+            }
+            .full-bg-patterns .side-patterns img {
+                width: 120px;
+                min-width: 80px;
+                max-width: 180px;
+                height: auto;
+            }
+            .full-bg-patterns .center-patterns {
+                position: absolute;
+                top: 0;
+                left: 50%;
+                transform: translateX(-50%);
+                width: 100vw;
+                display: flex;
+                flex-direction: row;
+                justify-content: center;
+                align-items: flex-start;
+                gap: 0;
+                opacity: 0.4;
+                pointer-events: none;
+            }
+            .full-bg-patterns .center-patterns img {
+                width: 18vw;
+                min-width: 120px;
+                max-width: 340px;
+                height: auto;
+                flex-shrink: 0;
+            }
+            @media (max-width: 900px) {
+                .full-bg-patterns .center-patterns img {
+                    width: 28vw;
+                    min-width: 80px;
+                    max-width: 180px;
+                }
+                .full-bg-patterns .side-patterns img {
+                    width: 80px;
+                    min-width: 50px;
+                    max-width: 100px;
+                }
+            }
+            @media (max-width: 600px) {
+                .full-bg-patterns .center-patterns img {
+                    width: 40vw;
+                    min-width: 60px;
+                    max-width: 120px;
+                }
+                .full-bg-patterns .side-patterns img {
+                    width: 50px;
+                    min-width: 30px;
+                    max-width: 60px;
+                }
+            }
+        </style>
+        <div class="full-bg-patterns" aria-hidden="true">
+            <!-- Side Patterns (left) -->
+            <div class="side-patterns" style="top: 80px;">
+                <img style="opacity: 0.23;" src="{{ asset('storage/icon/pattern-ff-18-e-023-20.svg') }}" alt="" />
+                <img style="opacity: 0.33;" src="{{ asset('storage/icon/pattern-ff-18-e-023-30.svg') }}" alt="" />
+                <img style="opacity: 0.43;" src="{{ asset('storage/icon/pattern-ff-18-e-023-40.svg') }}" alt="" />
+            </div>
+            <!-- Center Patterns (full width, under header) -->
+            <div class="center-patterns" style="top: 80px;">
+                <img src="{{ asset('storage/icon/pattern-ff-18-e-023-50.svg') }}" alt="" />
+                <img src="{{ asset('storage/icon/pattern-ff-18-e-023-60.svg') }}" alt="" />
+                <img src="{{ asset('storage/icon/pattern-ff-18-e-023-70.svg') }}" alt="" />
+                <img src="{{ asset('storage/icon/pattern-ff-18-e-023-71.svg') }}" alt="" />
+                <img src="{{ asset('storage/icon/pattern-ff-18-e-023-60.svg') }}" alt="" />
+                <img src="{{ asset('storage/icon/pattern-ff-18-e-023-70.svg') }}" alt="" />
+                <img src="{{ asset('storage/icon/pattern-ff-18-e-023-71.svg') }}" alt="" />
+            </div>
         </div>
+        <!-- Spacer to push content below header and patterns -->
+        <div style="height: 80px;"></div>
 
-        <!-- Main content -->
+        <!-- =================== المحتوى الرئيسي =================== -->
         <div style="display: flex; flex-direction: column; gap: 24px; align-items: flex-end; justify-content: flex-start; width: 1170px; position: relative; right: 135px; top: 150px; margin: 0 auto; padding-bottom: 100px;">
             <div style="display: flex; flex-direction: column; gap: 40px; align-items: flex-end; justify-content: flex-start; align-self: stretch; flex-shrink: 0; position: relative;">
-                <!-- Book title with icon -->
+                <!-- عنوان الكتاب مع الأيقونة -->
                 <div style="display: flex; flex-direction: row; gap: 12px; align-items: center; justify-content: flex-start; flex-shrink: 0; position: relative;">
                     <div style="text-align: right; font-family: 'Tajawal-Bold', sans-serif; font-size: 41px; line-height: 60px; font-weight: 700; position: relative; display: flex; align-items: center; justify-content: flex-end;">
                         <span>
@@ -67,10 +151,10 @@
                     <img style="flex-shrink: 0; width: 60px; height: 60px; position: relative; overflow: visible;" src="{{ asset('storage/icon/group0.svg') }}" alt="Book Icon" />
                 </div>
 
-                <!-- Search and tools -->
+                <!-- أدوات البحث وأدوات أخرى -->
                 <div style="display: flex; flex-direction: column; gap: 16px; align-items: flex-start; justify-content: flex-start; align-self: stretch; flex-shrink: 0; position: relative;">
                     <div style="display: flex; flex-direction: row; gap: 24px; align-items: center; justify-content: flex-start; align-self: stretch; flex-shrink: 0; position: relative;">
-                        <!-- Tools -->
+                        <!-- أدوات (إشارات مرجعية، مشاركة، تحميل) -->
                         <div style="display: flex; flex-direction: row; gap: 24px; align-items: flex-start; justify-content: flex-start; flex-shrink: 0; position: relative;">
                             <img style="flex-shrink: 0; width: 20.89px; height: 24px; position: relative; overflow: visible;" src="{{ asset('storage/icon/group1.svg') }}" alt="Bookmark" />
                             <div style="flex-shrink: 0; width: 24px; height: 24px; position: relative; overflow: hidden;">
@@ -81,7 +165,7 @@
                             </div>
                         </div>
 
-                        <!-- Search box -->
+                        <!-- مربع البحث -->
                         <div style="display: flex; flex-direction: column; gap: 10px; align-items: flex-end; justify-content: flex-start; flex: 1; height: 42px; position: relative;">
                             <div style="background: #ffffff; border-radius: 6px; border-style: solid; border-color: #d9d9d9; border-width: 1px; align-self: stretch; flex-shrink: 0; height: 42px; position: relative;"></div>
                             <div style="display: flex; flex-direction: row; gap: 8px; align-items: flex-end; justify-content: flex-end; flex-shrink: 0; position: absolute; right: 12.11px; top: 50%; translate: 0 -50%;">
@@ -95,18 +179,19 @@
                         </div>
                     </div>
 
-                    <!-- Content area with sidebar -->
+                    <!-- منطقة المحتوى مع الشريط الجانبي -->
                     <div style="display: flex; flex-direction: row; gap: 12px; align-items: flex-start; justify-content: flex-end; flex-shrink: 0; position: relative; width: 100%;">
-                        <!-- Main content area -->
+                        <!-- منطقة المحتوى الرئيسية -->
                         <div style="display: flex; flex-direction: column; gap: 30px; align-items: flex-start; justify-content: flex-start; flex-shrink: 0; width: 774px; position: relative;">
                             <div style="display: flex; flex-direction: column; gap: 8px; align-items: flex-start; justify-content: flex-start; align-self: stretch; flex-shrink: 0; position: relative;">
-                                <!-- Book content panel -->
+                                <!-- لوحة محتوى الكتاب -->
                                 <div style="background: var(--background-paper-elevation-1, #ffffff); border-radius: 4px; border-style: solid; border-color: #e8e8e9; border-width: 1px 1px 0px 1px; display: flex; flex-direction: column; gap: 0px; align-items: flex-end; justify-content: flex-start; align-self: stretch; flex-shrink: 0; position: relative; box-shadow: 0px 2px 1px -1px rgba(0, 0, 0, 0.2), 0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 1px 3px 0px rgba(0, 0, 0, 0.12); overflow: hidden;">
                                     <div style="display: flex; flex-direction: column; gap: 0px; align-items: flex-start; justify-content: flex-start; align-self: stretch; flex-shrink: 0; position: relative;">
                                         <div style="display: flex; flex-direction: row; gap: 0px; align-items: center; justify-content: flex-end; align-self: stretch; flex-shrink: 0; position: relative;">
                                             <div style="background: var(--library-clickablelayer, rgba(0, 0, 0, 0)); padding: 16px; display: flex; flex-direction: row; gap: 0px; align-items: center; justify-content: flex-end; flex: 1; position: relative;">
                                                 <div style="display: flex; flex-direction: column; gap: 0px; align-items: flex-end; justify-content: flex-start; flex: 1; position: relative;">
                                                     <div style="display: flex; flex-direction: column; gap: 0px; align-items: flex-start; justify-content: flex-start; flex-shrink: 0; position: relative;">
+                                                        <!-- عنوان الفصل ومحتوى الصفحة -->
                                                         <div style="color: var(--text-primary, rgba(0, 0, 0, 0.87)); text-align: right; font-family: 'Tajawal-Regular', sans-serif; font-size: 16px; line-height: 143%; letter-spacing: 0.17px; font-weight: var(--fontweightregular, 400); position: relative; width: 100%;">
                                                             @if($activeChapter)
                                                                 <h2 style="font-size: 20px; font-weight: 700; margin-bottom: 16px;">{{ $activeChapter->title }}</h2>
@@ -130,7 +215,7 @@
                                             </div>
                                         </div>
                                         
-                                        <!-- Pagination controls -->
+                                        <!-- أزرار التنقل بين الصفحات -->
                                         @if($activePage)
                                         <div style="padding: 16px; display: flex; flex-direction: row; gap: 16px; align-items: center; justify-content: space-between; align-self: stretch; flex-shrink: 0; position: relative; width: 100%; border-top: 1px solid #e8e8e9;">
                                             <button wire:click="previousPage" style="display: flex; align-items: center; gap: 8px; cursor: pointer; color: #2c6e4a;">
@@ -153,7 +238,7 @@
                             </div>
                         </div>
                         
-                        <!-- Sidebar with chapters -->
+                        <!-- الشريط الجانبي: فهرس الفصول -->
                         <div style="display: flex; flex-direction: column; gap: 12px; align-items: flex-end; justify-content: flex-start; flex-shrink: 0; width: 384px; position: relative;">
                             <div style="background: var(--background-paper-elevation-1, #ffffff); border-radius: 4px; border-style: solid; border-color: #e8e8e9; border-width: 1px; padding: 16px; display: flex; flex-direction: column; gap: 12px; align-items: flex-start; justify-content: flex-start; align-self: stretch; flex-shrink: 0; position: relative; box-shadow: 0px 2px 1px -1px rgba(0, 0, 0, 0.2), 0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 1px 3px 0px rgba(0, 0, 0, 0.12);">
                                 <div style="color: var(--text-primary, rgba(0, 0, 0, 0.87)); text-align: right; font-family: 'Tajawal-Bold', sans-serif; font-size: 16px; line-height: 150%; font-weight: 700; position: relative; align-self: stretch;">
@@ -165,7 +250,7 @@
                                 <div style="max-height: 500px; overflow-y: auto; width: 100%;">
                                     @foreach($chapters as $chapter)
                                         <div style="margin-bottom: 8px;">
-                                            <!-- Main chapter -->
+                                            <!-- الفصل الرئيسي -->
                                             <div 
                                                 wire:click="selectChapter({{ $chapter->id }})"
                                                 style="display: flex; justify-content: space-between; align-items: center; padding: 8px; cursor: pointer; border-radius: 4px; {{ $activeChapter && $activeChapter->id === $chapter->id ? 'background-color: #f1f8f3; color: #2c6e4a;' : 'background-color: transparent;' }}"
@@ -184,7 +269,7 @@
                                                 @endif
                                             </div>
                                             
-                                            <!-- Subchapters -->
+                                            <!-- الفصول الفرعية -->
                                             @if($chapter->children->count() > 0 && $activeChapter && ($activeChapter->id === $chapter->id || $activeChapter->parent_id === $chapter->id))
                                                 <div style="margin-right: 16px; padding-right: 8px; border-right: 2px solid #e0e0e0;">
                                                     @foreach($chapter->children as $subChapter)
@@ -209,8 +294,8 @@
                 </div>
             </div>
         </div>
-        
-        <!-- Footer -->
+
+        <!-- =================== تذييل الصفحة =================== -->
         <div style="width: 100%; margin-top: 80px; position: relative; clear: both; padding-top: 100px;">
             <footer class="footer" style="background-color: #f8f9fa; padding: 30px 0; text-align: center; border-top: 1px solid #e8e8e9; width: 100%;">
                 <div class="footer-content" style="max-width: 1170px; margin: 0 auto; padding: 0 20px;">
@@ -228,8 +313,9 @@
         </div>
     </div>
 
+    <!-- =================== أنماط CSS مخصصة =================== -->
     <style>
-        /* Custom scrollbar for webkit browsers */
+        /* شريط تمرير مخصص للمتصفحات التي تدعم webkit */
         ::-webkit-scrollbar {
             width: 6px;
         }
@@ -248,13 +334,13 @@
             background: #aaa;
         }
         
-        /* RTL specific adjustments */
+        /* تعديلات خاصة بالاتجاه من اليمين لليسار */
         .rtl {
             direction: rtl;
             text-align: right;
         }
         
-        /* Typography */
+        /* الخطوط */
         @import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap');
         @import url('https://fonts.googleapis.com/css2?family=Noto+Naskh+Arabic:wght@400;500;600;700&display=swap');
         
@@ -270,11 +356,12 @@
             font-family: 'Noto Naskh Arabic', serif;
         }
         
-        /* Footer specific styles */
+        /* أنماط خاصة بالتذييل */
         .footer {
             clear: both;
             position: relative;
             z-index: 10;
         }
     </style>
-</div> 
+</div>
+<!-- =================== نهاية مكون القارئ =================== --> 
