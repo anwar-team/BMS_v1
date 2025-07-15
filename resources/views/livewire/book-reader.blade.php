@@ -40,30 +40,103 @@
         </div>
 
         <!-- =================== أنماط الخلفية (زخارف) =================== -->
-        <!-- زخارف جانبية ووسطية متجاوبة، تمتد على طول الصفحة، وتحت الهيدر مباشرة بدون أي مسافة، وليست ثابتة (تتحرك مع الصفحة) ومتوافقة مع جميع الأجهزة -->
-        <div class="relative w-full m-0 p-0" style="margin-top:0;padding-top:0;">
-            <!-- زخارف جانبية يمين ويسار (تظهر فقط على الشاشات المتوسطة وما فوق) -->
-            <div class="hidden md:block absolute top-0 left-0 h-full z-0 pointer-events-none m-0 p-0">
-                <img class="opacity-25 w-20 sm:w-28 md:w-32 lg:w-40 xl:w-48 2xl:w-56 h-auto absolute left-0" src="{{ asset('storage/icon/pattern-ff-18-e-023-20.svg') }}" alt="Pattern 1" style="top:0;">
-                <img class="opacity-30 w-20 sm:w-28 md:w-32 lg:w-40 xl:w-48 2xl:w-56 h-auto absolute left-0" src="{{ asset('storage/icon/pattern-ff-18-e-023-30.svg') }}" alt="Pattern 2" style="top:180px;">
-                <img class="opacity-40 w-20 sm:w-28 md:w-32 lg:w-40 xl:w-48 2xl:w-56 h-auto absolute left-0" src="{{ asset('storage/icon/pattern-ff-18-e-023-40.svg') }}" alt="Pattern 3" style="top:340px;">
+        <style>
+            .full-bg-patterns {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100vw;
+                height: 100vh;
+                z-index: 0;
+                pointer-events: none;
+                overflow: hidden;
+            }
+            .full-bg-patterns .side-patterns {
+                position: absolute;
+                left: 0;
+                top: 0;
+                height: 100%;
+                display: flex;
+                flex-direction: column;
+                gap: 40px;
+            }
+            .full-bg-patterns .side-patterns img {
+                width: 120px;
+                min-width: 80px;
+                max-width: 180px;
+                height: auto;
+            }
+            .full-bg-patterns .center-patterns {
+                position: absolute;
+                top: 0;
+                left: 50%;
+                transform: translateX(-50%);
+                width: 100vw;
+                display: flex;
+                flex-direction: row;
+                justify-content: center;
+                align-items: flex-start;
+                gap: 0;
+                opacity: 0.4;
+                pointer-events: none;
+            }
+            .full-bg-patterns .center-patterns img {
+                width: 18vw;
+                min-width: 120px;
+                max-width: 340px;
+                height: auto;
+                flex-shrink: 0;
+            }
+            @media (max-width: 900px) {
+                .full-bg-patterns .center-patterns img {
+                    width: 28vw;
+                    min-width: 80px;
+                    max-width: 180px;
+                }
+                .full-bg-patterns .side-patterns img {
+                    width: 80px;
+                    min-width: 50px;
+                    max-width: 100px;
+                }
+            }
+            @media (max-width: 600px) {
+                .full-bg-patterns .center-patterns img {
+                    width: 40vw;
+                    min-width: 60px;
+                    max-width: 120px;
+                }
+                .full-bg-patterns .side-patterns img {
+                    width: 50px;
+                    min-width: 30px;
+                    max-width: 60px;
+                }
+            }
+            
+        </style>
+        <div class="full-bg-patterns" aria-hidden="true">
+            <!-- Side Patterns (left) -->
+            <div class="side-patterns" style="top: 80px;">
+                <img style="opacity: 0.23;" src="{{ asset('storage/icon/pattern-ff-18-e-023-20.svg') }}" alt="" />
+                <img style="opacity: 0.33;" src="{{ asset('storage/icon/pattern-ff-18-e-023-30.svg') }}" alt="" />
+                <img style="opacity: 0.43;" src="{{ asset('storage/icon/pattern-ff-18-e-023-40.svg') }}" alt="" />
             </div>
-            <div class="hidden md:block absolute top-0 right-0 h-full z-0 pointer-events-none m-0 p-0">
-                <img class="opacity-25 w-20 sm:w-28 md:w-32 lg:w-40 xl:w-48 2xl:w-56 h-auto absolute right-0" src="{{ asset('storage/icon/pattern-ff-18-e-023-20.svg') }}" alt="Pattern 1" style="top:60px;">
-                <img class="opacity-30 w-20 sm:w-28 md:w-32 lg:w-40 xl:w-48 2xl:w-56 h-auto absolute right-0" src="{{ asset('storage/icon/pattern-ff-18-e-023-30.svg') }}" alt="Pattern 2" style="top:220px;">
-                <img class="opacity-40 w-20 sm:w-28 md:w-32 lg:w-40 xl:w-48 2xl:w-56 h-auto absolute right-0" src="{{ asset('storage/icon/pattern-ff-18-e-023-40.svg') }}" alt="Pattern 3" style="top:380px;">
-            </div>
-            <!-- زخارف وسطية أعلى الصفحة (تحت الهيدر مباشرة) -->
-            <div class="flex flex-row items-center justify-center gap-0 opacity-40 relative z-0 pt-0 pb-4 m-0" style="margin-top:0;padding-top:0;">
-                <img class="w-16 sm:w-24 md:w-32 lg:w-40 xl:w-48 2xl:w-56 h-auto" src="{{ asset('storage/icon/pattern-ff-18-e-023-50.svg') }}" alt="Pattern 4" />
-                <img class="w-16 sm:w-24 md:w-32 lg:w-40 xl:w-48 2xl:w-56 h-auto" src="{{ asset('storage/icon/pattern-ff-18-e-023-60.svg') }}" alt="Pattern 5" />
-                <img class="w-16 sm:w-24 md:w-32 lg:w-40 xl:w-48 2xl:w-56 h-auto" src="{{ asset('storage/icon/pattern-ff-18-e-023-70.svg') }}" alt="Pattern 6" />
-                <img class="w-16 sm:w-24 md:w-32 lg:w-40 xl:w-48 2xl:w-56 h-auto" src="{{ asset('storage/icon/pattern-ff-18-e-023-71.svg') }}" alt="Pattern 7" />
-                <img class="w-16 sm:w-24 md:w-32 lg:w-40 xl:w-48 2xl:w-56 h-auto" src="{{ asset('storage/icon/pattern-ff-18-e-023-60.svg') }}" alt="Pattern 5" />
-                <img class="w-16 sm:w-24 md:w-32 lg:w-40 xl:w-48 2xl:w-56 h-auto" src="{{ asset('storage/icon/pattern-ff-18-e-023-70.svg') }}" alt="Pattern 6" />
-                <img class="w-16 sm:w-24 md:w-32 lg:w-40 xl:w-48 2xl:w-56 h-auto" src="{{ asset('storage/icon/pattern-ff-18-e-023-71.svg') }}" alt="Pattern 7" />
+            <!-- Center Patterns (full width, under header) -->
+            <div class="center-patterns" style="top: 80px;">
+                <img src="{{ asset('storage/icon/pattern-ff-18-e-023-50.svg') }}" alt="" />
+                <img src="{{ asset('storage/icon/pattern-ff-18-e-023-60.svg') }}" alt="" />
+                <img src="{{ asset('storage/icon/pattern-ff-18-e-023-70.svg') }}" alt="" />
+                <img src="{{ asset('storage/icon/pattern-ff-18-e-023-71.svg') }}" alt="" />
+                <img src="{{ asset('storage/icon/pattern-ff-18-e-023-60.svg') }}" alt="" />
+                <img src="{{ asset('storage/icon/pattern-ff-18-e-023-70.svg') }}" alt="" />
+                <img src="{{ asset('storage/icon/pattern-ff-18-e-023-71.svg') }}" alt="" />
             </div>
         </div>
+        <!-- Spacer to push content below header and patterns -->
+        <div style="height: 80px;"></div>
+
+<!----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------->
+<!----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------->
+<!----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------->
 
         <!-- =================== المحتوى الرئيسي =================== -->
         <div style="display: flex; flex-direction: column; gap: 24px; align-items: flex-end; justify-content: flex-start; width: 1170px; position: relative; right: 135px; top: 150px; margin: 0 auto; padding-bottom: 100px;">
