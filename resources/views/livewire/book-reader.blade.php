@@ -40,15 +40,15 @@
         </div>
 
         <!-- =================== أنماط الخلفية (زخارف) =================== -->
-        <!-- زخارف جانبية ووسطية متجاوبة وتحت الهيدر مباشرة بدون أي مسافة -->
+        <!-- زخارف جانبية ووسطية متجاوبة، تمتد على طول الصفحة، وتحت الهيدر مباشرة بدون أي مسافة، وليست ثابتة (تتحرك مع الصفحة) ومتوافقة مع جميع الأجهزة -->
         <div class="relative w-full m-0 p-0" style="margin-top:0;padding-top:0;">
             <!-- زخارف جانبية يمين ويسار (تظهر فقط على الشاشات المتوسطة وما فوق) -->
-            <div class="hidden md:block fixed inset-y-0 left-0 z-0 pointer-events-none m-0 p-0" style="top:0;">
+            <div class="hidden md:block absolute top-0 left-0 h-full z-0 pointer-events-none m-0 p-0">
                 <img class="opacity-25 w-20 sm:w-28 md:w-32 lg:w-40 xl:w-48 2xl:w-56 h-auto absolute left-0" src="{{ asset('storage/icon/pattern-ff-18-e-023-20.svg') }}" alt="Pattern 1" style="top:0;">
                 <img class="opacity-30 w-20 sm:w-28 md:w-32 lg:w-40 xl:w-48 2xl:w-56 h-auto absolute left-0" src="{{ asset('storage/icon/pattern-ff-18-e-023-30.svg') }}" alt="Pattern 2" style="top:180px;">
                 <img class="opacity-40 w-20 sm:w-28 md:w-32 lg:w-40 xl:w-48 2xl:w-56 h-auto absolute left-0" src="{{ asset('storage/icon/pattern-ff-18-e-023-40.svg') }}" alt="Pattern 3" style="top:340px;">
             </div>
-            <div class="hidden md:block fixed inset-y-0 right-0 z-0 pointer-events-none m-0 p-0" style="top:0;">
+            <div class="hidden md:block absolute top-0 right-0 h-full z-0 pointer-events-none m-0 p-0">
                 <img class="opacity-25 w-20 sm:w-28 md:w-32 lg:w-40 xl:w-48 2xl:w-56 h-auto absolute right-0" src="{{ asset('storage/icon/pattern-ff-18-e-023-20.svg') }}" alt="Pattern 1" style="top:60px;">
                 <img class="opacity-30 w-20 sm:w-28 md:w-32 lg:w-40 xl:w-48 2xl:w-56 h-auto absolute right-0" src="{{ asset('storage/icon/pattern-ff-18-e-023-30.svg') }}" alt="Pattern 2" style="top:220px;">
                 <img class="opacity-40 w-20 sm:w-28 md:w-32 lg:w-40 xl:w-48 2xl:w-56 h-auto absolute right-0" src="{{ asset('storage/icon/pattern-ff-18-e-023-40.svg') }}" alt="Pattern 3" style="top:380px;">
