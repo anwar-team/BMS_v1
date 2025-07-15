@@ -1,6 +1,6 @@
 <!-- =================== بداية مكون القارئ =================== -->
 {{-- Livewire Component: <book-reader> — عنصر جذري واحد فقط --}}
-<div id="book-reader" class="relative overflow-x-hidden" dir="rtl">
+<div id="book-reader" class="relative overflow-x-hidden" >
     <!-- 🖌️ الأنماط الزخرفية (تتحرك مع التمرير لأنها absolute) -->
     <div class="full-bg-patterns pointer-events-none absolute inset-0 -z-10 overflow-hidden" aria-hidden="true">
         <!-- النقوش الجانبية -->
