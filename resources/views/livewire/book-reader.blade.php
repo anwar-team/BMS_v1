@@ -39,28 +39,23 @@
             </div>
         </div>
 
-        <!-- =================== أنماط الخلفية (زخارف) =================== -->
-        <!-- خلفية زخرفية تغطي الصفحة بالكامل وتبدأ من تحت الهيدر، متوافقة مع جميع الأجهزة باستخدام Tailwind -->
-        <div class="fixed inset-0 w-full h-full z-0 pointer-events-none overflow-hidden">
-            <!-- زخارف جانبية (يسار) -->
-            <div class="absolute top-20 left-0 flex flex-col gap-10 h-full">
-                <img class="opacity-20 w-32 sm:w-40 md:w-48 lg:w-52 xl:w-56 h-auto" src="{{ asset('storage/icon/pattern-ff-18-e-023-20.svg') }}" alt="Pattern 1" />
-                <img class="opacity-30 w-32 sm:w-40 md:w-48 lg:w-52 xl:w-56 h-auto" src="{{ asset('storage/icon/pattern-ff-18-e-023-30.svg') }}" alt="Pattern 2" />
-                <img class="opacity-40 w-32 sm:w-40 md:w-48 lg:w-52 xl:w-56 h-auto" src="{{ asset('storage/icon/pattern-ff-18-e-023-40.svg') }}" alt="Pattern 3" />
-            </div>
+        <!-- =================== أنماط الخلفية (زخارف) =================== -->                
+            <img class="hidden md:block absolute left-0 top-32 opacity-25 w-32 h-auto" src="{{ asset('storage/icon/pattern-ff-18-e-023-20.svg') }}" alt="Pattern 1" />
+            <img class="hidden md:block absolute left-0 top-80 opacity-35 w-32 h-auto" src="{{ asset('storage/icon/pattern-ff-18-e-023-30.svg') }}" alt="Pattern 2" />
+            <img class="hidden md:block absolute left-0 top-[600px] opacity-45 w-32 h-auto" src="{{ asset('storage/icon/pattern-ff-18-e-023-40.svg') }}" alt="Pattern 3" />
+
             <!-- زخارف وسطية (تحت الهيدر مباشرة) -->
-            <div class="absolute left-1/2 -translate-x-1/2 top-20 w-full flex flex-row justify-center items-start gap-0 opacity-40 pointer-events-none">
-                <img class="w-[18vw] min-w-[60px] max-w-[340px] h-auto flex-shrink-0" src="{{ asset('storage/icon/pattern-ff-18-e-023-50.svg') }}" alt="Pattern 4" />
-                <img class="w-[18vw] min-w-[60px] max-w-[340px] h-auto flex-shrink-0" src="{{ asset('storage/icon/pattern-ff-18-e-023-60.svg') }}" alt="Pattern 5" />
-                <img class="w-[18vw] min-w-[60px] max-w-[340px] h-auto flex-shrink-0" src="{{ asset('storage/icon/pattern-ff-18-e-023-70.svg') }}" alt="Pattern 6" />
-                <img class="w-[18vw] min-w-[60px] max-w-[340px] h-auto flex-shrink-0" src="{{ asset('storage/icon/pattern-ff-18-e-023-71.svg') }}" alt="Pattern 7" />
-                <img class="w-[18vw] min-w-[60px] max-w-[340px] h-auto flex-shrink-0" src="{{ asset('storage/icon/pattern-ff-18-e-023-60.svg') }}" alt="Pattern 5" />
-                <img class="w-[18vw] min-w-[60px] max-w-[340px] h-auto flex-shrink-0" src="{{ asset('storage/icon/pattern-ff-18-e-023-70.svg') }}" alt="Pattern 6" />
-                <img class="w-[18vw] min-w-[60px] max-w-[340px] h-auto flex-shrink-0" src="{{ asset('storage/icon/pattern-ff-18-e-023-71.svg') }}" alt="Pattern 7" />
+            <div class="flex flex-row items-center justify-center gap-0 absolute left-1/2 -translate-x-1/2 top-32 opacity-40 w-full max-w-full overflow-x-hidden">
+                <img class="w-72 h-auto flex-shrink-0" src="{{ asset('storage/icon/pattern-ff-18-e-023-50.svg') }}" alt="Pattern 4" />
+                <img class="w-72 h-auto flex-shrink-0" src="{{ asset('storage/icon/pattern-ff-18-e-023-60.svg') }}" alt="Pattern 5" />
+                <img class="w-72 h-auto flex-shrink-0" src="{{ asset('storage/icon/pattern-ff-18-e-023-70.svg') }}" alt="Pattern 6" />
+                <img class="w-72 h-auto flex-shrink-0" src="{{ asset('storage/icon/pattern-ff-18-e-023-71.svg') }}" alt="Pattern 7" />
+                <img class="hidden lg:block w-72 h-auto flex-shrink-0" src="{{ asset('storage/icon/pattern-ff-18-e-023-60.svg') }}" alt="Pattern 5" />
+                <img class="hidden xl:block w-72 h-auto flex-shrink-0" src="{{ asset('storage/icon/pattern-ff-18-e-023-70.svg') }}" alt="Pattern 6" />
+                <img class="hidden 2xl:block w-72 h-auto flex-shrink-0" src="{{ asset('storage/icon/pattern-ff-18-e-023-71.svg') }}" alt="Pattern 7" />
             </div>
         </div>
-        <!-- مسافة تحت الهيدر حتى لا يغطي الزخارف على المحتوى -->
-        <div class="h-20"></div>
+        <!-- نهاية الخلفيات الزخرفية -->
 
         <!-- =================== المحتوى الرئيسي =================== -->
         <div style="display: flex; flex-direction: column; gap: 24px; align-items: flex-end; justify-content: flex-start; width: 1170px; position: relative; right: 135px; top: 150px; margin: 0 auto; padding-bottom: 100px;">
