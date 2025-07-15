@@ -42,98 +42,26 @@
 <!----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------->  
 
         <!-- =================== أنماط الخلفية (زخارف) =================== -->
-<!-- =========================================
-  Livewire <book-reader> — Single‑Root Wrapper ✅
-  (العنوان + شريط الأدوات وسط النقوش)
-  NOTE: Livewire يُلزم بعنصر جذري واحد فقط، لذا نستخدم <div id="book-reader"> كحاوية لكل شيء.
-========================================= -->
+        {{-- Livewire Component: <book-reader> — عنصر جذري واحد فقط --}}
 <div id="book-reader" class="relative overflow-x-hidden" dir="rtl">
-    <!-- 🖌️ الأنماط الزخرفية (تتحرك طبيعيًا مع التمرير لأنها absolute) -->
-    <style>
-        .full-bg-patterns {
-            position: absolute; /* تتحرك مع تمرير الصفحة */
-            inset: 0;
-            z-index: 0;          /* خلف كل شيء */
-            pointer-events: none;
-            overflow: hidden;
-        }
-        .full-bg-patterns .side-patterns {
-            position: absolute;
-            top: 80px;
-            right: 0;            /* بما أننا RTL اجعل النقوش على الحافة اليمنى */
-            height: calc(100% - 80px);
-            display: flex;
-            flex-direction: column;
-            gap: 40px;
-        }
-        .full-bg-patterns .side-patterns img {
-            width: 120px;
-            min-width: 80px;
-            max-width: 180px;
-            height: auto;
-        }
-        .full-bg-patterns .center-patterns {
-            position: absolute;
-            top: 80px;           /* أسفل الهيدر */
-            left: 50%;
-            transform: translateX(-50%);
-            width: 100%;
-            display: flex;
-            flex-direction: row;
-            justify-content: center;
-            gap: 0;
-            opacity: 0.4;
-        }
-        .full-bg-patterns .center-patterns img {
-            width: 18vw;
-            min-width: 120px;
-            max-width: 340px;
-            height: auto;
-            flex-shrink: 0;
-        }
-        @media (max-width: 900px) {
-            .full-bg-patterns .center-patterns img {
-                width: 28vw;
-                min-width: 80px;
-                max-width: 180px;
-            }
-            .full-bg-patterns .side-patterns img {
-                width: 80px;
-                min-width: 50px;
-                max-width: 100px;
-            }
-        }
-        @media (max-width: 600px) {
-            .full-bg-patterns .center-patterns img {
-                width: 40vw;
-                min-width: 60px;
-                max-width: 120px;
-            }
-            .full-bg-patterns .side-patterns img {
-                width: 50px;
-                min-width: 30px;
-                max-width: 60px;
-            }
-        }
-    </style>
-
-    <div class="full-bg-patterns" aria-hidden="true">
+    <!-- 🖌️ الأنماط الزخرفية (تتحرك مع التمرير لأنها absolute) -->
+    <div class="full-bg-patterns pointer-events-none absolute inset-0 -z-10 overflow-hidden" aria-hidden="true">
         <!-- النقوش الجانبية -->
-        <div class="side-patterns">
-            <img style="opacity:0.23" src="{{ asset('storage/icon/pattern-ff-18-e-023-20.svg') }}" alt="" />
-            <img style="opacity:0.33" src="{{ asset('storage/icon/pattern-ff-18-e-023-30.svg') }}" alt="" />
-            <img style="opacity:0.43" src="{{ asset('storage/icon/pattern-ff-18-e-023-40.svg') }}" alt="" />
+        <div class="side-patterns absolute top-20 right-0 flex flex-col gap-10 h-[calc(100%-80px)]">
+            <img class="w-[120px] max-w-[180px] min-w-[80px] opacity-23" src="{{ asset('storage/icon/pattern-ff-18-e-023-20.svg') }}" alt="" />
+            <img class="w-[120px] max-w-[180px] min-w-[80px] opacity-33" src="{{ asset('storage/icon/pattern-ff-18-e-023-30.svg') }}" alt="" />
+            <img class="w-[120px] max-w-[180px] min-w-[80px] opacity-43" src="{{ asset('storage/icon/pattern-ff-18-e-023-40.svg') }}" alt="" />
         </div>
 
         <!-- النقوش المركزية بعرض كامل -->
-        <div class="center-patterns">
-            <img src="{{ asset('storage/icon/pattern-ff-18-e-023-50.svg') }}" alt="" />
-            <img src="{{ asset('storage/icon/pattern-ff-18-e-023-60.svg') }}" alt="" />
-            <img src="{{ asset('storage/icon/pattern-ff-18-e-023-70.svg') }}" alt="" />
-            <img src="{{ asset('storage/icon/pattern-ff-18-e-023-71.svg') }}" alt="" />
-            <img src="{{ asset('storage/icon/pattern-ff-18-e-023-60.svg') }}" alt="" />
-            <img src="{{ asset('storage/icon/pattern-ff-18-e-023-70.svg') }}" alt="" />
-            <img src="{{ asset('storage/icon/pattern-ff-18-e-023-71.svg') }}" alt="" />
+        <div class="center-patterns absolute top-20 left-1/2 -translate-x-1/2 flex gap-0 opacity-40">
+            <img src="{{ asset('storage/icon/pattern-ff-18-e-023-50.svg') }}" alt="" class="pattern" />
+            <img src="{{ asset('storage/icon/pattern-ff-18-e-023-60.svg') }}" alt="" class="pattern" />
+            <img src="{{ asset('storage/icon/pattern-ff-18-e-023-70.svg') }}" alt="" class="pattern" />
+            <img src="{{ asset('storage/icon/pattern-ff-18-e-023-71.svg') }}" alt="" class="pattern" />
+            <img src="{{ asset('storage/icon/pattern-ff-18-e-023-60.svg') }}" alt="" class="pattern" />
+            <img src="{{ asset('storage/icon/pattern-ff-18-e-023-70.svg') }}" alt="" class="pattern" />
+            <img src="{{ asset('storage/icon/pattern-ff-18-e-023-71.svg') }}" alt="" class="pattern" />
         </div>
     </div>
 
@@ -170,10 +98,46 @@
         </section>
 
         <!-- 👇 باقي المحتوى يوضع هنا (الفهرس + الصفحات ...) -->
+        {{ $slot ?? '' }}
     </main>
 </div>
 
-
+@push('styles')
+<style>
+    /* إعدادات الحجم للنقوش المركزية */
+    .center-patterns .pattern {
+        width: 18vw;
+        min-width: 120px;
+        max-width: 340px;
+        height: auto;
+        flex-shrink: 0;
+    }
+    @media (max-width: 900px) {
+        .center-patterns .pattern {
+            width: 28vw;
+            min-width: 80px;
+            max-width: 180px;
+        }
+        .side-patterns img {
+            width: 80px !important;
+            min-width: 50px !important;
+            max-width: 100px !important;
+        }
+    }
+    @media (max-width: 600px) {
+        .center-patterns .pattern {
+            width: 40vw;
+            min-width: 60px;
+            max-width: 120px;
+        }
+        .side-patterns img {
+            width: 50px !important;
+            min-width: 30px !important;
+            max-width: 60px !important;
+        }
+    }
+</style>
+@endpush
 <!----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------->
 <!----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------->  
 <!----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------->  
