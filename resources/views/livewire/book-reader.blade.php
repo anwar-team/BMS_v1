@@ -2,7 +2,59 @@
 <div>
 
     <!-- =================== رأس الصفحة/التنقل =================== -->
-    @include('components.superduper.header')
+    <div style="background: #ffffff; position: relative; overflow: hidden;">
+        <!-- شريط التنقل العلوي ثابت أعلى الصفحة ويدعم جميع الأجهزة -->
+        <nav 
+            style="
+                background: #ffffff; 
+                border-bottom: 1px solid #e8e8e9; 
+                padding: 16px 135px; 
+                width: 100%; 
+                position: sticky; 
+                top: 0; 
+                z-index: 50;
+            "
+            class="w-full flex flex-col gap-2 md:gap-3 items-start justify-start"
+        >
+            <div class="w-full flex flex-row items-center justify-between">
+                <!-- روابط التنقل الرئيسية -->
+                <div class="flex flex-row gap-4 md:gap-6 items-center justify-start">
+                    <div class="text-[16px] leading-6 font-normal font-tajawal text-neutral-900">
+                        الكتب
+                    </div>
+                    <div class="bg-[#e8e8e9] w-px h-6"></div>
+                    <div class="text-[16px] leading-6 font-normal font-tajawal text-neutral-900">
+                        الأقسام
+                    </div>
+                    <div class="bg-[#e8e8e9] w-px h-6"></div>
+                    <div class="text-[16px] leading-6 font-normal font-tajawal text-neutral-900">
+                        عن المكتبة
+                    </div>
+                    <div class="bg-[#e8e8e9] w-px h-6"></div>
+                    <div class="flex flex-col items-start justify-center">
+                        <div class="text-[16px] leading-6 font-normal font-tajawal text-neutral-900">
+                            الرئيسية
+                        </div>
+                        <div class="mt-[-2px] border-t-2 border-[#2c6e4a] w-full"></div>
+                    </div>
+                </div>
+                <!-- شعارات المكتبة -->
+                <div class="flex flex-row gap-2 md:gap-3 items-center justify-end">
+                    <img 
+                        class="w-[120px] md:w-[145px] h-[36px] md:h-[44px] object-cover"
+                        src="{{ asset('storage/icon/untitled-design-7-20.png') }}" 
+                        alt="Logo 1" 
+                        style="aspect-ratio: 145/44;"
+                    />
+                    <img 
+                        class="w-9 md:w-11 h-9 md:h-11 object-cover"
+                        src="{{ asset('storage/icon/untitled-design-8-10.png') }}" 
+                        alt="Logo 2" 
+                        style="aspect-ratio: 1;"
+                    />
+                </div>
+            </div>
+        </nav>
 
         <!-- =================== أنماط الخلفية (زخارف) =================== -->
         <style>
