@@ -40,31 +40,26 @@
         </div>
 
         <!-- =================== أنماط الخلفية (زخارف) =================== -->
-        <main class="relative" dir="rtl">
-    <!-- ⚙️ خلفيات زخرفية ثابتة لا تتحرك عند التمرير -->
-    <div class="fixed inset-0 z-10 pointer-events-none overflow-hidden">
-        <!-- الجهة اليمنى (RTL) -->
+        <main class="relative overflow-x-hidden" dir="rtl">
+    <!-- 🖼️ زخارف الخلفية (تتحرك مع التمرير لأنها absolute داخل الـ main) -->
+    <div class="absolute inset-0 -z-10 pointer-events-none overflow-hidden">
+        <!-- العمود الجانبي للنقوش -->
         <div class="absolute top-20 left-0 flex flex-col gap-10">
             <img class="opacity-25 w-20 sm:w-24 lg:w-40" src="{{ asset('storage/icon/pattern-ff-18-e-023-20.svg') }}" alt="" />
             <img class="opacity-35 w-20 sm:w-24 lg:w-40" src="{{ asset('storage/icon/pattern-ff-18-e-023-30.svg') }}" alt="" />
             <img class="opacity-45 w-20 sm:w-24 lg:w-40" src="{{ asset('storage/icon/pattern-ff-18-e-023-40.svg') }}" alt="" />
         </div>
 
-        <!-- المنتصف: صف أفقي من النقوش -->
+        <!-- صف أفقي وسط الصفحة -->
         <div class="absolute top-20 left-1/2 -translate-x-1/2 flex opacity-40 whitespace-nowrap">
-            @php
-                $svgs = ['50','60','70','71','60','70','71'];
-            @endphp
+            @php $svgs = ['50','60','70','71','60','70','71']; @endphp
             @foreach($svgs as $num)
-                <img class="w-[18vw] min-w-[120px] max-w-[340px] shrink-0" src="{{ asset('storage/icon/pattern-ff-18-e-023-' . $num . '.svg') }}" alt="" />
+                <img class="w-[18vw] min-w-[120px] max-w-[340px] shrink-0 md:w-[28vw] md:min-w-[80px] md:max-w-[180px] sm:w-[40vw] sm:min-w-[60px] sm:max-w-[120px]" src="{{ asset('storage/icon/pattern-ff-18-e-023-' . $num . '.svg') }}" alt="" />
             @endforeach
         </div>
     </div>
 
-    <!-- حاوية المحتوى الرئيسية -->
-    <div class="relative z-20 mx-auto w-full max-w-screen-xl px-4 sm:px-6 lg:px-8">
-        {{-- سنضيف مرحلة العنوان لاحقاً --}}
-    </div>
+
 <!----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------->
 <!----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------->
 <!----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------->
