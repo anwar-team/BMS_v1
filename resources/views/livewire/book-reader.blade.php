@@ -3,58 +3,41 @@
 
     <!-- =================== رأس الصفحة/التنقل =================== -->
     <div style="background: #ffffff; position: relative; overflow: hidden;">
-        <!-- شريط التنقل العلوي ثابت أعلى الصفحة ويدعم جميع الأجهزة -->
-        <nav 
-            style="
-                background: #ffffff; 
-                border-bottom: 1px solid #e8e8e9; 
-                padding: 16px 135px; 
-                width: 100%; 
-                position: sticky; 
-                top: 0; 
-                z-index: 50;
-            "
-            class="w-full flex flex-col gap-2 md:gap-3 items-start justify-start"
-        >
-            <div class="w-full flex flex-row items-center justify-between">
-                <!-- روابط التنقل الرئيسية -->
-                <div class="flex flex-row gap-4 md:gap-6 items-center justify-start">
-                    <div class="text-[16px] leading-6 font-normal font-tajawal text-neutral-900">
-                        الكتب
-                    </div>
-                    <div class="bg-[#e8e8e9] w-px h-6"></div>
-                    <div class="text-[16px] leading-6 font-normal font-tajawal text-neutral-900">
-                        الأقسام
-                    </div>
-                    <div class="bg-[#e8e8e9] w-px h-6"></div>
-                    <div class="text-[16px] leading-6 font-normal font-tajawal text-neutral-900">
-                        عن المكتبة
-                    </div>
-                    <div class="bg-[#e8e8e9] w-px h-6"></div>
-                    <div class="flex flex-col items-start justify-center">
-                        <div class="text-[16px] leading-6 font-normal font-tajawal text-neutral-900">
-                            الرئيسية
+
+        <!-- شريط التنقل العلوي -->
+        <div style="background: #ffffff; border-style: solid; border-color: #e8e8e9; border-width: 0px 0px 1px 0px; padding: 16px 135px 16px 135px; display: flex; flex-direction: column; gap: 10px; align-items: flex-start; justify-content: flex-start; width: 100%; position: relative;">
+            <div style="display: flex; flex-direction: row; align-items: center; justify-content: space-between; align-self: stretch; flex-shrink: 0; position: relative; width: 100%;">
+                <div style="display: flex; flex-direction: row; align-items: center; justify-content: space-between; flex-shrink: 0; position: relative; width: 100%;">
+                    <!-- روابط التنقل الرئيسية -->
+                    <div style="display: flex; flex-direction: row; gap: 24px; align-items: center; justify-content: flex-start; flex-shrink: 0; position: relative;">
+                        <div style="color: var(--neutral-dark-1, #0f0f0f); text-align: left; font-family: 'Tajawal-Regular', sans-serif; font-size: 16px; line-height: 24px; font-weight: 400; position: relative;">
+                            الكتب
                         </div>
-                        <div class="mt-[-2px] border-t-2 border-[#2c6e4a] w-full"></div>
+                        <div style="background: var(--neutral-line, #e8e8e9); flex-shrink: 0; width: 1px; height: 24px; position: relative;"></div>
+                        <div style="color: var(--neutral-dark-1, #0f0f0f); text-align: left; font-family: 'Tajawal-Regular', sans-serif; font-size: 16px; line-height: 24px; font-weight: 400; position: relative;">
+                            الأقسام
+                        </div>
+                        <div style="background: var(--neutral-line, #e8e8e9); flex-shrink: 0; width: 1px; height: 24px; position: relative;"></div>
+                        <div style="color: var(--neutral-dark-1, #0f0f0f); text-align: left; font-family: 'Tajawal-Regular', sans-serif; font-size: 16px; line-height: 24px; font-weight: 400; position: relative;">
+                            عن المكتبة
+                        </div>
+                        <div style="background: var(--neutral-line, #e8e8e9); flex-shrink: 0; width: 1px; height: 24px; position: relative;"></div>
+                        <div style="display: flex; flex-direction: column; gap: 0px; align-items: flex-start; justify-content: center; flex-shrink: 0; position: relative;">
+                            <div style="color: var(--neutral-dark-1, #0f0f0f); text-align: left; font-family: 'Tajawal-Regular', sans-serif; font-size: 16px; line-height: 24px; font-weight: 400; position: relative;">
+                                الرئيسية
+                            </div>
+                            <div style="margin-top: -2px; border-style: solid; border-color: #2c6e4a; border-width: 2px 0 0 0; align-self: stretch; flex-shrink: 0; height: 0px; position: relative;"></div>
+                        </div>
                     </div>
-                </div>
-                <!-- شعارات المكتبة -->
-                <div class="flex flex-row gap-2 md:gap-3 items-center justify-end">
-                    <img 
-                        class="w-[120px] md:w-[145px] h-[36px] md:h-[44px] object-cover"
-                        src="{{ asset('storage/icon/untitled-design-7-20.png') }}" 
-                        alt="Logo 1" 
-                        style="aspect-ratio: 145/44;"
-                    />
-                    <img 
-                        class="w-9 md:w-11 h-9 md:h-11 object-cover"
-                        src="{{ asset('storage/icon/untitled-design-8-10.png') }}" 
-                        alt="Logo 2" 
-                        style="aspect-ratio: 1;"
-                    />
+
+                    <!-- شعارات المكتبة -->
+                    <div style="display: flex; flex-direction: row; gap: 8px; align-items: center; justify-content: flex-end; flex-shrink: 0; position: relative;">
+                        <img style="flex-shrink: 0; width: 145px; height: 44px; position: relative; object-fit: cover; aspect-ratio: 145/44;" src="{{ asset('storage/icon/untitled-design-7-20.png') }}" alt="Logo 1" />
+                        <img style="flex-shrink: 0; width: 44px; height: 44px; position: relative; object-fit: cover; aspect-ratio: 1;" src="{{ asset('storage/icon/untitled-design-8-10.png') }}" alt="Logo 2" />
+                    </div>
                 </div>
             </div>
-        </nav>
+        </div>
 
         <!-- =================== أنماط الخلفية (زخارف) =================== -->
         <style>
@@ -133,7 +116,7 @@
                 <img style="opacity: 0.23;" src="{{ asset('storage/icon/pattern-ff-18-e-023-20.svg') }}" alt="" />
                 <img style="opacity: 0.33;" src="{{ asset('storage/icon/pattern-ff-18-e-023-30.svg') }}" alt="" />
                 <img style="opacity: 0.43;" src="{{ asset('storage/icon/pattern-ff-18-e-023-40.svg') }}" alt="" />
-            </div> 
+            </div>
             <!-- Center Patterns (full width, under header) -->
             <div class="center-patterns" style="margin-top: 80px;">
                 <img src="{{ asset('storage/icon/pattern-ff-18-e-023-50.svg') }}" alt="" />
