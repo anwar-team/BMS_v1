@@ -1,20 +1,20 @@
 <div class="min-h-screen bg-white relative overflow-hidden font-tajawal text-neutral-dark-1">
 
     <!-- Header/Navigation -->
-    <header class="bg-white border-b border-neutral-line py-4 px-4 md:px-32 relative">
+    <header class="bg-white border-b border-neutral-line py-4 px-4 md:px-32 relative z-10">
         <div class="flex items-center justify-between w-full">
             <div class="flex items-center justify-between w-full">
                 <!-- Navigation Links (Right to Left for RTL) -->
                 <nav class="flex items-center gap-6">
-                    <a href="#" class="text-neutral-dark-1 text-base font-normal leading-6 relative">
+                    <a href="#" class="text-neutral-dark-1 text-base font-normal leading-6 relative hover:text-primary-green transition-colors duration-200">
                         الكتب
                     </a>
                     <div class="bg-neutral-line w-px h-6"></div>
-                    <a href="#" class="text-neutral-dark-1 text-base font-normal leading-6 relative">
+                    <a href="#" class="text-neutral-dark-1 text-base font-normal leading-6 relative hover:text-primary-green transition-colors duration-200">
                         الأقسام
                     </a>
                     <div class="bg-neutral-line w-px h-6"></div>
-                    <a href="#" class="text-neutral-dark-1 text-base font-normal leading-6 relative">
+                    <a href="#" class="text-neutral-dark-1 text-base font-normal leading-6 relative hover:text-primary-green transition-colors duration-200">
                         عن المكتبة
                     </a>
                     <div class="bg-neutral-line w-px h-6"></div>
@@ -35,23 +35,24 @@
     </header>
 
     <!-- Background patterns - positioned absolutely relative to the main container -->
-    <img class="opacity-23 w-48 h-0 absolute -left-14 top-19 overflow-visible" src="{{ asset('storage/icon/pattern-ff-18-e-023-20.svg') }}" alt="Pattern 1" />
-    <img class="opacity-33 w-48 h-0 absolute -left-14 top-84 overflow-visible" src="{{ asset('storage/icon/pattern-ff-18-e-023-30.svg') }}" alt="Pattern 2" />
-    <img class="opacity-43 w-48 h-0 absolute -left-14 top-[594px] overflow-visible" src="{{ asset('storage/icon/pattern-ff-18-e-023-40.svg') }}" alt="Pattern 3" />
+    <!-- Adjusted top positions to match Figma more closely -->
+    <img class="opacity-20 w-48 h-auto absolute -left-14 top-20 overflow-visible z-0" src="{{ asset('storage/icon/pattern-ff-18-e-023-20.svg') }}" alt="Pattern 1" />
+    <img class="opacity-30 w-48 h-auto absolute -left-14 top-80 overflow-visible z-0" src="{{ asset('storage/icon/pattern-ff-18-e-023-30.svg') }}" alt="Pattern 2" />
+    <img class="opacity-40 w-48 h-auto absolute -left-14 top-[590px] overflow-visible z-0" src="{{ asset('storage/icon/pattern-ff-18-e-023-40.svg') }}" alt="Pattern 3" />
     
-    <div class="opacity-40 flex flex-row gap-0 items-center justify-start absolute left-1/2 -translate-x-1/2 top-19">
-        <img class="flex-shrink-0 w-80 h-[444px] relative overflow-visible" src="{{ asset('storage/icon/pattern-ff-18-e-023-50.svg') }}" alt="Pattern 4" />
-        <img class="flex-shrink-0 w-80 h-[446px] relative overflow-visible" src="{{ asset('storage/icon/pattern-ff-18-e-023-60.svg') }}" alt="Pattern 5" />
-        <img class="flex-shrink-0 w-80 h-[444px] relative overflow-visible" src="{{ asset('storage/icon/pattern-ff-18-e-023-70.svg') }}" alt="Pattern 6" />
-        <img class="flex-shrink-0 w-80 h-[444px] relative overflow-visible" src="{{ asset('storage/icon/pattern-ff-18-e-023-71.svg') }}" alt="Pattern 7" />
+    <div class="opacity-40 flex flex-row gap-0 items-center justify-start absolute left-1/2 -translate-x-1/2 top-20 z-0">
+        <img class="flex-shrink-0 w-80 h-auto relative overflow-visible" src="{{ asset('storage/icon/pattern-ff-18-e-023-50.svg') }}" alt="Pattern 4" />
+        <img class="flex-shrink-0 w-80 h-auto relative overflow-visible" src="{{ asset('storage/icon/pattern-ff-18-e-023-60.svg') }}" alt="Pattern 5" />
+        <img class="flex-shrink-0 w-80 h-auto relative overflow-visible" src="{{ asset('storage/icon/pattern-ff-18-e-023-70.svg') }}" alt="Pattern 6" />
+        <img class="flex-shrink-0 w-80 h-auto relative overflow-visible" src="{{ asset('storage/icon/pattern-ff-18-e-023-71.svg') }}" alt="Pattern 7" />
         <!-- Duplicated patterns for wider effect as in Figma -->
-        <img class="flex-shrink-0 w-80 h-[446px] relative overflow-visible" src="{{ asset('storage/icon/pattern-ff-18-e-023-60.svg') }}" alt="Pattern 5" />
-        <img class="flex-shrink-0 w-80 h-[444px] relative overflow-visible" src="{{ asset('storage/icon/pattern-ff-18-e-023-70.svg') }}" alt="Pattern 6" />
-        <img class="flex-shrink-0 w-80 h-[444px] relative overflow-visible" src="{{ asset('storage/icon/pattern-ff-18-e-023-71.svg') }}" alt="Pattern 7" />
+        <img class="flex-shrink-0 w-80 h-auto relative overflow-visible" src="{{ asset('storage/icon/pattern-ff-18-e-023-60.svg') }}" alt="Pattern 5" />
+        <img class="flex-shrink-0 w-80 h-auto relative overflow-visible" src="{{ asset('storage/icon/pattern-ff-18-e-023-70.svg') }}" alt="Pattern 6" />
+        <img class="flex-shrink-0 w-80 h-auto relative overflow-visible" src="{{ asset('storage/icon/pattern-ff-18-e-023-71.svg') }}" alt="Pattern 7" />
     </div>
 
     <!-- Main content area -->
-    <main class="container mx-auto px-4 md:px-0 mt-20 pb-24">
+    <main class="container mx-auto px-4 md:px-0 mt-20 pb-24 relative z-10">
         <div class="flex flex-col gap-6 items-end">
             <!-- Book title with icon -->
             <div class="flex items-center gap-3 flex-wrap justify-end text-right">
@@ -59,7 +60,7 @@
                     <span>
                         <span>{{ $book->title }}</span>
                         @if($mainAuthors->count() > 0)
-                            <span>[</span>
+                            <span class="mr-2">[</span>
                             <span>{{ $mainAuthors->first()->full_name }}</span>
                             <span>]</span>
                         @endif
