@@ -40,44 +40,31 @@
         </div>
 
         <!-- =================== أنماط الخلفية (زخارف) =================== -->
-        <main class="relative bg-white" dir="rtl">
+        <main class="relative" dir="rtl">
     <!-- ⚙️ خلفيات زخرفية ثابتة لا تتحرك عند التمرير -->
-    <div class="fixed inset-0 -z-10 pointer-events-none overflow-hidden">
-        <!-- الجهة اليمنى (RTL) أو اليسرى فى الـ LTR حسب الـ dir -->
+    <div class="fixed inset-0 z-10 pointer-events-none overflow-hidden">
+        <!-- الجهة اليمنى (RTL) -->
         <div class="absolute top-20 left-0 flex flex-col gap-10">
-            <img class="opacity-25 w-24 sm:w-28 lg:w-44" src="{{ asset('storage/icon/pattern-ff-18-e-023-20.svg') }}" alt="pattern" />
-            <img class="opacity-35 w-24 sm:w-28 lg:w-44" src="{{ asset('storage/icon/pattern-ff-18-e-023-30.svg') }}" alt="pattern" />
-            <img class="opacity-45 w-24 sm:w-28 lg:w-44" src="{{ asset('storage/icon/pattern-ff-18-e-023-40.svg') }}" alt="pattern" />
+            <img class="opacity-25 w-20 sm:w-24 lg:w-40" src="{{ asset('storage/icon/pattern-ff-18-e-023-20.svg') }}" alt="" />
+            <img class="opacity-35 w-20 sm:w-24 lg:w-40" src="{{ asset('storage/icon/pattern-ff-18-e-023-30.svg') }}" alt="" />
+            <img class="opacity-45 w-20 sm:w-24 lg:w-40" src="{{ asset('storage/icon/pattern-ff-18-e-023-40.svg') }}" alt="" />
         </div>
 
         <!-- المنتصف: صف أفقي من النقوش -->
-        <div class="absolute top-20 left-1/2 -translate-x-1/2 flex opacity-40">
+        <div class="absolute top-20 left-1/2 -translate-x-1/2 flex opacity-40 whitespace-nowrap">
             @php
-                $centerPatterns = [
-                    'pattern-ff-18-e-023-50.svg',
-                    'pattern-ff-18-e-023-60.svg',
-                    'pattern-ff-18-e-023-70.svg',
-                    'pattern-ff-18-e-023-71.svg',
-                ];
+                $svgs = ['50','60','70','71','60','70','71'];
             @endphp
-            @foreach($centerPatterns as $svg)
-                <img
-                    class="w-[18vw] min-w-[120px] max-w-[340px] shrink-0"
-                    src="{{ asset('storage/icon/' . $svg) }}"
-                    alt="pattern"
-                />
+            @foreach($svgs as $num)
+                <img class="w-[18vw] min-w-[120px] max-w-[340px] shrink-0" src="{{ asset('storage/icon/pattern-ff-18-e-023-' . $num . '.svg') }}" alt="" />
             @endforeach
         </div>
     </div>
 
-    <!-- مسافة تعويضية أسفل الهيدر كى لا يغطى المحتوى -->
-    <div class="pt-20"></div>
-
     <!-- حاوية المحتوى الرئيسية -->
-    <div class="mx-auto w-full max-w-screen-xl px-4 sm:px-6 lg:px-8">
+    <div class="relative z-20 mx-auto w-full max-w-screen-xl px-4 sm:px-6 lg:px-8">
         {{-- سنضيف مرحلة العنوان لاحقاً --}}
     </div>
-
 <!----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------->
 <!----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------->
 <!----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------->
