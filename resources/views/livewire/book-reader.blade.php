@@ -92,12 +92,13 @@
     </main>
 
 <!---------footer---------------------->
+
 <footer class="footer" style="background-color: #1A3A2A;">
     <div class="footer-content">
         <div class="flex justify-center">
 
             <div class="footer-logo">
-                <img src="{{ asset('images/figma/logo.jpg') }}" alt="Logo" class="w-full h-full">
+                <img src="{{ asset('storage/icon/logo-01.png') }}" alt="Logo" class="w-full h-full">
             </div>
         </div>
         <div class="footer-divider"></div>
@@ -106,6 +107,7 @@
         </div>
     </div>
 </footer>
+
 <!------------------------------------>
 </div>
 
