@@ -33,9 +33,9 @@
         </div>
 
         <!-- Background patterns -->
-        <img style="opacity: 0.23; width: 188px; height: 259px; position: absolute; left: -53px; top: 76px; overflow: visible;" src="{{ asset('storage/icon/pattern-ff-18-e-023-20.svg') }}" alt="Pattern 1" />
-        <img style="opacity: 0.33; width: 188px; height: 259px; position: absolute; left: -53px; top: 335px; overflow: visible;" src="{{ asset('storage/icon/pattern-ff-18-e-023-30.svg') }}" alt="Pattern 2" />
-        <img style="opacity: 0.43; width: 188px; height: 259px; position: absolute; left: -53px; top: 594px; overflow: visible;" src="{{ asset('storage/icon/pattern-ff-18-e-023-40.svg') }}" alt="Pattern 3" />
+        <img style="opacity: 0.23; width: 188px; height: 0px; position: absolute; left: -53px; top: 76px; overflow: visible;" src="{{ asset('storage/icon/pattern-ff-18-e-023-20.svg') }}" alt="Pattern 1" />
+        <img style="opacity: 0.33; width: 188px; height: 0px; position: absolute; left: -53px; top: 335px; overflow: visible;" src="{{ asset('storage/icon/pattern-ff-18-e-023-30.svg') }}" alt="Pattern 2" />
+        <img style="opacity: 0.43; width: 188px; height: 0px; position: absolute; left: -53px; top: 594px; overflow: visible;" src="{{ asset('storage/icon/pattern-ff-18-e-023-40.svg') }}" alt="Pattern 3" />
         
         <div style="opacity: 0.4; display: flex; flex-direction: row; gap: 0px; align-items: center; justify-content: flex-start; position: absolute; left: 50%; translate: -50%; top: 76px;">
             <img style="flex-shrink: 0; width: 323px; height: 444px; position: relative; overflow: visible;" src="{{ asset('storage/icon/pattern-ff-18-e-023-50.svg') }}" alt="Pattern 4" />
