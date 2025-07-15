@@ -93,20 +93,7 @@
 
 <!---------footer---------------------->
 
-<footer class="footer" style="background-color: #1A3A2A;">
-    <div class="footer-content">
-        <div class="flex justify-center">
 
-            <div class="footer-logo">
-                <img src="{{ asset('storage/icon/logo-01.png') }}" alt="Logo" class="w-full h-full">
-            </div>
-        </div>
-        <div class="footer-divider"></div>
-        <div class="footer-copyright">
-            © حقوق الطبع والنشر {{ date('Y') }}. جميع الحقوق محفوظة.
-        </div>
-    </div>
-</footer>
 
 <!------------------------------------>
 </div>
