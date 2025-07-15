@@ -39,7 +39,7 @@
         </div>
 
         <!-- النقوش المركزية بعرض كامل -->
-        <div class="center-patterns absolute top-20 left-1/2 -translate-x-1/2 flex gap-0 opacity-30">
+        <div class="center-patterns absolute top-20 left-1/2 -translate-x-1/2 flex gap-0 opacity-30 bg-neutral-200">
             <img src="{{ asset('storage/icon/pattern-ff-18-e-023-50.svg') }}" alt="" class="pattern" />
             <img src="{{ asset('storage/icon/pattern-ff-18-e-023-60.svg') }}" alt="" class="pattern" />
             <img src="{{ asset('storage/icon/pattern-ff-18-e-023-70.svg') }}" alt="" class="pattern" />
@@ -57,7 +57,7 @@
          <section class="flex flex-col gap-6 items-end justify-start text-right mb-16">
             <!-- العنوان + الأيقونة -->
             <div class="flex flex-row gap-3 items-center justify-start flex-wrap">
-            <div class="text-right justify-center">
+            <div class="text-center justify-center">
 
                 <span class="text-green-700 text-4xl font-bold font-['Tajawal'] leading-[60px]"> 
                 {{ $book->title }}
