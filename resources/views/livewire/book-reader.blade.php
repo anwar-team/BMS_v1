@@ -52,10 +52,10 @@
 
     <!-- 🏗️ المحتوى الرئيسي (فوق النقوش) -->
     <main class="relative z-10 mx-auto w-full max-w-screen-xl px-4 sm:px-6 lg:px-8 pt-32">
-        <!-- ️🎯 القسم: عنوان الكتاب + شريط الأدوات -->
+
         <section class="flex flex-col items-center text-center gap-6 mb-16">
             <!-- العنوان + الأيقونة -->
-            <div class="flex items-center gap-3 sm:gap-4 flex-wrap justify-center">
+            <div class="flex items-left gap-3 sm:gap-4 flex-wrap justify-left">
                 <h1 class="font-bold text-[41px] leading-[60px] text-[#2c6e4a] font-tajawal flex flex-wrap">
                     {{ $book->title }}
                     @if($mainAuthors->isNotEmpty())
