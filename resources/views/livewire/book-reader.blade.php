@@ -90,9 +90,9 @@
         <!-- 👇 باقي المحتوى يوضع هنا (الفهرس + الصفحات ...) -->
         {{ $slot ?? '' }}
     </main>
-    
-    <!---------footer---------------------->
-    <footer class="footer">
+
+<!---------footer---------------------->
+<footer class="footer">
     <div class="footer-content">
         <div class="flex justify-center">
 
