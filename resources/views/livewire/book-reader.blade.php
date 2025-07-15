@@ -92,7 +92,7 @@
     </main>
 
 <!---------footer---------------------->
-<footer class="footer">
+<footer class="footer" style="background-color: #1A3A2A;">
     <div class="footer-content">
         <div class="flex justify-center">
 
