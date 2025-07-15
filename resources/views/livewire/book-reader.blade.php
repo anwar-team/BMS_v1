@@ -42,6 +42,11 @@
             <img style="flex-shrink: 0; width: 323px; height: 446px; position: relative; overflow: visible;" src="{{ asset('storage/icon/pattern-ff-18-e-023-60.svg') }}" alt="Pattern 5" />
             <img style="flex-shrink: 0; width: 323px; height: 444px; position: relative; overflow: visible;" src="{{ asset('storage/icon/pattern-ff-18-e-023-70.svg') }}" alt="Pattern 6" />
             <img style="flex-shrink: 0; width: 323px; height: 444px; position: relative; overflow: visible;" src="{{ asset('storage/icon/pattern-ff-18-e-023-71.svg') }}" alt="Pattern 7" />
+            <img style="flex-shrink: 0; width: 323px; height: 446px; position: relative; overflow: visible;" src="{{ asset('storage/icon/pattern-ff-18-e-023-60.svg') }}" alt="Pattern 5" />
+            <img style="flex-shrink: 0; width: 323px; height: 444px; position: relative; overflow: visible;" src="{{ asset('storage/icon/pattern-ff-18-e-023-70.svg') }}" alt="Pattern 6" />
+            <img style="flex-shrink: 0; width: 323px; height: 444px; position: relative; overflow: visible;" src="{{ asset('storage/icon/pattern-ff-18-e-023-71.svg') }}" alt="Pattern 7" />
+        
+        
         </div>
 
         <!-- Main content -->
