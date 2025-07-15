@@ -57,12 +57,14 @@
          <section class="flex flex-col gap-6 items-end justify-start text-right mb-16">
             <!-- العنوان + الأيقونة -->
             <div class="flex flex-row gap-3 items-center justify-start flex-wrap">
-                <h1 class="font-tajawal font-bold text-[41px] leading-[60px] text-[#2c6e4a] flex flex-wrap">
-                    {{ $book->title }}
-                    @if($mainAuthors->isNotEmpty())
-                        <span class="font-normal mx-1">[{{ $mainAuthors->first()->full_name }}]</span>
-                    @endif
-                </h1>
+            <div class="text-right justify-center">
+                <span class="text-green-700 text-4xl font-bold font-['Tajawal'] leading-[60px]"> آداب الفتوى والمفتي والمستفتي - </span>
+                <span class="text-pink-700 text-4xl font-bold font-['Tajawal'] leading-[60px]">[</span>
+                <span class="text-green-700 text-4xl font-bold font-['Tajawal'] leading-[60px]">النووي</span>
+                <span class="text-pink-700 text-4xl font-bold font-['Tajawal'] leading-[60px]">]</span>
+
+
+                </div>
                 <img src="{{ asset('storage/icon/group0.svg') }}" alt="Book Icon" class="w-[60px] h-[60px] shrink-0" />
             </div>
 
