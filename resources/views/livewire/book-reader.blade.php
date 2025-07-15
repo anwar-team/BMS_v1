@@ -42,7 +42,7 @@
         <!-- =================== أنماط الخلفية (زخارف) =================== -->
         <style>
             .full-bg-patterns {
-                position: fixed;
+                position: absolute ;
                 top: 0;
                 left: 0;
                 width: 100vw;
