@@ -42,150 +42,133 @@
 <!----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------->  
 
         <!-- =================== أنماط الخلفية (زخارف) =================== -->
-        <style>
-            .full-bg-patterns {
-                position: absolute ;
-                top: 0;
-                left: 0;
-                width: 100vw;
-                height: 100vh;
-                z-index: 0;
-                pointer-events: none;
-                overflow: hidden;
-            }
-            .full-bg-patterns .side-patterns {
-                position: absolute;
-                left: 0;
-                top: 0;
-                height: 100%;
-                display: flex;
-                flex-direction: column;
-                gap: 40px;
-            }
-            .full-bg-patterns .side-patterns img {
-                width: 120px;
+        <main class="relative overflow-x-hidden" dir="rtl">
+    <!-- 🖌️ الأنماط الزخرفية (تتحرك طبيعيًا مع التمرير لأنها absolute) -->
+    <style>
+        .full-bg-patterns {
+            position: absolute; /* تتحرك مع تمرير الصفحة */
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;          /* خلف كل شيء */
+            pointer-events: none;
+            overflow: hidden;
+        }
+        .full-bg-patterns .side-patterns {
+            position: absolute;
+            left: 0;             /* RTL: تبقى يمين الشاشة فعلياً */
+            top: 0;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 40px;
+        }
+        .full-bg-patterns .side-patterns img {
+            width: 120px;
+            min-width: 80px;
+            max-width: 180px;
+            height: auto;
+        }
+        .full-bg-patterns .center-patterns {
+            position: absolute;
+            top: 80px;    /* تحت الهيدر مباشرة */
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100%;
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            align-items: flex-start;
+            gap: 0;
+            opacity: 0.4;
+            pointer-events: none;
+        }
+        .full-bg-patterns .center-patterns img {
+            width: 18vw;
+            min-width: 120px;
+            max-width: 340px;
+            height: auto;
+            flex-shrink: 0;
+        }
+        @media (max-width: 900px) {
+            .full-bg-patterns .center-patterns img {
+                width: 28vw;
                 min-width: 80px;
                 max-width: 180px;
-                height: auto;
             }
-            .full-bg-patterns .center-patterns {
-                position: absolute;
-                top: 0;
-                left: 50%;
-                transform: translateX(-50%);
-                width: 100vw;
-                display: flex;
-                flex-direction: row;
-                justify-content: center;
-                align-items: flex-start;
-                gap: 0;
-                opacity: 0.4;
-                pointer-events: none;
+            .full-bg-patterns .side-patterns img {
+                width: 80px;
+                min-width: 50px;
+                max-width: 100px;
             }
+        }
+        @media (max-width: 600px) {
             .full-bg-patterns .center-patterns img {
-                width: 18vw;
-                min-width: 120px;
-                max-width: 340px;
-                height: auto;
-                flex-shrink: 0;
+                width: 40vw;
+                min-width: 60px;
+                max-width: 120px;
             }
-            @media (max-width: 900px) {
-                .full-bg-patterns .center-patterns img {
-                    width: 28vw;
-                    min-width: 80px;
-                    max-width: 180px;
-                }
-                .full-bg-patterns .side-patterns img {
-                    width: 80px;
-                    min-width: 50px;
-                    max-width: 100px;
-                }
+            .full-bg-patterns .side-patterns img {
+                width: 50px;
+                min-width: 30px;
+                max-width: 60px;
             }
-            @media (max-width: 600px) {
-                .full-bg-patterns .center-patterns img {
-                    width: 40vw;
-                    min-width: 60px;
-                    max-width: 120px;
-                }
-                .full-bg-patterns .side-patterns img {
-                    width: 50px;
-                    min-width: 30px;
-                    max-width: 60px;
-                }
-            }
-            
-        </style>
-        <div class="full-bg-patterns" aria-hidden="true">
-            <!-- Side Patterns (left) -->
-            <div class="side-patterns" style="top: 80px;">
-                <img style="opacity: 0.23;" src="{{ asset('storage/icon/pattern-ff-18-e-023-20.svg') }}" alt="" />
-                <img style="opacity: 0.33;" src="{{ asset('storage/icon/pattern-ff-18-e-023-30.svg') }}" alt="" />
-                <img style="opacity: 0.43;" src="{{ asset('storage/icon/pattern-ff-18-e-023-40.svg') }}" alt="" />
-            </div>
-            <!-- Center Patterns (full width, under header) -->
-            <div class="center-patterns" style="top: 80px;">
-                <img src="{{ asset('storage/icon/pattern-ff-18-e-023-50.svg') }}" alt="" />
-                <img src="{{ asset('storage/icon/pattern-ff-18-e-023-60.svg') }}" alt="" />
-                <img src="{{ asset('storage/icon/pattern-ff-18-e-023-70.svg') }}" alt="" />
-                <img src="{{ asset('storage/icon/pattern-ff-18-e-023-71.svg') }}" alt="" />
-                <img src="{{ asset('storage/icon/pattern-ff-18-e-023-60.svg') }}" alt="" />
-                <img src="{{ asset('storage/icon/pattern-ff-18-e-023-70.svg') }}" alt="" />
-                <img src="{{ asset('storage/icon/pattern-ff-18-e-023-71.svg') }}" alt="" />
-            </div>
+        }
+    </style>
+
+    <div class="full-bg-patterns" aria-hidden="true">
+        <!-- النقوش الجانبية -->
+        <div class="side-patterns" style="top: 80px;">
+            <img style="opacity: 0.23;" src="{{ asset('storage/icon/pattern-ff-18-e-023-20.svg') }}" alt="" />
+            <img style="opacity: 0.33;" src="{{ asset('storage/icon/pattern-ff-18-e-023-30.svg') }}" alt="" />
+            <img style="opacity: 0.43;" src="{{ asset('storage/icon/pattern-ff-18-e-023-40.svg') }}" alt="" />
         </div>
-        <!-- Spacer to push content below header and patterns -->
-        <div style="height: 80px;"></div>
 
-<!----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------->
-<!----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------->
-<!----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------->
+        <!-- النقوش المركزية بعرض كامل -->
+        <div class="center-patterns">
+            <img src="{{ asset('storage/icon/pattern-ff-18-e-023-50.svg') }}" alt="" />
+            <img src="{{ asset('storage/icon/pattern-ff-18-e-023-60.svg') }}" alt="" />
+            <img src="{{ asset('storage/icon/pattern-ff-18-e-023-70.svg') }}" alt="" />
+            <img src="{{ asset('storage/icon/pattern-ff-18-e-023-71.svg') }}" alt="" />
+            <img src="{{ asset('storage/icon/pattern-ff-18-e-023-60.svg') }}" alt="" />
+            <img src="{{ asset('storage/icon/pattern-ff-18-e-023-70.svg') }}" alt="" />
+            <img src="{{ asset('storage/icon/pattern-ff-18-e-023-71.svg') }}" alt="" />
+        </div>
+    </div>
 
-        <!-- =================== المحتوى الرئيسي =================== -->
-        <div style="display: flex; flex-direction: column; gap: 24px; align-items: flex-end; justify-content: flex-start; width: 1170px; position: relative; right: 135px; top: 150px; margin: 0 auto; padding-bottom: 100px;">
-            <div style="display: flex; flex-direction: column; gap: 40px; align-items: flex-end; justify-content: flex-start; align-self: stretch; flex-shrink: 0; position: relative;">
-                <!-- عنوان الكتاب مع الأيقونة -->
-                <div style="display: flex; flex-direction: row; gap: 12px; align-items: center; justify-content: flex-start; flex-shrink: 0; position: relative;">
-                    <div style="text-align: right; font-family: 'Tajawal-Bold', sans-serif; font-size: 41px; line-height: 60px; font-weight: 700; position: relative; display: flex; align-items: center; justify-content: flex-end;">
-                        <span>
-                            <span>{{ $book->title }}</span>
-                            @if($mainAuthors->count() > 0)
-                                <span>[</span>
-                                <span>{{ $mainAuthors->first()->full_name }}</span>
-                                <span>]</span>
-                            @endif
-                        </span>
-                    </div>
-                    <img style="flex-shrink: 0; width: 60px; height: 60px; position: relative; overflow: visible;" src="{{ asset('storage/icon/group0.svg') }}" alt="Book Icon" />
+    <!-- 🏗️ المحتوى الرئيسي (فوق النقوش) -->
+    <div class="relative z-10 mx-auto w-full max-w-screen-xl px-4 sm:px-6 lg:px-8 pt-32">
+
+        <!-- ️🎯 القسم: عنوان الكتاب + شريط الأدوات -->
+        <section class="flex flex-col items-center text-center gap-6 mb-16">
+            <!-- العنوان + الأيقونة -->
+            <div class="flex items-center gap-3 sm:gap-4 flex-wrap justify-center">
+                <h1 class="font-bold text-[41px] leading-[60px] text-[#2c6e4a] font-tajawal flex flex-wrap">
+                    {{ $book->title }}
+                    @if($mainAuthors->isNotEmpty())
+                        <span class="font-normal mx-1 text-neutral-800">[{{ $mainAuthors->first()->full_name }}]</span>
+                    @endif
+                </h1>
+                <img src="{{ asset('storage/icon/group0.svg') }}" alt="Book Icon" class="w-[60px] h-[60px] shrink-0" />
+            </div>
+
+            <!-- شريط الأدوات + البحث -->
+            <div class="flex flex-col sm:flex-row items-center w-full max-w-3xl gap-6">
+                <!-- الأدوات -->
+                <div class="flex gap-6 shrink-0">
+                    <img src="{{ asset('storage/icon/group1.svg') }}" alt="Bookmark" class="w-[21px] h-6" />
+                    <img src="{{ asset('storage/icon/group2.svg') }}" alt="Share" class="w-6 h-6" />
+                    <img src="{{ asset('storage/icon/group3.svg') }}" alt="Download" class="w-6 h-6" />
                 </div>
 
-                <!-- أدوات البحث وأدوات أخرى -->
-                <div style="display: flex; flex-direction: column; gap: 16px; align-items: flex-start; justify-content: flex-start; align-self: stretch; flex-shrink: 0; position: relative;">
-                    <div style="display: flex; flex-direction: row; gap: 24px; align-items: center; justify-content: flex-start; align-self: stretch; flex-shrink: 0; position: relative;">
-                        <!-- أدوات (إشارات مرجعية، مشاركة، تحميل) -->
-                        <div style="display: flex; flex-direction: row; gap: 24px; align-items: flex-start; justify-content: flex-start; flex-shrink: 0; position: relative;">
-                            <img style="flex-shrink: 0; width: 20.89px; height: 24px; position: relative; overflow: visible;" src="{{ asset('storage/icon/group1.svg') }}" alt="Bookmark" />
-                            <div style="flex-shrink: 0; width: 24px; height: 24px; position: relative; overflow: hidden;">
-                                <img style="width: 83.33%; height: 83.33%; position: absolute; right: 8.33%; left: 8.33%; bottom: 8.33%; top: 8.33%; overflow: visible;" src="{{ asset('storage/icon/group2.svg') }}" alt="Share" />
-                            </div>
-                            <div style="flex-shrink: 0; width: 24px; height: 24px; position: relative; overflow: hidden;">
-                                <img style="width: 100%; height: 75%; position: absolute; right: 0%; left: 0%; bottom: 12.5%; top: 12.5%; overflow: visible;" src="{{ asset('storage/icon/group3.svg') }}" alt="Download" />
-                            </div>
-                        </div>
-
-                        <!-- مربع البحث -->
-                        <div style="display: flex; flex-direction: column; gap: 10px; align-items: flex-end; justify-content: flex-start; flex: 1; height: 42px; position: relative;">
-                            <div style="background: #ffffff; border-radius: 6px; border-style: solid; border-color: #d9d9d9; border-width: 1px; align-self: stretch; flex-shrink: 0; height: 42px; position: relative;"></div>
-                            <div style="display: flex; flex-direction: row; gap: 8px; align-items: flex-end; justify-content: flex-end; flex-shrink: 0; position: absolute; right: 12.11px; top: 50%; translate: 0 -50%;">
-                                <div style="color: var(--neutral-dark-4, #3a3b3e); text-align: left; font-family: 'Tajawal-Regular', sans-serif; font-size: 14px; line-height: 20px; font-weight: 400; position: relative; display: flex; align-items: center; justify-content: flex-start;">
-                                    ابحث ...
-                                </div>
-                                <div style="flex-shrink: 0; width: 24px; height: 24px; position: relative; overflow: hidden;">
-                                    <img style="height: auto; position: absolute; left: 2.78px; top: 2.78px; overflow: visible;" src="{{ asset('storage/icon/iconly-light-search0.svg') }}" alt="Search" />
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    
+                <!-- مربع البحث -->
+                <div class="relative flex-1 w-full">
+                    <input type="text" placeholder="ابحث ..." class="w-full h-11 rounded-md border border-neutral-300 pr-12 pl-4 text-right focus:ring-2 focus:ring-[#2c6e4a] font-tajawal" />
+                    <img src="{{ asset('storage/icon/iconly-light-search0.svg') }}" class="absolute right-4 top-1/2 -translate-y-1/2 w-5 h-5" alt="Search" />
+                </div>
+            </div>
+        </section>
 <!----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------->
 <!----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------->  
 <!----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------->  
