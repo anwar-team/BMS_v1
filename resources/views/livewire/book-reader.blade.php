@@ -38,6 +38,8 @@
                 </div>
             </div>
         </div>
+<!----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------->
+<!----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------->  
 
         <!-- =================== أنماط الخلفية (زخارف) =================== -->
         <style>
@@ -139,10 +141,10 @@
 <!----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------->
 
         <!-- =================== المحتوى الرئيسي =================== -->
-        <div style="display: flex; flex-direction: column; gap: 24px; align-items: flex-end; justify-content: flex-start; width: 1170px; position: relative; right: 135px; top: 150px; margin: 0 auto; padding-bottom: 100px;">
-            <div style="display: flex; flex-direction: column; gap: 40px; align-items: flex-end; justify-content: flex-start; align-self: stretch; flex-shrink: 0; position: relative;">
+        <div style="display: flex; flex-direction: column; gap: 24px; align-items: center; justify-content: flex-start; width: 1170px; position: relative; margin: 0 auto; top: 150px; padding-bottom: 100px;">
+            <div style="display: flex; flex-direction: column; gap: 40px; align-items: center; justify-content: flex-start; align-self: stretch; flex-shrink: 0; position: relative;">
                 <!-- عنوان الكتاب مع الأيقونة -->
-                <div style="display: flex; flex-direction: row; gap: 12px; align-items: center; justify-content: flex-start; flex-shrink: 0; position: relative;">
+                <div style="display: flex; flex-direction: row; gap: 12px; align-items: center; justify-content: center; flex-shrink: 0; position: relative;">
                     <div style="text-align: right; font-family: 'Tajawal-Bold', sans-serif; font-size: 41px; line-height: 60px; font-weight: 700; position: relative; display: flex; align-items: center; justify-content: flex-end;">
                         <span>
                             <span>{{ $book->title }}</span>
@@ -156,9 +158,14 @@
                     <img style="flex-shrink: 0; width: 60px; height: 60px; position: relative; overflow: visible;" src="{{ asset('storage/icon/group0.svg') }}" alt="Book Icon" />
                 </div>
 
+                <!-- الزخرفة في المنتصف -->
+                <div style="display: flex; justify-content: center; align-items: center; width: 100%; margin: 16px 0;">
+                    <img src="{{ asset('storage/icon/pattern-ff-18-e-023-50.svg') }}" alt="زخرفة" style="height: 40px;"/>
+                </div>
+
                 <!-- أدوات البحث وأدوات أخرى -->
-                <div style="display: flex; flex-direction: column; gap: 16px; align-items: flex-start; justify-content: flex-start; align-self: stretch; flex-shrink: 0; position: relative;">
-                    <div style="display: flex; flex-direction: row; gap: 24px; align-items: center; justify-content: flex-start; align-self: stretch; flex-shrink: 0; position: relative;">
+                <div style="display: flex; flex-direction: column; gap: 16px; align-items: center; justify-content: flex-start; align-self: stretch; flex-shrink: 0; position: relative;">
+                    <div style="display: flex; flex-direction: row; gap: 24px; align-items: center; justify-content: center; align-self: stretch; flex-shrink: 0; position: relative;">
                         <!-- أدوات (إشارات مرجعية، مشاركة، تحميل) -->
                         <div style="display: flex; flex-direction: row; gap: 24px; align-items: flex-start; justify-content: flex-start; flex-shrink: 0; position: relative;">
                             <img style="flex-shrink: 0; width: 20.89px; height: 24px; position: relative; overflow: visible;" src="{{ asset('storage/icon/group1.svg') }}" alt="Bookmark" />
@@ -183,6 +190,10 @@
                             </div>
                         </div>
                     </div>
+                    
+<!----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------->
+<!----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------->  
+<!----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------->  
 
                     <!-- منطقة المحتوى مع الشريط الجانبي -->
                     <div style="display: flex; flex-direction: row; gap: 12px; align-items: flex-start; justify-content: flex-end; flex-shrink: 0; position: relative; width: 100%;">
