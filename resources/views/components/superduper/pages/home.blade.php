@@ -232,7 +232,7 @@
                         <div class="cell-6">
                             <div class="box">
                                 <div class="typography">
-                                    <div class="body-22">{{ $book->authors->first()->full_name ?? 'عبد الله عزام' }}</div>
+                                    <div class="body-22">{{ $book->authors->first()?->full_name ?? 'عبد الله عزام' }}</div>
                                 </div>
                             </div>
                         </div>
@@ -258,7 +258,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="_1-10-of-100">{{ $books->count() }}-1 من {{ $books->total() ?? 100 }}</div>
+                        <div class="_1-10-of-100">{{ $books->count() }}-1 من {{ $books->count() }}</div>
                         <div class="container">
                             <div class="page">
                                 <div class="_10">10</div>
@@ -332,14 +332,14 @@
                         <div class="cell-6">
                             <div class="box">
                                 <div class="typography">
-                                    <div class="body-22">{{ $author->books->first()->bookSection->name ?? 'الأذكار والأوراد والأدعية' }}</div>
+                                    <div class="body-22">{{ $author->books->first()?->bookSection?->name ?? 'الأذكار والأوراد والأدعية' }}</div>
                                 </div>
                             </div>
                         </div>
                         <div class="cell-6">
                             <div class="box">
                                 <div class="typography">
-                                    <div class="body-22">{{ $author->books->first()->title ?? 'أذكار الصباح والمساء' }}</div>
+                                    <div class="body-22">{{ $author->books->first()?->title ?? 'أذكار الصباح والمساء' }}</div>
                                 </div>
                             </div>
                         </div>
@@ -372,7 +372,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="_1-10-of-100">{{ $authors->count() }}-1 من {{ $authors->total() ?? 100 }}</div>
+                        <div class="_1-10-of-100">{{ $authors->count() }}-1 من {{ $authors->count() }}</div>
                         <div class="container">
                             <div class="page">
                                 <div class="_10">10</div>
