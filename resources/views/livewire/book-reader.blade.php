@@ -1,5 +1,5 @@
 {{-- Livewire Component: <book-reader> — عنصر جذري واحد فقط --}}
-<div id="book-reader" class="relative overflow-x-hidden" dir="rtl">
+<div id="book-reader" class="relative overflow-x-hidden" >
     <!-- =================== رأس الصفحة/التنقل =================== -->
     <header style="background:#ffffff;position:relative;overflow:hidden;">
         <!-- شريط التنقل العلوي -->
