@@ -55,11 +55,11 @@
 
         <section class="flex flex-col items-center text-center gap-6 mb-16">
             <!-- العنوان + الأيقونة -->
-            <div class="flex items-left gap-3 sm:gap-4 flex-wrap justify-left">
-                <h1 class="font-bold text-[41px] leading-[60px] text-[#2c6e4a] font-tajawal flex flex-wrap">
+            <div class="flex items-center gap-3 sm:gap-4 flex-wrap justify-end">
+                <h1 class="font-bold text-[41px] leading-[60px] text-[#2c6e4a] font-tajawal flex flex-wrap" style="color: #2c6e4a;">
                     {{ $book->title }}
                     @if($mainAuthors->isNotEmpty())
-                        <span class="font-normal mx-1 text-neutral-800">[{{ $mainAuthors->first()->full_name }}]</span>
+                        <span class="font-normal mx-1" style="color: #2c6e4a;">[{{ $mainAuthors->first()->full_name }}]</span>
                     @endif
                 </h1>
                 <img src="{{ asset('storage/icon/group0.svg') }}" alt="Book Icon" class="w-[60px] h-[60px] shrink-0" />
