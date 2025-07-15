@@ -1,6 +1,6 @@
 <footer class="footer">
-    <div class="footer-content bg-sky-500">
-        <div class="flex justify-center bg-sky-500">
+    <div class="footer-content">
+        <div class="flex justify-center">
 
             <div class="footer-logo">
                 <img src="{{ asset('images/figma/logo.jpg') }}" alt="Logo" class="w-full h-full">
