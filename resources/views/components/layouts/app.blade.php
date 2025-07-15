@@ -26,7 +26,12 @@
         </style>
 
         @filamentStyles
-        @vite('resources/css/app.css')
+        @vite([
+            'resources/css/app.css',
+            'resources/css/base.css',
+            'resources/css/auto-html/style.css',
+            'resources/css/auto-html/vars.css'
+        ])
     </head>
 
     <body class="antialiased">

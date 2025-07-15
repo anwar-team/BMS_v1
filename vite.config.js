@@ -8,6 +8,10 @@ export default defineConfig({
                 "resources/css/app.css",
                 "resources/js/app.js",
                 "resources/css/filament/admin/theme.css",
+                "resources/css/base.css",
+                "resources/css/auto-html/style.css",
+                "resources/css/auto-html/vars.css",
+                "resources/css/tables.scss",
             ],
             refresh: [
                 ...refreshPaths,

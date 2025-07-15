@@ -1,39 +1,22 @@
-<header class="nav-bar">
-    <div class="nav-container">
-        <div class="flex items-center gap-8">
-            <!-- Header Logo -->
-            <a href="{{ route('home') }}" class="relative z-10 flex-shrink-0">
-                <div class="flex items-center gap-2">
-                    <img src="{{ asset('images/figma/header_logo1.jpg') }}" alt="Logo" class="w-auto h-11">
-                    <img src="{{ asset('images/figma/header_logo2.jpg') }}" alt="Logo" class="w-auto h-11">
+<div class="nav-bar">
+    <div class="frame-1000003469">
+        <div class="frame-1000003468">
+            <div class="catagories">
+                <div class="div8">الكتب</div>
+                <div class="rectangle-2"></div>
+                <div class="div8">الأقسام</div>
+                <div class="rectangle-3"></div>
+                <div class="div8">عن المكتبة</div>
+                <div class="rectangle-4"></div>
+                <div class="frame-1321314386">
+                    <div class="div8">الرئيسية</div>
+                    <div class="line-18"></div>
                 </div>
-            </a>
-
-            <!-- Header Navigation -->
-            <div class="nav-links">
-                <a href="{{ route('home') }}" class="nav-link active">الرئيسية</a>
-                <div class="nav-divider"></div>
-                <a href="#" class="nav-link">عن المكتبة</a>
-                <div class="nav-divider"></div>
-                <a href="#" class="nav-link">الأقسام</a>
-                <div class="nav-divider"></div>
-                <a href="#" class="nav-link">الكتب</a>
+            </div>
+            <div class="frame-13213144042">
+                <img class="untitled-design-7-2" src="{{ asset('assets/auto-html/untitled-design-7-20.png') }}" />
+                <img class="untitled-design-8-1" src="{{ asset('assets/auto-html/untitled-design-8-10.png') }}" />
             </div>
         </div>
     </div>
-</header>
-
-@push('js')
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    const navLinks = document.querySelectorAll('.nav-link');
-    
-    navLinks.forEach(link => {
-        link.addEventListener('click', function() {
-            navLinks.forEach(l => l.classList.remove('active'));
-            this.classList.add('active');
-        });
-    });
-});
-</script>
-@endpush
+</div>

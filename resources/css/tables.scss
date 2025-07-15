@@ -1,0 +1,257 @@
+/* Filament Table Styling to Match Auto-HTML Theme */
+
+// Import the base theme colors
+$primary-color: #2c6e4a;
+$secondary-color: #1a3a2a;
+$background-color: #ffffff;
+$table-header-bg: #f1f8f3;
+$border-color: #e8e8e9;
+$text-primary: rgba(0, 0, 0, 0.87);
+$text-secondary: rgba(79, 81, 83, 0.8);
+
+// Override Filament table styles
+.fi-ta-table {
+    direction: rtl;
+    text-align: right;
+    
+    .fi-ta-header {
+        background: $table-header-bg;
+        border-bottom: 1px solid $border-color;
+        
+        .fi-ta-header-cell {
+            padding: 16px;
+            
+            .fi-ta-header-cell-label {
+                color: $primary-color;
+                font-family: "Tajawal-Bold", sans-serif;
+                font-size: 14px;
+                line-height: 143%;
+                letter-spacing: 0.17px;
+                font-weight: 700;
+                text-align: right;
+                direction: rtl;
+            }
+        }
+    }
+    
+    .fi-ta-row {
+        border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+        
+        .fi-ta-cell {
+            padding: 16px;
+            
+            .fi-ta-cell-value {
+                color: $text-primary;
+                font-family: "Tajawal-Regular", sans-serif;
+                font-size: 14px;
+                line-height: 143%;
+                letter-spacing: 0.17px;
+                font-weight: 400;
+                text-align: right;
+                direction: rtl;
+            }
+        }
+        
+        &:hover {
+            background-color: rgba(44, 110, 74, 0.04);
+        }
+    }
+}
+
+// Table pagination styling
+.fi-ta-pagination {
+    direction: rtl;
+    text-align: right;
+    padding: 2px 0;
+    
+    .fi-ta-pagination-nav {
+        direction: rtl;
+        
+        .fi-btn {
+            border-radius: 100px;
+            padding: 8px;
+            
+            .fi-btn-icon {
+                width: 24px;
+                height: 24px;
+            }
+        }
+    }
+    
+    .fi-ta-pagination-summary {
+        color: $text-primary;
+        font-family: "Roboto-Regular", sans-serif;
+        font-size: 12px;
+        line-height: 166%;
+        letter-spacing: 0.4px;
+        font-weight: 400;
+        direction: rtl;
+    }
+    
+    .fi-ta-pagination-per-page {
+        direction: rtl;
+        
+        .fi-select {
+            width: 38px;
+            height: 24px;
+            
+            .fi-select-input {
+                color: $text-primary;
+                font-family: "Roboto-Regular", sans-serif;
+                font-size: 12px;
+                line-height: 166%;
+                letter-spacing: 0.4px;
+                font-weight: 400;
+                text-align: right;
+                direction: rtl;
+            }
+        }
+        
+        .fi-ta-pagination-per-page-label {
+            color: rgba(0, 0, 0, 0.6);
+            font-family: "Roboto-Regular", sans-serif;
+            font-size: 12px;
+            line-height: 166%;
+            letter-spacing: 0.4px;
+            font-weight: 400;
+            direction: rtl;
+        }
+    }
+}
+
+// Table wrapper styling
+.fi-ta-ctn {
+    background: $background-color;
+    border-radius: 4px;
+    border: 1px solid $border-color;
+    border-bottom: 0;
+    box-shadow: 0px 2px 1px -1px rgba(0, 0, 0, 0.2),
+                0px 1px 1px 0px rgba(0, 0, 0, 0.14),
+                0px 1px 3px 0px rgba(0, 0, 0, 0.12);
+    overflow: hidden;
+    direction: rtl;
+}
+
+// Table header actions
+.fi-ta-header-actions {
+    direction: rtl;
+    
+    .fi-btn {
+        &.fi-btn-primary {
+            background: $primary-color;
+            border-color: $primary-color;
+            color: white;
+            
+            &:hover {
+                background: darken($primary-color, 10%);
+                border-color: darken($primary-color, 10%);
+            }
+        }
+        
+        &.fi-btn-secondary {
+            background: white;
+            border-color: $primary-color;
+            color: $primary-color;
+            
+            &:hover {
+                background: rgba(44, 110, 74, 0.04);
+            }
+        }
+    }
+}
+
+// Form controls in tables
+.fi-ta-search {
+    direction: rtl;
+    
+    .fi-input {
+        direction: rtl;
+        text-align: right;
+        
+        .fi-input-wrapper {
+            .fi-input-input {
+                direction: rtl;
+                text-align: right;
+                font-family: "Tajawal-Regular", sans-serif;
+                
+                &::placeholder {
+                    direction: rtl;
+                    text-align: right;
+                }
+            }
+        }
+    }
+}
+
+// Table filters
+.fi-ta-filters {
+    direction: rtl;
+    
+    .fi-ta-filters-trigger {
+        direction: rtl;
+        
+        .fi-btn {
+            font-family: "Tajawal-Regular", sans-serif;
+            direction: rtl;
+        }
+    }
+}
+
+// Empty state
+.fi-ta-empty-state {
+    direction: rtl;
+    text-align: center;
+    
+    .fi-ta-empty-state-heading {
+        font-family: "Tajawal-Bold", sans-serif;
+        color: $primary-color;
+        direction: rtl;
+    }
+    
+    .fi-ta-empty-state-description {
+        font-family: "Tajawal-Regular", sans-serif;
+        color: $text-secondary;
+        direction: rtl;
+    }
+}
+
+// Loading state
+.fi-ta-loading {
+    direction: rtl;
+    text-align: center;
+}
+
+// Responsive table
+@media (max-width: 768px) {
+    .fi-ta-table {
+        .fi-ta-header-cell,
+        .fi-ta-cell {
+            padding: 8px;
+        }
+        
+        .fi-ta-header-cell-label,
+        .fi-ta-cell-value {
+            font-size: 12px;
+        }
+    }
+}
+
+// Table selection
+.fi-ta-selection-indicator {
+    direction: rtl;
+    
+    .fi-ta-selection-indicator-label {
+        font-family: "Tajawal-Regular", sans-serif;
+        direction: rtl;
+    }
+}
+
+// Bulk actions
+.fi-ta-bulk-actions {
+    direction: rtl;
+    
+    .fi-btn {
+        font-family: "Tajawal-Regular", sans-serif;
+        direction: rtl;
+    }
+}

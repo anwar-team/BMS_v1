@@ -19,9 +19,7 @@ use Lab404\Impersonate\Services\ImpersonateManager;
 |
 */
 
-Route::get('/', function () {
-    return view('components.superduper.pages.home');
-})->name('home');
+Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 Route::get('/blog', BlogList::class)->name('blog');
 
@@ -66,4 +64,3 @@ Route::get('impersonate/leave', function() {
         session()->pull('impersonate.back_to')
     );
 })->name('impersonate.leave')->middleware('web');
-

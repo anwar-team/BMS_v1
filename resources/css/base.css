@@ -1,0 +1,81 @@
+/* Global Base Styles */
+@import url('../../../public/superduper/fonts/tajawal/tajawal.css');
+
+* {
+    font-family: 'Tajawal', 'Tajawal-Regular', 'NotoSansArabic-Regular', sans-serif;
+}
+
+body {
+    direction: rtl;
+    text-align: right;
+    margin: 0;
+    padding: 0;
+    background: #ffffff;
+    /* Add background pattern/image if needed */
+    background-image: url('/assets/auto-html/pattern-ff-18-e-023-20.svg');
+    background-repeat: repeat;
+    background-attachment: fixed;
+    background-size: 188px 259px;
+    background-position: top left;
+    background-blend-mode: overlay;
+    background-color: #ffffff;
+}
+
+html {
+    direction: rtl;
+    text-align: right;
+}
+
+/* Ensure all text is RTL by default */
+h1, h2, h3, h4, h5, h6, p, div, span, a, button, input, textarea, label {
+    direction: rtl;
+    text-align: right;
+}
+
+/* Override for specific elements that should be LTR */
+.ltr, [dir="ltr"] {
+    direction: ltr;
+    text-align: left;
+}
+
+/* Font face definitions for Tajawal */
+@font-face {
+    font-family: 'Tajawal-Regular';
+    src: url('/superduper/fonts/tajawal/Tajawal-Regular.ttf') format('truetype');
+    font-weight: 400;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Tajawal-Bold';
+    src: url('/superduper/fonts/tajawal/Tajawal-Bold.ttf') format('truetype');
+    font-weight: 700;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Tajawal-Medium';
+    src: url('/superduper/fonts/tajawal/Tajawal-Medium.ttf') format('truetype');
+    font-weight: 500;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'NotoSansArabic-Regular';
+    src: url('/superduper/fonts/NotoSansArabic-Regular.ttf') format('truetype');
+    font-weight: 400;
+    font-style: normal;
+}
+
+/* Responsive adjustments */
+@media (max-width: 375px) {
+    body {
+        background-size: 94px 129px;
+    }
+}
+
+@media (min-width: 1440px) {
+    body {
+        background-size: 250px 345px;
+    }
+}
