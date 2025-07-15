@@ -40,99 +40,43 @@
         </div>
 
         <!-- =================== أنماط الخلفية (زخارف) =================== -->
-        <style>
-            .full-bg-patterns {
-                position: fixed;
-                top: 0;
-                left: 0;
-                width: 100vw;
-                height: 100vh;
-                z-index: 0;
-                pointer-events: none;
-                overflow: hidden;
-            }
-            .full-bg-patterns .side-patterns {
-                position: absolute;
-                left: 0;
-                top: 0;
-                height: 100%;
-                display: flex;
-                flex-direction: column;
-                gap: 40px;
-            }
-            .full-bg-patterns .side-patterns img {
-                width: 120px;
-                min-width: 80px;
-                max-width: 180px;
-                height: auto;
-            }
-            .full-bg-patterns .center-patterns {
-                position: absolute;
-                top: 0;
-                left: 50%;
-                transform: translateX(-50%);
-                width: 100vw;
-                display: flex;
-                flex-direction: row;
-                justify-content: center;
-                align-items: flex-start;
-                gap: 0;
-                opacity: 0.4;
-                pointer-events: none;
-            }
-            .full-bg-patterns .center-patterns img {
-                width: 18vw;
-                min-width: 120px;
-                max-width: 340px;
-                height: auto;
-                flex-shrink: 0;
-            }
-            @media (max-width: 900px) {
-                .full-bg-patterns .center-patterns img {
-                    width: 28vw;
-                    min-width: 80px;
-                    max-width: 180px;
-                }
-                .full-bg-patterns .side-patterns img {
-                    width: 80px;
-                    min-width: 50px;
-                    max-width: 100px;
-                }
-            }
-            @media (max-width: 600px) {
-                .full-bg-patterns .center-patterns img {
-                    width: 40vw;
-                    min-width: 60px;
-                    max-width: 120px;
-                }
-                .full-bg-patterns .side-patterns img {
-                    width: 50px;
-                    min-width: 30px;
-                    max-width: 60px;
-                }
-            }
-            
-        </style>
-        <div class="full-bg-patterns" aria-hidden="true">
-            <!-- Side Patterns (left) -->
-            <div class="side-patterns" style="top: 80px;">
-                <img style="opacity: 0.23;" src="{{ asset('storage/icon/pattern-ff-18-e-023-20.svg') }}" alt="" />
-                <img style="opacity: 0.33;" src="{{ asset('storage/icon/pattern-ff-18-e-023-30.svg') }}" alt="" />
-                <img style="opacity: 0.43;" src="{{ asset('storage/icon/pattern-ff-18-e-023-40.svg') }}" alt="" />
-            </div>
-            <!-- Center Patterns (full width, under header) -->
-            <div class="center-patterns" style="top: 80px;">
-                <img src="{{ asset('storage/icon/pattern-ff-18-e-023-50.svg') }}" alt="" />
-                <img src="{{ asset('storage/icon/pattern-ff-18-e-023-60.svg') }}" alt="" />
-                <img src="{{ asset('storage/icon/pattern-ff-18-e-023-70.svg') }}" alt="" />
-                <img src="{{ asset('storage/icon/pattern-ff-18-e-023-71.svg') }}" alt="" />
-                <img src="{{ asset('storage/icon/pattern-ff-18-e-023-60.svg') }}" alt="" />
-                <img src="{{ asset('storage/icon/pattern-ff-18-e-023-70.svg') }}" alt="" />
-                <img src="{{ asset('storage/icon/pattern-ff-18-e-023-71.svg') }}" alt="" />
-            </div>
+        <main class="relative bg-white" dir="rtl">
+    <!-- ⚙️ خلفيات زخرفية ثابتة لا تتحرك عند التمرير -->
+    <div class="fixed inset-0 -z-10 pointer-events-none overflow-hidden">
+        <!-- الجهة اليمنى (RTL) أو اليسرى فى الـ LTR حسب الـ dir -->
+        <div class="absolute top-20 left-0 flex flex-col gap-10">
+            <img class="opacity-25 w-24 sm:w-28 lg:w-44" src="{{ asset('storage/icon/pattern-ff-18-e-023-20.svg') }}" alt="pattern" />
+            <img class="opacity-35 w-24 sm:w-28 lg:w-44" src="{{ asset('storage/icon/pattern-ff-18-e-023-30.svg') }}" alt="pattern" />
+            <img class="opacity-45 w-24 sm:w-28 lg:w-44" src="{{ asset('storage/icon/pattern-ff-18-e-023-40.svg') }}" alt="pattern" />
         </div>
-        <!-- Spacer to push content below header and patterns -->
-        <div style="height: 80px;"></div>
+
+        <!-- المنتصف: صف أفقي من النقوش -->
+        <div class="absolute top-20 left-1/2 -translate-x-1/2 flex opacity-40">
+            @php
+                $centerPatterns = [
+                    'pattern-ff-18-e-023-50.svg',
+                    'pattern-ff-18-e-023-60.svg',
+                    'pattern-ff-18-e-023-70.svg',
+                    'pattern-ff-18-e-023-71.svg',
+                ];
+            @endphp
+            @foreach($centerPatterns as $svg)
+                <img
+                    class="w-[18vw] min-w-[120px] max-w-[340px] shrink-0"
+                    src="{{ asset('storage/icon/' . $svg) }}"
+                    alt="pattern"
+                />
+            @endforeach
+        </div>
+    </div>
+
+    <!-- مسافة تعويضية أسفل الهيدر كى لا يغطى المحتوى -->
+    <div class="pt-20"></div>
+
+    <!-- حاوية المحتوى الرئيسية -->
+    <div class="mx-auto w-full max-w-screen-xl px-4 sm:px-6 lg:px-8">
+        {{-- سنضيف مرحلة العنوان لاحقاً --}}
+    </div>
 
 <!----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------->
 <!----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------->
@@ -369,4 +313,5 @@
         }
     </style>
 </div>
+</main>
 <!-- =================== نهاية مكون القارئ =================== --> 
