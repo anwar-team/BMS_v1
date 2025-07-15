@@ -2,56 +2,21 @@
 <div>
 
     <!-- =================== رأس الصفحة/التنقل =================== -->
-    <div style="background: #ffffff; position: relative; overflow: hidden;">
-
-        <!-- شريط التنقل العلوي -->
-        <div style="background: #ffffff; border-style: solid; border-color: #e8e8e9; border-width: 0px 0px 1px 0px; padding: 16px 135px 16px 135px; display: flex; flex-direction: column; gap: 10px; align-items: flex-start; justify-content: flex-start; width: 100%; position: relative;">
-            <div style="display: flex; flex-direction: row; align-items: center; justify-content: space-between; align-self: stretch; flex-shrink: 0; position: relative; width: 100%;">
-                <div style="display: flex; flex-direction: row; align-items: center; justify-content: space-between; flex-shrink: 0; position: relative; width: 100%;">
-                    <!-- روابط التنقل الرئيسية -->
-                    <div style="display: flex; flex-direction: row; gap: 24px; align-items: center; justify-content: flex-start; flex-shrink: 0; position: relative;">
-                        <div style="color: var(--neutral-dark-1, #0f0f0f); text-align: left; font-family: 'Tajawal-Regular', sans-serif; font-size: 16px; line-height: 24px; font-weight: 400; position: relative;">
-                            الكتب
-                        </div>
-                        <div style="background: var(--neutral-line, #e8e8e9); flex-shrink: 0; width: 1px; height: 24px; position: relative;"></div>
-                        <div style="color: var(--neutral-dark-1, #0f0f0f); text-align: left; font-family: 'Tajawal-Regular', sans-serif; font-size: 16px; line-height: 24px; font-weight: 400; position: relative;">
-                            الأقسام
-                        </div>
-                        <div style="background: var(--neutral-line, #e8e8e9); flex-shrink: 0; width: 1px; height: 24px; position: relative;"></div>
-                        <div style="color: var(--neutral-dark-1, #0f0f0f); text-align: left; font-family: 'Tajawal-Regular', sans-serif; font-size: 16px; line-height: 24px; font-weight: 400; position: relative;">
-                            عن المكتبة
-                        </div>
-                        <div style="background: var(--neutral-line, #e8e8e9); flex-shrink: 0; width: 1px; height: 24px; position: relative;"></div>
-                        <div style="display: flex; flex-direction: column; gap: 0px; align-items: flex-start; justify-content: center; flex-shrink: 0; position: relative;">
-                            <div style="color: var(--neutral-dark-1, #0f0f0f); text-align: left; font-family: 'Tajawal-Regular', sans-serif; font-size: 16px; line-height: 24px; font-weight: 400; position: relative;">
-                                الرئيسية
-                            </div>
-                            <div style="margin-top: -2px; border-style: solid; border-color: #2c6e4a; border-width: 2px 0 0 0; align-self: stretch; flex-shrink: 0; height: 0px; position: relative;"></div>
-                        </div>
-                    </div>
-
-                    <!-- شعارات المكتبة -->
-                    <div style="display: flex; flex-direction: row; gap: 8px; align-items: center; justify-content: flex-end; flex-shrink: 0; position: relative;">
-                        <img style="flex-shrink: 0; width: 145px; height: 44px; position: relative; object-fit: cover; aspect-ratio: 145/44;" src="{{ asset('storage/icon/untitled-design-7-20.png') }}" alt="Logo 1" />
-                        <img style="flex-shrink: 0; width: 44px; height: 44px; position: relative; object-fit: cover; aspect-ratio: 1;" src="{{ asset('storage/icon/untitled-design-8-10.png') }}" alt="Logo 2" />
-                    </div>
-                </div>
-            </div>
-        </div>
+    @include('components.superduper.header')
 
         <!-- =================== أنماط الخلفية (زخارف) =================== -->
         <style>
-            .full-bg-patterns {
-                position: fixed;
-                top: 0;
+            .responsive-bg-patterns {
+                position: absolute;
+                top: 100%;
                 left: 0;
                 width: 100vw;
-                height: 100vh;
+                min-height: 0;
                 z-index: 0;
                 pointer-events: none;
                 overflow: hidden;
             }
-            .full-bg-patterns .side-patterns {
+            .responsive-bg-patterns .side-patterns {
                 position: absolute;
                 left: 0;
                 top: 0;
@@ -60,17 +25,15 @@
                 flex-direction: column;
                 gap: 40px;
             }
-            .full-bg-patterns .side-patterns img {
+            .responsive-bg-patterns .side-patterns img {
                 width: 120px;
                 min-width: 80px;
                 max-width: 180px;
                 height: auto;
             }
-            .full-bg-patterns .center-patterns {
-                position: absolute;
-                top: 0;
-                left: 50%;
-                transform: translateX(-50%);
+            .responsive-bg-patterns .center-patterns {
+                position: relative;
+                margin: 0 auto;
                 width: 100vw;
                 display: flex;
                 flex-direction: row;
@@ -80,7 +43,7 @@
                 opacity: 0.4;
                 pointer-events: none;
             }
-            .full-bg-patterns .center-patterns img {
+            .responsive-bg-patterns .center-patterns img {
                 width: 18vw;
                 min-width: 120px;
                 max-width: 340px;
@@ -88,40 +51,39 @@
                 flex-shrink: 0;
             }
             @media (max-width: 900px) {
-                .full-bg-patterns .center-patterns img {
+                .responsive-bg-patterns .center-patterns img {
                     width: 28vw;
                     min-width: 80px;
                     max-width: 180px;
                 }
-                .full-bg-patterns .side-patterns img {
+                .responsive-bg-patterns .side-patterns img {
                     width: 80px;
                     min-width: 50px;
                     max-width: 100px;
                 }
             }
             @media (max-width: 600px) {
-                .full-bg-patterns .center-patterns img {
+                .responsive-bg-patterns .center-patterns img {
                     width: 40vw;
                     min-width: 60px;
                     max-width: 120px;
                 }
-                .full-bg-patterns .side-patterns img {
+                .responsive-bg-patterns .side-patterns img {
                     width: 50px;
                     min-width: 30px;
                     max-width: 60px;
                 }
             }
-            
         </style>
-        <div class="full-bg-patterns" aria-hidden="true">
+        <div class="responsive-bg-patterns" style="top: calc(100% + 0px);">
             <!-- Side Patterns (left) -->
             <div class="side-patterns" style="top: 80px;">
                 <img style="opacity: 0.23;" src="{{ asset('storage/icon/pattern-ff-18-e-023-20.svg') }}" alt="" />
                 <img style="opacity: 0.33;" src="{{ asset('storage/icon/pattern-ff-18-e-023-30.svg') }}" alt="" />
                 <img style="opacity: 0.43;" src="{{ asset('storage/icon/pattern-ff-18-e-023-40.svg') }}" alt="" />
-            </div>
+            </div> 
             <!-- Center Patterns (full width, under header) -->
-            <div class="center-patterns" style="top: 80px;">
+            <div class="center-patterns" style="margin-top: 80px;">
                 <img src="{{ asset('storage/icon/pattern-ff-18-e-023-50.svg') }}" alt="" />
                 <img src="{{ asset('storage/icon/pattern-ff-18-e-023-60.svg') }}" alt="" />
                 <img src="{{ asset('storage/icon/pattern-ff-18-e-023-70.svg') }}" alt="" />
