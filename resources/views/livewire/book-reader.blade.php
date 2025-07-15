@@ -1,8 +1,10 @@
 <!-- =================== بداية مكون القارئ =================== -->
-<div>
+
+{{-- Livewire Component: <book-reader> — عنصر جذري واحد فقط --}}
+<div id="book-reader" class="relative overflow-x-hidden" dir="rtl"><div>
 
     <!-- =================== رأس الصفحة/التنقل =================== -->
-    <div style="background: #ffffff; position: relative; overflow: hidden;">
+    <div style="background: #ffffff; position: relative; overflow: hidden;"> 
 
         <!-- شريط التنقل العلوي -->
         <div style="background: #ffffff; border-style: solid; border-color: #e8e8e9; border-width: 0px 0px 1px 0px; padding: 16px 135px 16px 135px; display: flex; flex-direction: column; gap: 10px; align-items: flex-start; justify-content: flex-start; width: 100%; position: relative;">
@@ -38,6 +40,7 @@
                 </div>
             </div>
         </div>
+    </div>
 <!----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------->
 <!----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------->  
    
@@ -45,8 +48,7 @@
 <!----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------->
 <!----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------->
 
-{{-- Livewire Component: <book-reader> — عنصر جذري واحد فقط --}}
-<div id="book-reader" class="relative overflow-x-hidden" dir="rtl">
+
     <!-- 🖌️ الأنماط الزخرفية (تتحرك مع التمرير لأنها absolute) -->
     <div class="full-bg-patterns pointer-events-none absolute inset-0 -z-10 overflow-hidden" aria-hidden="true">
         <!-- النقوش الجانبية -->
@@ -102,49 +104,6 @@
 
         <!-- 👇 باقي المحتوى يوضع هنا (الفهرس + الصفحات ...) -->
         {{ $slot ?? '' }}
-    </main>
-</div>
-
-@push('styles')
-<style>
-    /* إعدادات الحجم للنقوش المركزية */
-    .center-patterns .pattern {
-        width: 18vw;
-        min-width: 120px;
-        max-width: 340px;
-        height: auto;
-        flex-shrink: 0;
-    }
-    @media (max-width: 900px) {
-        .center-patterns .pattern {
-            width: 28vw;
-            min-width: 80px;
-            max-width: 180px;
-        }
-        .side-patterns img {
-            width: 80px !important;
-            min-width: 50px !important;
-            max-width: 100px !important;
-        }
-    }
-    @media (max-width: 600px) {
-        .center-patterns .pattern {
-            width: 40vw;
-            min-width: 60px;
-            max-width: 120px;
-        }
-        .side-patterns img {
-            width: 50px !important;
-            min-width: 30px !important;
-            max-width: 60px !important;
-        }
-    }
-</style>
-@endpush
-
-<!----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------->
-<!----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------->  
-<!----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------->  
 
                     <!-- منطقة المحتوى مع الشريط الجانبي -->
                     <div style="display: flex; flex-direction: row; gap: 12px; align-items: flex-start; justify-content: flex-end; flex-shrink: 0; position: relative; width: 100%;">
@@ -262,6 +221,11 @@
             </div>
         </div>
 
+
+
+
+    </main>
+</div>
         <!-- =================== تذييل الصفحة =================== -->
         <div style="width: 100%; margin-top: 80px; position: relative; clear: both; padding-top: 100px;">
             <footer class="footer" style="background-color: #f8f9fa; padding: 30px 0; text-align: center; border-top: 1px solid #e8e8e9; width: 100%;">
@@ -278,10 +242,41 @@
                 </div>
             </footer>
         </div>
-    </div>
+    
 
-    <!-- =================== أنماط CSS مخصصة =================== -->
-    <style>
+@push('styles')
+<style>
+    /* إعدادات الحجم للنقوش المركزية */
+    .center-patterns .pattern {
+        width: 18vw;
+        min-width: 120px;
+        max-width: 340px;
+        height: auto;
+        flex-shrink: 0;
+    }
+    @media (max-width: 900px) {
+        .center-patterns .pattern {
+            width: 28vw;
+            min-width: 80px;
+            max-width: 180px;
+        }
+        .side-patterns img {
+            width: 80px !important;
+            min-width: 50px !important;
+            max-width: 100px !important;
+        }
+    }
+    @media (max-width: 600px) {
+        .center-patterns .pattern {
+            width: 40vw;
+            min-width: 60px;
+            max-width: 120px;
+        }
+        .side-patterns img {
+            width: 50px !important;
+            min-width: 30px !important;
+            max-width: 60px !important;
+        }
         /* شريط تمرير مخصص للمتصفحات التي تدعم webkit */
         ::-webkit-scrollbar {
             width: 6px;
@@ -329,6 +324,7 @@
             position: relative;
             z-index: 10;
         }
-    </style>
-</div>
-<!-- =================== نهاية مكون القارئ =================== --> 
+    
+    }
+</style>
+@endpush
