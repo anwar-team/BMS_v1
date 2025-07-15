@@ -23,6 +23,7 @@
     </div>
 </header>
 
+
 @push('js')
 <script>
 document.addEventListener('DOMContentLoaded', function() {
