@@ -39,7 +39,7 @@
         </div>
 
         <!-- النقوش المركزية بعرض كامل -->
-        <div class="center-patterns absolute top-20 left-1/2 -translate-x-1/2 flex gap-0 opacity-40">
+        <div class="center-patterns absolute top-20 left-1/2 -translate-x-1/2 flex gap-0 opacity-30">
             <img src="{{ asset('storage/icon/pattern-ff-18-e-023-50.svg') }}" alt="" class="pattern" />
             <img src="{{ asset('storage/icon/pattern-ff-18-e-023-60.svg') }}" alt="" class="pattern" />
             <img src="{{ asset('storage/icon/pattern-ff-18-e-023-70.svg') }}" alt="" class="pattern" />
