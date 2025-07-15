@@ -218,7 +218,7 @@
                         <div class="cell-6">
                             <div class="box">
                                 <div class="typography">
-                                    <div class="body-22">{{ $book->category->name ?? 'الأذكار والأوراد والأدعية' }}</div>
+                                    <div class="body-22">{{ $book->bookSection->name ?? 'الأذكار والأوراد والأدعية' }}</div>
                                 </div>
                             </div>
                         </div>
@@ -232,7 +232,7 @@
                         <div class="cell-6">
                             <div class="box">
                                 <div class="typography">
-                                    <div class="body-22">{{ $book->author->name ?? 'عبد الله عزام' }}</div>
+                                    <div class="body-22">{{ $book->authors->first()->full_name ?? 'عبد الله عزام' }}</div>
                                 </div>
                             </div>
                         </div>
@@ -332,21 +332,21 @@
                         <div class="cell-6">
                             <div class="box">
                                 <div class="typography">
-                                    <div class="body-22">{{ $author->category ?? 'الأذكار والأوراد والأدعية' }}</div>
+                                    <div class="body-22">{{ $author->books->first()->bookSection->name ?? 'الأذكار والأوراد والأدعية' }}</div>
                                 </div>
                             </div>
                         </div>
                         <div class="cell-6">
                             <div class="box">
                                 <div class="typography">
-                                    <div class="body-22">{{ $author->book_title ?? 'أذكار الصباح والمساء' }}</div>
+                                    <div class="body-22">{{ $author->books->first()->title ?? 'أذكار الصباح والمساء' }}</div>
                                 </div>
                             </div>
                         </div>
                         <div class="cell-6">
                             <div class="box">
                                 <div class="typography">
-                                    <div class="body-22">{{ $author->name ?? 'عبد الله عزام' }}</div>
+                                    <div class="body-22">{{ $author->full_name ?? 'عبد الله عزام' }}</div>
                                 </div>
                             </div>
                         </div>

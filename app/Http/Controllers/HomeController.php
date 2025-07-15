@@ -42,7 +42,7 @@ class HomeController extends Controller
         // Get authors with their books
         $authors = Author::with(['books'])
             ->whereHas('books')
-            ->orderBy('name')
+            ->orderBy('fname')
             ->take(6)
             ->get();
 
