@@ -65,7 +65,7 @@
 
                                 <!-- عرض الشعار إذا كان موجود -->
                                 @if($footerLogo)
-                                    <img src="{{ Storage::url($footerLogo) }}" alt="{{ $brandName }}" width="220" height="auto" />
+                                    <img src="{{ Storage::url($footerLogo) }}" alt="{{ $brandName }}" width="500" height="auto" />
                                 @endif
                             </a>
 
