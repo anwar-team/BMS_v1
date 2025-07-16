@@ -1,7 +1,7 @@
 <!-- بداية الفوتر: عنصر رئيسي للفوتر الخاص بالموقع -->
 <footer class="section-footer"> <!-- section-footer: كلاس مخصص للفوتر -->
     <!-- خلفية الفوتر بلون أزرق غامق -->
-    <div class="bg-green-700e"> <!-- bg-color-denim-darkblue: كلاس مخصص للون الخلفية -->
+    <div class="bg-lime-700"> <!-- bg-color-denim-darkblue: كلاس مخصص للون الخلفية -->
         <!-- ضبط العنصر ليكون فوق العناصر الأخرى باستخدام z-index -->
 
 
@@ -168,7 +168,7 @@
             </div>
         </div>
 
-        <div class="bg-green-700 bg-opacity-5">
+        <div class="bg-lime-700 ">
             <div class="py-[18px]">
                 <div class="container-default">
                     <div class="text-center text-white text-opacity-80">
