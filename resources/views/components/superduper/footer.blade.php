@@ -47,91 +47,75 @@
             <div class="pt-[2rem] pb-[2rem] lg:pt-10 lg:pb-10"> <!-- py: padding-y، lg:py-20: تخصيص المسافة للشاشات الكبيرة -->
                 <!-- حاوية مركزية للمحتوى -->
                  
-                <div class="container-default ">
-                    <!-- شبكة لتقسيم الفوتر إلى أعمدة متعددة حسب حجم الشاشة 
-                    <div class="grid gap-x-8 gap-y-10 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-[1fr_repeat(4,_auto)] xl:gap-x-10 xxl:gap-x-[134px]"> -->
-                        <!-- grid: تفعيل الشبكة، gap-x-8: مسافة أفقية بين الأعمدة، gap-y-10: مسافة رأسية بين الصفوف، sm:grid-cols-2: عمودين للشاشات الصغيرة، md:grid-cols-3: ثلاثة أعمدة للمتوسطة، lg:grid-cols: توزيع مخصص للأعمدة للشاشات الكبيرة، xl و xxl: تخصيص المسافات للأكبر -->
-                        <!-- العمود الأول: معلومات العلامة التجارية والوصف ووسائل التواصل flex flex-col gap-y-7 md:col-span-3 lg:col-span-1 -->
-                        
-                            <div class="justify-center content-center items-center">
-                            <!-- flex flex-col: ترتيب العناصر عموديًا، gap-y-7: مسافة رأسية بين العناصر، md:col-span-3: يمتد على 3 أعمدة في الشاشات المتوسطة، lg:col-span-1: يمتد على عمود واحد في الكبيرة -->
-                            <!-- شعار الموقع مع رابط للصفحة الرئيسية -->
-                            <a href="{{ route('home') }}">
-                                <!-- جلب بيانات الشعار والاسم من الإعدادات العامة أو إعدادات الموقع -->
-                                @php
-                                    $brandLogo = $generalSettings->brand_logo ?? null; // شعار العلامة التجارية
-                                    $brandName = $generalSettings->brand_name ?? $siteSettings->name ?? config('app.name', 'SuperDuper'); // اسم العلامة التجارية
-                                    $footerLogo = $siteSettings->footer_logo ?? $brandLogo; // شعار الفوتر
-                                @endphp
+                <div class="container-default">
+    {{-- عمود مركزي واحد --}}
+    <div class="flex flex-col items-center gap-7">
 
-                                <!-- عرض الشعار إذا كان موجود -->
-                                @if($footerLogo)
-                                    <img src="{{ Storage::url($footerLogo) }}" alt="{{ $brandName }}" width="400" height="auto" />
-                                @endif
-                            </a>
+        {{-- الشعار --}}
+        @php
+            $brandLogo  = $generalSettings->brand_logo ?? null;
+            $brandName  = $generalSettings->brand_name ?? $siteSettings->name ?? config('app.name', 'SuperDuper');
+            $footerLogo = $siteSettings->footer_logo   ?? $brandLogo;
+        @endphp
 
-                            <!-- وصف الموقع والبريد الإلكتروني ووسائل التواصل -->
-                            <div>
-                                <!-- وصف مختصر للموقع 
-                                <div class="lg:max-w-[416px]"> 
-                                    {{ $siteSettings->description ?? '' }}
-                                </div>
-                                -->
-                                <!-- رابط البريد الإلكتروني 
-                                <a href="mailto:{{ $siteSettings->company_email ?? 'yourdemo@email.com' }}"
-                                    class="block my-6 transition-all duration-300 underline-offset-4 hover:underline">
-                                    {{ $siteSettings->company_email ?? 'yourdemo@email.com' }}
-                                </a>
-                                -->
+        @if ($footerLogo)
+            <a href="{{ route('home') }}" class="block mx-auto">
+                <img src="{{ Storage::url($footerLogo) }}"
+                     alt="{{ $brandName }}"
+                     class="w-[164px] h-auto" />
+            </a>
+        @endif
 
-                                <!-- أيقونات وسائل التواصل الاجتماعي -->
-                                <div class="flex flex-wrap gap-5"> <!-- flex: ترتيب أفقي، flex-wrap: التفاف العناصر، gap-5: مسافة بين الأيقونات -->
-                                    <!-- جلب روابط وأيقونات وسائل التواصل من إعدادات الموقع -->
-                                    @php
-                                        $socialLinks = [
-                                            'facebook' => $siteSocialSettings->facebook_url ?? null, // رابط فيسبوك
-                                            'twitter' => $siteSocialSettings->twitter_url ?? null, // رابط تويتر
-                                            'instagram' => $siteSocialSettings->instagram_url ?? null, // رابط انستجرام
-                                            'linkedin' => $siteSocialSettings->linkedin_url ?? null, // رابط لينكدإن
-                                            'youtube' => $siteSocialSettings->youtube_url ?? null, // رابط يوتيوب
-                                            'tiktok' => $siteSocialSettings->tiktok_url ?? null, // رابط تيك توك
-                                        ];
+        {{-- أيقونات التواصل الاجتماعي --}}
+        @php
+            $socialLinks = [
+                'facebook'  => $siteSocialSettings->facebook_url  ?? null,
+                'twitter'   => $siteSocialSettings->twitter_url   ?? null,
+                'instagram' => $siteSocialSettings->instagram_url ?? null,
+                'linkedin'  => $siteSocialSettings->linkedin_url  ?? null,
+                'youtube'   => $siteSocialSettings->youtube_url   ?? null,
+                'tiktok'    => $siteSocialSettings->tiktok_url    ?? null,
+            ];
+            $faIcons = [
+                'twitter'   => 'fa-brands fa-x-twitter',
+                'facebook'  => 'fa-brands fa-facebook-f',
+                'instagram' => 'fa-brands fa-instagram',
+                'linkedin'  => 'fa-brands fa-linkedin-in',
+                'youtube'   => 'fa-brands fa-youtube',
+                'tiktok'    => 'fa-brands fa-tiktok',
+            ];
+        @endphp
 
-                                        $faIcons = [
-                                            'twitter' => 'fa-brands fa-x-twitter', // أيقونة تويتر
-                                            'facebook' => 'fa-brands fa-facebook-f', // أيقونة فيسبوك
-                                            'instagram' => 'fa-brands fa-instagram', // أيقونة انستجرام
-                                            'linkedin' => 'fa-brands fa-linkedin-in', // أيقونة لينكدإن
-                                            'youtube' => 'fa-brands fa-youtube', // أيقونة يوتيوب
-                                            'tiktok' => 'fa-brands fa-tiktok', // أيقونة تيك توك
-                                        ];
-                                    @endphp
+        <div class="flex flex-wrap justify-center gap-5">
+            @php $hasLinks = false; @endphp
+            @foreach($socialLinks as $platform => $url)
+                @if($url)
+                    @php $hasLinks = true; @endphp
+                    <a href="{{ $url }}" target="_blank" rel="noopener noreferrer"
+                       class="flex h-[30px] w-[30px] items-center justify-center rounded-full bg-white/5 text-white text-sm
+                              transition hover:bg-color-pale-gold hover:text-color-denim-darkblue"
+                       aria-label="{{ $platform }}">
+                        <i class="{{ $faIcons[$platform] }}"></i>
+                    </a>
+                @endif
+            @endforeach
 
-                                    @foreach($socialLinks as $platform => $url)
-                                        @if(!empty($url))
-                                            <a href="{{ $url }}" target="_blank" rel="noopener noreferrer"
-                                                class="flex h-[30px] w-[30px] items-center justify-center rounded-[50%] bg-white bg-opacity-5 text-sm text-white transition-all duration-300 hover:bg-color-pale-gold hover:text-color-denim-darkblue"
-                                                aria-label="{{ $platform }}">
-                                                <i class="{{ $faIcons[$platform] ?? 'fa-brands fa-'.$platform }}"></i>
-                                            </a>
-                                        @endif
-                                    @endforeach
+            {{-- روابط افتراضيّة إذا لم تُضف شيئًا بعد --}}
+            @if(!$hasLinks)
+                <a href="https://twitter.com" target="_blank"
+                   class="flex h-[30px] w-[30px] items-center justify-center rounded-full bg-white/5 text-white">
+                    <i class="fa-brands fa-x-twitter"></i>
+                </a>
+                <a href="https://facebook.com" target="_blank"
+                   class="flex h-[30px] w-[30px] items-center justify-center rounded-full bg-white/5 text-white">
+                    <i class="fa-brands fa-facebook-f"></i>
+                </a>
+            @endif
+        </div>
 
-                                    @if(empty(array_filter($socialLinks)))
-                                        <a href="https://twitter.com" target="_blank" rel="noopener noreferrer"
-                                            class="flex h-[30px] w-[30px] items-center justify-center rounded-[50%] bg-white bg-opacity-5 text-sm text-white transition-all duration-300 hover:bg-color-pale-gold hover:text-color-denim-darkblue"
-                                            aria-label="twitter">
-                                            <i class="fa-brands fa-x-twitter"></i>
-                                        </a>
-                                        <a href="https://www.facebook.com/" target="_blank" rel="noopener noreferrer"
-                                            class="flex h-[30px] w-[30px] items-center justify-center rounded-[50%] bg-white bg-opacity-5 text-sm text-white transition-all duration-300 hover:bg-color-pale-gold hover:text-color-denim-darkblue"
-                                            aria-label="facebook">
-                                            <i class="fa-brands fa-facebook-f"></i>
-                                        </a>
-                                    @endif
-                                </div>
-                            </div>
-                        </div> 
+    </div>
+</div>
+ 
                         
                          {{--
                         <div class="flex flex-col gap-y-7">
