@@ -40,9 +40,6 @@
 
         <!-- خط أفقي أبيض للفصل بين الأقسام -->
         <div class="bg-white horizontal-line"></div> <!-- bg-white: خلفية بيضاء، horizontal-line: كلاس مخصص للخط -->
-<!--------------------------------------------------------------------------------------------------------------------------------->
-<!--------------------------------------------------------------------------------------------------------------------------------->
-<!--------------------------------------------------------------------------------------------------------------------------------->
 
         <!-- قسم المعلومات والروابط في الفوتر -->
         <div class="text-white"> <!-- text-white: لون الخط أبيض -->
@@ -58,21 +55,7 @@
                         <div class="flex flex-col gap-y-7 md:col-span-3 lg:col-span-1">
                             <!-- flex flex-col: ترتيب العناصر عموديًا، gap-y-7: مسافة رأسية بين العناصر، md:col-span-3: يمتد على 3 أعمدة في الشاشات المتوسطة، lg:col-span-1: يمتد على عمود واحد في الكبيرة -->
                             <!-- شعار الموقع مع رابط للصفحة الرئيسية -->
-                            
-
-
-<div class="bg-[#1a3a2a] h-[372px] relative overflow-hidden">
-  <div
-    class="flex flex-col gap-[39px] items-center justify-start w-[1170px] absolute left-[135px] top-10"
-  >
-    <div
-      class="flex flex-col gap-10 items-start justify-start self-stretch shrink-0 relative"
-    >
-      <div
-        class="flex flex-row gap-[175px] items-start justify-center self-stretch shrink-0 relative"
-      >
-        <div class="shrink-0 w-[164px] h-[207px] relative">
-          <a href="{{ route('home') }}">
+                            <a href="{{ route('home') }}">
                                 <!-- جلب بيانات الشعار والاسم من الإعدادات العامة أو إعدادات الموقع -->
                                 @php
                                     $brandLogo = $generalSettings->brand_logo ?? null; // شعار العلامة التجارية
@@ -85,36 +68,22 @@
                                     <img src="{{ Storage::url($footerLogo) }}" alt="{{ $brandName }}" width="400" height="auto" />
                                 @endif
                             </a>
-        </div>
-      </div>
-      <div
-        class="border-solid border-neutral-dark-6 border-t border-r-[0] border-b-[0] border-l-[0] self-stretch shrink-0 h-0 relative"
-        style="
-          margin-top: -1px;
-          opacity: 0.2;
-          transform-origin: 0 0;
-          transform: rotate(0deg) scale(1, 1);
-        "
-      ></div>
-    </div>
 
-  </div>
-</div>
-
+                            
                             <!-- وصف الموقع والبريد الإلكتروني ووسائل التواصل -->
                             <div>
-                                <!-- وصف مختصر للموقع 
-                                <div class="lg:max-w-[416px]"> 
+                                <!-- وصف مختصر للموقع -->
+                                <div class="lg:max-w-[416px]"> <!-- lg:max-w-[416px]: أقصى عرض في الشاشات الكبيرة -->
                                     {{ $siteSettings->description ?? '' }}
                                 </div>
-                                -->
 
-                                <!-- رابط البريد الإلكتروني 
+                                <!-- رابط البريد الإلكتروني -->
                                 <a href="mailto:{{ $siteSettings->company_email ?? 'yourdemo@email.com' }}"
                                     class="block my-6 transition-all duration-300 underline-offset-4 hover:underline">
+                                    <!-- block: عرض كرابط كامل، my-6: هامش رأسي، transition-all duration-300: انتقال سلس عند التفاعل، underline-offset-4: تباعد تحت الخط، hover:underline: يظهر خط عند المرور -->
                                     {{ $siteSettings->company_email ?? 'yourdemo@email.com' }}
                                 </a>
-                                -->
+
                                 <!-- أيقونات وسائل التواصل الاجتماعي -->
                                 <div class="flex flex-wrap gap-5"> <!-- flex: ترتيب أفقي، flex-wrap: التفاف العناصر، gap-5: مسافة بين الأيقونات -->
                                     <!-- جلب روابط وأيقونات وسائل التواصل من إعدادات الموقع -->
@@ -272,9 +241,3 @@
         </div>
     </div>
 </footer>
-    <div
-      class="text-[#ffffff] text-center font-['NotoSansArabic-Regular',_sans-serif] text-sm font-normal relative self-stretch"
-      style="letter-spacing: -0.02em"
-    >
-      © حقوق الطبع والنشر 2025. جميع الحقوق محفوظة.
-    </div>
