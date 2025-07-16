@@ -59,7 +59,7 @@
             <a href="{{ route('home') }}" class="block">
                 <img src="{{ Storage::url($footerLogo) }}"
                      alt="{{ $brandName }}"
-                     width="400"   {{-- الحجم الذي استخدمته في الكود الأصلي --}}
+                     width="300"   {{-- الحجم الذي استخدمته في الكود الأصلي --}}
                      height="auto" />
             </a>
         @endif
@@ -164,9 +164,7 @@
                         </div>
                         --}}
                     
-                </div>
-            </div>
-        </div>
+
 
         <div class="bg-white bg-opacity-5">
             <div class="py-[18px]">
