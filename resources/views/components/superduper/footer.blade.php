@@ -44,7 +44,7 @@
         <!-- قسم المعلومات والروابط في الفوتر -->
         <div class="text-white"> <!-- text-white: لون الخط أبيض -->
             <!-- مسافة داخلية رأسية حسب حجم الشاشة -->
-            <div class="py-[40px] lg:py-10"> <!-- py: padding-y، lg:py-20: تخصيص المسافة للشاشات الكبيرة -->
+            <div class="py-[50px] lg:py-15"> <!-- py: padding-y، lg:py-20: تخصيص المسافة للشاشات الكبيرة -->
                 <!-- حاوية مركزية للمحتوى -->
                  
                 <div class="container-default">
@@ -65,7 +65,7 @@
 
                                 <!-- عرض الشعار إذا كان موجود -->
                                 @if($footerLogo)
-                                    <img src="{{ Storage::url($footerLogo) }}" alt="{{ $brandName }}" width="400" height="auto" />
+                                    <img src="{{ Storage::url($footerLogo) }}" alt="{{ $brandName }}" width="300" height="auto" />
                                 @endif
                             </a>
 
