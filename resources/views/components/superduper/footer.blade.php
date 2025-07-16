@@ -44,7 +44,7 @@
         <!-- قسم المعلومات والروابط في الفوتر -->
         <div class="text-white"> <!-- text-white: لون الخط أبيض -->
             <!-- مسافة داخلية رأسية حسب حجم الشاشة -->
-            <div class="py-[60px] lg:py-20"> <!-- py: padding-y، lg:py-20: تخصيص المسافة للشاشات الكبيرة -->
+            <div class="pt-[2rem] pb-[2rem] lg:pt-10 lg:pb-10"> <!-- py: padding-y، lg:py-20: تخصيص المسافة للشاشات الكبيرة -->
                 <!-- حاوية مركزية للمحتوى -->
                  
                 <div class="container-default">
