@@ -41,29 +41,193 @@
         <!-- خط أفقي أبيض للفصل بين الأقسام -->
         <div class="bg-white horizontal-line"></div> <!-- bg-white: خلفية بيضاء، horizontal-line: كلاس مخصص للخط -->
 
+        <!-- قسم المعلومات والروابط في الفوتر -->
+        <div class="text-white"> <!-- text-white: لون الخط أبيض -->
+            <!-- مسافة داخلية رأسية حسب حجم الشاشة -->
+            <div class="py-[60px] lg:py-20"> <!-- py: padding-y، lg:py-20: تخصيص المسافة للشاشات الكبيرة -->
+                <!-- حاوية مركزية للمحتوى -->
+                 
+                <div class="container-default">
+                    <!-- شبكة لتقسيم الفوتر إلى أعمدة متعددة حسب حجم الشاشة -->
+                    <div class="grid gap-x-8 gap-y-10 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-[1fr_repeat(4,_auto)] xl:gap-x-10 xxl:gap-x-[134px]">
+                        <!-- grid: تفعيل الشبكة، gap-x-8: مسافة أفقية بين الأعمدة، gap-y-10: مسافة رأسية بين الصفوف، sm:grid-cols-2: عمودين للشاشات الصغيرة، md:grid-cols-3: ثلاثة أعمدة للمتوسطة، lg:grid-cols: توزيع مخصص للأعمدة للشاشات الكبيرة، xl و xxl: تخصيص المسافات للأكبر -->
+                        <!-- العمود الأول: معلومات العلامة التجارية والوصف ووسائل التواصل -->
+                        <div class="flex flex-col gap-y-7 md:col-span-3 lg:col-span-1">
+                            <!-- flex flex-col: ترتيب العناصر عموديًا، gap-y-7: مسافة رأسية بين العناصر، md:col-span-3: يمتد على 3 أعمدة في الشاشات المتوسطة، lg:col-span-1: يمتد على عمود واحد في الكبيرة -->
+                            <!-- شعار الموقع مع رابط للصفحة الرئيسية -->
+                            <a href="{{ route('home') }}">
+                                <!-- جلب بيانات الشعار والاسم من الإعدادات العامة أو إعدادات الموقع -->
+                                @php
+                                    $brandLogo = $generalSettings->brand_logo ?? null; // شعار العلامة التجارية
+                                    $brandName = $generalSettings->brand_name ?? $siteSettings->name ?? config('app.name', 'SuperDuper'); // اسم العلامة التجارية
+                                    $footerLogo = $siteSettings->footer_logo ?? $brandLogo; // شعار الفوتر
+                                @endphp
 
-        <div class="container-photo center">
-            <!-- عرض صورة في المنتصف 
-            <img src="{{ asset('superduper/images/footer-image.png') }}" alt="Footer Image" class="mx-auto" /> -->
-            @php
-                $brandLogo = $generalSettings->brand_logo ?? null; // شعار العلامة التجارية
-                $brandName = $generalSettings->brand_name ?? $siteSettings->name ?? config('app.name', 'SuperDuper'); // اسم العلامة التجارية
-                $footerLogo = $siteSettings->footer_logo ?? $brandLogo; // شعار الفوتر
-            @en
-            <!-- عرض الشعار إذا كان موجود -->
-            @if($footerLogo)
-                <img src="{{ Storage::url($footerLogo) }}" alt="{{ $brandName }}" width="220" height="auto" />
-            @endif
+                                <!-- عرض الشعار إذا كان موجود -->
+                                @if($footerLogo)
+                                    <img src="{{ Storage::url($footerLogo) }}" alt="{{ $brandName }}" width="220" height="auto" />
+                                @endif
+                            </a>
+
+                            <!-- وصف الموقع والبريد الإلكتروني ووسائل التواصل -->
+                            <div>
+                                <!-- وصف مختصر للموقع -->
+                                <div class="lg:max-w-[416px]"> <!-- lg:max-w-[416px]: أقصى عرض في الشاشات الكبيرة -->
+                                    {{ $siteSettings->description ?? '' }}
+                                </div>
+
+                                <!-- رابط البريد الإلكتروني -->
+                                <a href="mailto:{{ $siteSettings->company_email ?? 'yourdemo@email.com' }}"
+                                    class="block my-6 transition-all duration-300 underline-offset-4 hover:underline">
+                                    <!-- block: عرض كرابط كامل، my-6: هامش رأسي، transition-all duration-300: انتقال سلس عند التفاعل، underline-offset-4: تباعد تحت الخط، hover:underline: يظهر خط عند المرور -->
+                                    {{ $siteSettings->company_email ?? 'yourdemo@email.com' }}
+                                </a>
+
+                                <!-- أيقونات وسائل التواصل الاجتماعي -->
+                                <div class="flex flex-wrap gap-5"> <!-- flex: ترتيب أفقي، flex-wrap: التفاف العناصر، gap-5: مسافة بين الأيقونات -->
+                                    <!-- جلب روابط وأيقونات وسائل التواصل من إعدادات الموقع -->
+                                    @php
+                                        $socialLinks = [
+                                            'facebook' => $siteSocialSettings->facebook_url ?? null, // رابط فيسبوك
+                                            'twitter' => $siteSocialSettings->twitter_url ?? null, // رابط تويتر
+                                            'instagram' => $siteSocialSettings->instagram_url ?? null, // رابط انستجرام
+                                            'linkedin' => $siteSocialSettings->linkedin_url ?? null, // رابط لينكدإن
+                                            'youtube' => $siteSocialSettings->youtube_url ?? null, // رابط يوتيوب
+                                            'tiktok' => $siteSocialSettings->tiktok_url ?? null, // رابط تيك توك
+                                        ];
+
+                                        $faIcons = [
+                                            'twitter' => 'fa-brands fa-x-twitter', // أيقونة تويتر
+                                            'facebook' => 'fa-brands fa-facebook-f', // أيقونة فيسبوك
+                                            'instagram' => 'fa-brands fa-instagram', // أيقونة انستجرام
+                                            'linkedin' => 'fa-brands fa-linkedin-in', // أيقونة لينكدإن
+                                            'youtube' => 'fa-brands fa-youtube', // أيقونة يوتيوب
+                                            'tiktok' => 'fa-brands fa-tiktok', // أيقونة تيك توك
+                                        ];
+                                    @endphp
+
+                                    @foreach($socialLinks as $platform => $url)
+                                        @if(!empty($url))
+                                            <a href="{{ $url }}" target="_blank" rel="noopener noreferrer"
+                                                class="flex h-[30px] w-[30px] items-center justify-center rounded-[50%] bg-white bg-opacity-5 text-sm text-white transition-all duration-300 hover:bg-color-pale-gold hover:text-color-denim-darkblue"
+                                                aria-label="{{ $platform }}">
+                                                <i class="{{ $faIcons[$platform] ?? 'fa-brands fa-'.$platform }}"></i>
+                                            </a>
+                                        @endif
+                                    @endforeach
+
+                                    @if(empty(array_filter($socialLinks)))
+                                        <a href="https://twitter.com" target="_blank" rel="noopener noreferrer"
+                                            class="flex h-[30px] w-[30px] items-center justify-center rounded-[50%] bg-white bg-opacity-5 text-sm text-white transition-all duration-300 hover:bg-color-pale-gold hover:text-color-denim-darkblue"
+                                            aria-label="twitter">
+                                            <i class="fa-brands fa-x-twitter"></i>
+                                        </a>
+                                        <a href="https://www.facebook.com/" target="_blank" rel="noopener noreferrer"
+                                            class="flex h-[30px] w-[30px] items-center justify-center rounded-[50%] bg-white bg-opacity-5 text-sm text-white transition-all duration-300 hover:bg-color-pale-gold hover:text-color-denim-darkblue"
+                                            aria-label="facebook">
+                                            <i class="fa-brands fa-facebook-f"></i>
+                                        </a>
+                                    @endif
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="flex flex-col gap-y-7">
+                            <div class="text-xl font-semibold capitalize">
+                                Main
+                            </div>
+                            @php
+                                use Datlechin\FilamentMenuBuilder\Models\Menu;
+                                $footerMenu = Menu::location('footer');
+                            @endphp
+                            <ul class="flex flex-col gap-y-[10px] capitalize">
+                                @if($footerMenu)
+                                    @foreach($footerMenu->menuItems as $item)
+                                        <li>
+                                            <a href="{{ $item->url }}" @if($item->target) target="{{ $item->target }}" @endif
+                                                class="transition-all duration-300 ease-linear hover:opcity-100 underline-offset-4 opacity-80 hover:underline">
+                                                {{ $item->title }}
+                                            </a>
+                                        </li>
+                                    @endforeach
+                                @else
+                                    <li>
+                                        <a href="{{ route('home') }}"
+                                            class="transition-all duration-300 ease-linear hover:opcity-100 underline-offset-4 opacity-80 hover:underline">Home</a>
+                                    </li>
+                                @endif
+                            </ul>
+                        </div>
+
+                        <div class="flex flex-col gap-y-6">
+                            <div class="text-xl font-semibold capitalize">
+                                Sample Pages
+                            </div>
+                            @php
+                                $footerOthers = Menu::location('footer-2');
+                            @endphp
+                            <ul class="flex flex-col gap-y-[10px] capitalize">
+                                @if($footerOthers)
+                                    @foreach($footerOthers->menuItems as $item)
+                                        <li>
+                                            <a href="{{ $item->url }}" @if($item->target) target="{{ $item->target }}" @endif
+                                                class="transition-all duration-300 ease-linear hover:opcity-100 underline-offset-4 opacity-80 hover:underline">
+                                                {{ $item->title }}
+                                            </a>
+                                        </li>
+                                    @endforeach
+                                @endif
+                            </ul>
+                        </div>
+
+                        {{-- # TODO: Create Menu Module --}}
+                        <div class="flex flex-col gap-y-6">
+                            <div class="text-xl font-semibold capitalize">
+                                Resources
+                            </div>
+                            @php
+                                $footerOthers = Menu::location('footer-3');
+                            @endphp
+                            <ul class="flex flex-col gap-y-[10px] capitalize">
+                                @if($footerOthers)
+                                    @foreach($footerOthers->menuItems as $item)
+                                        <li>
+                                            <a href="{{ $item->url }}" @if($item->target) target="{{ $item->target }}" @endif
+                                                class="transition-all duration-300 ease-linear hover:opcity-100 underline-offset-4 opacity-80 hover:underline">
+                                                {{ $item->title }}
+                                            </a>
+                                        </li>
+                                    @endforeach
+                                @endif
+                            </ul>
+                        </div>
+
+                        {{-- # TODO: Create Menu Module --}}
+                        <div class="flex flex-col gap-y-6">
+                            <div class="text-xl font-semibold capitalize">
+                                Community
+                            </div>
+                            @php
+                                $footerOthers = Menu::location('footer-4');
+                            @endphp
+                            <ul class="flex flex-col gap-y-[10px] capitalize">
+                                @if($footerOthers)
+                                    @foreach($footerOthers->menuItems as $item)
+                                        <li>
+                                            <a href="{{ $item->url }}" @if($item->target) target="{{ $item->target }}" @endif
+                                                class="transition-all duration-300 ease-linear hover:opcity-100 underline-offset-4 opacity-80 hover:underline">
+                                                {{ $item->title }}
+                                            </a>
+                                        </li>
+                                    @endforeach
+                                @endif
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-            <!-- شعار الموقع مع رابط للصفحة الرئيسية -->
-        <a href="{{ route('home') }}">
-            <!-- جلب بيانات الشعار والاسم من الإعدادات العامة أو إعدادات الموقع -->
-            
-        </a>
-                            
-       
 
-        <!-- قسم حقوق النشر -->
         <div class="bg-white bg-opacity-5">
             <div class="py-[18px]">
                 <div class="container-default">
