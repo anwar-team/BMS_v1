@@ -168,7 +168,7 @@
             </div>
         </div>
 
-        <div class="bg-white bg-opacity-5">
+        <div class="bg-green-700 bg-opacity-5">
             <div class="py-[18px]">
                 <div class="container-default">
                     <div class="text-center text-white text-opacity-80">
