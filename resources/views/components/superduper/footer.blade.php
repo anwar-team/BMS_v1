@@ -47,11 +47,8 @@
             <div class="pt-[2rem] pb-[2rem] lg:pt-10 lg:pb-10"> <!-- py: padding-y، lg:py-20: تخصيص المسافة للشاشات الكبيرة -->
                 <!-- حاوية مركزية للمحتوى -->
                  
-                <div class="container-default">
-    {{-- عمود مركزي واحد --}}
-    <div class="flex flex-col items-center gap-7">
-
-        {{-- الشعار --}}
+<div class="container-default">
+    <div class="flex justify-center">
         @php
             $brandLogo  = $generalSettings->brand_logo ?? null;
             $brandName  = $generalSettings->brand_name ?? $siteSettings->name ?? config('app.name', 'SuperDuper');
@@ -59,60 +56,13 @@
         @endphp
 
         @if ($footerLogo)
-            <a href="{{ route('home') }}" class="block mx-auto">
+            <a href="{{ route('home') }}" class="block">
                 <img src="{{ Storage::url($footerLogo) }}"
                      alt="{{ $brandName }}"
-                     class="w-[164px] h-auto" />
+                     width="400"   {{-- الحجم الذي استخدمته في الكود الأصلي --}}
+                     height="auto" />
             </a>
         @endif
-
-        {{-- أيقونات التواصل الاجتماعي --}}
-        @php
-            $socialLinks = [
-                'facebook'  => $siteSocialSettings->facebook_url  ?? null,
-                'twitter'   => $siteSocialSettings->twitter_url   ?? null,
-                'instagram' => $siteSocialSettings->instagram_url ?? null,
-                'linkedin'  => $siteSocialSettings->linkedin_url  ?? null,
-                'youtube'   => $siteSocialSettings->youtube_url   ?? null,
-                'tiktok'    => $siteSocialSettings->tiktok_url    ?? null,
-            ];
-            $faIcons = [
-                'twitter'   => 'fa-brands fa-x-twitter',
-                'facebook'  => 'fa-brands fa-facebook-f',
-                'instagram' => 'fa-brands fa-instagram',
-                'linkedin'  => 'fa-brands fa-linkedin-in',
-                'youtube'   => 'fa-brands fa-youtube',
-                'tiktok'    => 'fa-brands fa-tiktok',
-            ];
-        @endphp
-
-        <div class="flex flex-wrap justify-center gap-5">
-            @php $hasLinks = false; @endphp
-            @foreach($socialLinks as $platform => $url)
-                @if($url)
-                    @php $hasLinks = true; @endphp
-                    <a href="{{ $url }}" target="_blank" rel="noopener noreferrer"
-                       class="flex h-[30px] w-[30px] items-center justify-center rounded-full bg-white/5 text-white text-sm
-                              transition hover:bg-color-pale-gold hover:text-color-denim-darkblue"
-                       aria-label="{{ $platform }}">
-                        <i class="{{ $faIcons[$platform] }}"></i>
-                    </a>
-                @endif
-            @endforeach
-
-            {{-- روابط افتراضيّة إذا لم تُضف شيئًا بعد --}}
-            @if(!$hasLinks)
-                <a href="https://twitter.com" target="_blank"
-                   class="flex h-[30px] w-[30px] items-center justify-center rounded-full bg-white/5 text-white">
-                    <i class="fa-brands fa-x-twitter"></i>
-                </a>
-                <a href="https://facebook.com" target="_blank"
-                   class="flex h-[30px] w-[30px] items-center justify-center rounded-full bg-white/5 text-white">
-                    <i class="fa-brands fa-facebook-f"></i>
-                </a>
-            @endif
-        </div>
-
     </div>
 </div>
  
