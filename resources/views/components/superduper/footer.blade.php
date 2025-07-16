@@ -42,20 +42,24 @@
         <div class="bg-white horizontal-line"></div> <!-- bg-white: خلفية بيضاء، horizontal-line: كلاس مخصص للخط -->
 
 
-                            <!-- شعار الموقع مع رابط للصفحة الرئيسية -->
-                            <a href="{{ route('home') }}">
-                                <!-- جلب بيانات الشعار والاسم من الإعدادات العامة أو إعدادات الموقع -->
-                                @php
-                                    $brandLogo = $generalSettings->brand_logo ?? null; // شعار العلامة التجارية
-                                    $brandName = $generalSettings->brand_name ?? $siteSettings->name ?? config('app.name', 'SuperDuper'); // اسم العلامة التجارية
-                                    $footerLogo = $siteSettings->footer_logo ?? $brandLogo; // شعار الفوتر
-                                @endphp
-
-                                <!-- عرض الشعار إذا كان موجود -->
-                                @if($footerLogo)
-                                    <img src="{{ Storage::url($footerLogo) }}" alt="{{ $brandName }}" width="220" height="auto" />
-                                @endif
-                            </a>
+        <div class="container-photo center">
+            <!-- عرض صورة في المنتصف 
+            <img src="{{ asset('superduper/images/footer-image.png') }}" alt="Footer Image" class="mx-auto" /> -->
+            @php
+                $brandLogo = $generalSettings->brand_logo ?? null; // شعار العلامة التجارية
+                $brandName = $generalSettings->brand_name ?? $siteSettings->name ?? config('app.name', 'SuperDuper'); // اسم العلامة التجارية
+                $footerLogo = $siteSettings->footer_logo ?? $brandLogo; // شعار الفوتر
+            @en
+            <!-- عرض الشعار إذا كان موجود -->
+            @if($footerLogo)
+                <img src="{{ Storage::url($footerLogo) }}" alt="{{ $brandName }}" width="220" height="auto" />
+            @endif
+        </div>
+            <!-- شعار الموقع مع رابط للصفحة الرئيسية -->
+        <a href="{{ route('home') }}">
+            <!-- جلب بيانات الشعار والاسم من الإعدادات العامة أو إعدادات الموقع -->
+            
+        </a>
                             
        
 
