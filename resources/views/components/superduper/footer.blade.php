@@ -44,7 +44,7 @@
         <!-- قسم المعلومات والروابط في الفوتر -->
         <div class="text-white"> <!-- text-white: لون الخط أبيض -->
             <!-- مسافة داخلية رأسية حسب حجم الشاشة -->
-            <div class="py-[60px] lg:py-20"> <!-- py: padding-y، lg:py-20: تخصيص المسافة للشاشات الكبيرة -->
+            <div class="pt-[2rem] pb-[2rem] lg:pt-10 lg:pb-10"> <!-- py: padding-y، lg:py-20: تخصيص المسافة للشاشات الكبيرة -->
                 <!-- حاوية مركزية للمحتوى -->
                  
                 <div class="container-default">
@@ -71,17 +71,17 @@
 
                             <!-- وصف الموقع والبريد الإلكتروني ووسائل التواصل -->
                             <div>
-                                <!-- وصف مختصر للموقع -->
-                                <div class="lg:max-w-[416px]"> <!-- lg:max-w-[416px]: أقصى عرض في الشاشات الكبيرة -->
+                                <!-- وصف مختصر للموقع 
+                                <div class="lg:max-w-[416px]"> 
                                     {{ $siteSettings->description ?? '' }}
                                 </div>
-
-                                <!-- رابط البريد الإلكتروني -->
+                                -->
+                                <!-- رابط البريد الإلكتروني 
                                 <a href="mailto:{{ $siteSettings->company_email ?? 'yourdemo@email.com' }}"
                                     class="block my-6 transition-all duration-300 underline-offset-4 hover:underline">
-                                    <!-- block: عرض كرابط كامل، my-6: هامش رأسي، transition-all duration-300: انتقال سلس عند التفاعل، underline-offset-4: تباعد تحت الخط، hover:underline: يظهر خط عند المرور -->
                                     {{ $siteSettings->company_email ?? 'yourdemo@email.com' }}
                                 </a>
+                                -->
 
                                 <!-- أيقونات وسائل التواصل الاجتماعي -->
                                 <div class="flex flex-wrap gap-5"> <!-- flex: ترتيب أفقي، flex-wrap: التفاف العناصر، gap-5: مسافة بين الأيقونات -->
