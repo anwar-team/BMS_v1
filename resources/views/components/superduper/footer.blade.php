@@ -1,7 +1,7 @@
 <!-- بداية الفوتر: عنصر رئيسي للفوتر الخاص بالموقع -->
 <footer class="section-footer"> <!-- section-footer: كلاس مخصص للفوتر -->
     <!-- خلفية الفوتر بلون أزرق غامق -->
-    <div class="bg-color-denim-darkblue"> <!-- bg-color-denim-darkblue: كلاس مخصص للون الخلفية -->
+    <div class="bg-green-700e"> <!-- bg-color-denim-darkblue: كلاس مخصص للون الخلفية -->
         <!-- ضبط العنصر ليكون فوق العناصر الأخرى باستخدام z-index -->
 
 
