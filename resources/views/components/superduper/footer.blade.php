@@ -3,10 +3,10 @@
     <!-- خلفية الفوتر بلون أزرق غامق -->
     <div class="bg-color-denim-darkblue"> <!-- bg-color-denim-darkblue: كلاس مخصص للون الخلفية -->
         <!-- ضبط العنصر ليكون فوق العناصر الأخرى باستخدام z-index -->
-         
 
-        {{-- 
-                                         <!-- الجزء العلوي من ال foorter الاصلي-->
+
+        {{--  <!-- الجزء العلوي من ال footer الاصلي-->
+
             <div class="relative z-10"> <!-- relative: لتحديد موضع العنصر بشكل نسبي، z-10: لجعل العنصر فوق العناصر الأخرى -->
                 <!-- مسافات داخلية للفوتر (padding) حسب حجم الشاشة -->
                 <div class="pb-[60px] pt-20 lg:pb-20 lg:pt-[100px] xl:pt-[120px]"> <!-- pb: padding-bottom، pt: padding-top، lg و xl: تخصيص المسافات للشاشات الكبيرة -->
@@ -41,11 +41,29 @@
         <!-- خط أفقي أبيض للفصل بين الأقسام -->
         <div class="bg-white horizontal-line"></div> <!-- bg-white: خلفية بيضاء، horizontal-line: كلاس مخصص للخط -->
 
-        <!-- قسم المعلومات والروابط في الفوتر -->
+
+                            <!-- شعار الموقع مع رابط للصفحة الرئيسية -->
+                            <a href="{{ route('home') }}">
+                                <!-- جلب بيانات الشعار والاسم من الإعدادات العامة أو إعدادات الموقع -->
+                                @php
+                                    $brandLogo = $generalSettings->brand_logo ?? null; // شعار العلامة التجارية
+                                    $brandName = $generalSettings->brand_name ?? $siteSettings->name ?? config('app.name', 'SuperDuper'); // اسم العلامة التجارية
+                                    $footerLogo = $siteSettings->footer_logo ?? $brandLogo; // شعار الفوتر
+                                @endphp
+
+                                <!-- عرض الشعار إذا كان موجود -->
+                                @if($footerLogo)
+                                    <img src="{{ Storage::url($footerLogo) }}" alt="{{ $brandName }}" width="220" height="auto" />
+                                @endif
+                            </a>
+
+                            
+        {{--<!-- قسم المعلومات والروابط في الفوتر -->
         <div class="text-white"> <!-- text-white: لون الخط أبيض -->
             <!-- مسافة داخلية رأسية حسب حجم الشاشة -->
             <div class="py-[60px] lg:py-20"> <!-- py: padding-y، lg:py-20: تخصيص المسافة للشاشات الكبيرة -->
                 <!-- حاوية مركزية للمحتوى -->
+                 
                 <div class="container-default">
                     <!-- شبكة لتقسيم الفوتر إلى أعمدة متعددة حسب حجم الشاشة -->
                     <div class="grid gap-x-8 gap-y-10 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-[1fr_repeat(4,_auto)] xl:gap-x-10 xxl:gap-x-[134px]">
@@ -226,7 +244,9 @@
                 </div>
             </div>
         </div>
+         --}}
 
+        <!-- قسم حقوق النشر -->
         <div class="bg-white bg-opacity-5">
             <div class="py-[18px]">
                 <div class="container-default">
