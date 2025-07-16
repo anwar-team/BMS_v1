@@ -1,76 +1,73 @@
-<!-- بداية الفوتر: عنصر رئيسي للفوتر الخاص بالموقع -->
-<footer class="section-footer"> <!-- section-footer: كلاس مخصص للفوتر -->
-    <!-- خلفية الفوتر بلون أزرق غامق -->
-    <div class="bg-color-denim-darkblue"> <!-- bg-color-denim-darkblue: كلاس مخصص للون الخلفية -->
-        <!-- ضبط العنصر ليكون فوق العناصر الأخرى باستخدام z-index -->
 
+ <!-- ===================  FOOTER  =================== -->
+<footer class="bg-[#1a3a2a] text-white">
+    <div class="container mx-auto max-w-[1170px] px-4 py-10 flex flex-col items-center gap-10">
+        {{-- شعار الموقع --}}
+        <a href="{{ route('home') }}">
+            @php
+                $brandLogo  = $generalSettings->brand_logo   ?? null;
+                $brandName  = $generalSettings->brand_name   ?? $siteSettings->name ?? config('app.name', 'SuperDuper');
+                $footerLogo = $siteSettings->footer_logo     ?? $brandLogo;
+            @endphp
 
-        {{--  <!-- الجزء العلوي من ال footer الاصلي-->
+            @if ($footerLogo)
+                <img src="{{ Storage::url($footerLogo) }}"
+                     alt="{{ $brandName }}"
+                     class="h-auto w-[164px]"   {{-- نفس أبعاد النموذج الثاني تقريبًا --}}
+                />
+            @endif
+        </a>
 
-            <div class="relative z-10"> <!-- relative: لتحديد موضع العنصر بشكل نسبي، z-10: لجعل العنصر فوق العناصر الأخرى -->
-                <!-- مسافات داخلية للفوتر (padding) حسب حجم الشاشة -->
-                <div class="pb-[60px] pt-20 lg:pb-20 lg:pt-[100px] xl:pt-[120px]"> <!-- pb: padding-bottom، pt: padding-top، lg و xl: تخصيص المسافات للشاشات الكبيرة -->
-                <!-- حاوية مركزية للمحتوى -->
-                <div class="container-default"> <!-- container-default: كلاس مخصص لتوسيط وتحديد عرض الحاوية -->
-                    <!-- استخدام Flexbox لترتيب العناصر عموديًا وتوسيطها -->
-                    <div class="flex flex-col items-center justify-center gap-16"> <!-- flex: تفعيل الفلكس، flex-col: ترتيب عمودي، items-center: توسيط أفقي، justify-center: توسيط عمودي، gap-16: مسافة بين العناصر -->
-                    <!-- تحديد أقصى عرض للنص الرئيسي -->
-                    <div class="max-w-[720px]"> <!-- max-w-[720px]: أقصى عرض 720 بكسل -->
-                        <!-- عنوان رئيسي للفوتر مع تنسيقات Tailwind -->
-                        <h2 class="text-3xl font-medium leading-loose text-center text-gray-100 lg:text-5xl xl:text-4xl">
-                        <!-- text-3xl: حجم الخط كبير، font-medium: وزن الخط متوسط، leading-loose: تباعد الأسطر، text-center: محاذاة وسط، text-gray-100: لون الخط رمادي فاتح، lg:text-5xl و xl:text-4xl: تغيير حجم الخط للشاشات الكبيرة -->
-                        Feel proud of everything you <br/> 
-                        <!-- إبراز كلمة Start و SuperDuper بلون وحجم مميز -->
-                        <span class="text-5xl font-bold text-secondary-600">Start</span> with <span class="text-5xl font-bold text-secondary-600">SuperDuper</span> <!-- text-5xl: حجم خط أكبر، font-bold: خط عريض، text-secondary-600: لون مخصص -->
-                        </h2>
-                    </div>
-                    <!-- زر دعوة لاتخاذ إجراء (CTA) -->
-                    <a href="{{ $siteSettings->footer_cta_button_url ?? '#' }}"
-                        class="inline-block border border-gray-900 btn bg-secondary-700">
-                        <!-- inline-block: عرض الزر بشكل كتلة، border: إضافة حدود، border-gray-900: لون الحدود رمادي غامق، btn: كلاس مخصص للأزرار، bg-secondary-700: لون خلفية مخصص -->
-                        <span>Get started— it's free</span>
+        {{-- أيقونات التواصل الاجتماعي --}}
+        @php
+            $socialLinks = [
+                'facebook'  => $siteSocialSettings->facebook_url  ?? null,
+                'twitter'   => $siteSocialSettings->twitter_url   ?? null,
+                'instagram' => $siteSocialSettings->instagram_url ?? null,
+                'linkedin'  => $siteSocialSettings->linkedin_url  ?? null,
+                'youtube'   => $siteSocialSettings->youtube_url   ?? null,
+                'tiktok'    => $siteSocialSettings->tiktok_url    ?? null,
+            ];
+            $faIcons = [
+                'twitter'   => 'fa-brands fa-x-twitter',
+                'facebook'  => 'fa-brands fa-facebook-f',
+                'instagram' => 'fa-brands fa-instagram',
+                'linkedin'  => 'fa-brands fa-linkedin-in',
+                'youtube'   => 'fa-brands fa-youtube',
+                'tiktok'    => 'fa-brands fa-tiktok',
+            ];
+        @endphp
+
+        <div class="flex flex-wrap justify-center gap-5">
+            @forelse($socialLinks as $platform => $url)
+                @if($url)
+                    <a href="{{ $url }}" target="_blank" rel="noopener noreferrer"
+                       class="flex h-[30px] w-[30px] items-center justify-center rounded-full bg-white/5 text-white text-sm
+                              transition hover:bg-color-pale-gold hover:text-color-denim-darkblue"
+                       aria-label="{{ $platform }}">
+                        <i class="{{ $faIcons[$platform] }}"></i>
                     </a>
-                    </div>
-                </div>
-                </div>
-            </div>
-        --}}
-
-
-
-        <!-- خط أفقي أبيض للفصل بين الأقسام -->
-        <div class="bg-[#1a3a2a] h-[372px] relative overflow-hidden flex items-center justify-center">
-            <div class="flex flex-col gap-[39px] items-center justify-start w-full max-w-[1170px] absolute left-1/2 top-10 -translate-x-1/2">
-            <div class="flex flex-col gap-10 items-start justify-start w-full relative">
-                <div class="flex flex-row gap-[175px] items-start justify-center w-full relative">
-                <div class="shrink-0 w-[164px] h-[207px] relative flex items-center justify-center">
-                    @php
-                    $brandLogo = $generalSettings->brand_logo ?? null;
-                    $brandName = $generalSettings->brand_name ?? $siteSettings->name ?? config('app.name', 'SuperDuper');
-                    $footerLogo = $siteSettings->footer_logo ?? $brandLogo;
-                    @endphp
-                    @if($footerLogo)
-                    <img class="h-auto absolute left-0 top-0 overflow-visible" src="{{ Storage::url($footerLogo) }}" alt="{{ $brandName }}" width="164" height="207" />
-                    @endif
-                </div>
-                </div>
-                <div class="border-t border-neutral-dark-6 self-stretch h-0 relative" style="margin-top: -1px; opacity: 0.2;"></div>
-            </div>
-            <div class="text-[#ffffff] text-center font-['NotoSansArabic-Regular',_sans-serif] text-sm font-normal relative w-full" style="letter-spacing: -0.02em">
-                &copy; حقوق الطبع والنشر {{ date('Y') }}. جميع الحقوق محفوظة.
-            </div>
-            </div>
+                @endif
+            @empty
+                {{-- روابط افتراضيّة إذا لم تُضِف شيئًا بعد --}}
+                <a href="https://twitter.com"   target="_blank" class="flex h-[30px] w-[30px] items-center justify-center rounded-full bg-white/5 text-white">
+                    <i class="fa-brands fa-x-twitter"></i>
+                </a>
+                <a href="https://facebook.com/" target="_blank" class="flex h-[30px] w-[30px] items-center justify-center rounded-full bg-white/5 text-white">
+                    <i class="fa-brands fa-facebook-f"></i>
+                </a>
+            @endforelse
         </div>
 
-        <div class="bg-white bg-opacity-5">
-            <div class="py-[18px]">
-                <div class="container-default">
-                    <div class="text-center text-white text-opacity-80">
-                        &copy; Copyright {{ date('Y') }}, {{ $siteSettings->copyright_text ?? 'All Rights Reserved' }}
-                        {{ $generalSettings->brand_name ?? $siteSettings->name ?? config('app.name', 'SuperDuper') }}
-                    </div>
-                </div>
-            </div>
-        </div>
+        {{-- خط فاصل نصف شفّاف  --}}
+        <hr class="w-full border-t border-white/20" />
+
+        {{-- حقوق النشر --}}
+        <p class="text-sm text-center text-white/80">
+            &copy; {{ date('Y') }}
+            {{ $siteSettings->copyright_text ?? 'جميع الحقوق محفوظة.' }}
+            {{ $generalSettings->brand_name ?? $siteSettings->name ?? config('app.name', 'SuperDuper') }}
+        </p>
     </div>
 </footer>
+<!-- ================================================ -->
