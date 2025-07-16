@@ -56,7 +56,6 @@
                                     <img src="{{ Storage::url($footerLogo) }}" alt="{{ $brandName }}" width="220" height="auto" />
                                 @endif
                             </a>
-
                             
         {{--<!-- قسم المعلومات والروابط في الفوتر -->
         <div class="text-white"> <!-- text-white: لون الخط أبيض -->
@@ -202,9 +201,9 @@
                             <div class="text-xl font-semibold capitalize">
                                 Resources
                             </div>
-                            @php
-                                $footerOthers = Menu::location('footer-3');
-                            @endphp
+                             <!-- @php $footerOthers = Menu::location('footer-3'); @endphp -->
+                                
+                            
                             <ul class="flex flex-col gap-y-[10px] capitalize">
                                 @if($footerOthers)
                                     @foreach($footerOthers->menuItems as $item)
