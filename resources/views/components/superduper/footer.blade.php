@@ -1,70 +1,107 @@
-<footer class="section-footer">
-    <div class="bg-color-denim-darkblue">
-        <div class="relative z-10">
-            <div class="pb-[60px] pt-20 lg:pb-20 lg:pt-[100px] xl:pt-[120px]">
-                <div class="container-default">
-                    <div class="flex flex-col items-center justify-center gap-16">
-                        <div class="max-w-[720px]">
-                            <h2 class="text-3xl font-medium leading-loose text-center text-gray-100 lg:text-5xl xl:text-4xl">
-                                Feel proud of everything you <br/> <span class="text-5xl font-bold text-secondary-600">Start</span> with <span class="text-5xl font-bold text-secondary-600">SuperDuper</span>
-                            </h2>
-                        </div>
-                        <a href="{{ $siteSettings->footer_cta_button_url ?? '#' }}"
-                            class="inline-block border border-gray-900 btn bg-secondary-700"><span>
-                                Get started— it\'s free
-                            </span></a>
+<!-- بداية الفوتر: عنصر رئيسي للفوتر الخاص بالموقع -->
+<footer class="section-footer"> <!-- section-footer: كلاس مخصص للفوتر -->
+    <!-- خلفية الفوتر بلون أزرق غامق -->
+    <div class="bg-color-denim-darkblue"> <!-- bg-color-denim-darkblue: كلاس مخصص للون الخلفية -->
+        <!-- ضبط العنصر ليكون فوق العناصر الأخرى باستخدام z-index -->
+         
+
+        {{-- 
+                                         <!-- الجزء العلوي من ال foorter الاصلي-->
+            <div class="relative z-10"> <!-- relative: لتحديد موضع العنصر بشكل نسبي، z-10: لجعل العنصر فوق العناصر الأخرى -->
+                <!-- مسافات داخلية للفوتر (padding) حسب حجم الشاشة -->
+                <div class="pb-[60px] pt-20 lg:pb-20 lg:pt-[100px] xl:pt-[120px]"> <!-- pb: padding-bottom، pt: padding-top، lg و xl: تخصيص المسافات للشاشات الكبيرة -->
+                <!-- حاوية مركزية للمحتوى -->
+                <div class="container-default"> <!-- container-default: كلاس مخصص لتوسيط وتحديد عرض الحاوية -->
+                    <!-- استخدام Flexbox لترتيب العناصر عموديًا وتوسيطها -->
+                    <div class="flex flex-col items-center justify-center gap-16"> <!-- flex: تفعيل الفلكس، flex-col: ترتيب عمودي، items-center: توسيط أفقي، justify-center: توسيط عمودي، gap-16: مسافة بين العناصر -->
+                    <!-- تحديد أقصى عرض للنص الرئيسي -->
+                    <div class="max-w-[720px]"> <!-- max-w-[720px]: أقصى عرض 720 بكسل -->
+                        <!-- عنوان رئيسي للفوتر مع تنسيقات Tailwind -->
+                        <h2 class="text-3xl font-medium leading-loose text-center text-gray-100 lg:text-5xl xl:text-4xl">
+                        <!-- text-3xl: حجم الخط كبير، font-medium: وزن الخط متوسط، leading-loose: تباعد الأسطر، text-center: محاذاة وسط، text-gray-100: لون الخط رمادي فاتح، lg:text-5xl و xl:text-4xl: تغيير حجم الخط للشاشات الكبيرة -->
+                        Feel proud of everything you <br/> 
+                        <!-- إبراز كلمة Start و SuperDuper بلون وحجم مميز -->
+                        <span class="text-5xl font-bold text-secondary-600">Start</span> with <span class="text-5xl font-bold text-secondary-600">SuperDuper</span> <!-- text-5xl: حجم خط أكبر، font-bold: خط عريض، text-secondary-600: لون مخصص -->
+                        </h2>
+                    </div>
+                    <!-- زر دعوة لاتخاذ إجراء (CTA) -->
+                    <a href="{{ $siteSettings->footer_cta_button_url ?? '#' }}"
+                        class="inline-block border border-gray-900 btn bg-secondary-700">
+                        <!-- inline-block: عرض الزر بشكل كتلة، border: إضافة حدود، border-gray-900: لون الحدود رمادي غامق، btn: كلاس مخصص للأزرار، bg-secondary-700: لون خلفية مخصص -->
+                        <span>Get started— it's free</span>
+                    </a>
                     </div>
                 </div>
+                </div>
             </div>
-        </div>
+        --}}
 
-        <div class="bg-white horizontal-line"></div>
 
-        <div class="text-white">
-            <div class="py-[60px] lg:py-20">
+
+        <!-- خط أفقي أبيض للفصل بين الأقسام -->
+        <div class="bg-white horizontal-line"></div> <!-- bg-white: خلفية بيضاء، horizontal-line: كلاس مخصص للخط -->
+
+        <!-- قسم المعلومات والروابط في الفوتر -->
+        <div class="text-white"> <!-- text-white: لون الخط أبيض -->
+            <!-- مسافة داخلية رأسية حسب حجم الشاشة -->
+            <div class="py-[60px] lg:py-20"> <!-- py: padding-y، lg:py-20: تخصيص المسافة للشاشات الكبيرة -->
+                <!-- حاوية مركزية للمحتوى -->
                 <div class="container-default">
+                    <!-- شبكة لتقسيم الفوتر إلى أعمدة متعددة حسب حجم الشاشة -->
                     <div class="grid gap-x-8 gap-y-10 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-[1fr_repeat(4,_auto)] xl:gap-x-10 xxl:gap-x-[134px]">
+                        <!-- grid: تفعيل الشبكة، gap-x-8: مسافة أفقية بين الأعمدة، gap-y-10: مسافة رأسية بين الصفوف، sm:grid-cols-2: عمودين للشاشات الصغيرة، md:grid-cols-3: ثلاثة أعمدة للمتوسطة، lg:grid-cols: توزيع مخصص للأعمدة للشاشات الكبيرة، xl و xxl: تخصيص المسافات للأكبر -->
+                        <!-- العمود الأول: معلومات العلامة التجارية والوصف ووسائل التواصل -->
                         <div class="flex flex-col gap-y-7 md:col-span-3 lg:col-span-1">
+                            <!-- flex flex-col: ترتيب العناصر عموديًا، gap-y-7: مسافة رأسية بين العناصر، md:col-span-3: يمتد على 3 أعمدة في الشاشات المتوسطة، lg:col-span-1: يمتد على عمود واحد في الكبيرة -->
+                            <!-- شعار الموقع مع رابط للصفحة الرئيسية -->
                             <a href="{{ route('home') }}">
+                                <!-- جلب بيانات الشعار والاسم من الإعدادات العامة أو إعدادات الموقع -->
                                 @php
-                                    $brandLogo = $generalSettings->brand_logo ?? null;
-                                    $brandName = $generalSettings->brand_name ?? $siteSettings->name ?? config('app.name', 'SuperDuper');
-                                    $footerLogo = $siteSettings->footer_logo ?? $brandLogo;
+                                    $brandLogo = $generalSettings->brand_logo ?? null; // شعار العلامة التجارية
+                                    $brandName = $generalSettings->brand_name ?? $siteSettings->name ?? config('app.name', 'SuperDuper'); // اسم العلامة التجارية
+                                    $footerLogo = $siteSettings->footer_logo ?? $brandLogo; // شعار الفوتر
                                 @endphp
 
+                                <!-- عرض الشعار إذا كان موجود -->
                                 @if($footerLogo)
                                     <img src="{{ Storage::url($footerLogo) }}" alt="{{ $brandName }}" width="220" height="auto" />
                                 @endif
                             </a>
 
+                            <!-- وصف الموقع والبريد الإلكتروني ووسائل التواصل -->
                             <div>
-                                <div class="lg:max-w-[416px]">
+                                <!-- وصف مختصر للموقع -->
+                                <div class="lg:max-w-[416px]"> <!-- lg:max-w-[416px]: أقصى عرض في الشاشات الكبيرة -->
                                     {{ $siteSettings->description ?? '' }}
                                 </div>
 
+                                <!-- رابط البريد الإلكتروني -->
                                 <a href="mailto:{{ $siteSettings->company_email ?? 'yourdemo@email.com' }}"
                                     class="block my-6 transition-all duration-300 underline-offset-4 hover:underline">
+                                    <!-- block: عرض كرابط كامل، my-6: هامش رأسي، transition-all duration-300: انتقال سلس عند التفاعل، underline-offset-4: تباعد تحت الخط، hover:underline: يظهر خط عند المرور -->
                                     {{ $siteSettings->company_email ?? 'yourdemo@email.com' }}
                                 </a>
 
-                                <div class="flex flex-wrap gap-5">
+                                <!-- أيقونات وسائل التواصل الاجتماعي -->
+                                <div class="flex flex-wrap gap-5"> <!-- flex: ترتيب أفقي، flex-wrap: التفاف العناصر، gap-5: مسافة بين الأيقونات -->
+                                    <!-- جلب روابط وأيقونات وسائل التواصل من إعدادات الموقع -->
                                     @php
                                         $socialLinks = [
-                                            'facebook' => $siteSocialSettings->facebook_url ?? null,
-                                            'twitter' => $siteSocialSettings->twitter_url ?? null,
-                                            'instagram' => $siteSocialSettings->instagram_url ?? null,
-                                            'linkedin' => $siteSocialSettings->linkedin_url ?? null,
-                                            'youtube' => $siteSocialSettings->youtube_url ?? null,
-                                            'tiktok' => $siteSocialSettings->tiktok_url ?? null,
+                                            'facebook' => $siteSocialSettings->facebook_url ?? null, // رابط فيسبوك
+                                            'twitter' => $siteSocialSettings->twitter_url ?? null, // رابط تويتر
+                                            'instagram' => $siteSocialSettings->instagram_url ?? null, // رابط انستجرام
+                                            'linkedin' => $siteSocialSettings->linkedin_url ?? null, // رابط لينكدإن
+                                            'youtube' => $siteSocialSettings->youtube_url ?? null, // رابط يوتيوب
+                                            'tiktok' => $siteSocialSettings->tiktok_url ?? null, // رابط تيك توك
                                         ];
 
                                         $faIcons = [
-                                            'twitter' => 'fa-brands fa-x-twitter',
-                                            'facebook' => 'fa-brands fa-facebook-f',
-                                            'instagram' => 'fa-brands fa-instagram',
-                                            'linkedin' => 'fa-brands fa-linkedin-in',
-                                            'youtube' => 'fa-brands fa-youtube',
-                                            'tiktok' => 'fa-brands fa-tiktok',
+                                            'twitter' => 'fa-brands fa-x-twitter', // أيقونة تويتر
+                                            'facebook' => 'fa-brands fa-facebook-f', // أيقونة فيسبوك
+                                            'instagram' => 'fa-brands fa-instagram', // أيقونة انستجرام
+                                            'linkedin' => 'fa-brands fa-linkedin-in', // أيقونة لينكدإن
+                                            'youtube' => 'fa-brands fa-youtube', // أيقونة يوتيوب
+                                            'tiktok' => 'fa-brands fa-tiktok', // أيقونة تيك توك
                                         ];
                                     @endphp
 
