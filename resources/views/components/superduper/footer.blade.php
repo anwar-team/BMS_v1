@@ -217,7 +217,7 @@
                                 @endif
                             </ul>
                         </div>
-                               --}}
+                               
                         {{-- # TODO: Create Menu Module --}}
                         <div class="flex flex-col gap-y-6">
                             <div class="text-xl font-semibold capitalize">
@@ -239,6 +239,7 @@
                                 @endif
                             </ul>
                         </div>
+                        --}}
                     </div>
                 </div>
             </div>
