@@ -201,7 +201,7 @@
                             <div class="text-xl font-semibold capitalize">
                                 Resources
                             </div>
-                             <!-- @php $footerOthers = Menu::location('footer-3'); @endphp -->
+                             {{-- @php $footerOthers = Menu::location('footer-3'); @endphp --}}
                                 
                             
                             <ul class="flex flex-col gap-y-[10px] capitalize">
