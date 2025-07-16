@@ -1,7 +1,7 @@
 <!-- بداية الفوتر: عنصر رئيسي للفوتر الخاص بالموقع -->
 <footer class="section-footer"> <!-- section-footer: كلاس مخصص للفوتر -->
     <!-- خلفية الفوتر بلون أزرق غامق -->
-    <div class="bg-lime-700"> <!-- bg-color-denim-darkblue: كلاس مخصص للون الخلفية -->
+    <div class="bg-lime-900"> <!-- bg-color-denim-darkblue: كلاس مخصص للون الخلفية -->
         <!-- ضبط العنصر ليكون فوق العناصر الأخرى باستخدام z-index -->
 
 
@@ -168,10 +168,10 @@
             </div>
         </div>
 
-        <div class="bg-lime-700 ">
+        <div class="bg-lime-900 ">
             <div class="py-[18px]">
                 <div class="container-default">
-                    <div class="text-center text-white text-opacity-80">
+                    <div class="text-center text-white  text-opacity-80">
                         &copy; Copyright {{ date('Y') }}, {{ $siteSettings->copyright_text ?? 'All Rights Reserved' }}
                         {{ $generalSettings->brand_name ?? $siteSettings->name ?? config('app.name', 'SuperDuper') }}
                     </div>
