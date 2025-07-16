@@ -47,12 +47,12 @@
             <div class="pt-[2rem] pb-[2rem] lg:pt-10 lg:pb-10"> <!-- py: padding-y، lg:py-20: تخصيص المسافة للشاشات الكبيرة -->
                 <!-- حاوية مركزية للمحتوى -->
                  
-                <div class="container-default">
+                <div class="container-default ">
                     <!-- شبكة لتقسيم الفوتر إلى أعمدة متعددة حسب حجم الشاشة -->
                     <div class="grid gap-x-8 gap-y-10 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-[1fr_repeat(4,_auto)] xl:gap-x-10 xxl:gap-x-[134px]">
                         <!-- grid: تفعيل الشبكة، gap-x-8: مسافة أفقية بين الأعمدة، gap-y-10: مسافة رأسية بين الصفوف، sm:grid-cols-2: عمودين للشاشات الصغيرة، md:grid-cols-3: ثلاثة أعمدة للمتوسطة، lg:grid-cols: توزيع مخصص للأعمدة للشاشات الكبيرة، xl و xxl: تخصيص المسافات للأكبر -->
-                        <!-- العمود الأول: معلومات العلامة التجارية والوصف ووسائل التواصل -->
-                        <div class="flex flex-col gap-y-7 md:col-span-3 lg:col-span-1">
+                        <!-- العمود الأول: معلومات العلامة التجارية والوصف ووسائل التواصل flex flex-col gap-y-7 md:col-span-3 lg:col-span-1 -->
+                        <div class="justify-center">
                             <!-- flex flex-col: ترتيب العناصر عموديًا، gap-y-7: مسافة رأسية بين العناصر، md:col-span-3: يمتد على 3 أعمدة في الشاشات المتوسطة، lg:col-span-1: يمتد على عمود واحد في الكبيرة -->
                             <!-- شعار الموقع مع رابط للصفحة الرئيسية -->
                             <a href="{{ route('home') }}">
@@ -130,8 +130,8 @@
                                     @endif
                                 </div>
                             </div>
-                        </div>
-
+                        </div> 
+                         {{--
                         <div class="flex flex-col gap-y-7">
                             <div class="text-xl font-semibold capitalize">
                                 Main
@@ -158,7 +158,9 @@
                                 @endif
                             </ul>
                         </div>
+                        --}}
 
+                         {{--
                         <div class="flex flex-col gap-y-6">
                             <div class="text-xl font-semibold capitalize">
                                 Sample Pages
@@ -179,8 +181,8 @@
                                 @endif
                             </ul>
                         </div>
-
-                        {{-- # TODO: Create Menu Module --}}
+                        --}}
+                        {{-- # TODO: Create Menu Module 
                         <div class="flex flex-col gap-y-6">
                             <div class="text-xl font-semibold capitalize">
                                 Resources
@@ -201,8 +203,9 @@
                                 @endif
                             </ul>
                         </div>
+                        --}}
 
-                        {{-- # TODO: Create Menu Module --}}
+                        {{-- # TODO: Create Menu Module 
                         <div class="flex flex-col gap-y-6">
                             <div class="text-xl font-semibold capitalize">
                                 Community
@@ -223,6 +226,7 @@
                                 @endif
                             </ul>
                         </div>
+                        --}}
                     </div>
                 </div>
             </div>
