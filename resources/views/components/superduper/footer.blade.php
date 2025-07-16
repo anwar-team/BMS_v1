@@ -52,7 +52,8 @@
                     <div class="grid gap-x-8 gap-y-10 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-[1fr_repeat(4,_auto)] xl:gap-x-10 xxl:gap-x-[134px]"> -->
                         <!-- grid: تفعيل الشبكة، gap-x-8: مسافة أفقية بين الأعمدة، gap-y-10: مسافة رأسية بين الصفوف، sm:grid-cols-2: عمودين للشاشات الصغيرة، md:grid-cols-3: ثلاثة أعمدة للمتوسطة، lg:grid-cols: توزيع مخصص للأعمدة للشاشات الكبيرة، xl و xxl: تخصيص المسافات للأكبر -->
                         <!-- العمود الأول: معلومات العلامة التجارية والوصف ووسائل التواصل flex flex-col gap-y-7 md:col-span-3 lg:col-span-1 -->
-                        <center><div class="justify-center">
+                        
+                            <div class="justify-center content-center items-center">
                             <!-- flex flex-col: ترتيب العناصر عموديًا، gap-y-7: مسافة رأسية بين العناصر، md:col-span-3: يمتد على 3 أعمدة في الشاشات المتوسطة، lg:col-span-1: يمتد على عمود واحد في الكبيرة -->
                             <!-- شعار الموقع مع رابط للصفحة الرئيسية -->
                             <a href="{{ route('home') }}">
@@ -131,7 +132,7 @@
                                 </div>
                             </div>
                         </div> 
-                        </center>
+                        
                          {{--
                         <div class="flex flex-col gap-y-7">
                             <div class="text-xl font-semibold capitalize">
