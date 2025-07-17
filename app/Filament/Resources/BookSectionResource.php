@@ -18,6 +18,8 @@ class BookSectionResource extends Resource
     protected static ?string $model = BookSection::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationGroup = 'Book Management';
+
 
     public static function form(Form $form): Form
     {

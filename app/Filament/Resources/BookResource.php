@@ -48,7 +48,7 @@ class BookResource extends Resource
     protected static ?string $modelLabel = 'كتاب';
     protected static ?string $pluralModelLabel = 'الكتب';
     protected static ?int $navigationSort = 1;
-    protected static ?string $navigationGroup = 'books';
+    protected static ?string $navigationGroup = 'Books';
 
     public static function form(Form $form): Form
     {

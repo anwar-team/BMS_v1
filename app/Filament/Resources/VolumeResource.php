@@ -18,6 +18,8 @@ class VolumeResource extends Resource
     protected static ?string $model = Volume::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+        protected static ?string $navigationGroup = 'Books';
+
 
     public static function form(Form $form): Form
     {
