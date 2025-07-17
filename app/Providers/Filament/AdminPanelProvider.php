@@ -62,6 +62,9 @@ class AdminPanelProvider extends PanelProvider
                 Navigation\NavigationGroup::make()
                     ->label(__('menu.nav_group.activities'))
                     ->collapsed(),
+                    Navigation\NavigationGroup::make()
+                        ->label(__('menu.nav_group.reports'))
+                        ->collapsed(),
             ])
             ->navigationItems([
                 Navigation\NavigationItem::make(__('menu.nav_group.item.log_viewer'))
