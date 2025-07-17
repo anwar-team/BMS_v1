@@ -56,15 +56,12 @@ class AdminPanelProvider extends PanelProvider
                 Navigation\NavigationGroup::make()
                     ->label(__('menu.nav_group.sites'))
                     ->collapsed(),
+
                 Navigation\NavigationGroup::make()
-                    ->label(__('menu.nav_group.systems'))
-                    ->collapsed(),
-                Navigation\NavigationGroup::make()
-                    ->label(__('menu.nav_group.activities'))
-                    ->collapsed(),
-                    Navigation\NavigationGroup::make()
-                        ->label(__('menu.nav_group.reports'))
-                        ->collapsed(),
+                    ->label(__('menu.nav_group.books'))
+                    ->collapsed(false)
+                    ->icon('heroicon-o-book-open'),
+
             ])
             ->navigationItems([
                 Navigation\NavigationItem::make(__('menu.nav_group.item.log_viewer'))
