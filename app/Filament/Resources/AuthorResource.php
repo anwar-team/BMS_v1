@@ -18,6 +18,8 @@ class AuthorResource extends Resource
     protected static ?string $model = Author::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-user-group';
+        protected static ?string $navigationGroup = 'Book Management';
+
     
     protected static ?string $navigationLabel = 'المؤلفين';
     
