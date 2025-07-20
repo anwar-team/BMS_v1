@@ -35,8 +35,8 @@ protected static function booted()
 {
     static::saving(function ($chapter) {
         $pages = $chapter->pages()->orderBy('page_number')->pluck('page_number');
-        $chapter->start_page = $pages->first();
-        $chapter->end_page = $pages->last();
+        $chapter->page_start = $pages->first();
+        $chapter->page_end = $pages->last();
     });
 }
     /**
