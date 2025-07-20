@@ -25,6 +25,14 @@ class Volume extends Model
         'page_end' => 'integer',
     ];
 
+
+protected static function booted()
+{
+    static::saving(function ($volume) {
+        $volume->pages_count = $volume->pages()->count();
+    });
+}
+
     /**
      * العلاقة مع الكتاب
      */

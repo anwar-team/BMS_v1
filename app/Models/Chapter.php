@@ -29,6 +29,16 @@ class Chapter extends Model
         'page_end' => 'integer',
     ];
 
+
+
+protected static function booted()
+{
+    static::saving(function ($chapter) {
+        $pages = $chapter->pages()->orderBy('page_number')->pluck('page_number');
+        $chapter->start_page = $pages->first();
+        $chapter->end_page = $pages->last();
+    });
+}
     /**
      * العلاقة مع المجلد
      */

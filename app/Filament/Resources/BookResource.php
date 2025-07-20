@@ -215,7 +215,7 @@ class BookResource extends Resource
             ->description('الخصائص الفيزيائية والرقمية للكتاب')
             ->icon('heroicon-o-book-open')
             ->schema([
-                Grid::make(2)->schema([
+                Grid::make(4)->schema([
                     //TextInput::make('pages_count')
                     //    ->label('عدد الصفحات')
                     //    ->numeric()
@@ -370,11 +370,11 @@ class BookResource extends Resource
                         ->maxLength(255)
                         ->placeholder('مثال: الجزء الأول'),
                     
-                    TextInput::make('pages_count')
-                        ->label('عدد الصفحات')
-                        ->numeric()
-                        ->minValue(1)
-                        ->placeholder('300'),
+                    //TextInput::make('pages_count')
+                    //    ->label('عدد الصفحات')
+                    //    ->numeric()
+                    //    ->minValue(1)
+                    //    ->placeholder('300'),
                 ]),
                 
                 Textarea::make('description')
@@ -421,18 +421,18 @@ class BookResource extends Resource
                     ->maxLength(500)
                     ->columnSpanFull(),
                 
-                Grid::make(2)->schema([
-                    TextInput::make('start_page')
-                        ->label('الصفحة الأولى')
-                        ->numeric()
-                        ->minValue(1),
-                    
-                    TextInput::make('end_page')
-                        ->label('الصفحة الأخيرة')
-                        ->numeric()
-                        ->minValue(1)
-                        ->gte('start_page'),
-                ]),
+                //Grid::make(2)->schema([
+                //    TextInput::make('start_page')
+                //        ->label('الصفحة الأولى')
+                //        ->numeric()
+                //        ->minValue(1),
+                //    
+                //    TextInput::make('end_page')
+                //        ->label('الصفحة الأخيرة')
+                //        ->numeric()
+                //        ->minValue(1)
+                //        ->gte('start_page'),
+                //]),
                 
                 // Hidden field to ensure book_id is set
                 Hidden::make('book_id')
