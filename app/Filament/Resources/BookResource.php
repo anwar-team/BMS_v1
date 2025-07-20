@@ -357,7 +357,7 @@ class BookResource extends Resource
             ->label('مجلدات الكتاب')
             ->relationship('volumes')
             ->schema([
-                Grid::make(3)->schema([
+                Grid::make(2)->schema([
                     TextInput::make('number')
                         ->label('رقم المجلد')
                         ->required()
