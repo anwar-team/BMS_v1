@@ -473,14 +473,36 @@ class BookResource extends Resource
                     
                     Select::make('volume_id')
                         ->label('المجلد')
-                        ->relationship('volume', 'number')
+                        ->relationship(
+                            name: 'volume',
+                            titleAttribute: 'number',
+                            modifyQueryUsing: function ($query, $get) {
+                                // Only show volumes for the current book
+                                $bookId = $get('../../id');
+                                if ($bookId) {
+                                    $query->where('book_id', $bookId);
+                                }
+                            }
+                        )
                         ->getOptionLabelFromRecordUsing(fn ($record) => $record->fullTitle ?? "المجلد {$record->number}")
                         ->searchable()
                         ->preload(),
                     
                     Select::make('chapter_id')
                         ->label('الفصل')
-                        ->relationship('chapter', 'title')
+                        ->relationship(
+                            name: 'chapter',
+                            titleAttribute: 'title',
+                            modifyQueryUsing: function ($query, $get) {
+                                // Only show chapters for volumes of the current book
+                                $bookId = $get('../../id');
+                                if ($bookId) {
+                                    $query->whereHas('volume', function ($q) use ($bookId) {
+                                        $q->where('book_id', $bookId);
+                                    });
+                                }
+                            }
+                        )
                         ->getOptionLabelFromRecordUsing(fn ($record) => $record->fullTitle ?? '')
                         ->searchable()
                         ->preload(),
