@@ -171,6 +171,10 @@ class Content extends Model implements HasMedia
             ->where(function ($q) {
                 $q->whereNull('end_date')
                     ->orWhere('end_date', '>=', now());
+            })
+            ->where(function ($q) {
+                $q->whereNull('published_at')
+                    ->orWhere('published_at', '<=', now());
             });
     }
 

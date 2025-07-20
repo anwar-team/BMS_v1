@@ -18,7 +18,7 @@ use Lab404\Impersonate\Services\ImpersonateManager;
 */
 
 Route::get('/', function () {
-    return view('components.superduper.pages.home');
+    return view('home');
 })->name('home');
 
 Route::get('/blog', BlogList::class)->name('blog');

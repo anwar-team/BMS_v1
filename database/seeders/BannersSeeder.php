@@ -16,6 +16,23 @@ class BannersSeeder extends Seeder
 
         // Create parent categories
         $parentCategoryIds = [];
+
+        // Ensure 'home-banner' category exists
+        $homeBannerCategoryId = (string) new Ulid();
+        DB::table('banner_categories')->insert([
+            'id' => $homeBannerCategoryId,
+            'name' => 'Home Banner',
+            'slug' => 'home-banner',
+            'description' => 'Banners displayed on the home page',
+            'is_active' => true,
+            'meta_title' => 'Home Page Banners',
+            'meta_description' => 'Banners for the main landing page',
+            'locale' => 'en',
+            'options' => json_encode(['position' => 'top']),
+            'created_at' => now(),
+            'updated_at' => now()
+        ]);
+        $parentCategoryIds[] = $homeBannerCategoryId;
         for ($i = 0; $i < 5; $i++) {
             $name = $faker->words(3, true);
             $id = (string) new Ulid();
@@ -43,6 +60,11 @@ class BannersSeeder extends Seeder
             $id = (string) new Ulid();
             $allCategoryIds[] = $id;
 
+            // Add home-banner category to allCategoryIds if not already present
+            if (!in_array($homeBannerCategoryId, $allCategoryIds)) {
+                $allCategoryIds[] = $homeBannerCategoryId;
+            }
+
             DB::table('banner_categories')->insert([
                 'id' => $id,
                 'parent_id' => $faker->randomElement($parentCategoryIds),
@@ -66,7 +88,7 @@ class BannersSeeder extends Seeder
 
             DB::table('banner_contents')->insert([
                 'id' => (string) new Ulid(),
-                'banner_category_id' => $faker->randomElement($allCategoryIds),
+                'banner_category_id' => $faker->boolean(30) ? $homeBannerCategoryId : $faker->randomElement($allCategoryIds),
                 'sort' => $i,
                 'title' => $faker->sentence,
                 'description' => $faker->text(150),
