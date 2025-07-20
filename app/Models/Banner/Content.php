@@ -166,15 +166,15 @@ class Content extends Model implements HasMedia
         return $query->where('is_active', true)
             ->where(function ($q) {
                 $q->whereNull('start_date')
-                    ->orWhere('start_date', '<=', now());
+                    ->orWhere('start_date', '<=', now()->toDateTimeString());
             })
             ->where(function ($q) {
                 $q->whereNull('end_date')
-                    ->orWhere('end_date', '>=', now());
+                    ->orWhere('end_date', '>=', now()->toDateTimeString());
             })
             ->where(function ($q) {
                 $q->whereNull('published_at')
-                    ->orWhere('published_at', '<=', now());
+                    ->orWhere('published_at', '<=', now()->toDateTimeString());
             });
     }
 
