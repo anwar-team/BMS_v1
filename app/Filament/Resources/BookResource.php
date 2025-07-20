@@ -80,11 +80,23 @@ class BookResource extends Resource
                             self::getVolumesRepeater(),
                         ]),
 
-                    // Tab 4: الصفحات
+                    // Tab 4: الصفحات (تظهر فقط إذا كان الكتاب محفوظ)
                     Tab::make('الصفحات')
                         ->icon('heroicon-o-document-text')
+                        ->visible(fn ($livewire) => $livewire->record && $livewire->record->exists)
                         ->schema([
                             self::getPagesRepeater(),
+                        ]),
+
+                    // Tab 4b: رسالة ودية إذا لم يكن الكتاب محفوظاً
+                    Tab::make('الصفحات')
+                        ->icon('heroicon-o-document-text')
+                        ->visible(fn ($livewire) => !$livewire->record || !$livewire->record->exists)
+                        ->schema([
+                            \Filament\Forms\Components\Placeholder::make('save_book_first')
+                                ->label('تنبيه')
+                                ->content('يرجى حفظ الكتاب أولاً لإضافة الصفحات. بعد الحفظ ستتمكن من إضافة الصفحات وربطها بالمجلدات والفصول.')
+                                ->columnSpanFull(),
                         ]),
                 ])
                 ->columnSpanFull()
