@@ -215,19 +215,19 @@ class BookResource extends Resource
             ->description('الخصائص الفيزيائية والرقمية للكتاب')
             ->icon('heroicon-o-book-open')
             ->schema([
-                Grid::make(4)->schema([
-                    TextInput::make('pages_count')
-                        ->label('عدد الصفحات')
-                        ->numeric()
-                        ->minValue(1)
-                        ->placeholder('300'),
-                    
-                    TextInput::make('volumes_count')
-                        ->label('عدد المجلدات')
-                        ->numeric()
-                        ->minValue(1)
-                        ->placeholder('5')
-                        ->default(1),
+                Grid::make(2)->schema([
+                    //TextInput::make('pages_count')
+                    //    ->label('عدد الصفحات')
+                    //    ->numeric()
+                    //    ->minValue(1)
+                    //    ->placeholder('300'),
+                    //
+                    //TextInput::make('volumes_count')
+                    //    ->label('عدد المجلدات')
+                    //    ->numeric()
+                    //    ->minValue(1)
+                    //    ->placeholder('5')
+                    //    ->default(1),
                     
                     Select::make('visibility')
                         ->label('الرؤية')

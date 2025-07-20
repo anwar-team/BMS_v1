@@ -39,6 +39,14 @@ class Book extends Model
         'volumes_count' => 'integer',
     ];
 
+    protected static function booted()
+{
+    static::saving(function ($book) {
+        $book->pages_count = $book->pages()->count();
+        $book->volumes_count = $book->volumes()->count();
+    });
+}
+
     /**
      * العلاقة مع قسم الكتاب
      */
