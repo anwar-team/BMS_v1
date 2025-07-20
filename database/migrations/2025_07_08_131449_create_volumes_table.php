@@ -16,7 +16,7 @@ return new class extends Migration
             $table->bigInteger('book_id')->unsigned();
             $table->integer('number');
             $table->string('title', 255)->nullable();
-            $table->integer('pages_count')->nullable();
+            //$table->integer('pages_count')->nullable();
             $table->integer('page_start')->nullable();
             $table->integer('page_end')->nullable();
             $table->timestamps();
