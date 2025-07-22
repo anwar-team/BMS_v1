@@ -23,7 +23,7 @@
     --color-secondary-300: #EBBAB6;
     --color-secondary-400: #DF928D;
     --color-secondary-500: #CF6864;
-    --color-secondary-600: #BA4749; 
+    --color-secondary-600: #BA4749;
     --color-secondary-700: #9B3539;
     --color-secondary-800: #822F35;
     --color-secondary-900: #702B32;
@@ -94,5 +94,45 @@
 
     .menu-block .sub-menu {
         @apply bg-background-light dark:bg-primary-700 rounded-md;
+    }
+}
+
+/* @layer utilities {
+
+     كلاس للخلفية المكررة 
+    .bg-pattern {
+        background-image: url('/images/pattern-ff-18-e-023-62.svg');
+        background-repeat: repeat;
+        background-size: auto;
+        background-position: top center;
+        opacity: 0.05;
+    }
+
+     اتجاه للأسفل 
+    .bg-pattern-bottom {
+        background-position: bottom center;
+    }
+
+     اتجاه لليمين 
+    .bg-pattern-right {
+        background-position: center right;
+    }
+
+     اتجاه مقلوب (مثلاً) 
+    .bg-pattern-flip {
+        transform: scaleY(-1);
+    }
+} */
+
+@layer utilities {
+    .bg-pattern-section {
+        background-image: url('/images/pattern-ff-18-e-023-62.svg');
+        background-repeat: repeat-x;
+        background-size: auto 220px;
+        /* أو حسب الحاجة */
+        background-position: top center;
+        pointer-events: none;
+        opacity: 0.03;
+        z-index: 0;
     }
 }
