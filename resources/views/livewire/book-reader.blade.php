@@ -310,19 +310,21 @@
         </div>
 
         <!-- =================== تذييل الصفحة =================== -->
-        <footer class="fixed bottom-0 left-0 w-full bg-gray-50 border-t border-gray-200 py-8 text-center">
-            <div class="max-w-7xl mx-auto px-4">
-                <div class="flex justify-center">
-                    <div class="w-28 h-28 mb-5 overflow-hidden rounded-full">
-                        <img src="{{ asset('images/figma/logo.jpg') }}" alt="Logo" class="w-full h-full object-cover">
+        <div class="pb-64"> <!-- مساحة للمحتوى فوق الـ footer -->
+            <footer class="fixed bottom-0 left-0 w-full bg-gray-50 border-t border-gray-200 py-8 text-center z-50">
+                <div class="max-w-7xl mx-auto px-4">
+                    <div class="flex justify-center">
+                        <div class="w-28 h-28 mb-5 overflow-hidden rounded-full">
+                            <img src="{{ asset('images/figma/logo.jpg') }}" alt="Logo" class="w-full h-full object-cover">
+                        </div>
+                    </div>
+                    <div class="h-px bg-gray-200 my-5"></div>
+                    <div class="font-tajawal text-gray-600 text-sm">
+                        © حقوق الطبع والنشر {{ date('Y') }}. جميع الحقوق محفوظة.
                     </div>
                 </div>
-                <div class="h-px bg-gray-200 my-5"></div>
-                <div class="font-tajawal text-gray-600 text-sm">
-                    © حقوق الطبع والنشر {{ date('Y') }}. جميع الحقوق محفوظة.
-                </div>
-            </div>
-        </footer>
+            </footer>
+        </div>
     </div>
 
     <!-- =================== أنماط CSS مخصصة =================== -->
