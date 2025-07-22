@@ -19,3 +19,4 @@ yarn-error.log
 /-local
 /docs
 setup.php.disabled
+.vercel/project.json
