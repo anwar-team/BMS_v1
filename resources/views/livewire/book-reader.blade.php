@@ -309,6 +309,73 @@
             </div>
         </div>
 
- 
+        <!-- =================== تذييل الصفحة =================== -->
+        <div style="width: 100%; margin-top: 80px; position: relative; clear: both; padding-top: 100px;">
+            <footer class="footer" style="background-color: #f8f9fa; padding: 30px 0; text-align: center; border-top: 1px solid #e8e8e9; width: 100%;">
+                <div class="footer-content" style="max-width: 1170px; margin: 0 auto; padding: 0 20px;">
+                    <div class="flex justify-center">
+                        <div class="footer-logo" style="width: 120px; height: 120px; margin: 0 auto 20px auto; overflow: hidden; border-radius: 50%;">
+                            <img src="{{ asset('images/figma/logo.jpg') }}" alt="Logo" class="w-full h-full" style="width: 100%; height: 100%; object-fit: cover;">
+                        </div>
+                    </div>
+                    <div class="footer-divider" style="height: 1px; background-color: #e8e8e9; margin: 20px 0;"></div>
+                    <div class="footer-copyright" style="font-family: 'Tajawal', sans-serif; color: #666; font-size: 14px;">
+                        © حقوق الطبع والنشر {{ date('Y') }}. جميع الحقوق محفوظة.
+                    </div>
+                </div>
+            </footer>
+        </div>
+    </div>
+
+    <!-- =================== أنماط CSS مخصصة =================== -->
+    <style>
+        /* شريط تمرير مخصص للمتصفحات التي تدعم webkit */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: #ccc;
+            border-radius: 10px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: #aaa;
+        }
+        
+        /* تعديلات خاصة بالاتجاه من اليمين لليسار */
+        .rtl {
+            direction: rtl;
+            text-align: right;
+        }
+        
+        /* الخطوط */
+        @import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Naskh+Arabic:wght@400;500;600;700&display=swap');
+        
+        body {
+            font-family: 'Tajawal', sans-serif;
+        }
+        
+        .font-tajawal {
+            font-family: 'Tajawal', sans-serif;
+        }
+        
+        .font-naskh {
+            font-family: 'Noto Naskh Arabic', serif;
+        }
+        
+        /* أنماط خاصة بالتذييل */
+        .footer {
+            clear: both;
+            position: relative;
+            z-index: 10;
+        }
+    </style>
 </div>
 <!-- =================== نهاية مكون القارئ =================== --> 
