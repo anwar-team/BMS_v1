@@ -1,5 +1,5 @@
 <!-- resources/views/book.blade.php -->
-<x-app-layout>
+
     <div class="min-h-screen bg-white">
         <!-- Navbar -->
         <nav class="NavBar w-full px-32 py-4 border-b border-gray-200">
@@ -347,4 +347,3 @@
             </div>
         </div>
     </div>
-</x-app-layout>
