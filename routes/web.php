@@ -27,6 +27,10 @@ Route::get('/blog/{slug}', BlogDetails::class)->name('blog.show');
 
 Route::get('/contact-us', ContactUs::class)->name('contact-us');
 
+Route::get('/categories', function () {
+    return view('components.superduper.pages.categories');
+})->name('categories');
+
 Route::get('/privacy-policy', function () {
     return view('components.superduper.pages.coming-soon', ['page_type' => 'privacy']);
 })->name('privacy-policy');

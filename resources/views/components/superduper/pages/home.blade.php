@@ -190,9 +190,9 @@
                 </div>
 
                 <div class="mt-12 text-center">
-                    <button class="text-green-800 bg-white border border-green-800 px-8 py-3 rounded-full font-bold shadow-md">
+                    <a href="{{ route('categories') }}" class="text-green-800 bg-white border border-green-800 px-8 py-3 rounded-full font-bold shadow-md inline-block">
                         عرض جميع الأقسام
-                    </button>
+                    </a>
                 </div>
                 </section>
             </div>
