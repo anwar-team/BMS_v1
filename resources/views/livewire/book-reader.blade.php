@@ -1,305 +1,332 @@
-<!-- resources/views/book.blade.php -->
 
-    <div class="min-h-screen bg-white">
-        <!-- Navbar -->
-        <nav class="NavBar w-full px-32 py-4 border-b border-gray-200">
-            <div class="Frame1000003469 flex justify-between items-center">
-                <div class="Frame1000003468 w-full flex justify-between items-center">
-                    <!-- Navigation Links -->
-                    <div class="Catagories flex items-center gap-6">
-                        <div class="text-stone-950 text-base font-normal">الكتب</div>
-                        <div class="w-px h-6 bg-gray-200"></div>
-                        <div class="text-stone-950 text-base font-normal">الأقسام</div>
-                        <div class="w-px h-6 bg-gray-200"></div>
-                        <div class="text-stone-950 text-base font-normal">عن المكتبة</div>
-                        <div class="w-px h-6 bg-gray-200"></div>
-                        <div class="Frame1321314386 relative">
-                            <div class="text-stone-950 text-base font-normal">الرئيسية</div>
-                            <div class="Line18 absolute left-0 right-0 h-0 outline outline-2 outline-offset-[-1px] outline-green-700"></div>
+<div>
+    {{-- هذا هو العنصر الرئيسي الذي يحتوي على كامل صفحة قارئ الكتاب --}}
+
+    <!-- =================== رأس الصفحة/التنقل =================== -->
+    {{-- قسم الهيدر الذي يحتوي على شريط التنقل والشعارات --}}
+    <div style="background: #ffffff; position: relative; overflow: hidden;">
+
+        <!-- شريط التنقل العلوي -->
+        {{-- شريط التنقل الرئيسي مع خلفية بيضاء وحدود سفلية --}}
+        <div style="background: #ffffff; border-style: solid; border-color: #e8e8e9; border-width: 0px 0px 1px 0px; padding: 16px 135px 16px 135px; display: flex; flex-direction: column; gap: 10px; align-items: flex-start; justify-content: flex-start; width: 100%; position: relative;">
+            {{-- حاوية مرنة للمحتوى الداخلي --}}
+            <div style="display: flex; flex-direction: row; align-items: center; justify-content: space-between; align-self: stretch; flex-shrink: 0; position: relative; width: 100%;">
+                {{-- حاوية لعناصر التنقل والشعارات --}}
+                <div style="display: flex; flex-direction: row; align-items: center; justify-content: space-between; flex-shrink: 0; position: relative; width: 100%;">
+                    <!-- روابط التنقل الرئيسية -->
+                    {{-- قائمة الروابط في شريط التنقل --}}
+                    <div style="display: flex; flex-direction: row; gap: 24px; align-items: center; justify-content: flex-start; flex-shrink: 0; position: relative;">
+                        {{-- رابط الكتب --}}
+                        <div style="color: var(--neutral-dark-1, #0f0f0f); text-align: left; font-family: 'Tajawal-Regular', sans-serif; font-size: 16px; line-height: 24px; font-weight: 400; position: relative;">
+                            الكتب
+                        </div>
+                        {{-- خط فاصل عمودي --}}
+                        <div style="background: var(--neutral-line, #e8e8e9); flex-shrink: 0; width: 1px; height: 24px; position: relative;"></div>
+                        {{-- رابط الأقسام --}}
+                        <div style="color: var(--neutral-dark-1, #0f0f0f); text-align: left; font-family: 'Tajawal-Regular', sans-serif; font-size: 16px; line-height: 24px; font-weight: 400; position: relative;">
+                            الأقسام
+                        </div>
+                        {{-- خط فاصل عمودي --}}
+                        <div style="background: var(--neutral-line, #e8e8e9); flex-shrink: 0; width: 1px; height: 24px; position: relative;"></div>
+                        {{-- رابط عن المكتبة --}}
+                        <div style="color: var(--neutral-dark-1, #0f0f0f); text-align: left; font-family: 'Tajawal-Regular', sans-serif; font-size: 16px; line-height: 24px; font-weight: 400; position: relative;">
+                            عن المكتبة
+                        </div>
+                        {{-- خط فاصل عمودي --}}
+                        <div style="background: var(--neutral-line, #e8e8e9); flex-shrink: 0; width: 1px; height: 24px; position: relative;"></div>
+                        {{-- رابط الرئيسية مع خط تحته للتأكيد على أنه نشط --}}
+                        <div style="display: flex; flex-direction: column; gap: 0px; align-items: flex-start; justify-content: center; flex-shrink: 0; position: relative;">
+                            <div style="color: var(--neutral-dark-1, #0f0f0f); text-align: left; font-family: 'Tajawal-Regular', sans-serif; font-size: 16px; line-height: 24px; font-weight: 400; position: relative;">
+                                الرئيسية
+                            </div>
+                            {{-- خط أخضر تحت الرابط النشط --}}
+                            <div style="margin-top: -2px; border-style: solid; border-color: #2c6e4a; border-width: 2px 0 0 0; align-self: stretch; flex-shrink: 0; height: 0px; position: relative;"></div>
                         </div>
                     </div>
+
+                    <!-- شعارات المكتبة -->
+                    {{-- حاوية الشعارات في الجانب الأيسر من شريط التنقل --}}
+                    <div style="display: flex; flex-direction: row; gap: 8px; align-items: center; justify-content: flex-end; flex-shrink: 0; position: relative;">
+                        {{-- الشعار الأول (المستطيل) --}}
+                        <img style="flex-shrink: 0; width: 145px; height: 44px; position: relative; object-fit: cover; aspect-ratio: 145/44;" src="{{ asset('storage/icon/untitled-design-7-20.png') }}" alt="Logo 1" />
+                        {{-- الشعار الثاني (المربع) --}}
+                        <img style="flex-shrink: 0; width: 44px; height: 44px; position: relative; object-fit: cover; aspect-ratio: 1;" src="{{ asset('storage/icon/untitled-design-8-10.png') }}" alt="Logo 2" />
+                    </div>
+                </div>
+            </div>
+        </div>
+
+<!----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------->
+<!----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------->  
+
+        <!-- =================== أنماط الخلفية (زخارف) =================== -->
+        {{-- تعريف الأنماط CSS للزخارف والأنماط الخلفية --}}
+        <style>
+            /* الحاوية الرئيسية للزخارف الخلفية */
+            .full-bg-patterns {
+                position: absolute ;
+                top: 0;
+                left: 0;
+                width: 100vw;
+                height: 100vh;
+                z-index: 0;
+                pointer-events: none; /* لمنع التفاعل مع الزخارف */
+                overflow: hidden;
+            }
+            /* نمط الزخارف الجانبية */
+            .full-bg-patterns .side-patterns {
+                position: absolute;
+                left: 0;
+                top: 0;
+                height: 100%;
+                display: flex;
+                flex-direction: column;
+                gap: 40px;
+            }
+            /* حجم الصور في الزخارف الجانبية */
+            .full-bg-patterns .side-patterns img {
+                width: 120px;
+                min-width: 80px;
+                max-width: 180px;
+                height: auto;
+            }
+            /* نمط الزخارف المركزية */
+            .full-bg-patterns .center-patterns {
+                position: absolute;
+                top: 0;
+                left: 50%;
+                transform: translateX(-50%);
+                width: 100vw;
+                display: flex;
+                flex-direction: row;
+                justify-content: center;
+                align-items: flex-start;
+                gap: 0;
+                opacity: 0.4; /* شفافية للزخارف المركزية */
+                pointer-events: none;
+            }
+            /* حجم الصور في الزخارف المركزية */
+            .full-bg-patterns .center-patterns img {
+                width: 18vw;
+                min-width: 120px;
+                max-width: 340px;
+                height: auto;
+                flex-shrink: 0;
+            }
+            /* تكيف الأحجام مع الشاشات المتوسطة */
+            @media (max-width: 900px) {
+                .full-bg-patterns .center-patterns img {
+                    width: 28vw;
+                    min-width: 80px;
+                    max-width: 180px;
+                }
+                .full-bg-patterns .side-patterns img {
+                    width: 80px;
+                    min-width: 50px;
+                    max-width: 100px;
+                }
+            }
+            /* تكيف الأحجام مع الشاشات الصغيرة */
+            @media (max-width: 600px) {
+                .full-bg-patterns .center-patterns img {
+                    width: 40vw;
+                    min-width: 60px;
+                    max-width: 120px;
+                }
+                .full-bg-patterns .side-patterns img {
+                    width: 50px;
+                    min-width: 30px;
+                    max-width: 60px;
+                }
+            }
+            
+        </style>
+        {{-- الحاوية الرئيسية للزخارف في الصفحة --}}
+        <div class="full-bg-patterns" aria-hidden="true">
+            {{-- الزخارف الجانبية على يمين الصفحة مع تدرج في الشفافية --}}
+            <div class="side-patterns" style="top: 80px;">
+                <img style="opacity: 0.23;" src="{{ asset('storage/icon/pattern-ff-18-e-023-20.svg') }}" alt="زخرفة جانبية 1" />
+                <img style="opacity: 0.33;" src="{{ asset('storage/icon/pattern-ff-18-e-023-30.svg') }}" alt="زخرفة جانبية 2" />
+                <img style="opacity: 0.43;" src="{{ asset('storage/icon/pattern-ff-18-e-023-40.svg') }}" alt="زخرفة جانبية 3" />
+            </div>
+            {{-- الزخارف المركزية في وسط الصفحة تحت الهيدر --}}
+            <div class="center-patterns" style="top: 80px;">
+                <img src="{{ asset('storage/icon/pattern-ff-18-e-023-50.svg') }}" alt="زخرفة مركزية 1" />
+                <img src="{{ asset('storage/icon/pattern-ff-18-e-023-60.svg') }}" alt="زخرفة مركزية 2" />
+                <img src="{{ asset('storage/icon/pattern-ff-18-e-023-70.svg') }}" alt="زخرفة مركزية 3" />
+                <img src="{{ asset('storage/icon/pattern-ff-18-e-023-71.svg') }}" alt="زخرفة مركزية 4" />
+                <img src="{{ asset('storage/icon/pattern-ff-18-e-023-60.svg') }}" alt="زخرفة مركزية 5" />
+                <img src="{{ asset('storage/icon/pattern-ff-18-e-023-70.svg') }}" alt="زخرفة مركزية 6" />
+                <img src="{{ asset('storage/icon/pattern-ff-18-e-023-71.svg') }}" alt="زخرفة مركزية 7" />
+            </div>
+            <div style="display: flex; flex-direction: column; gap: 24px; align-items: flex-end; justify-content: flex-start; width: 1170px; position: relative; right: 135px; top: 150px; margin: 0 auto; padding-bottom: 100px;">
+            <div style="display: flex; flex-direction: column; gap: 40px; align-items: flex-end; justify-content: flex-start; align-self: stretch; flex-shrink: 0; position: relative;">
+                <!-- عنوان الكتاب مع الأيقونة -->
+                <div style="display: flex; flex-direction: row; gap: 12px; align-items: center; justify-content: flex-start; flex-shrink: 0; position: relative;">
+                    <div style="text-align: right; font-family: 'Tajawal-Bold', sans-serif; font-size: 41px; line-height: 60px; font-weight: 700; position: relative; display: flex; align-items: center; justify-content: flex-end;">
+                        <span>
+                            <span>{{ $book->title }}</span>
+                            @if($mainAuthors->count() > 0)
+                                <span>[</span>
+                                <span>{{ $mainAuthors->first()->full_name }}</span>
+                                <span>]</span>
+                            @endif
+                        </span>
+                    </div>
+                    <img style="flex-shrink: 0; width: 60px; height: 60px; position: relative; overflow: visible;" src="{{ asset('storage/icon/group0.svg') }}" alt="Book Icon" />
+                </div>
+
+                <!-- أدوات البحث وأدوات أخرى -->
+                <div style="display: flex; flex-direction: column; gap: 16px; align-items: flex-start; justify-content: flex-start; align-self: stretch; flex-shrink: 0; position: relative;">
+                    <div style="display: flex; flex-direction: row; gap: 24px; align-items: center; justify-content: flex-start; align-self: stretch; flex-shrink: 0; position: relative;">
+                        <!-- أدوات (إشارات مرجعية، مشاركة، تحميل) -->
+                        <div style="display: flex; flex-direction: row; gap: 24px; align-items: flex-start; justify-content: flex-start; flex-shrink: 0; position: relative;">
+                            <img style="flex-shrink: 0; width: 20.89px; height: 24px; position: relative; overflow: visible;" src="{{ asset('storage/icon/group1.svg') }}" alt="Bookmark" />
+                            <div style="flex-shrink: 0; width: 24px; height: 24px; position: relative; overflow: hidden;">
+                                <img style="width: 83.33%; height: 83.33%; position: absolute; right: 8.33%; left: 8.33%; bottom: 8.33%; top: 8.33%; overflow: visible;" src="{{ asset('storage/icon/group2.svg') }}" alt="Share" />
+                            </div>
+                            <div style="flex-shrink: 0; width: 24px; height: 24px; position: relative; overflow: hidden;">
+                                <img style="width: 100%; height: 75%; position: absolute; right: 0%; left: 0%; bottom: 12.5%; top: 12.5%; overflow: visible;" src="{{ asset('storage/icon/group3.svg') }}" alt="Download" />
+                            </div>
+                        </div>
+
+                        <!-- مربع البحث -->
+                        <div style="display: flex; flex-direction: column; gap: 10px; align-items: flex-end; justify-content: flex-start; flex: 1; height: 42px; position: relative;">
+                            <div style="background: #ffffff; border-radius: 6px; border-style: solid; border-color: #d9d9d9; border-width: 1px; align-self: stretch; flex-shrink: 0; height: 42px; position: relative;"></div>
+                            <div style="display: flex; flex-direction: row; gap: 8px; align-items: flex-end; justify-content: flex-end; flex-shrink: 0; position: absolute; right: 12.11px; top: 50%; translate: 0 -50%;">
+                                <div style="color: var(--neutral-dark-4, #3a3b3e); text-align: left; font-family: 'Tajawal-Regular', sans-serif; font-size: 14px; line-height: 20px; font-weight: 400; position: relative; display: flex; align-items: center; justify-content: flex-start;">
+                                    ابحث ...
+                                </div>
+                                <div style="flex-shrink: 0; width: 24px; height: 24px; position: relative; overflow: hidden;">
+                                    <img style="height: auto; position: absolute; left: 2.78px; top: 2.78px; overflow: visible;" src="{{ asset('storage/icon/iconly-light-search0.svg') }}" alt="Search" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+        </div>
+        <!-- Spacer to push content below header and patterns -->
+        <div style="height: 80px;"></div>
+
+<!----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------->
+<!----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------->
+<!----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------->
+
+        <!-- =================== المحتوى الرئيسي =================== -->
+
                     
-                    <!-- Logo and Search Icon -->
-                    <div class="Frame1321314404 flex items-center gap-2">
-                        <img src="https://placehold.co/145x44 " alt="Logo" class="UntitledDesign72">
-                        <img src="https://placehold.co/44x44 " alt="Search" class="UntitledDesign81">
-                    </div>
-                </div>
-            </div>
-        </nav>
+<!----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------->
+<!----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------->  
+<!----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------->  
 
-        <!-- Breadcrumb -->
-        <div class="Roadmap w-[1170px] mx-auto mt-4 flex items-center gap-3">
-            <div class="text-black text-sm font-normal">آداب الفتوى والمفتي والمستفتي</div>
-            <div class="w-3.5 h-0 origin-top-left rotate-[117.05deg] opacity-50 outline outline-1 outline-offset-[-0.50px] outline-black"></div>
-            <div class="opacity-50 text-black text-sm font-normal">أصول الفقه والقواعد الفقهية</div>
-            <div class="w-3.5 h-0 origin-top-left rotate-[117.05deg] opacity-50 outline outline-1 outline-offset-[-0.50px] outline-black"></div>
-            <div class="opacity-50 text-black text-sm font-normal">أقسام الكتب</div>
-            <div class="w-3.5 h-0 origin-top-left rotate-[117.05deg] opacity-50 outline outline-1 outline-offset-[-0.50px] outline-black"></div>
-            <div class="opacity-50 text-black text-sm font-normal">الرئيسية</div>
-        </div>
-
-        <!-- Book Title -->
-        <div class="Frame1321314419 w-[1170px] mx-auto mt-16">
-            <div class="Frame1321314398 mb-10">
-                <div class="Frame1321314387 flex items-center gap-3">
-                    <div class="text-right">
-                        <span class="text-green-700 text-4xl font-bold">آداب الفتوى والمفتي والمستفتي - </span>
-                        <span class="text-pink-700 text-4xl font-bold">[</span>
-                        <span class="text-green-700 text-4xl font-bold">النووي</span>
-                        <span class="text-pink-700 text-4xl font-bold">]</span>
-                    </div>
-                    <!-- Decorative elements -->
-                    <div class="Vector w-4 h-3 bg-green-700"></div>
-                    <div class="Vector w-3.5 h-7 bg-pink-700"></div>
-                    <div class="Vector size-1 bg-green-700"></div>
-                    <div class="Vector w-5 h-6 bg-green-700"></div>
-                    <!-- More decorative elements can be added here -->
-                </div>
-            </div>
-
-            <!-- Book Content -->
-            <div class="Frame1321314423 flex gap-3">
-                <!-- Book Text -->
-                <div class="Frame1321314425 w-[774px]">
-                    <!-- Book Content Cards -->
-                    <div class="CardBulkActions1Medium mb-4">
-                        <div class="Table">
-                            <div class="Tablecellrow">
-                                <div class="Cell6 p-4">
-                                    <div class="Typography">
-                                        <p class="Body2 text-right text-base font-normal leading-snug tracking-tight text-text-primary/90">
-                                            آدَابُ الفَتْوَى والمفتي والمستفتي
-                                            اعْلَم أَن هَذَا البابَ مهمٌّ جدًّا فأحببتُ تَقْدِيمه لعمومِ الْحَاجَة إِلَيْهِ وَقد صنَّف فِي هَذَا جمَاعَة من أَصْحَابنَا مِنْهُم أَبُو الْقَاسِم الصَّيْمَرِيّ شيخ صَاحب الْحَاوِي ثمَّ الْخَطِيب أَبُو بكر الْحَافِظ الْبَغْدَادِيّ ثمَّ الشَّيْخ أَبُو عَمْرو ابْن الصّلاح وكل مِنْهُم ذكرَ نفائس لم يذكرهَا الْآخرَانِ وَقد طالعت كتب الثَّلَاثَة ولخصت مِنْهَا جملَة مختصرة مستوعبة لكل مَا ذَكرُوهُ من المهم وضممت إِلَيْهَا نفائس من متفرقات كَلَام الْأَصْحَاب وَبِاللَّهِ التَّوْفِيق
-                                            مُقَدّمَة فِي أهمية الْإِفْتَاء وَعظم خطره وفضله
-                                            اعْلَم أَن الْإِفْتَاء عَظِيم الْخطر كَبِير الْموقع كثير الْفضل لِأَن الْمُفْتِي وَارِث الْأَنْبِيَاء صلوَات الله وَسَلَامه عَلَيْهِم وقائم بِفَرْض الْكِفَايَة لكنه معرض للخطأ
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="Tablecellrow border-b border-divider/10">
-                                <div class="Cell6 w-20 p-4">
-                                    <div class="Typography">
-                                        <div class="Body2 text-sm font-normal text-text-primary/90">1</div>
-                                    </div>
-                                </div>
-                                <div class="Cell6 p-4">
-                                    <div class="Typography">
-                                        <div class="Body2 text-sm font-normal text-text-primary/90">الجزء 1</div>
+                    <!-- منطقة المحتوى مع الشريط الجانبي -->
+                    <div style="display: flex; flex-direction: row; gap: 12px; align-items: flex-start; justify-content: flex-end; flex-shrink: 0; position: relative; width: 100%;">
+                        <!-- منطقة المحتوى الرئيسية -->
+                        <div style="display: flex; flex-direction: column; gap: 30px; align-items: flex-start; justify-content: flex-start; flex-shrink: 0; width: 774px; position: relative;">
+                            <div style="display: flex; flex-direction: column; gap: 8px; align-items: flex-start; justify-content: flex-start; align-self: stretch; flex-shrink: 0; position: relative;">
+                                <!-- لوحة محتوى الكتاب -->
+                                <div style="background: var(--background-paper-elevation-1, #ffffff); border-radius: 4px; border-style: solid; border-color: #e8e8e9; border-width: 1px 1px 0px 1px; display: flex; flex-direction: column; gap: 0px; align-items: flex-end; justify-content: flex-start; align-self: stretch; flex-shrink: 0; position: relative; box-shadow: 0px 2px 1px -1px rgba(0, 0, 0, 0.2), 0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 1px 3px 0px rgba(0, 0, 0, 0.12); overflow: hidden;">
+                                    <div style="display: flex; flex-direction: column; gap: 0px; align-items: flex-start; justify-content: flex-start; align-self: stretch; flex-shrink: 0; position: relative;">
+                                        <div style="display: flex; flex-direction: row; gap: 0px; align-items: center; justify-content: flex-end; align-self: stretch; flex-shrink: 0; position: relative;">
+                                            <div style="background: var(--library-clickablelayer, rgba(0, 0, 0, 0)); padding: 16px; display: flex; flex-direction: row; gap: 0px; align-items: center; justify-content: flex-end; flex: 1; position: relative;">
+                                                <div style="display: flex; flex-direction: column; gap: 0px; align-items: flex-end; justify-content: flex-start; flex: 1; position: relative;">
+                                                    <div style="display: flex; flex-direction: column; gap: 0px; align-items: flex-start; justify-content: flex-start; flex-shrink: 0; position: relative;">
+                                                        <!-- عنوان الفصل ومحتوى الصفحة -->
+                                                        <div style="color: var(--text-primary, rgba(0, 0, 0, 0.87)); text-align: right; font-family: 'Tajawal-Regular', sans-serif; font-size: 16px; line-height: 143%; letter-spacing: 0.17px; font-weight: var(--fontweightregular, 400); position: relative; width: 100%;">
+                                                            @if($activeChapter)
+                                                                <h2 style="font-size: 20px; font-weight: 700; margin-bottom: 16px;">{{ $activeChapter->title }}</h2>
+                                                            @endif
+                                                            
+                                                            @if($activePage)
+                                                                <div class="rtl font-naskh leading-relaxed text-right">
+                                                                    {!! $activePage->content !!}
+                                                                </div>
+                                                            @else
+                                                                <div class="text-center py-12">
+                                                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 mx-auto text-gray-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                                                                    </svg>
+                                                                    <p class="mt-4 text-gray-500">لم يتم العثور على محتوى لهذا الفصل</p>
+                                                                </div>
+                                                            @endif
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <!-- أزرار التنقل بين الصفحات -->
+                                        @if($activePage)
+                                        <div style="padding: 16px; display: flex; flex-direction: row; gap: 16px; align-items: center; justify-content: space-between; align-self: stretch; flex-shrink: 0; position: relative; width: 100%; border-top: 1px solid #e8e8e9;">
+                                            <button wire:click="previousPage" style="display: flex; align-items: center; gap: 8px; cursor: pointer; color: #2c6e4a;">
+                                                <img src="{{ asset('storage/icon/chevron-left-filled0.svg') }}" alt="Previous" />
+                                                <span>الصفحة السابقة</span>
+                                            </button>
+                                            
+                                            <div style="color: #666; font-size: 14px;">
+                                                صفحة {{ $activePage->page_number }} من {{ $book->pages_count }}
+                                            </div>
+                                            
+                                            <button wire:click="nextPage" style="display: flex; align-items: center; gap: 8px; cursor: pointer; color: #2c6e4a;">
+                                                <span>الصفحة التالية</span>
+                                                <img src="{{ asset('storage/icon/chevron-right-filled0.svg') }}" alt="Next" />
+                                            </button>
+                                        </div>
+                                        @endif
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-
-                    <div class="CardBulkActions1Medium mb-4">
-                        <div class="Table">
-                            <div class="Tablecellrow">
-                                <div class="Cell6 p-4">
-                                    <div class="Typography">
-                                        <p class="Body2 text-right text-base font-normal leading-snug tracking-tight text-text-primary/90">
-                                            وَلِهَذَا قَالُوا الْمُفْتِي موقع عَن الله تَعَالَى
-                                            وروينا عَن ابْن المُنكدر قَالَ الْعَالم بَين الله تَعَالَى وخلقه فَلْينْظر كَيفَ يدْخل بَينهم
-                                            وروينا عَن السّلف وفضلاء الْخلف من التَّوَقُّف عَن الْفتيا أَشْيَاء كَثِيرَة مَعْرُوفَة نذْكر مِنْهَا أحرفاً تبركاً
-                                            وروينا عَن عبد الرَّحْمَن ابْن أبي ليلى قَالَ أدركتُ عشْرين ومئة من الْأَنْصَار من أَصْحَاب رَسُول الله صلى الله عَلَيْهِ وَسلم يُسأل أحدهم عَن الْمَسْأَلَة فيردها هَذَا إِلَى هَذَا وَهَذَا إِلَى هَذَا حَتَّى ترجع إِلَى الأول
-                                            وَفِي رِوَايَة مَا مِنْهُم من يحدث بِحَدِيث إِلَّا ود أَن أَخَاهُ كَفاهُ إِيَّاه وَلَا يستفتى عَن شَيْء إِلَّا ود أَن أَخَاهُ كَفاهُ الْفتيا
-                                            وَعَن ابْن مَسْعُود وَابْن عَبَّاس رَضِي الله عَنْهُم مَنْ أفتى فِي كلِّ مَا يسْأَل فَهُوَ مَجْنُون
-                                        </p>
-                                    </div>
+                        
+                        <!-- الشريط الجانبي: فهرس الفصول -->
+                        <div style="display: flex; flex-direction: column; gap: 12px; align-items: flex-end; justify-content: flex-start; flex-shrink: 0; width: 384px; position: relative;">
+                            <div style="background: var(--background-paper-elevation-1, #ffffff); border-radius: 4px; border-style: solid; border-color: #e8e8e9; border-width: 1px; padding: 16px; display: flex; flex-direction: column; gap: 12px; align-items: flex-start; justify-content: flex-start; align-self: stretch; flex-shrink: 0; position: relative; box-shadow: 0px 2px 1px -1px rgba(0, 0, 0, 0.2), 0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 1px 3px 0px rgba(0, 0, 0, 0.12);">
+                                <div style="color: var(--text-primary, rgba(0, 0, 0, 0.87)); text-align: right; font-family: 'Tajawal-Bold', sans-serif; font-size: 16px; line-height: 150%; font-weight: 700; position: relative; align-self: stretch;">
+                                    فهرس الكتاب
                                 </div>
-                            </div>
-                            <div class="Tablecellrow border-b border-divider/10">
-                                <div class="Cell6 w-20 p-4">
-                                    <div class="Typography">
-                                        <div class="Body2 text-sm font-normal text-text-primary/90">2</div>
-                                    </div>
-                                </div>
-                                <div class="Cell6 p-4">
-                                    <div class="Typography">
-                                        <div class="Body2 text-sm font-normal text-text-primary/90">الجزء 1</div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="CardBulkActions1Medium mb-4">
-                        <div class="Table">
-                            <div class="Tablecellrow">
-                                <div class="Cell6 p-4">
-                                    <div class="Typography">
-                                        <p class="Body2 text-right text-base font-normal leading-snug tracking-tight text-text-primary/90">
-                                            وَعَن الشّعبِيّ وَالْحسن وَأبي حَصِين بِفَتْح الْحَاء التابعيين قَالُوا إِن أحدَكَم ليفتي فِي الْمَسْأَلَة وَلَو وَرَدَتْ على عُمَر بن الْخطاب رَضِي الله عَنهُ لجمع لَهَا أهل بدر
-                                            وَعَن عَطاء بن السَّائِب التَّابِعِيّ أدركتُ أَقْوَامًا يسْأَل أحدهم عَن الشَّيْء فيتكلم وَهُوَ يرعد
-                                            وَعَن ابْن عَبَّاس وَمُحَمّد بن عجلَان إِذا أغفل الْعَالم لَا أَدْرِي أُصِيبت مقاتله
-                                            وَعَن سُفْيَان بن عُيَيْنَة وَسَحْنُون أجسر النَّاس على الْفتيا أقلهم علما
-                                            وَعَن الشَّافِعِي وَقد سُئِلَ عَن مسألةٍ فَلم يجب فَقيل لَهُ فَقَالَ حَتَّى أَدْرِي أَن الْفضل فِي السُّكُوت أَو فِي الْجَواب
-                                            وَعَن الْأَثْرَم سمعتُ أَحْمد بن حَنْبَل يكثر أَن يَقُول لَا أَدْرِي وَذَلِكَ فِيمَا عرف الْأَقَاوِيل فِيهِ
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="Tablecellrow border-b border-divider/10">
-                                <div class="Cell6 w-20 p-4">
-                                    <div class="Typography">
-                                        <div class="Body2 text-sm font-normal text-text-primary/90">2</div>
-                                    </div>
-                                </div>
-                                <div class="Cell6 p-4">
-                                    <div class="Typography">
-                                        <div class="Body2 text-sm font-normal text-text-primary/90">الجزء 1</div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Book Table of Contents -->
-                <div class="Frame1321314426">
-                    <div class="CardBulkActions1Medium">
-                        <div class="Table">
-                            <div class="Tablecellrow bg-stone-100 border-b border-divider/10">
-                                <div class="Cell6 w-20 p-4">
-                                    <div class="Typography">
-                                        <div class="Body2 text-green-700 text-sm font-bold">الصفحة</div>
-                                    </div>
-                                </div>
-                                <div class="Cell6 p-4">
-                                    <div class="Typography">
-                                        <div class="Body2 text-green-700 text-sm font-bold">فصول الكتاب</div>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <!-- Table of Contents Items -->
-                            <div class="Tablecellrow border-b border-divider/10">
-                                <div class="Cell6 w-20 p-4">
-                                    <div class="Typography">
-                                        <div class="Body2 text-sm font-normal text-text-primary/90">1</div>
-                                    </div>
-                                </div>
-                                <div class="Cell6 p-4">
-                                    <div class="Typography">
-                                        <div class="Body2 text-sm font-normal text-text-primary/90">مقدمة في أهمية الإفتاء وعظم خطره وفضله</div>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <div class="Tablecellrow border-b border-divider/10">
-                                <div class="Cell6 w-20 p-4">
-                                    <div class="Typography">
-                                        <div class="Body2 text-sm font-normal text-text-primary/90">5</div>
-                                    </div>
-                                </div>
-                                <div class="Cell6 p-4">
-                                    <div class="Typography">
-                                        <div class="Body2 text-sm font-normal text-text-primary/90">فصل في معرفة من يصلح للفتوى</div>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <div class="Tablecellrow border-b border-divider/10">
-                                <div class="Cell6 w-20 p-4">
-                                    <div class="Typography">
-                                        <div class="Body2 text-sm font-normal text-text-primary/90">6</div>
-                                    </div>
-                                </div>
-                                <div class="Cell6 p-4">
-                                    <div class="Typography">
-                                        <div class="Body2 text-sm font-normal text-text-primary/90">فصل في وجوب ورع المفتي وديانته</div>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <div class="Tablecellrow border-b border-divider/10">
-                                <div class="Cell6 w-20 p-4">
-                                    <div class="Typography">
-                                        <div class="Body2 text-sm font-normal text-text-primary/90">7</div>
-                                    </div>
-                                </div>
-                                <div class="Cell6 p-4">
-                                    <div class="Typography">
-                                        <div class="Body2 text-sm font-normal text-text-primary/90">فصل في شروط المفتي</div>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <div class="Tablecellrow border-b border-divider/10">
-                                <div class="Cell6 w-20 p-4">
-                                    <div class="Typography">
-                                        <div class="Body2 text-sm font-normal text-text-primary/90">10</div>
-                                    </div>
-                                </div>
-                                <div class="Cell6 p-4">
-                                    <div class="Typography">
-                                        <div class="Body2 text-sm font-normal text-text-primary/90">فصل في أقسام المفتين</div>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <div class="Tablecellrow border-b border-divider/10">
-                                <div class="Cell6 w-20 p-4">
-                                    <div class="Typography">
-                                        <div class="Body2 text-sm font-normal text-text-primary/90">19</div>
-                                    </div>
-                                </div>
-                                <div class="Cell6 p-4">
-                                    <div class="Typography">
-                                        <div class="Body2 text-sm font-normal text-text-primary/90">فصل في بعض مسائل أهلية المفتي</div>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <div class="Tablecellrow border-b border-divider/10">
-                                <div class="Cell6 w-20 p-4">
-                                    <div class="Typography">
-                                        <div class="Body2 text-sm font-normal text-text-primary/90">20</div>
-                                    </div>
-                                </div>
-                                <div class="Cell6 p-4">
-                                    <div class="Typography">
-                                        <div class="Body2 text-sm font-normal text-text-primary/90">فصل في شروط المفتي</div>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <div class="Tablecellrow border-b border-divider/10">
-                                <div class="Cell6 w-20 p-4">
-                                    <div class="Typography">
-                                        <div class="Body2 text-sm font-normal text-text-primary/90">21</div>
-                                    </div>
-                                </div>
-                                <div class="Cell6 p-4">
-                                    <div class="Typography">
-                                        <div class="Body2 text-sm font-normal text-text-primary/90">فصل في أقسام المفتين</div>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <div class="Tablecellrow border-b border-divider/10">
-                                <div class="Cell6 w-20 p-4">
-                                    <div class="Typography">
-                                        <div class="Body2 text-sm font-normal text-text-primary/90">23</div>
-                                    </div>
-                                </div>
-                                <div class="Cell6 p-4">
-                                    <div class="Typography">
-                                        <div class="Body2 text-sm font-normal text-text-primary/90">فصل في بعض مسائل أهلية المفتي</div>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <div class="Tablecellrow border-b border-divider/10">
-                                <div class="Cell6 w-20 p-4">
-                                    <div class="Typography">
-                                        <div class="Body2 text-sm font-normal text-text-primary/90">25</div>
-                                    </div>
-                                </div>
-                                <div class="Cell6 p-4">
-                                    <div class="Typography">
-                                        <div class="Body2 text-sm font-normal text-text-primary/90">فصل في بعض مسائل أهلية المفتي</div>
-                                    </div>
+                                
+                                <div style="height: 1px; background: #e0e0e0; width: 100%; margin: 4px 0;"></div>
+                                
+                                <div style="max-height: 500px; overflow-y: auto; width: 100%;">
+                                    @foreach($chapters as $chapter)
+                                        <div style="margin-bottom: 8px;">
+                                            <!-- الفصل الرئيسي -->
+                                            <div 
+                                                wire:click="selectChapter({{ $chapter->id }})"
+                                                style="display: flex; justify-content: space-between; align-items: center; padding: 8px; cursor: pointer; border-radius: 4px; {{ $activeChapter && $activeChapter->id === $chapter->id ? 'background-color: #f1f8f3; color: #2c6e4a;' : 'background-color: transparent;' }}"
+                                            >
+                                                <div style="display: flex; align-items: center; gap: 8px;">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                                        <path d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"></path>
+                                                    </svg>
+                                                    <span style="font-size: 14px;">{{ $chapter->title }}</span>
+                                                </div>
+                                                
+                                                @if($chapter->children->count() > 0)
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="{{ $activeChapter && $activeChapter->id === $chapter->id ? 'transform: rotate(90deg);' : '' }}">
+                                                        <path d="M9 5l7 7-7 7"></path>
+                                                    </svg>
+                                                @endif
+                                            </div>
+                                            
+                                            <!-- الفصول الفرعية -->
+                                            @if($chapter->children->count() > 0 && $activeChapter && ($activeChapter->id === $chapter->id || $activeChapter->parent_id === $chapter->id))
+                                                <div style="margin-right: 16px; padding-right: 8px; border-right: 2px solid #e0e0e0;">
+                                                    @foreach($chapter->children as $subChapter)
+                                                        <div 
+                                                            wire:click="selectChapter({{ $subChapter->id }})"
+                                                            style="display: flex; align-items: center; padding: 6px; cursor: pointer; border-radius: 4px; margin-top: 4px; {{ $activeChapter && $activeChapter->id === $subChapter->id ? 'background-color: #f1f8f3; color: #2c6e4a;' : 'background-color: transparent;' }}"
+                                                        >
+                                                            <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                                                <path d="M9 5l7 7-7 7"></path>
+                                                            </svg>
+                                                            <span style="font-size: 12px; margin-right: 8px;">{{ $subChapter->title }}</span>
+                                                        </div>
+                                                    @endforeach
+                                                </div>
+                                            @endif
+                                        </div>
+                                    @endforeach
                                 </div>
                             </div>
                         </div>
@@ -308,42 +335,73 @@
             </div>
         </div>
 
-        <!-- Pagination -->
-        <div class="Tablefooter w-[1170px] mx-auto mt-8 py-0.5 bg-white rounded-sm shadow-[0px_1px_3px_0px_rgba(0,0,0,0.12)] outline outline-1 outline-offset-[-1px] outline-black/10 flex justify-start items-center gap-6">
-            <div class="Frame1321314430 w-44 flex justify-between items-center">
-                <!-- Navigation buttons -->
-                <div class="Navigation flex items-center">
-                    <button class="Iconbutton p-2 rounded-full">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
-                        </svg>
-                    </button>
-                    <span class="10Of100 text-xs font-normal text-text-primary/90">74/3</span>
-                    <button class="Iconbutton p-2 rounded-full">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
-                        </svg>
-                    </button>
+        <!-- =================== تذييل الصفحة =================== -->
+        <div style="width: 100%; margin-top: 80px; position: relative; clear: both; padding-top: 100px;">
+            <footer class="footer" style="background-color: #f8f9fa; padding: 30px 0; text-align: center; border-top: 1px solid #e8e8e9; width: 100%;">
+                <div class="footer-content" style="max-width: 1170px; margin: 0 auto; padding: 0 20px;">
+                    <div class="flex justify-center">
+                        <div class="footer-logo" style="width: 120px; height: 120px; margin: 0 auto 20px auto; overflow: hidden; border-radius: 50%;">
+                            <img src="{{ asset('images/figma/logo.jpg') }}" alt="Logo" class="w-full h-full" style="width: 100%; height: 100%; object-fit: cover;">
+                        </div>
+                    </div>
+                    <div class="footer-divider" style="height: 1px; background-color: #e8e8e9; margin: 20px 0;"></div>
+                    <div class="footer-copyright" style="font-family: 'Tajawal', sans-serif; color: #666; font-size: 14px;">
+                        © حقوق الطبع والنشر {{ date('Y') }}. جميع الحقوق محفوظة.
+                    </div>
                 </div>
-                <div class="text-xs font-normal text-text-primary/90">الجزء 1</div>
-            </div>
-            
-            <!-- Progress bar -->
-            <div class="Frame1321314437 w-full">
-                <div class="Frame1321314257 w-full">
-                    <div class="Rectangle168 h-1.5 bg-zinc-100 rounded-[5px]"></div>
-                    <div class="Rectangle169 h-1.5 bg-green-700 rounded-[5px]" style="width: 30%"></div>
-                </div>
-                <div class="Ellipse6012 w-5 h-5 bg-green-700 rounded-full" style="margin-left: 739px;"></div>
-            </div>
-            
-            <!-- Options button -->
-            <div class="Frame1321314431 px-3 flex items-center gap-2.5">
-                <button class="heroicons-outline-bars3">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
-                    </svg>
-                </button>
-            </div>
+            </footer>
         </div>
     </div>
+
+    <!-- =================== أنماط CSS مخصصة =================== -->
+    <style>
+        /* شريط تمرير مخصص للمتصفحات التي تدعم webkit */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: #ccc;
+            border-radius: 10px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: #aaa;
+        }
+        
+        /* تعديلات خاصة بالاتجاه من اليمين لليسار */
+        .rtl {
+            direction: rtl;
+            text-align: right;
+        }
+        
+        /* الخطوط */
+        @import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Naskh+Arabic:wght@400;500;600;700&display=swap');
+        
+        body {
+            font-family: 'Tajawal', sans-serif;
+        }
+        
+        .font-tajawal {
+            font-family: 'Tajawal', sans-serif;
+        }
+        
+        .font-naskh {
+            font-family: 'Noto Naskh Arabic', serif;
+        }
+        
+        /* أنماط خاصة بالتذييل */
+        .footer {
+            clear: both;
+            position: relative;
+            z-index: 10;
+        }
+    </style>
+</div>
+<!-- =================== نهاية مكون القارئ =================== -->

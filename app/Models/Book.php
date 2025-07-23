@@ -122,6 +122,38 @@ class Book extends Model
     }
 
     /**
+     * العلاقة مع استيراد BOK
+     */
+    public function bokImports(): HasMany
+    {
+        return $this->hasMany(BokImport::class);
+    }
+
+    /**
+     * الحصول على آخر استيراد BOK
+     */
+    public function latestBokImport()
+    {
+        return $this->hasOne(BokImport::class)->latestOfMany();
+    }
+
+    /**
+     * التحقق من كون الكتاب مستورد من BOK
+     */
+    public function isImportedFromBok(): bool
+    {
+        return $this->bokImports()->exists();
+    }
+
+    /**
+     * الحصول على معلومات استيراد BOK
+     */
+    public function getBokImportInfo(): ?BokImport
+    {
+        return $this->latestBokImport;
+    }
+
+    /**
      * الحصول على رابط صورة الغلاف
      */
     public function getCoverImageAttribute($value)
