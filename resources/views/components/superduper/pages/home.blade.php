@@ -114,7 +114,6 @@
           My Main Aziz     
 ========================================
  -->
-            @section('content')
             <div class="bg-white min-h-screen">
                 <!-- Main Hero Section -->
                 <section class="relative overflow-hidden">
@@ -155,10 +154,10 @@
                     </div>
                 </section>
 
+
+                <!-- Book Categories-->
                 <div class="relative">
-                    <!-- Book Categories Pattern Background -->
-                    <!-- <div class="absolute inset-x-0 top-0 h-[220px] w-screen bg-pattern-section z-0"></div> -->
-                    <!-- Book Categories Section (with relative to handle z-index) -->
+                    <div class="pattern-top top-0"></div>
                     <section class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
                         <div class="mb-12 z-10">
                             <div class="flex items-center gap-3 mb-8">
@@ -170,167 +169,177 @@
                         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                             @for ($i = 0; $i < 6; $i++)
                                 <div class="bg-white rounded-lg shadow-md overflow-hidden border border-gray-200">
-                                <div class="relative">
-                                    <img
-                                        src="{{ asset('images/mask-group0.svg') }}"
-                                        alt="Category image"
-                                        class="absolute left-0 top-0 w-32 h-32">
-                                    <div class="p-8">
-                                        <div class="flex justify-between items-center">
-                                            <div>
-                                                <h3 class="text-xl text-green-800 font-bold mb-1">العقيدة</h3>
-                                                <p class="text-sm text-gray-600">1035 كتاب</p>
+                                    <div class="relative">
+                                        <img
+                                            src="{{ asset('images/mask-group0.svg') }}"
+                                            alt="Category image"
+                                            class="absolute left-0 top-0 w-32 h-32">
+                                        <div class="p-8">
+                                            <div class="flex justify-between items-center">
+                                                <div>
+                                                    <h3 class="text-xl text-green-800 font-bold mb-1">العقيدة</h3>
+                                                    <p class="text-sm text-gray-600">1035 كتاب</p>
+                                                </div>
+                                                <img src="{{ asset('images/group1.svg') }}" alt="Icon" class="w-16 h-16">
                                             </div>
-                                            <img src="{{ asset('images/group1.svg') }}" alt="Icon" class="w-16 h-16">
                                         </div>
                                     </div>
                                 </div>
+                            @endfor
                         </div>
-                        @endfor
+
+                        <div class="mt-12 text-center">
+                            <a href="{{ route('categories') }}" class="text-green-800 bg-white border border-green-800 px-8 py-3 rounded-full font-bold shadow-md inline-block">
+                                عرض جميع الأقسام
+                            </a>
+                        </div>
+                    </section>
                 </div>
 
-                <div class="mt-12 text-center">
-                    <a href="{{ route('categories') }}" class="text-green-800 bg-white border border-green-800 px-8 py-3 rounded-full font-bold shadow-md inline-block">
-                        عرض جميع الأقسام
-                    </a>
-                </div>
+            <!-- Books Table -->
+            <!-- background pattern-->
+            <div class="relative">
+                <div class="pattern-top top-10"></div>
+                <!-- end of background pattern-->
+                <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 relative z-10">
+                    <div class="flex items-center gap-3 mb-8">
+                        <img src="{{ asset('images/group7.svg') }}" alt="Icon" class="w-16 h-16">
+                        <h2 class="text-4xl text-green-800 font-bold">الكتب</h2>
+                    </div>
+
+                    <div class="flex flex-wrap gap-4 mb-8">
+                        <button class="bg-white text-green-800 border border-green-800 px-5 py-2 rounded-full">
+                            الكتب المفتوحة مؤخراً
+                        </button>
+                        <button class="bg-white text-green-800 border border-green-800 px-5 py-2 rounded-full">
+                            أكثر الكتب قراءةً
+                        </button>
+                        <button class="bg-white text-green-800 border border-green-800 px-5 py-2 rounded-full">
+                            كتب مضافة حديثاً
+                        </button>
+                        <button class="bg-green-800 text-white px-5 py-2 rounded-full">
+                            جميع الكتب
+                        </button>
+                    </div>
+
+                    {{-- Books Table Will Go Here --}}
+                    <div class="bg-white rounded-lg shadow overflow-hidden">
+                        <div class="overflow-x-auto">
+                            <table class="min-w-full divide-y divide-gray-200">
+                                <thead class="bg-green-50">
+                                    <tr>
+                                        <th class="px-6 py-3 text-end text-sm font-bold text-green-800">#</th>
+                                        <th class="px-6 py-3 text-end text-sm font-bold text-green-800">المؤلف</th>
+                                        <th class="px-6 py-3 text-end text-sm font-bold text-green-800">اسم الكتاب</th>
+                                        <th class="px-6 py-3 text-end text-sm font-bold text-green-800">التصنيف</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="divide-y divide-gray-200">
+                                    @for ($i = 0; $i < 6; $i++)
+                                        <tr>
+                                        <td class="px-6 py-4 text-sm text-green-800 font-bold text-end">{{ $i + 1 }}</td>
+                                        <td class="px-6 py-4 text-sm text-gray-700 text-end">عبد الله عزام</td>
+                                        <td class="px-6 py-4 text-sm text-gray-700 text-end">أذكار الصباح والمساء</td>
+                                        <td class="px-6 py-4 text-sm text-gray-700 text-end">الأذكار والأوراد والأدعية</td>
+                                        </tr>
+                                        @endfor
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div class="px-6 py-4 flex items-center justify-between border-t border-gray-200">
+                            <div class="flex items-center gap-2">
+                                <button class="p-2 rounded-full hover:bg-gray-100">
+                                    <img src="{{ asset('images/chevron-right-filled0.svg') }}" alt="Previous" class="w-6 h-6">
+                                </button>
+                                <button class="p-2 rounded-full hover:bg-gray-100">
+                                    <img src="{{ asset('images/chevron-left-filled0.svg') }}" alt="Next" class="w-6 h-6">
+                                </button>
+                                <span class="text-sm text-gray-600">5-1 من 100</span>
+                            </div>
+
+                            <div class="flex items-center gap-2">
+                                <div class="relative">
+                                    <span class="absolute left-12 top-1/2 -translate-y-1/2 text-sm text-gray-600">10</span>
+                                    <img src="{{ asset('images/arrow-drop-down-filled0.svg') }}" alt="Dropdown" class="w-6 h-6">
+                                </div>
+                                <span class="text-sm text-gray-600">عدد الصفوف في الصفحة:</span>
+                            </div>
+                        </div>
+                    </div>
                 </section>
             </div>
 
-
-            <!-- Books Table -->
-            <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-                <div class="flex items-center gap-3 mb-8">
-                    <img src="{{ asset('images/group7.svg') }}" alt="Icon" class="w-16 h-16">
-                    <h2 class="text-4xl text-green-800 font-bold">الكتب</h2>
-                </div>
-
-                <div class="flex flex-wrap gap-4 mb-8">
-                    <button class="bg-white text-green-800 border border-green-800 px-5 py-2 rounded-full">
-                        الكتب المفتوحة مؤخراً
-                    </button>
-                    <button class="bg-white text-green-800 border border-green-800 px-5 py-2 rounded-full">
-                        أكثر الكتب قراءةً
-                    </button>
-                    <button class="bg-white text-green-800 border border-green-800 px-5 py-2 rounded-full">
-                        كتب مضافة حديثاً
-                    </button>
-                    <button class="bg-green-800 text-white px-5 py-2 rounded-full">
-                        جميع الكتب
-                    </button>
-                </div>
-
-                {{-- Books Table Will Go Here --}}
-                <div class="bg-white rounded-lg shadow overflow-hidden">
-                    <div class="overflow-x-auto">
-                        <table class="min-w-full divide-y divide-gray-200">
-                            <thead class="bg-green-50">
-                                <tr>
-                                    <th class="px-6 py-3 text-end text-sm font-bold text-green-800">#</th>
-                                    <th class="px-6 py-3 text-end text-sm font-bold text-green-800">المؤلف</th>
-                                    <th class="px-6 py-3 text-end text-sm font-bold text-green-800">اسم الكتاب</th>
-                                    <th class="px-6 py-3 text-end text-sm font-bold text-green-800">التصنيف</th>
-                                </tr>
-                            </thead>
-                            <tbody class="divide-y divide-gray-200">
-                                @for ($i = 0; $i < 6; $i++)
-                                    <tr>
-                                    <td class="px-6 py-4 text-sm text-green-800 font-bold text-end">{{ $i + 1 }}</td>
-                                    <td class="px-6 py-4 text-sm text-gray-700 text-end">عبد الله عزام</td>
-                                    <td class="px-6 py-4 text-sm text-gray-700 text-end">أذكار الصباح والمساء</td>
-                                    <td class="px-6 py-4 text-sm text-gray-700 text-end">الأذكار والأوراد والأدعية</td>
-                                    </tr>
-                                    @endfor
-                            </tbody>
-                        </table>
-                    </div>
-
-                    <div class="px-6 py-4 flex items-center justify-between border-t border-gray-200">
-                        <div class="flex items-center gap-2">
-                            <button class="p-2 rounded-full hover:bg-gray-100">
-                                <img src="{{ asset('images/chevron-right-filled0.svg') }}" alt="Previous" class="w-6 h-6">
-                            </button>
-                            <button class="p-2 rounded-full hover:bg-gray-100">
-                                <img src="{{ asset('images/chevron-left-filled0.svg') }}" alt="Next" class="w-6 h-6">
-                            </button>
-                            <span class="text-sm text-gray-600">5-1 من 100</span>
-                        </div>
-
-                        <div class="flex items-center gap-2">
-                            <div class="relative">
-                                <span class="absolute left-12 top-1/2 -translate-y-1/2 text-sm text-gray-600">10</span>
-                                <img src="{{ asset('images/arrow-drop-down-filled0.svg') }}" alt="Dropdown" class="w-6 h-6">
-                            </div>
-                            <span class="text-sm text-gray-600">عدد الصفوف في الصفحة:</span>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
             <!-- Authors Section -->
-            <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-                <div class="flex items-center gap-3 mb-8">
-                    <img src="{{ asset('images/group8.svg') }}" alt="Icon" class="w-16 h-16">
-                    <h2 class="text-4xl text-green-800 font-bold">المؤلفين</h2>
-                </div>
+            <!-- background pattern-->
+            <div class="relative">
+                <div class="pattern-top top-10"></div>
+                <!-- end of background pattern-->
+                <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 relative z-10">
+                    <div class="flex items-center gap-3 mb-8">
+                        <img src="{{ asset('images/group8.svg') }}" alt="Icon" class="w-16 h-16">
+                        <h2 class="text-4xl text-green-800 font-bold">المؤلفين</h2>
+                    </div>
 
-                <div class="flex flex-wrap gap-4 mb-8">
-                    <button class="bg-white text-green-800 border border-green-800 px-5 py-2 rounded-full">
-                        أكثر المؤلفين قراءةً
-                    </button>
-                    <button class="bg-white text-green-800 border border-green-800 px-5 py-2 rounded-full">
-                        مؤلفين جدد
-                    </button>
-                    <button class="bg-green-800 text-white px-5 py-2 rounded-full">
-                        جميع المؤلفين
-                    </button>
-                </div>
+                    <div class="flex flex-wrap gap-4 mb-8">
+                        <button class="bg-white text-green-800 border border-green-800 px-5 py-2 rounded-full">
+                            أكثر المؤلفين قراءةً
+                        </button>
+                        <button class="bg-white text-green-800 border border-green-800 px-5 py-2 rounded-full">
+                            مؤلفين جدد
+                        </button>
+                        <button class="bg-green-800 text-white px-5 py-2 rounded-full">
+                            جميع المؤلفين
+                        </button>
+                    </div>
 
-                {{-- Authors Table Will Go Here --}}
-                <div class="bg-white rounded-lg shadow overflow-hidden">
-                    <div class="overflow-x-auto">
-                        <table class="min-w-full divide-y divide-gray-200">
-                            <thead class="bg-green-50">
-                                <tr>
-                                    <th class="px-6 py-3 text-end text-sm font-bold text-green-800">#</th>
-                                    <th class="px-6 py-3 text-end text-sm font-bold text-green-800">المؤلف</th>
-                                    <th class="px-6 py-3 text-end text-sm font-bold text-green-800">اسم الكتاب</th>
-                                    <th class="px-6 py-3 text-end text-sm font-bold text-green-800">التصنيف</th>
-                                </tr>
-                            </thead>
-                            <tbody class="divide-y divide-gray-200">
-                                @for ($i = 0; $i < 6; $i++)
+                    {{-- Authors Table Will Go Here --}}
+                    <div class="bg-white rounded-lg shadow overflow-hidden">
+                        <div class="overflow-x-auto">
+                            <table class="min-w-full divide-y divide-gray-200">
+                                <thead class="bg-green-50">
                                     <tr>
-                                    <td class="px-6 py-4 text-sm text-green-800 font-bold text-end">{{ $i + 1 }}</td>
-                                    <td class="px-6 py-4 text-sm text-gray-700 text-end">عبد الله عزام</td>
-                                    <td class="px-6 py-4 text-sm text-gray-700 text-end">أذكار الصباح والمساء</td>
-                                    <td class="px-6 py-4 text-sm text-gray-700 text-end">الأذكار والأوراد والأدعية</td>
+                                        <th class="px-6 py-3 text-end text-sm font-bold text-green-800">#</th>
+                                        <th class="px-6 py-3 text-end text-sm font-bold text-green-800">المؤلف</th>
+                                        <th class="px-6 py-3 text-end text-sm font-bold text-green-800">اسم الكتاب</th>
+                                        <th class="px-6 py-3 text-end text-sm font-bold text-green-800">التصنيف</th>
                                     </tr>
-                                    @endfor
-                            </tbody>
-                        </table>
-                    </div>
-
-                    <div class="px-6 py-4 flex items-center justify-between border-t border-gray-200">
-                        <div class="flex items-center gap-2">
-                            <button class="p-2 rounded-full hover:bg-gray-100">
-                                <img src="{{ asset('images/chevron-right-filled1.svg') }}" alt="Previous" class="w-6 h-6">
-                            </button>
-                            <button class="p-2 rounded-full hover:bg-gray-100">
-                                <img src="{{ asset('images/chevron-left-filled1.svg') }}" alt="Next" class="w-6 h-6">
-                            </button>
-                            <span class="text-sm text-gray-600">5-1 من 100</span>
+                                </thead>
+                                <tbody class="divide-y divide-gray-200">
+                                    @for ($i = 0; $i < 6; $i++)
+                                        <tr>
+                                        <td class="px-6 py-4 text-sm text-green-800 font-bold text-end">{{ $i + 1 }}</td>
+                                        <td class="px-6 py-4 text-sm text-gray-700 text-end">عبد الله عزام</td>
+                                        <td class="px-6 py-4 text-sm text-gray-700 text-end">أذكار الصباح والمساء</td>
+                                        <td class="px-6 py-4 text-sm text-gray-700 text-end">الأذكار والأوراد والأدعية</td>
+                                        </tr>
+                                        @endfor
+                                </tbody>
+                            </table>
                         </div>
 
-                        <div class="flex items-center gap-2">
-                            <div class="relative">
-                                <span class="absolute left-12 top-1/2 -translate-y-1/2 text-sm text-gray-600">10</span>
-                                <img src="{{ asset('images/arrow-drop-down-filled1.svg') }}" alt="Dropdown" class="w-6 h-6">
+                        <div class="px-6 py-4 flex items-center justify-between border-t border-gray-200">
+                            <div class="flex items-center gap-2">
+                                <button class="p-2 rounded-full hover:bg-gray-100">
+                                    <img src="{{ asset('images/chevron-right-filled1.svg') }}" alt="Previous" class="w-6 h-6">
+                                </button>
+                                <button class="p-2 rounded-full hover:bg-gray-100">
+                                    <img src="{{ asset('images/chevron-left-filled1.svg') }}" alt="Next" class="w-6 h-6">
+                                </button>
+                                <span class="text-sm text-gray-600">5-1 من 100</span>
                             </div>
-                            <span class="text-sm text-gray-600">عدد الصفوف في الصفحة:</span>
+
+                            <div class="flex items-center gap-2">
+                                <div class="relative">
+                                    <span class="absolute left-12 top-1/2 -translate-y-1/2 text-sm text-gray-600">10</span>
+                                    <img src="{{ asset('images/arrow-drop-down-filled1.svg') }}" alt="Dropdown" class="w-6 h-6">
+                                </div>
+                                <span class="text-sm text-gray-600">عدد الصفوف في الصفحة:</span>
+                            </div>
                         </div>
                     </div>
-                </div>
-            </section>
+                </section>
+            </div>
+        </main>
     </div>
 </x-superduper.main>
