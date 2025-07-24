@@ -68,6 +68,25 @@
                         </div>
                     </a>
 
+                    <!-- Card: Filament Logger -->
+                    <a href="https://github.com/z3d0x/filament-logger" target="_blank" class="block transition-all hover:scale-[1.02] duration-300">
+                        <div class="flex flex-col h-full bg-white border shadow-md border-background-light hover:shadow-lg">
+                            <div class="flex items-center p-6 border-b border-background-light">
+                                <div class="flex items-center justify-center w-10 h-10 mr-3 overflow-hidden rounded-full bg-primary-100">
+                                    <img src="https://github.com/z3d0x.png" alt="z3d0x" class="w-10 h-10">
+                                </div>
+                                <div class="text-left">
+                                    <div class="font-semibold text-primary-800">z3d0x</div>
+                                    <div class="text-sm text-primary-600">/filament-logger</div>
+                                </div>
+                            </div>
+                            <div class="flex-grow p-6">
+                                <h3 class="mb-2 text-xl font-medium text-primary-800">Filament Logger</h3>
+                                <p class="mb-4 text-neutral-600">A plugin for Filament that logs activities within your application with a beautiful UI.</p>
+                            </div>
+                        </div>
+                    </a>
+
                     <!-- Card: Filament Exceptions -->
                     <a href="https://github.com/bezhanSalleh/filament-exceptions" target="_blank" class="block transition-all hover:scale-[1.02] duration-300">
                         <div class="flex flex-col h-full bg-white border shadow-md border-background-light hover:shadow-lg">
