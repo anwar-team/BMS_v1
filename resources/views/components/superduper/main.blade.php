@@ -195,7 +195,9 @@
     <!-- Custom CSS -->
     @if(isset($scriptSettings->custom_css))
     <style>
-        {!! $scriptSettings->custom_css !!}
+        {
+            ! ! $scriptSettings->custom_css ! !
+        }
     </style>
     @endif
 
@@ -269,6 +271,7 @@
         </div>
     </div>
     @endif
+    @endif
 
     <!-- Vite compiled JS -->
     @vite([
@@ -287,7 +290,9 @@
     <!-- Custom JS -->
     @if(isset($scriptSettings->custom_js))
     <script>
-        {!! $scriptSettings->custom_js !!}
+        {
+            !!$scriptSettings - > custom_js!!
+        }
     </script>
     @endif
 
