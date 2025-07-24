@@ -269,7 +269,6 @@
         </div>
     </div>
     @endif
-    @endif
 
     <!-- Vite compiled JS -->
     @vite([
