@@ -75,6 +75,8 @@ $query->where('slug', 'home-banner');
 
 @push('js')
 <script>
+    // prettier-ignore-start
+    // eslint-disable
     const heroSlider = new Swiper('.hero-slider', {
         slidesPerView: 1,
         spaceBetween: 0,
@@ -102,6 +104,8 @@ $query->where('slug', 'home-banner');
             }
         }
     });
+    // prettier-ignore-end
+    // eslint-enable
 
     function trackBannerView(swiper) {
         if (!swiper || !swiper.slides) return;
