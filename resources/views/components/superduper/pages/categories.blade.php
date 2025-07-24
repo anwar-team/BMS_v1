@@ -16,24 +16,24 @@
                     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                         @for ($i = 0; $i < 50; $i++)
                             <div class="bg-white rounded-lg shadow-md overflow-hidden border border-gray-200">
-                            <div class="relative">
-                                <img
-                                    src="{{ asset('images/mask-group0.svg') }}"
-                                    alt="Category image"
-                                    class="absolute left-0 top-0 w-32 h-32">
-                                <div class="p-8">
-                                    <div class="flex justify-between items-center">
-                                        <div>
-                                            <h3 class="text-xl text-green-800 font-bold mb-1">العقيدة</h3>
-                                            <p class="text-sm text-gray-600">1035 كتاب</p>
+                                <div class="relative">
+                                    <img
+                                        src="{{ asset('images/mask-group0.svg') }}"
+                                        alt="Category image"
+                                        class="absolute left-0 top-0 w-32 h-32">
+                                    <div class="p-8">
+                                        <div class="flex justify-between items-center">
+                                            <div>
+                                                <h3 class="text-xl text-green-800 font-bold mb-1">العقيدة</h3>
+                                                <p class="text-sm text-gray-600">1035 كتاب</p>
+                                            </div>
+                                            <img src="{{ asset('images/group1.svg') }}" alt="Icon" class="w-16 h-16">
                                         </div>
-                                        <img src="{{ asset('images/group1.svg') }}" alt="Icon" class="w-16 h-16">
                                     </div>
                                 </div>
                             </div>
+                        @endfor
                     </div>
-                    @endfor
-            </div>
             </section>
     </div>
     </main>
