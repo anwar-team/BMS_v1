@@ -118,4 +118,106 @@ protected static function booted()
         $title .= $this->title ?? '';
         return $title;
     }
+
+    /**
+     * العلاقة مع الحواشي
+     */
+    public function footnotes(): HasMany
+    {
+        return $this->hasMany(Footnote::class);
+    }
+
+    /**
+     * العلاقة مع الفهارس
+     */
+    public function bookIndexes(): HasMany
+    {
+        return $this->hasMany(BookIndex::class);
+    }
+
+    /**
+     * العلاقة مع مراجع الصفحات
+     */
+    public function pageReferences(): HasMany
+    {
+        return $this->hasMany(PageReference::class);
+    }
+
+    /**
+     * العلاقة مع التعليقات
+     */
+    public function annotations(): HasMany
+    {
+        return $this->hasMany(Annotation::class);
+    }
+
+    /**
+     * الحصول على جميع الفصول الفرعية (بشكل هرمي)
+     */
+    public function allChildren()
+    {
+        return $this->children()->with('allChildren');
+    }
+
+    /**
+     * الحصول على المسار الهرمي للفصل
+     */
+    public function getHierarchyPathAttribute(): array
+    {
+        $path = [];
+        $current = $this;
+        
+        while ($current) {
+            array_unshift($path, $current->title);
+            $current = $current->parent;
+        }
+        
+        return $path;
+    }
+
+    /**
+     * الحصول على مستوى الفصل في الهيكل الهرمي
+     */
+    public function getLevelAttribute(): int
+    {
+        $level = 1;
+        $current = $this->parent;
+        
+        while ($current) {
+            $level++;
+            $current = $current->parent;
+        }
+        
+        return $level;
+    }
+
+    /**
+     * التحقق من وجود فصول فرعية
+     */
+    public function hasChildren(): bool
+    {
+        return $this->children()->exists();
+    }
+
+    /**
+     * الحصول على الفصل التالي
+     */
+    public function getNextChapterAttribute(): ?Chapter
+    {
+        return self::where('book_id', $this->book_id)
+            ->where('order', '>', $this->order)
+            ->orderBy('order')
+            ->first();
+    }
+
+    /**
+     * الحصول على الفصل السابق
+     */
+    public function getPreviousChapterAttribute(): ?Chapter
+    {
+        return self::where('book_id', $this->book_id)
+            ->where('order', '<', $this->order)
+            ->orderBy('order', 'desc')
+            ->first();
+    }
 }

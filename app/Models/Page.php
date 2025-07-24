@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Page extends Model
 {
@@ -90,5 +91,101 @@ class Page extends Model
     public function scopeOfChapter($query, $chapterId)
     {
         return $query->where('chapter_id', $chapterId);
+    }
+
+    /**
+     * العلاقة مع الحواشي
+     */
+    public function footnotes(): HasMany
+    {
+        return $this->hasMany(Footnote::class);
+    }
+
+    /**
+     * العلاقة مع الفهارس
+     */
+    public function bookIndexes(): HasMany
+    {
+        return $this->hasMany(BookIndex::class);
+    }
+
+    /**
+     * العلاقة مع مراجع الصفحة
+     */
+    public function pageReferences(): HasMany
+    {
+        return $this->hasMany(PageReference::class);
+    }
+
+    /**
+     * العلاقة مع التعليقات
+     */
+    public function annotations(): HasMany
+    {
+        return $this->hasMany(Annotation::class);
+    }
+
+    /**
+     * الحصول على الحواشي مرتبة حسب الموقع
+     */
+    public function orderedFootnotes()
+    {
+        return $this->footnotes()->orderedByPosition();
+    }
+
+    /**
+     * الحصول على الفهارس عالية الأهمية
+     */
+    public function importantIndexes()
+    {
+        return $this->bookIndexes()->highRelevance();
+    }
+
+    /**
+     * الحصول على المراجع المباشرة
+     */
+    public function directReferences()
+    {
+        return $this->pageReferences()->directQuotes();
+    }
+
+    /**
+     * الحصول على التعليقات العامة
+     */
+    public function publicAnnotations()
+    {
+        return $this->annotations()->public();
+    }
+
+    /**
+     * التحقق من وجود حواشي
+     */
+    public function hasFootnotes(): bool
+    {
+        return $this->footnotes()->exists();
+    }
+
+    /**
+     * التحقق من وجود تعليقات
+     */
+    public function hasAnnotations(): bool
+    {
+        return $this->annotations()->exists();
+    }
+
+    /**
+     * الحصول على عدد الكلمات في الصفحة
+     */
+    public function getWordCountAttribute(): int
+    {
+        return str_word_count(strip_tags($this->content));
+    }
+
+    /**
+     * الحصول على عدد الأحرف في الصفحة
+     */
+    public function getCharacterCountAttribute(): int
+    {
+        return mb_strlen(strip_tags($this->content));
     }
 }

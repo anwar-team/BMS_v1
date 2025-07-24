@@ -154,6 +154,93 @@ class Book extends Model
     }
 
     /**
+     * العلاقة مع الحواشي
+     */
+    public function footnotes(): HasMany
+    {
+        return $this->hasMany(Footnote::class);
+    }
+
+    /**
+     * العلاقة مع الفهارس
+     */
+    public function bookIndexes(): HasMany
+    {
+        return $this->hasMany(BookIndex::class);
+    }
+
+    /**
+     * العلاقة مع المراجع
+     */
+    public function references(): HasMany
+    {
+        return $this->hasMany(Reference::class);
+    }
+
+    /**
+     * العلاقة مع التعليقات
+     */
+    public function annotations(): HasMany
+    {
+        return $this->hasMany(Annotation::class);
+    }
+
+    /**
+     * العلاقة مع البيانات الوصفية
+     */
+    public function metadata(): HasMany
+    {
+        return $this->hasMany(BookMetadata::class);
+    }
+
+    /**
+     * الحصول على بيانات وصفية محددة
+     */
+    public function getMetadata($key)
+    {
+        return $this->metadata()->byKey($key)->first()?->typed_value;
+    }
+
+    /**
+     * تعيين بيانات وصفية
+     */
+    public function setMetadata($key, $value, $type = 'custom', $dataType = 'string')
+    {
+        return $this->metadata()->updateOrCreate(
+            ['metadata_key' => $key],
+            [
+                'metadata_value' => $value,
+                'metadata_type' => $type,
+                'data_type' => $dataType
+            ]
+        );
+    }
+
+    /**
+     * الحصول على الفهارس عالية الأهمية
+     */
+    public function importantIndexes()
+    {
+        return $this->bookIndexes()->highRelevance();
+    }
+
+    /**
+     * الحصول على المراجع المحققة
+     */
+    public function verifiedReferences()
+    {
+        return $this->references()->verified();
+    }
+
+    /**
+     * الحصول على التعليقات العامة
+     */
+    public function publicAnnotations()
+    {
+        return $this->annotations()->public();
+    }
+
+    /**
      * الحصول على رابط صورة الغلاف
      */
     public function getCoverImageAttribute($value)
