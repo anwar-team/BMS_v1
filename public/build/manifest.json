@@ -1,6 +1,10 @@
 {
+  "public/images/pattern-ff-18-e-023-210.svg": {
+    "file": "assets/pattern-ff-18-e-023-210-CQawGIau.svg",
+    "src": "public/images/pattern-ff-18-e-023-210.svg"
+  },
   "resources/css/app.css": {
-    "file": "assets/app-B8o7XbVc.css",
+    "file": "assets/app-jcl3hkHy.css",
     "src": "resources/css/app.css",
     "isEntry": true
   },

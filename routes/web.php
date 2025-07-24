@@ -29,6 +29,9 @@ Route::get('/blog/{slug}', BlogDetails::class)->name('blog.show');
 
 Route::get('/contact-us', ContactUs::class)->name('contact-us');
 
+Route::get('/categories', function () {
+    return view('components.superduper.pages.categories');
+})->name('categories');
 // Book reader route
 Route::get('/book/{slug}', BookReader::class)->name('book.show');
 
@@ -51,12 +54,12 @@ Route::post('/contact', [App\Http\Controllers\ContactController::class, 'submit'
     ->name('contact.submit');
 
 // TODO: Create actual blog preview component
-Route::post('/blog-preview', function() {
+Route::post('/blog-preview', function () {
     // Implementation pending
 })->name('blog.preview');
 
-Route::get('impersonate/leave', function() {
-    if(!app(ImpersonateManager::class)->isImpersonating()) {
+Route::get('impersonate/leave', function () {
+    if (!app(ImpersonateManager::class)->isImpersonating()) {
         return redirect('/');
     }
 
@@ -66,4 +69,3 @@ Route::get('impersonate/leave', function() {
         session()->pull('impersonate.back_to')
     );
 })->name('impersonate.leave')->middleware('web');
-
