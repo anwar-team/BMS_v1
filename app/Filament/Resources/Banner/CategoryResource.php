@@ -270,12 +270,12 @@ class CategoryResource extends Resource
                         ->label('Set Active')
                         ->icon('heroicon-m-check-circle')
                         ->requiresConfirmation()
-                        ->action(fn(Category $records) => $records->each->update(['is_active' => true])),
+                        ->action(fn(Collection $records) => $records->each->update(['is_active' => true])),
                     Tables\Actions\BulkAction::make('deactivate')
                         ->label('Set Inactive')
                         ->icon('heroicon-m-x-circle')
                         ->requiresConfirmation()
-                        ->action(fn(Category $records) => $records->each->update(['is_active' => false])),
+                        ->action(fn(Collection $records) => $records->each->update(['is_active' => false])),
                 ]),
             ])
             ->defaultSort('updated_at', 'desc');
