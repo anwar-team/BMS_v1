@@ -1,0 +1,29 @@
+<x-superduper.main>
+    <div class="page-wrapper relative z-[1]" dir="rtl">
+        <main class="relative overflow-hidden main-wrapper ">
+            <!-- يمكنك وضع أنماط الخلفية هنا إذا أردت -->
+            <div class="relative">
+                <div class="pattern-top top-24"></div>
+                <!-- نهاية أنماط الخلفية -->
+
+                <!-- هذا هو المكان الذي تضع فيه محتواك الرئيسي -->
+                <section class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 pt-32">
+                    <!-- هنا يمكنك إضافة عنوان الصفحة أو أي عناصر علوية -->
+                    <div class="mb-12 z-10">
+                        <div class="flex items-center gap-3 mb-8">
+                            <img src="{{ asset('images/group0.svg') }}" alt="Icon" class="w-16 h-16">
+                            <h2 class="text-4xl text-green-800 font-bold">عنوان صفحتك هنا</h2>
+                        </div>
+                    </div>
+
+                    <!-- محتوى صفحتك الفعلي يذهب هنا. على سبيل المثال، جدول، بطاقات، نصوص، إلخ. -->
+                    <div class="bg-white rounded-lg shadow-md overflow-hidden border border-gray-200 p-8">
+                        <!-- محتوى الـ div هذا سيتم توسيطه وتحديد عرضه بواسطة الـ section الأبوية -->
+                        <p>هذا هو محتوى صفحتك الجديد.</p>
+                    </div>
+
+                </section>
+            </div>
+        </main>
+    </div>
+</x-superduper.main>

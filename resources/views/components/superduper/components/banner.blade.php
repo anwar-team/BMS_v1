@@ -40,14 +40,13 @@ $query->where('slug', 'home-banner');
 
                                     <!-- Buttons -->
                                     <div class="flex flex-col sm:flex-row gap-4 mb-10 justify-center">
-                                        <button class="bg-white text-green-800 px-8 py-3 rounded-3xl font-bold shadow-md">
+                                        <button class="bg-white text-green-800 border border-green-800 transition-colors duration-300 hover:bg-green-800 hover:text-white px-8 py-3 rounded-3xl font-bold shadow-md">
                                             المؤلفين
                                         </button>
-                                        <button class="bg-green-700 text-white px-8 py-3 rounded-3xl font-bold shadow-md relative">
-                                            <span class="absolute inset-0 border-2 border-green-900 rounded-3xl"></span>
+                                        <button class="bg-white text-green-800 border border-green-800 transition-colors duration-300 hover:bg-green-800 hover:text-white px-8 py-3 rounded-3xl font-bold shadow-md">
                                             محتوى الكتب
                                         </button>
-                                        <button class="bg-white text-green-800 px-8 py-3 rounded-3xl font-bold shadow-md">
+                                        <button class="bg-white text-green-800 border border-green-800 transition-colors duration-300 hover:bg-green-800 hover:text-white px-8 py-3 rounded-3xl font-bold shadow-md">
                                             عناوين الكتب
                                         </button>
                                     </div>
@@ -80,7 +79,11 @@ $query->where('slug', 'home-banner');
     const heroSlider = new Swiper('.hero-slider', {
         slidesPerView: 1,
         spaceBetween: 0,
-        loop: {{ $heroBanners->count() > 1 ? 'true' : 'false' }},
+        loop: {
+            {
+                $heroBanners - > count() > 1 ? 'true' : 'false'
+            }
+        },
         autoplay: {
             delay: 2500,
             disableOnInteraction: false,

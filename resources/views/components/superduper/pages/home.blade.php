@@ -70,12 +70,12 @@
                                     alt="Category image"
                                     class="absolute left-0 top-0 w-32 h-32">
                                 <div class="p-8">
-                                    <div class="flex justify-between items-center">
+                                    <div class="flex justify-around items-center">
+                                        <img src="{{ asset('images/group1.svg') }}" alt="Icon" class="w-16 h-16">
                                         <div>
                                             <h3 class="text-xl text-green-800 font-bold mb-1">العقيدة</h3>
                                             <p class="text-sm text-gray-600">1035 كتاب</p>
                                         </div>
-                                        <img src="{{ asset('images/group1.svg') }}" alt="Icon" class="w-16 h-16">
                                     </div>
                                 </div>
                             </div>
@@ -84,7 +84,7 @@
             </div>
 
             <div class="mt-12 text-center">
-                <a href="{{ route('categories') }}" class="text-green-800 bg-white border border-green-800 px-8 py-3 rounded-full font-bold shadow-md inline-block">
+                <a href="{{ route('categories') }}" class="bg-white text-green-800 border border-green-800 px-8 py-3 rounded-full transition-colors duration-300 hover:bg-green-800 hover:text-white font-bold shadow-md inline-block">
                     عرض جميع الأقسام
                 </a>
             </div>
@@ -103,18 +103,18 @@
             </div>
 
             <div class="flex flex-wrap gap-4 mb-8">
-                <button class="bg-white text-green-800 border border-green-800 px-5 py-2 rounded-full">
+                <button class="bg-white text-green-800 border border-green-800 px-5 py-2 rounded-full transition-colors duration-300 hover:bg-green-800 hover:text-white">
                     الكتب المفتوحة مؤخراً
                 </button>
-                <button class="bg-white text-green-800 border border-green-800 px-5 py-2 rounded-full">
+                <button class="bg-white text-green-800 border border-green-800 px-5 py-2 rounded-full transition-colors duration-300 hover:bg-green-800 hover:text-white">
                     أكثر الكتب قراءةً
                 </button>
-                <button class="bg-white text-green-800 border border-green-800 px-5 py-2 rounded-full">
+                <button class="bg-white text-green-800 border border-green-800 px-5 py-2 rounded-full transition-colors duration-300 hover:bg-green-800 hover:text-white">
                     كتب مضافة حديثاً
                 </button>
-                <button class="bg-green-800 text-white px-5 py-2 rounded-full">
+                <a href="{{ route('all') }}" class="bg-white text-green-800 border border-green-800 px-5 py-2 rounded-full transition-colors duration-300 hover:bg-green-800 hover:text-white">
                     جميع الكتب
-                </button>
+                </a>
             </div>
 
             {{-- Books Table Will Go Here --}}
@@ -177,15 +177,15 @@
             </div>
 
             <div class="flex flex-wrap gap-4 mb-8">
-                <button class="bg-white text-green-800 border border-green-800 px-5 py-2 rounded-full">
+                <button class="bg-white text-green-800 border border-green-800 px-5 py-2 rounded-full transition-colors duration-300 hover:bg-green-800 hover:text-white">
                     أكثر المؤلفين قراءةً
                 </button>
-                <button class="bg-white text-green-800 border border-green-800 px-5 py-2 rounded-full">
+                <button class="bg-white text-green-800 border border-green-800 px-5 py-2 rounded-full transition-colors duration-300 hover:bg-green-800 hover:text-white">
                     مؤلفين جدد
                 </button>
-                <button class="bg-green-800 text-white px-5 py-2 rounded-full">
+                <a href="{{ route('all') }}" class="bg-white text-green-800 border border-green-800 px-5 py-2 rounded-full transition-colors duration-300 hover:bg-green-800 hover:text-white">
                     جميع المؤلفين
-                </button>
+                </a>
             </div>
 
             {{-- Authors Table Will Go Here --}}
