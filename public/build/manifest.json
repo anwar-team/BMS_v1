@@ -1,10 +1,10 @@
 {
-  "public/images/pattern-ff-18-e-023-210.svg": {
-    "file": "assets/pattern-ff-18-e-023-210-CQawGIau.svg",
-    "src": "public/images/pattern-ff-18-e-023-210.svg"
+  "public/images/main-pattern.svg": {
+    "file": "assets/main-pattern-CQawGIau.svg",
+    "src": "public/images/main-pattern.svg"
   },
   "resources/css/app.css": {
-    "file": "assets/app-CL36pHNs.css",
+    "file": "assets/app-CmkJ_VCQ.css",
     "src": "resources/css/app.css",
     "isEntry": true
   },

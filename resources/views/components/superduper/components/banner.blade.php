@@ -52,11 +52,20 @@ $query->where('slug', 'home-banner');
                                     </div>
 
                                     <!-- Search Bar -->
-                                    <div class="max-w-xl mx-auto bg-white rounded-full px-6 py-3 flex items-center gap-3">
-                                        <img src="{{ asset('images/iconly-light-search0.svg') }}" alt="Search" class="w-6 h-6">
-                                        <span class="text-gray-500">إبحث في محتوى الكتب ...</span>
-                                        <img src="{{ asset('images/iconly-bold-send0.svg') }}" alt="Search icon" class="w-5 h-5">
-                                    </div>
+                                    {{-- action="{{ route('search') }}" method="GET" --}}
+                                    <form class="max-w-xl mx-auto">
+                                        <div class="relative bg-white rounded-full px-6 py-3 flex items-center gap-3">
+                                            <img src="{{ asset('images/iconly-light-search0.svg') }}" alt="Search" class="w-6 h-6">
+                                            <input
+                                                type="text"
+                                                name="q"
+                                                placeholder="إبحث في محتوى الكتب ..."
+                                                class="w-full bg-transparent border-none focus:ring-0 text-gray-700 placeholder-gray-500">
+                                            <button type="submit" class="absolute left-4 p-2 rounded-full transition-all duration-300 hover:bg-green-100 hover:scale-110 active:scale-95">
+                                                <img src="{{ asset('images/iconly-bold-send0.svg') }}" alt="Search icon" class="w-5 h-5">
+                                            </button>
+                                        </div>
+                                    </form>
                                 </div>
                             </div>
                         </div>

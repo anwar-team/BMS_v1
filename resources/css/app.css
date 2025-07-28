@@ -42,8 +42,12 @@
     --color-info: #3B82F6;
 }
 
+/* Original code before modification: */
+/* .header-scrolled {
+    @apply bg-white dark:bg-primary-900 shadow-md py-3 md:py-4;
+} */
 .header-scrolled {
-    @apply bg-primary-600 dark:bg-primary-900 shadow-md py-3 md:py-4;
+    @apply bg-primary-600/80 dark:bg-primary-900/80 shadow-md py-3 md:py-4 backdrop-blur-sm;
 }
 
 .header-scrolled .header-nav-link {
@@ -101,7 +105,7 @@
 
     /* 2.    كلاس للخلفية المكررة  */
     .pattern-top {
-        background-image: url('./../../public/images/pattern-ff-18-e-023-210.svg');
+        background-image: url('./../../public/images/main-pattern.svg');
         background-repeat: repeat-x;
         background-size: auto 220px;
         background-position: top center;
