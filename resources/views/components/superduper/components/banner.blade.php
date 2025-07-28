@@ -88,11 +88,9 @@ $query->where('slug', 'home-banner');
     const heroSlider = new Swiper('.hero-slider', {
         slidesPerView: 1,
         spaceBetween: 0,
-        loop: {
-            {
-                $heroBanners - > count() > 1 ? 'true' : 'false'
-            }
-        },
+        
+        loop: {{$heroBanners -> count() > 1 ? 'true' : 'false'}},
+        
         autoplay: {
             delay: 2500,
             disableOnInteraction: false,
