@@ -1,23 +1,15 @@
-<header class="fixed z-50 w-full py-4 transition-all duration-300 bg-transparent md:py-6">
+<header class="fixed z-50 w-full py-4 transition-all duration-300 bg-primary-600 md:py-6">
     <div class="px-4 mx-auto container-default">
-        <div class="flex items-center justify-between gap-x-4 md:gap-x-8">
-            <!-- Header Logo -->
-            <a href="{{ route('home') }}" class="relative z-10 flex-shrink-0">
-                @php
-                $brandLogo = $siteSettings->logo ?? null;
-                $brandName = $generalSettings->brand_name ?? $siteSettings->name ?? config('app.name', 'SuperDuper');
-                @endphp
 
-                @if($brandLogo)
-                <img src="{{ Storage::url($brandLogo) }}"
-                    alt="{{ $brandName }}"
-                    class="w-auto h-10 md:h-12" />
-                @else
-                <div class="flex items-center">
-                    <span class="text-xl font-bold md:text-2xl text-primary-800 dark:text-white header-brand-text">{{ $brandName }}</span>
-                </div>
-                @endif
-            </a>
+        <div class="flex items-center justify-between gap-x-4 md:gap-x-8">
+            <!-- تم تبديل موقع زر تسجيل الدخول ليكون في البداية بدلاً من اللوجو -->
+            <!-- Header Event - Admin Panel Button for Desktop (تم نقله من النهاية) -->
+            <div class="flex items-center gap-4 md:gap-6">
+                <a href="admin/login" class="relative z-10 hidden sm:inline-block group">
+                    <div class="px-4 py-2 text-sm font-medium transition-all duration-300 btn md:text-base bg-secondary-600 hover:bg-secondary-700 bg-white">login</div>
+                    <div class="absolute inset-0 -z-10 translate-x-[3px] translate-y-[3px] bg-primary-700 transition-all duration-300 ease-linear group-hover:translate-x-0 group-hover:translate-y-0"></div>
+                </a>
+            </div>
 
             <!-- Header Navigation -->
             <div class="menu-block-wrapper lg:static">
@@ -114,13 +106,27 @@
                 </nav>
             </div>
 
-            <!-- Header Event - Admin Panel Button for Desktop -->
+            <!-- تم نقل اللوجو ليكون في النهاية بدلاً من البداية -->
+            <!-- Header Logo (تم نقله من البداية) -->
             <div class="flex items-center gap-4 md:gap-6">
-                <a href="admin/login" class="relative z-10 hidden sm:inline-block group">
-                    <div class="px-4 py-2 text-sm font-medium transition-all duration-300 btn md:text-base bg-secondary-600 hover:bg-secondary-700 bg-white">login</div>
-                    <div class="absolute inset-0 -z-10 translate-x-[3px] translate-y-[3px] bg-primary-700 transition-all duration-300 ease-linear group-hover:translate-x-0 group-hover:translate-y-0"></div>
+                <a href="{{ route('home') }}" class="relative z-10 flex-shrink-0">
+                    @php
+                    $brandLogo = $siteSettings->logo ?? null;
+                    $brandName = $generalSettings->brand_name ?? $siteSettings->name ?? config('app.name', 'SuperDuper');
+                    @endphp
+
+                    @if($brandLogo)
+                    <img src="{{ Storage::url($brandLogo) }}"
+                        alt="{{ $brandName }}"
+                        class="w-auto h-10 md:h-12" />
+                    @else
+                    <div class="flex items-center">
+                        <span class="text-xl font-bold md:text-2xl text-primary-800 dark:text-white header-brand-text">{{ $brandName }}</span>
+                    </div>
+                    @endif
                 </a>
 
+                <!-- زر القائمة للجوال (تم الاحتفاظ به في نفس المكان) -->
                 <div class="block lg:hidden">
                     <button id="openBtn" class="flex flex-col items-center justify-center w-10 h-10 rounded-md hamburger-menu mobile-menu-trigger focus:outline-none focus:ring-2 focus:ring-primary-600">
                         <span class="block w-6 h-0.5 bg-white dark:bg-white mb-1.5 transition-transform hamburger-line"></span>
