@@ -1,20 +1,21 @@
-<header class="fixed z-50 w-full py-4 transition-all duration-300 bg-primary-600 md:py-6">
+<header class="fixed z-50 w-full py-4 transition-all duration-300 bg-white md:py-6">
     <div class="px-4 mx-auto container-default">
-
         <div class="flex items-center justify-between gap-x-4 md:gap-x-8">
+
             <!-- تم تبديل موقع زر تسجيل الدخول ليكون في البداية بدلاً من اللوجو -->
             <!-- Header Event - Admin Panel Button for Desktop (تم نقله من النهاية) -->
             <div class="flex items-center gap-4 md:gap-6">
                 <a href="admin/login" class="relative z-10 hidden sm:inline-block group">
-                    <div class="px-4 py-2 text-sm font-medium transition-all duration-300 btn md:text-base bg-secondary-600 hover:bg-secondary-700 bg-white">login</div>
+                    <div class="px-4 py-2 text-sm font-medium transition-all duration-300 btn md:text-base bg-white hover:bg-secondary-700">Login</div>
                     <div class="absolute inset-0 -z-10 translate-x-[3px] translate-y-[3px] bg-primary-700 transition-all duration-300 ease-linear group-hover:translate-x-0 group-hover:translate-y-0"></div>
                 </a>
             </div>
 
             <!-- Header Navigation -->
             <div class="menu-block-wrapper lg:static">
-                <div class="fixed inset-0 z-40 menu-overlay bg-primary-900/70 backdrop-blur-sm lg:hidden" style="display: none;"></div>
-                <nav class="menu-block fixed top-0 right-0 bottom-0 w-[280px] text-secondary-600 md:w-[320px] bg-primary-600 dark:bg-primary-800 z-50 shadow-2xl overflow-y-auto transform translate-x-full transition-transform duration-300 lg:static lg:translate-x-0 lg:w-auto lg:bg-transparent lg:shadow-none lg:overflow-visible lg:dark:bg-transparent" id="append-menu-header">
+                <div class="fixed inset-0 z-40 menu-overlay bg-primary-white/70 backdrop-blur-sm lg:hidden" style="display: none;"></div>
+                <nav class="menu-block fixed top-0 right-0 bottom-0 w-[280px] text-secondary-600 md:w-[320px] bg-white dark:bg-primary-800 z-50 shadow-2xl overflow-y-auto transform translate-x-full transition-transform duration-300 lg:static lg:translate-x-0 lg:w-auto lg:bg-transparent lg:shadow-none lg:overflow-visible lg:dark:bg-transparent" id="append-menu-header">
+
                     <!-- Mobile Menu Header -->
                     <div class="flex items-center justify-between p-4 lg:hidden">
                         <div class="flex items-center go-back text-primary-800 dark:text-white">
@@ -24,7 +25,7 @@
                             <span>Back</span>
                         </div>
                         <div class="font-medium current-menu-title text-primary-800 dark:text-white"></div>
-                        <div class="text-2xl cursor-pointer mobile-menu-close text-primary-800 dark:text-white">&times;</div>
+                        <div class="text-2xl cursor-pointer mobile-menu-close text-primary-800 dark:text-black">&times;</div>
                     </div>
 
                     @php
@@ -42,7 +43,7 @@
 
                         <li class="nav-item mb-3 lg:mb-0 lg:relative {{ $hasChildren ? 'nav-item-has-children' : '' }}">
                             <a href="{{ $item->url }}"
-                                class="nav-link-item flex items-center justify-between hover:text-primary-600 dark:text-white dark:hover:text-primary-200 header-nav-link font-medium py-2 lg:px-3 !text-white lg:hover:bg-primary-600 lg:dark:hover:bg-primary-700 transition-colors {{ $hasChildren ? 'drop-trigger' : '' }}"
+                                class="nav-link-item flex items-center justify-between hover:text-primary-600 dark:text-white dark:hover:text-primary-200 header-nav-link font-medium py-2 lg:px-3 !text-black lg:hover:bg-primary-600 lg:dark:hover:bg-primary-700 transition-colors {{ $hasChildren ? 'drop-trigger' : '' }}"
                                 @if($item->target) target="{{ $item->target }}" @endif>
                                 <span>{{ $item->title }}</span>
                                 @if($hasChildren)
@@ -97,8 +98,8 @@
                         <!-- Admin Panel Button for Mobile -->
                         <li class="pt-4 mt-6 mb-4 nav-item lg:hidden">
                             <a href="admin/login" class="block w-full">
-                                <div class="relative px-4 py-3 text-sm font-medium text-center text-white transition-all duration-300 rounded-lg bg-secondary-600 hover:bg-secondary-700">
-                                    login
+                                <div class="relative px-4 py-3 text-sm font-medium text-center text-white transition-all duration-300 rounded-md bg-primary-600 hover:bg-secondary-700">
+                                    Login
                                 </div>
                             </a>
                         </li>
@@ -129,9 +130,10 @@
                 <!-- زر القائمة للجوال (تم الاحتفاظ به في نفس المكان) -->
                 <div class="block lg:hidden">
                     <button id="openBtn" class="flex flex-col items-center justify-center w-10 h-10 rounded-md hamburger-menu mobile-menu-trigger focus:outline-none focus:ring-2 focus:ring-primary-600">
-                        <span class="block w-6 h-0.5 bg-white dark:bg-white mb-1.5 transition-transform hamburger-line"></span>
-                        <span class="block w-6 h-0.5 bg-white dark:bg-white mb-1.5 transition-opacity hamburger-line"></span>
-                        <span class="block w-6 h-0.5 bg-white dark:bg-white transition-transform hamburger-line"></span>
+                        <!-- تم تغيير لون خطوط قائمة الجوال إلى الأسود في الوضع الافتراضي -->
+                        <span class="block w-6 h-0.5 bg-black dark:bg-black mb-1.5 transition-transform hamburger-line"></span>
+                        <span class="block w-6 h-0.5 bg-black dark:bg-black mb-1.5 transition-opacity hamburger-line"></span>
+                        <span class="block w-6 h-0.5 bg-black dark:bg-black transition-transform hamburger-line"></span>
                     </button>
                 </div>
             </div>
@@ -156,6 +158,7 @@
             menuBlock.classList.toggle('translate-x-full');
             document.body.classList.toggle('overflow-hidden');
             menuOverlay.style.display = menuBlock.classList.contains('translate-x-full') ? 'none' : 'block';
+
             // Animate hamburger to X
             const spans = menuTrigger.querySelectorAll('span');
             if (!menuBlock.classList.contains('translate-x-full')) {
@@ -166,10 +169,6 @@
                 spans[0].classList.remove('rotate-45', 'translate-y-2');
                 spans[1].classList.remove('opacity-0');
                 spans[2].classList.remove('-rotate-45', '-translate-y-2');
-            }
-            // إعادة تعيين القائمة عند تكبير الشاشة
-            if (window.innerWidth >= 1024) {
-                setupMobileMenu();
             }
         }
 
@@ -184,8 +183,6 @@
             } else {
                 header.classList.remove('header-scrolled');
             }
-            // إعادة تعيين القائمة عند تغيير حجم الشاشة
-            setupMobileMenu();
         }
 
         window.addEventListener('scroll', handleScroll);
@@ -193,19 +190,56 @@
 
         function setupMobileMenu() {
             if (window.innerWidth < 1024) {
-                // إذا كان حجم الشاشة صغيرًا (وضع الجوال)
+                // Reset any previously opened submenus
                 document.querySelectorAll('.sub-menu').forEach(menu => {
-                    menu.style.display = 'none'; // إخفاء جميع القوائم الفرعية
+                    menu.style.display = 'none';
                 });
-                document.querySelector('.site-menu-main').style.display = 'block'; // إظهار القائمة الرئيسية
-                if (goBack) goBack.style.display = 'none'; // إخفاء زر الرجوع
-            } else {
-                // إذا كان حجم الشاشة كبيرًا (وضع الكمبيوتر المكتبي)
-                document.querySelectorAll('.sub-menu').forEach(menu => {
-                    menu.style.display = ''; // إعادة تعيين القوائم الفرعية إلى وضعها الطبيعي
+
+                document.querySelector('.site-menu-main').style.display = 'block';
+
+                if (goBack) goBack.style.display = 'none';
+
+                dropTriggers.forEach(trigger => {
+                    trigger.addEventListener('click', function(e) {
+                        if (window.innerWidth < 1024) {
+                            e.preventDefault();
+                            const parent = this.parentElement;
+                            const submenu = parent.querySelector('.sub-menu');
+                            const title = this.querySelector('span').textContent;
+
+                            if (submenu) {
+                                const siblingMenus = parent.parentElement.querySelectorAll('.sub-menu');
+                                siblingMenus.forEach(menu => {
+                                    if (menu !== submenu) menu.style.display = 'none';
+                                });
+
+                                submenu.style.display = 'block';
+                                currentMenuTitle.textContent = title;
+                                parent.parentElement.style.display = 'none';
+                                goBack.style.display = 'flex';
+                            }
+                        }
+                    });
                 });
-                document.querySelector('.site-menu-main').style.display = ''; // إعادة تعيين القائمة الرئيسية إلى وضعها الطبيعي
-                if (goBack) goBack.style.display = 'none'; // إخفاء زر الرجوع دائمًا في وضع الكمبيوتر المكتبي
+
+                // Back button functionality
+                goBack.addEventListener('click', function() {
+                    const activeSubmenu = document.querySelector('.sub-menu[style="display: block;"]');
+                    if (activeSubmenu) {
+                        activeSubmenu.style.display = 'none';
+                        activeSubmenu.parentElement.parentElement.style.display = 'block';
+
+                        if (activeSubmenu.parentElement.parentElement.classList.contains('site-menu-main')) {
+                            currentMenuTitle.textContent = '';
+                            this.style.display = 'none';
+                        } else {
+                            const parentTrigger = activeSubmenu.parentElement.parentElement.previousElementSibling;
+                            if (parentTrigger && parentTrigger.classList.contains('drop-trigger')) {
+                                currentMenuTitle.textContent = parentTrigger.querySelector('span').textContent;
+                            }
+                        }
+                    }
+                });
             }
         }
 

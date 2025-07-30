@@ -47,7 +47,7 @@
     @apply bg-white dark:bg-primary-900 shadow-md py-3 md:py-4;
 } */
 .header-scrolled {
-    @apply bg-primary-600/80 dark:bg-primary-900/80 shadow-md py-3 md:py-4 backdrop-blur-sm;
+    @apply bg-white dark:bg-primary-900 shadow-md py-3 md:py-4;
 }
 
 .header-scrolled .header-nav-link {
@@ -63,7 +63,7 @@
 }
 
 .header-scrolled .mobile-menu-trigger .hamburger-line {
-    @apply bg-white;
+    @apply bg-black;
 }
 
 .header-scrolled .mobile-menu-close {
