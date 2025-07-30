@@ -17,7 +17,11 @@ class BookIndexResource extends Resource
 {
     protected static ?string $model = BookIndex::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-list-bullet';
+    
+    protected static ?string $navigationGroup = 'Books';
+    
+    protected static ?int $navigationSort = 6;
 
     public static function form(Form $form): Form
     {

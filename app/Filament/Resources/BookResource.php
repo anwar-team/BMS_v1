@@ -313,10 +313,10 @@ class BookResource extends Resource
                 Grid::make(4)->schema([
                     Select::make('author_id')
                         ->label('المؤلف')
-                        ->relationship('author', 'fname')
-                        ->searchable(['fname', 'lname'])
+                        ->relationship('author', 'full_name')
+                        ->searchable(['full_name'])
                         ->preload()
-                        ->getOptionLabelFromRecordUsing(fn ($record) => trim($record->fname . ' ' . $record->lname))
+                        ->getOptionLabelFromRecordUsing(fn ($record) => $record->full_name)
                         ->createOptionForm(self::getAuthorForm())
                         ->createOptionAction(function (Action $action) {
                             return $action
@@ -641,24 +641,11 @@ class BookResource extends Resource
     private static function getAuthorForm(): array
     {
         return [
-            Grid::make(2)->schema([
-                TextInput::make('fname')
-                    ->label('الاسم الأول')
-                    ->required()
-                    ->maxLength(100),
-                TextInput::make('mname')
-                    ->label('اسم الأب')
-                    ->required()
-                    ->maxLength(100),
-                TextInput::make('lname')
-                    ->label('الاسم الأخير')
-                    ->required()
-                    ->maxLength(100),
-                TextInput::make('nationality')
-                    ->label('الجنسية')
-                    ->maxLength(100)
-                    ->placeholder('مثال: سعودي، مصري، سوري'),
-            ]),
+            TextInput::make('full_name')
+                ->label('الاسم الكامل')
+                ->required()
+                ->maxLength(255)
+                ->columnSpanFull(),
 
             Grid::make(2)->schema([
                 Select::make('madhhab')
@@ -729,7 +716,7 @@ class BookResource extends Resource
         if (isset($state['author_id']) && $state['author_id']) {
             $author = Author::find($state['author_id']);
             if ($author) {
-                $name = trim($author->fname . ' ' . $author->lname);
+                $name = $author->full_name;
                 $role = match($state['role'] ?? 'author') {
                     'author' => 'مؤلف',
                     'co_author' => 'مؤلف مشارك',
@@ -768,7 +755,7 @@ class BookResource extends Resource
                     ->formatStateUsing(function ($record) {
                         return $record->authorBooks->sortBy('display_order')->map(function ($authorBook) {
                             $author = $authorBook->author;
-                            $name = trim($author->fname . ' ' . $author->lname);
+                            $name = $author->full_name;
                             $role = match($authorBook->role) {
                                 'author' => 'مؤلف',
                                 'co_author' => 'مؤلف مشارك',
@@ -785,8 +772,7 @@ class BookResource extends Resource
                     ->html()
                     ->searchable(query: function ($query, $search) {
                         return $query->whereHas('authors', function ($query) use ($search) {
-                            $query->where('fname', 'like', "%{$search}%")
-                                  ->orWhere('lname', 'like', "%{$search}%");
+                            $query->where('full_name', 'like', "%{$search}%");
                         });
                     })
                     ->wrap(),
@@ -887,8 +873,8 @@ class BookResource extends Resource
                 
                 Tables\Filters\SelectFilter::make('authors')
                     ->label('المؤلف')
-                    ->relationship('authors', 'fname')
-                    ->getOptionLabelFromRecordUsing(fn ($record) => trim($record->fname . ' ' . $record->lname))
+                    ->relationship('authors', 'full_name')
+                    ->getOptionLabelFromRecordUsing(fn ($record) => $record->full_name)
                     ->multiple(),
                 
                 Tables\Filters\Filter::make('published_year')

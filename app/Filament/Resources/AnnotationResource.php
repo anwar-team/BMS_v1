@@ -17,7 +17,11 @@ class AnnotationResource extends Resource
 {
     protected static ?string $model = Annotation::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-chat-bubble-left-ellipsis';
+    
+    protected static ?string $navigationGroup = 'Books';
+    
+    protected static ?int $navigationSort = 9;
 
     public static function form(Form $form): Form
     {

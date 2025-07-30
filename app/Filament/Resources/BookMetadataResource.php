@@ -17,7 +17,11 @@ class BookMetadataResource extends Resource
 {
     protected static ?string $model = BookMetadata::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-information-circle';
+    
+    protected static ?string $navigationGroup = 'Books';
+    
+    protected static ?int $navigationSort = 10;
 
     public static function form(Form $form): Form
     {

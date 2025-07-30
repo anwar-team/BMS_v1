@@ -35,11 +35,7 @@ class ViewAuthor extends ViewRecord
                                     ->size('lg')
                                     ->weight('bold'),
                                     
-                                TextEntry::make('nationality')
-                                    ->label('الجنسية')
-                                    ->badge()
-                                    ->color('info'),
-                                    
+
                                 TextEntry::make('madhhab')
                                     ->label('المذهب')
                                     ->badge()

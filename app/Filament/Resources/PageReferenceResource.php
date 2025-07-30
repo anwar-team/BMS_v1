@@ -17,7 +17,11 @@ class PageReferenceResource extends Resource
 {
     protected static ?string $model = PageReference::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-document-arrow-up';
+    
+    protected static ?string $navigationGroup = 'Books';
+    
+    protected static ?int $navigationSort = 8;
 
     public static function form(Form $form): Form
     {

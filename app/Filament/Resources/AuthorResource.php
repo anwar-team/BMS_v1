@@ -31,25 +31,27 @@ class AuthorResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('fname')
-                    ->required()
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('mname')
-                    ->maxLength(255)
-                    ->default(null),
-                Forms\Components\TextInput::make('lname')
+                Forms\Components\TextInput::make('full_name')
+                    ->label('الاسم الكامل')
                     ->required()
                     ->maxLength(255),
                 Forms\Components\Textarea::make('biography')
+                    ->label('السيرة الذاتية')
                     ->columnSpanFull(),
-                Forms\Components\TextInput::make('nationality')
-                    ->maxLength(100)
-                    ->default(null),
-                Forms\Components\TextInput::make('madhhab')
-                    ->maxLength(100)
-                    ->default(null),
-                Forms\Components\DatePicker::make('birth_date'),
-                Forms\Components\DatePicker::make('death_date'),
+                Forms\Components\Select::make('madhhab')
+                    ->label('المذهب')
+                    ->options([
+                        'المذهب الحنفي' => 'المذهب الحنفي',
+                        'المذهب المالكي' => 'المذهب المالكي',
+                        'المذهب الشافعي' => 'المذهب الشافعي',
+                        'المذهب الحنبلي' => 'المذهب الحنبلي',
+                        'آخرون' => 'آخرون',
+                    ])
+                    ->nullable(),
+                Forms\Components\DatePicker::make('birth_date')
+                    ->label('تاريخ الميلاد'),
+                Forms\Components\DatePicker::make('death_date')
+                    ->label('تاريخ الوفاة'),
             ]);
     }
 
@@ -57,20 +59,18 @@ class AuthorResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('fname')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('mname')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('lname')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('nationality')
+                Tables\Columns\TextColumn::make('full_name')
+                    ->label('الاسم الكامل')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('madhhab')
+                    ->label('المذهب')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('birth_date')
+                    ->label('تاريخ الميلاد')
                     ->date()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('death_date')
+                    ->label('تاريخ الوفاة')
                     ->date()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')

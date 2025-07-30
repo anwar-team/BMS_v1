@@ -86,7 +86,7 @@ class BooksRelationManager extends RelationManager
                     ->formatStateUsing(function ($record) {
                         return $record->authorBooks->take(3)->map(function ($authorBook) {
                             $author = $authorBook->author;
-                            $name = trim($author->fname . ' ' . $author->lname);
+                            $name = $author->full_name;
                             return $name;
                         })->join(', ') . ($record->authorBooks->count() > 3 ? '...' : '');
                     })

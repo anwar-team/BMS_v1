@@ -11,12 +11,9 @@ class Author extends Model
     use HasFactory;
 
     protected $fillable = [
-        'fname',
-        'mname',
-        'lname',
+        'full_name',
         //'nickname',
         'biography',
-        'nationality',
         'madhhab',
         'birth_date',
         'death_date',
@@ -37,14 +34,7 @@ class Author extends Model
             ->withTimestamps();
     }
 
-    /**
-     * الحصول على الاسم الكامل
-     */
-    public function getFullNameAttribute(): string
-    {
-        $parts = array_filter([$this->fname, $this->mname, $this->lname]);
-        return implode(' ', $parts);
-    }
+
 
     /**
      * الحصول على الكتب الرئيسية

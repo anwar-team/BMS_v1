@@ -18,6 +18,7 @@ return new class extends Migration
             $table->enum('role', ['author', 'co_author', 'editor', 'translator', 'reviewer', 'commentator'])->default('author');
             $table->boolean('is_main')->default(false);
             $table->integer('display_order')->default(0);
+            
             $table->timestamps();
 
             $table->foreign('book_id')->references('id')->on('books')->onDelete('cascade');
