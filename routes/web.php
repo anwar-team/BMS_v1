@@ -32,6 +32,11 @@ Route::get('/contact-us', ContactUs::class)->name('contact-us');
 Route::get('/categories', function () {
     return view('components.superduper.pages.categories');
 })->name('categories');
+
+Route::get('/all', function () {
+    return view('components.superduper.pages.show-all');
+})->name('all');
+
 // Book reader route
 Route::get('/book/{slug}', BookReader::class)->name('book.show');
 
