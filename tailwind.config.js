@@ -13,28 +13,30 @@ export default {
         extend: {
             colors: {
                 primary: {
-                    50: '#f8f9e8',
-                    100: '#f0f2d0',
-                    200: '#e6e9b6',
-                    300: '#d3d88a',
-                    400: '#b9c05c',
-                    500: '#8a903c',
-                    600: '#5D6019', // base primary
-                    700: '#4a4d14',
-                    800: '#3c3f10',
-                    900: '#2e300c',
+                    50: '#F1F8F3',
+                    100: '#DCEFE1',
+                    200: '#BCDEC6',
+                    300: '#8FC6A3',
+                    400: '#5FA87C',
+                    500: '#3E8B60',
+                    600: '#2C6E4A', // base primary
+                    700: '#23593C',
+                    800: '#1E4731',
+                    900: '#1A3A2A',
+                    950: '#0D2117',
                 },
                 secondary: {
-                    50: '#fff8e6',
-                    100: '#ffedc4',
-                    200: '#ffdb94',
-                    300: '#ffc25a',
-                    400: '#ffaa33',
-                    500: '#FF7300', // secondary accent
-                    600: '#e65a00',
-                    700: '#b34700',
-                    800: '#39100C', // secondary dark
-                    900: '#2b0c09',
+                    50: '#FCF6F4',
+                    100: '#F9ECEA',
+                    200: '#F4D9D7',
+                    300: '#EBBAB6',
+                    400: '#DF928D',
+                    500: '#CF6864',
+                    600: '#BA4749', // base secondary
+                    700: '#9B3539',
+                    800: '#822F35',
+                    900: '#702B32',
+                    950: '#3D1417',
                 },
                 background: {
                     white: '#FFFFFF',
@@ -46,10 +48,6 @@ export default {
                 error: '#EF4444',
                 warning: '#F59E0B',
                 info: '#3B82F6',
-            },
-            fontFamily: {
-                'tajawal': ['Tajawal', 'sans-serif'],
-                'naskh': ['Noto Naskh Arabic', 'serif'],
             },
         },
     },
