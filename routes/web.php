@@ -56,8 +56,6 @@ Route::post('/blog-preview', function () {
 })->name('blog.preview');
 
 // Book Reader Preview Route
-Route::view('/book-preview', 'pages.book-reader')->name('book.preview');
-
 Route::get('/book', function () {
     return view('pages.book-read');
 })->name('book');
