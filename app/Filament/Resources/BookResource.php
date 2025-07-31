@@ -36,10 +36,9 @@ class BookResource extends Resource
                     ->label('عنوان الكتاب')
                     ->required()
                     ->maxLength(255),
-                Forms\Components\Select::make('author_id')
-                    ->label('المؤلف')
-                    ->relationship('author', 'full_name')
-                    ->required()
+                Forms\Components\Select::make('book_section_id')
+                    ->label('قسم الكتاب')
+                    ->relationship('bookSection', 'name')
                     ->searchable()
                     ->preload(),
                 Forms\Components\Select::make('publisher_id')
@@ -47,37 +46,58 @@ class BookResource extends Resource
                     ->relationship('publisher', 'name')
                     ->searchable()
                     ->preload(),
-                Forms\Components\TextInput::make('isbn')
-                    ->label('رقم ISBN')
-                    ->maxLength(20),
-                Forms\Components\DatePicker::make('publication_date')
-                    ->label('تاريخ النشر'),
-                Forms\Components\TextInput::make('pages')
+                Forms\Components\TextInput::make('slug')
+                    ->label('الرابط المختصر')
+                    ->maxLength(255),
+                Forms\Components\FileUpload::make('cover_image')
+                    ->label('صورة الغلاف')
+                    ->image()
+                    ->directory('book-covers'),
+                Forms\Components\TextInput::make('published_year')
+                    ->label('سنة النشر')
+                    ->numeric()
+                    ->minValue(1)
+                    ->maxValue(date('Y')),
+                Forms\Components\TextInput::make('publisher')
+                    ->label('الناشر')
+                    ->maxLength(255),
+                Forms\Components\TextInput::make('pages_count')
                     ->label('عدد الصفحات')
                     ->numeric()
                     ->minValue(1),
-                Forms\Components\Select::make('language')
-                    ->label('اللغة')
+                Forms\Components\TextInput::make('volumes_count')
+                    ->label('عدد المجلدات')
+                    ->numeric()
+                    ->minValue(1)
+                    ->default(1),
+                Forms\Components\Select::make('status')
+                    ->label('الحالة')
                     ->options([
-                        'العربية' => 'العربية',
-                        'الإنجليزية' => 'الإنجليزية',
-                        'الفرنسية' => 'الفرنسية',
-                        'الألمانية' => 'الألمانية',
-                        'أخرى' => 'أخرى',
+                        'draft' => 'مسودة',
+                        'published' => 'منشور',
+                        'archived' => 'مؤرشف',
                     ])
-                    ->default('العربية'),
+                    ->default('draft'),
+                Forms\Components\Select::make('visibility')
+                    ->label('الرؤية')
+                    ->options([
+                        'public' => 'عام',
+                        'private' => 'خاص',
+                        'restricted' => 'مقيد',
+                    ])
+                    ->default('public'),
+                Forms\Components\TextInput::make('cover_image_url')
+                    ->label('رابط صورة الغلاف')
+                    ->url()
+                    ->maxLength(255),
+                Forms\Components\TextInput::make('source_url')
+                    ->label('رابط المصدر')
+                    ->url()
+                    ->maxLength(255),
                 Forms\Components\Textarea::make('description')
                     ->label('وصف الكتاب')
                     ->columnSpanFull(),
-                Forms\Components\TextInput::make('price')
-                    ->label('السعر')
-                    ->numeric()
-                    ->prefix('$'),
-                Forms\Components\TextInput::make('stock_quantity')
-                    ->label('الكمية المتوفرة')
-                    ->numeric()
-                    ->default(0)
-                    ->minValue(0),
+
             ]);
     }
 
@@ -88,33 +108,34 @@ class BookResource extends Resource
                 Tables\Columns\TextColumn::make('title')
                     ->label('عنوان الكتاب')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('author.full_name')
-                    ->label('المؤلف')
+                Tables\Columns\TextColumn::make('bookSection.name')
+                    ->label('قسم الكتاب')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('publisher.name')
+                Tables\Columns\TextColumn::make('publisher')
                     ->label('الناشر')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('isbn')
-                    ->label('رقم ISBN')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('publication_date')
-                    ->label('تاريخ النشر')
-                    ->date()
+                Tables\Columns\TextColumn::make('published_year')
+                    ->label('سنة النشر')
                     ->sortable(),
-                Tables\Columns\TextColumn::make('pages')
+                Tables\Columns\TextColumn::make('pages_count')
                     ->label('عدد الصفحات')
                     ->numeric()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('language')
-                    ->label('اللغة'),
-                Tables\Columns\TextColumn::make('price')
-                    ->label('السعر')
-                    ->money()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('stock_quantity')
-                    ->label('الكمية المتوفرة')
+                Tables\Columns\TextColumn::make('volumes_count')
+                    ->label('عدد المجلدات')
                     ->numeric()
                     ->sortable(),
+                Tables\Columns\TextColumn::make('status')
+                    ->label('الحالة')
+                    ->badge()
+                    ->color(fn (string $state): string => match ($state) {
+                        'draft' => 'gray',
+                        'published' => 'success',
+                        'archived' => 'warning',
+                    }),
+                Tables\Columns\TextColumn::make('visibility')
+                    ->label('الرؤية')
+                    ->badge(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->label('تاريخ الإنشاء')
                     ->dateTime()

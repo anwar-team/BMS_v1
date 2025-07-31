@@ -10,11 +10,12 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Book extends Model
 {
+    use HasFactory;
+
     public function publisher()
     {
         return $this->belongsTo(Publisher::class);
     }
-    use HasFactory;
 
     protected $fillable = [
         'title',
