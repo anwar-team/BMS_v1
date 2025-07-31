@@ -55,6 +55,13 @@ Route::post('/blog-preview', function () {
     // Implementation pending
 })->name('blog.preview');
 
+// Book Reader Preview Route
+Route::view('/book-preview', 'pages.book-reader')->name('book.preview');
+
+Route::get('/book', function () {
+    return view('pages.book-read');
+})->name('book');
+
 Route::get('impersonate/leave', function () {
     if (!app(ImpersonateManager::class)->isImpersonating()) {
         return redirect('/');
