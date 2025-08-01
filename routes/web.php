@@ -47,6 +47,10 @@ Route::get('/coming-soon', function () {
     return view('components.superduper.pages.coming-soon', ['page_type' => 'generic']);
 })->name('coming-soon');
 
+Route::get('/book', function () {
+    return view('pages.book-read');
+})->name('book');
+
 Route::post('/contact', [App\Http\Controllers\ContactController::class, 'submit'])
     ->name('contact.submit');
 
