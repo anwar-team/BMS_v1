@@ -19,6 +19,7 @@ return new class extends Migration
             $table->integer('sort_order')->default(0);
             $table->boolean('is_active')->default(true);
             $table->string('slug', 255)->unique();
+            $table->string('logo_path', 500)->nullable(); // للشعار/اللوجو
             $table->timestamps();
 
             $table->foreign('parent_id')->references('id')->on('book_sections')->onDelete('cascade');

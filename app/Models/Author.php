@@ -11,8 +11,7 @@ class Author extends Model
     use HasFactory;
 
     protected $fillable = [
-        'full_name',
-        //'nickname',
+        'full_name',     // اسم العمود في جدول authors
         'biography',
         'madhhab',
         'birth_date',

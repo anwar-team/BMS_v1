@@ -3,6 +3,9 @@
 use App\Livewire\SuperDuper\BlogList;
 use App\Livewire\SuperDuper\BlogDetails;
 use App\Livewire\SuperDuper\Pages\ContactUs;
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\CategoriesController;
+use App\Http\Controllers\ShowAllController;
 use Illuminate\Support\Facades\Route;
 use Lab404\Impersonate\Services\ImpersonateManager;
 
@@ -17,9 +20,7 @@ use Lab404\Impersonate\Services\ImpersonateManager;
 |
 */
 
-Route::get('/', function () {
-    return view('components.superduper.pages.home');
-})->name('home');
+Route::get('/', [HomeController::class, 'index'])->name('home');
 
 Route::get('/blog', BlogList::class)->name('blog');
 
@@ -27,13 +28,10 @@ Route::get('/blog/{slug}', BlogDetails::class)->name('blog.show');
 
 Route::get('/contact-us', ContactUs::class)->name('contact-us');
 
-Route::get('/categories', function () {
-    return view('components.superduper.pages.categories');
-})->name('categories');
+Route::get('/categories', [CategoriesController::class, 'index'])->name('categories');
 
-Route::get('/all', function () {
-    return view('components.superduper.pages.show-all');
-})->name('all');
+// روابط عرض جميع الكتب والمؤلفين مع إمكانية التصفية
+Route::get('/show-all', [ShowAllController::class, 'index'])->name('show-all');
 
 Route::get('/privacy-policy', function () {
     return view('components.superduper.pages.coming-soon', ['page_type' => 'privacy']);

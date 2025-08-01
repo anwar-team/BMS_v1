@@ -62,34 +62,40 @@
                     </div>
 
                     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                        @for ($i = 0; $i < 6; $i++)
-                            <div class="bg-white rounded-lg shadow-md overflow-hidden border border-gray-200">
-                            <div class="relative">
-                                <img
-                                    src="{{ asset('images/mask-group0.svg') }}"
-                                    alt="Category image"
-                                    class="absolute left-0 top-0 w-32 h-32">
-                                <div class="p-8">
-                                    <div class="flex justify-around items-center">
-                                        <img src="{{ asset('images/group1.svg') }}" alt="Icon" class="w-16 h-16">
-                                        <div>
-                                            <h3 class="text-xl text-green-800 font-bold mb-1">العقيدة</h3>
-                                            <p class="text-sm text-gray-600">1035 كتاب</p>
+                        @forelse ($sections as $section)
+                            <a href="{{ route('show-all', ['type' => 'books', 'section' => $section->slug]) }}" 
+                               class="bg-white rounded-lg shadow-md overflow-hidden border border-gray-200 hover:shadow-lg transition-shadow duration-300">
+                                <div class="relative">
+                                    <img
+                                        src="{{ asset('images/mask-group0.svg') }}"
+                                        alt="Category image"
+                                        class="absolute left-0 top-0 w-32 h-32">
+                                    <div class="p-8">
+                                        <div class="flex justify-around items-center">
+                                            <img src="{{ $section->logo_path ? asset($section->logo_path) : asset('images/group1.svg') }}" 
+                                                 alt="Icon" class="w-16 h-16">
+                                            <div>
+                                                <h3 class="text-xl text-green-800 font-bold mb-1">{{ $section->name }}</h3>
+                                                <p class="text-sm text-gray-600">{{ $section->books_count }} كتاب</p>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
+                            </a>
+                        @empty
+                            <div class="col-span-full text-center py-8">
+                                <p class="text-gray-500">لا توجد أقسام متوفرة حالياً</p>
                             </div>
+                        @endforelse
                     </div>
-                    @endfor
-            </div>
 
-            <div class="mt-12 text-center">
-                <a href="{{ route('categories') }}" class="bg-white text-green-800 border border-green-800 px-8 py-3 rounded-full transition-colors duration-300 hover:bg-green-800 hover:text-white font-bold shadow-md inline-block">
-                    عرض جميع الأقسام
-                </a>
+                    <div class="mt-12 text-center">
+                        <a href="{{ route('categories') }}" class="bg-white text-green-800 border border-green-800 px-8 py-3 rounded-full transition-colors duration-300 hover:bg-green-800 hover:text-white font-bold shadow-md inline-block">
+                            عرض جميع الأقسام
+                        </a>
+                    </div>
+                </section>
             </div>
-            </section>
-    </div>
 
     <!-- Books Table -->
     <!-- background pattern-->
@@ -112,53 +118,120 @@
                 <button class="bg-white text-green-800 border border-green-800 px-5 py-2 rounded-full transition-colors duration-300 hover:bg-green-800 hover:text-white">
                     كتب مضافة حديثاً
                 </button>
-                <a href="{{ route('all') }}" class="bg-white text-green-800 border border-green-800 px-5 py-2 rounded-full transition-colors duration-300 hover:bg-green-800 hover:text-white">
+                <a href="{{ route('show-all', ['type' => 'books']) }}" class="bg-white text-green-800 border border-green-800 px-5 py-2 rounded-full transition-colors duration-300 hover:bg-green-800 hover:text-white">
                     جميع الكتب
                 </a>
             </div>
 
-            {{-- Books Table Will Go Here --}}
+            {{-- Books Table --}}
             <div class="bg-white rounded-lg shadow overflow-hidden">
                 <div class="overflow-x-auto">
                     <table class="min-w-full divide-y divide-gray-200">
                         <thead class="bg-green-50">
                             <tr>
-                                <th class="px-6 py-3 text-end text-sm font-bold text-green-800">#</th>
-                                <th class="px-6 py-3 text-end text-sm font-bold text-green-800">المؤلف</th>
-                                <th class="px-6 py-3 text-end text-sm font-bold text-green-800">اسم الكتاب</th>
-                                <th class="px-6 py-3 text-end text-sm font-bold text-green-800">التصنيف</th>
+                                <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    #
+                                </th>
+                                <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    عنوان الكتاب
+                                </th>
+                                <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    المؤلف
+                                </th>
+                                <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    القسم
+                                </th>
+                                <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    سنة النشر
+                                </th>
                             </tr>
                         </thead>
                         <tbody class="divide-y divide-gray-200">
-                            @for ($i = 0; $i < 6; $i++)
-                                <tr>
-                                <td class="px-6 py-4 text-sm text-green-800 font-bold text-end">{{ $i + 1 }}</td>
-                                <td class="px-6 py-4 text-sm text-gray-700 text-end">عبد الله عزام</td>
-                                <td class="px-6 py-4 text-sm text-gray-700 text-end">أذكار الصباح والمساء</td>
-                                <td class="px-6 py-4 text-sm text-gray-700 text-end">الأذكار والأوراد والأدعية</td>
+                            @forelse ($books as $book)
+                                <tr class="hover:bg-gray-50 transition-colors duration-150">
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 font-medium">
+                                        {{ $loop->iteration }}
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="text-sm font-medium text-gray-900">{{ $book->title }}</div>
+                                        @if($book->description)
+                                            <div class="text-sm text-gray-500 truncate max-w-xs">{{ Str::limit($book->description, 50) }}</div>
+                                        @endif
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                                        {{ $book->authors->pluck('full_name')->implode(', ') ?: 'غير محدد' }}
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                                        @if($book->bookSection)
+                                            <a href="{{ route('show-all', ['type' => 'books', 'section' => $book->bookSection->slug]) }}" 
+                                               class="text-green-600 hover:text-green-800 hover:underline">
+                                                {{ $book->bookSection->name }}
+                                            </a>
+                                        @else
+                                            <span class="text-gray-400">غير محدد</span>
+                                        @endif
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                                        {{ $book->published_year ?: 'غير محدد' }}
+                                    </td>
                                 </tr>
-                                @endfor
+                            @empty
+                                <tr>
+                                    <td colspan="5" class="px-6 py-8 text-center">
+                                        <div class="text-gray-500">
+                                            <svg class="mx-auto h-12 w-12 text-gray-400 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                                            </svg>
+                                            <p class="text-lg font-medium text-gray-900 mb-1">لا توجد كتب متوفرة</p>
+                                            <p class="text-sm text-gray-500">سيتم إضافة الكتب قريباً</p>
+                                        </div>
+                                    </td>
+                                </tr>
+                            @endforelse
                         </tbody>
                     </table>
                 </div>
 
-                <div class="px-6 py-4 flex items-center justify-between border-t border-gray-200">
+                {{-- Pagination for Books (Simple for Homepage) --}}
+                <div class="px-6 py-4 flex items-center justify-between border-t border-gray-200 bg-gray-50">
                     <div class="flex items-center gap-2">
-                        <button class="p-2 rounded-full hover:bg-gray-100">
-                            <img src="{{ asset('images/chevron-right-filled0.svg') }}" alt="Previous" class="w-6 h-6">
-                        </button>
-                        <button class="p-2 rounded-full hover:bg-gray-100">
-                            <img src="{{ asset('images/chevron-left-filled0.svg') }}" alt="Next" class="w-6 h-6">
-                        </button>
-                        <span class="text-sm text-gray-600">5-1 من 100</span>
+                        @if($books->hasPages())
+                            @if($books->onFirstPage())
+                                <button disabled class="p-2 rounded-full bg-gray-100 text-gray-400 cursor-not-allowed">
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+                                    </svg>
+                                </button>
+                            @else
+                                <a href="{{ $books->previousPageUrl() }}" class="p-2 rounded-full hover:bg-gray-200 text-gray-600 hover:text-gray-800 transition-colors">
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+                                    </svg>
+                                </a>
+                            @endif
+
+                            @if($books->hasMorePages())
+                                <a href="{{ $books->nextPageUrl() }}" class="p-2 rounded-full hover:bg-gray-200 text-gray-600 hover:text-gray-800 transition-colors">
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                                    </svg>
+                                </a>
+                            @else
+                                <button disabled class="p-2 rounded-full bg-gray-100 text-gray-400 cursor-not-allowed">
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                                    </svg>
+                                </a>
+                            @endif
+                        @endif
+                        
+                        <span class="text-sm text-gray-600 mx-2">
+                            {{ $books->firstItem() ?: 0 }}-{{ $books->lastItem() ?: 0 }} من {{ $books->total() }}
+                        </span>
                     </div>
 
                     <div class="flex items-center gap-2">
-                        <div class="relative">
-                            <span class="absolute left-12 top-1/2 -translate-y-1/2 text-sm text-gray-600">10</span>
-                            <img src="{{ asset('images/arrow-drop-down-filled0.svg') }}" alt="Dropdown" class="w-6 h-6">
-                        </div>
-                        <span class="text-sm text-gray-600">عدد الصفوف في الصفحة:</span>
+                        <span class="text-sm text-gray-600">10 كتب في الصفحة</span>
                     </div>
                 </div>
             </div>
@@ -178,58 +251,114 @@
 
             <div class="flex flex-wrap gap-4 mb-8">
                 <button class="bg-white text-green-800 border border-green-800 px-5 py-2 rounded-full transition-colors duration-300 hover:bg-green-800 hover:text-white">
-                    أكثر المؤلفين قراءةً
+                    المؤلفون المشهورون
                 </button>
                 <button class="bg-white text-green-800 border border-green-800 px-5 py-2 rounded-full transition-colors duration-300 hover:bg-green-800 hover:text-white">
-                    مؤلفين جدد
+                    الأكثر كتابة
                 </button>
-                <a href="{{ route('all') }}" class="bg-white text-green-800 border border-green-800 px-5 py-2 rounded-full transition-colors duration-300 hover:bg-green-800 hover:text-white">
+                <a href="{{ route('show-all', ['type' => 'authors']) }}" class="bg-white text-green-800 border border-green-800 px-5 py-2 rounded-full transition-colors duration-300 hover:bg-green-800 hover:text-white">
                     جميع المؤلفين
                 </a>
             </div>
 
-            {{-- Authors Table Will Go Here --}}
+            {{-- Authors Table --}}
             <div class="bg-white rounded-lg shadow overflow-hidden">
                 <div class="overflow-x-auto">
                     <table class="min-w-full divide-y divide-gray-200">
                         <thead class="bg-green-50">
                             <tr>
-                                <th class="px-6 py-3 text-end text-sm font-bold text-green-800">#</th>
-                                <th class="px-6 py-3 text-end text-sm font-bold text-green-800">المؤلف</th>
-                                <th class="px-6 py-3 text-end text-sm font-bold text-green-800">اسم الكتاب</th>
-                                <th class="px-6 py-3 text-end text-sm font-bold text-green-800">التصنيف</th>
+                                <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    #
+                                </th>
+                                <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    اسم المؤلف
+                                </th>
+                                <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    عدد الكتب
+                                </th>
+                                <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    المذهب
+                                </th>
                             </tr>
                         </thead>
                         <tbody class="divide-y divide-gray-200">
-                            @for ($i = 0; $i < 6; $i++)
-                                <tr>
-                                <td class="px-6 py-4 text-sm text-green-800 font-bold text-end">{{ $i + 1 }}</td>
-                                <td class="px-6 py-4 text-sm text-gray-700 text-end">عبد الله عزام</td>
-                                <td class="px-6 py-4 text-sm text-gray-700 text-end">أذكار الصباح والمساء</td>
-                                <td class="px-6 py-4 text-sm text-gray-700 text-end">الأذكار والأوراد والأدعية</td>
+                            @forelse ($authors as $author)
+                                <tr class="hover:bg-gray-50 transition-colors duration-150">
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 font-medium">
+                                        {{ $loop->iteration }}
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="text-sm font-medium text-gray-900">{{ $author->full_name }}</div>
+                                        @if($author->biography)
+                                            <div class="text-sm text-gray-500 truncate max-w-xs">{{ Str::limit($author->biography, 60) }}</div>
+                                        @endif
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                                            {{ $author->books_count }} كتاب
+                                        </span>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                                        {{ $author->madhhab ?: 'غير محدد' }}
+                                    </td>
                                 </tr>
-                                @endfor
+                            @empty
+                                <tr>
+                                    <td colspan="4" class="px-6 py-8 text-center">
+                                        <div class="text-gray-500">
+                                            <svg class="mx-auto h-12 w-12 text-gray-400 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                                            </svg>
+                                            <p class="text-lg font-medium text-gray-900 mb-1">لا يوجد مؤلفون متوفرون</p>
+                                            <p class="text-sm text-gray-500">سيتم إضافة المؤلفين قريباً</p>
+                                        </div>
+                                    </td>
+                                </tr>
+                            @endforelse
                         </tbody>
                     </table>
                 </div>
 
-                <div class="px-6 py-4 flex items-center justify-between border-t border-gray-200">
+                {{-- Pagination for Authors (Simple for Homepage) --}}
+                <div class="px-6 py-4 flex items-center justify-between border-t border-gray-200 bg-gray-50">
                     <div class="flex items-center gap-2">
-                        <button class="p-2 rounded-full hover:bg-gray-100">
-                            <img src="{{ asset('images/chevron-right-filled1.svg') }}" alt="Previous" class="w-6 h-6">
-                        </button>
-                        <button class="p-2 rounded-full hover:bg-gray-100">
-                            <img src="{{ asset('images/chevron-left-filled1.svg') }}" alt="Next" class="w-6 h-6">
-                        </button>
-                        <span class="text-sm text-gray-600">5-1 من 100</span>
+                        @if($authors->hasPages())
+                            @if($authors->onFirstPage())
+                                <button disabled class="p-2 rounded-full bg-gray-100 text-gray-400 cursor-not-allowed">
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+                                    </svg>
+                                </button>
+                            @else
+                                <a href="{{ $authors->previousPageUrl() }}" class="p-2 rounded-full hover:bg-gray-200 text-gray-600 hover:text-gray-800 transition-colors">
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+                                    </svg>
+                                </a>
+                            @endif
+
+                            @if($authors->hasMorePages())
+                                <a href="{{ $authors->nextPageUrl() }}" class="p-2 rounded-full hover:bg-gray-200 text-gray-600 hover:text-gray-800 transition-colors">
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                                    </svg>
+                                </a>
+                            @else
+                                <button disabled class="p-2 rounded-full bg-gray-100 text-gray-400 cursor-not-allowed">
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                                    </svg>
+                                </a>
+                            @endif
+                        @endif
+                        
+                        <span class="text-sm text-gray-600 mx-2">
+                            {{ $authors->firstItem() ?: 0 }}-{{ $authors->lastItem() ?: 0 }} من {{ $authors->total() }}
+                        </span>
                     </div>
 
                     <div class="flex items-center gap-2">
-                        <div class="relative">
-                            <span class="absolute left-12 top-1/2 -translate-y-1/2 text-sm text-gray-600">10</span>
-                            <img src="{{ asset('images/arrow-drop-down-filled1.svg') }}" alt="Dropdown" class="w-6 h-6">
-                        </div>
-                        <span class="text-sm text-gray-600">عدد الصفوف في الصفحة:</span>
+                        <span class="text-sm text-gray-600">10 مؤلفين في الصفحة</span>
                     </div>
                 </div>
             </div>
