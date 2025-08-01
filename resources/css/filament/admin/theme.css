@@ -3,16 +3,27 @@
 
 /* GLOBAL STYLES */
 :root {
+  /* عرض الشريط وانتقالات */
   --sidebar-width: 280px;
   --transition-speed: 0.2s;
-  --primary-rgb: 45, 43, 141;
-  /* #2D2B8D */
-  --secondary-rgb: 255, 201, 3;
-  /* #FFC903 */
-  --primary-gradient: linear-gradient(145deg, #524ED5, #2D2B8D);
-  --secondary-gradient: linear-gradient(145deg, #FFD333, #FFC903);
-  --hover-gradient: linear-gradient(145deg, rgba(var(--primary-rgb), 0.08), rgba(var(--secondary-rgb), 0.08));
-  --dark-hover-gradient: linear-gradient(145deg, rgba(var(--primary-rgb), 0.15), rgba(var(--secondary-rgb), 0.05));
+
+  /* الدرجة 600 من لوحتك */
+  --primary-rgb: 44, 110, 74;
+  /* #2C6E4A */
+  --secondary-rgb: 186, 71, 73;
+  /* #BA4749 */
+
+  /* التدرّجات */
+  --primary-gradient: linear-gradient(145deg, #8FC6A3, #2C6E4A);
+  --secondary-gradient: linear-gradient(145deg, #EBBAB6, #BA4749);
+
+  /* تأثيرات الـ hover */
+  --hover-gradient: linear-gradient(145deg,
+      rgba(var(--primary-rgb), 0.08),
+      rgba(var(--secondary-rgb), 0.08));
+  --dark-hover-gradient: linear-gradient(145deg,
+      rgba(var(--primary-rgb), 0.15),
+      rgba(var(--secondary-rgb), 0.05));
 }
 
 body {
