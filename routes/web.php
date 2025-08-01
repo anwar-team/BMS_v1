@@ -39,14 +39,6 @@ Route::get('/privacy-policy', function () {
     return view('components.superduper.pages.coming-soon', ['page_type' => 'privacy']);
 })->name('privacy-policy');
 
-//Storge link 
-
-Route::get('/link', function () {        
-$target = '/home/public_html/storage/app/public';
-$shortcut = '/home/public_html/public/storage';
-symlink($target, $shortcut);
-});
-
 Route::get('/terms-conditions', function () {
     return view('components.superduper.pages.coming-soon', ['page_type' => 'privacy']);
 })->name('terms-conditions');
@@ -62,11 +54,6 @@ Route::post('/contact', [App\Http\Controllers\ContactController::class, 'submit'
 Route::post('/blog-preview', function () {
     // Implementation pending
 })->name('blog.preview');
-
-// Book Reader Preview Route
-Route::get('/book', function () {
-    return view('pages.book-read');
-})->name('book');
 
 Route::get('impersonate/leave', function () {
     if (!app(ImpersonateManager::class)->isImpersonating()) {
