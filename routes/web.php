@@ -39,6 +39,14 @@ Route::get('/privacy-policy', function () {
     return view('components.superduper.pages.coming-soon', ['page_type' => 'privacy']);
 })->name('privacy-policy');
 
+//Storge link 
+
+Route::get('/link', function () {        
+$target = '/home/public_html/storage/app/public';
+$shortcut = '/home/public_html/public/storage';
+symlink($target, $shortcut);
+});
+
 Route::get('/terms-conditions', function () {
     return view('components.superduper.pages.coming-soon', ['page_type' => 'privacy']);
 })->name('terms-conditions');
