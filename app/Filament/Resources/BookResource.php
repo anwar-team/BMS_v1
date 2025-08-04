@@ -341,10 +341,14 @@ class BookResource extends Resource
                         ->default('author')
                         ->columnSpan(1),
                     
-                    Toggle::make('is_main')
+                    Select::make('is_main')
                         ->label('مؤلف رئيسي')
+                        ->options([
+                            true => 'نعم',
+                            false => 'لا'
+                        ])
                         ->helperText('حدد المؤلف الرئيسي للكتاب')
-                        ->default(false)
+                        ->default(true)
                         ->columnSpan(1),
                 ]),
                 
@@ -553,6 +557,13 @@ class BookResource extends Resource
                 ->label('الاسم الكامل')
                 ->required()
                 ->maxLength(255)
+                ->columnSpanFull(),
+
+            FileUpload::make('image')
+                ->label('صورة المؤلف')
+                ->image()
+                ->directory('authors')
+                ->visibility('public')
                 ->columnSpanFull(),
 
             Grid::make(2)->schema([

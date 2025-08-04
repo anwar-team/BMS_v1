@@ -13,6 +13,7 @@ class Author extends Model
     protected $fillable = [
         'full_name',     // اسم العمود في جدول authors
         'biography',
+        'image',
         'madhhab',
         'is_living',
         'birth_year_type',

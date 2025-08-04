@@ -13,6 +13,7 @@ use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Toggle;
 use Filament\Forms\Components\Grid;
+use Filament\Forms\Components\FileUpload;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
@@ -40,6 +41,13 @@ class AuthorResource extends Resource
                     ->label('الاسم الكامل')
                     ->required()
                     ->maxLength(255)
+                    ->columnSpanFull(),
+
+                FileUpload::make('image')
+                    ->label('صورة المؤلف')
+                    ->image()
+                    ->directory('authors')
+                    ->visibility('public')
                     ->columnSpanFull(),
 
                 Grid::make(2)->schema([
@@ -122,6 +130,10 @@ class AuthorResource extends Resource
     {
         return $table
             ->columns([
+                Tables\Columns\ImageColumn::make('image')
+                    ->label('الصورة')
+                    ->circular()
+                    ->size(50),
                 Tables\Columns\TextColumn::make('full_name')
                     ->label('الاسم الكامل')
                     ->searchable()
