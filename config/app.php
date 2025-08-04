@@ -160,6 +160,7 @@ return [
          * Package Service Providers...
          */
         App\Providers\UserStampServiceProvider::class,
+        AlperenErsoy\FilamentExport\FilamentExportServiceProvider::class,
 
         /*
          * Application Service Providers...
