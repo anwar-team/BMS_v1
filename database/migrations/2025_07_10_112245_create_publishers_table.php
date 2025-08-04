@@ -16,11 +16,12 @@ return new class extends Migration
         Schema::create('publishers', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('country');
+            $table->string('address')->nullable();
             $table->string('email')->nullable();
             $table->string('phone')->nullable();
             $table->text('description')->nullable();
             $table->string('website_url')->nullable();
+            $table->string('image')->nullable();
             $table->boolean('is_active')->default(true);
             $table->timestamps();
         });

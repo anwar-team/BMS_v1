@@ -7,9 +7,11 @@ use App\Filament\Resources\PublisherResource\RelationManagers;
 use App\Models\Publisher;
 use Filament\Forms;
 use Filament\Forms\Form;
+use Filament\Forms\Components\FileUpload;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Filament\Tables\Filters\SelectFilter;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
@@ -37,6 +39,17 @@ class PublisherResource extends Resource
                 Forms\Components\TextInput::make('address')
                     ->label('العنوان')
                     ->maxLength(255),
+                Forms\Components\Textarea::make('description')
+                    ->label('الوصف')
+                    ->rows(3)
+                    ->maxLength(1000),
+                Forms\Components\FileUpload::make('image')
+                    ->label('صورة الناشر')
+                    ->image()
+                    ->imageEditor()
+                    ->maxSize(2048)
+                    ->directory('publishers')
+                    ->visibility('public'),
                 Forms\Components\TextInput::make('phone')
                     ->label('رقم الهاتف')
                     ->tel()
@@ -45,10 +58,14 @@ class PublisherResource extends Resource
                     ->label('البريد الإلكتروني')
                     ->email()
                     ->maxLength(255),
-                Forms\Components\TextInput::make('website')
+                Forms\Components\TextInput::make('website_url')
                     ->label('الموقع الإلكتروني')
                     ->url()
                     ->maxLength(255),
+                Forms\Components\Toggle::make('is_active')
+                    ->label('مفعل')
+                    ->default(true)
+                    ->helperText('تحديد ما إذا كان الناشر مفعلاً أم لا'),
             ]);
     }
 
@@ -66,6 +83,26 @@ class PublisherResource extends Resource
                     ->label('رقم الهاتف'),
                 Tables\Columns\TextColumn::make('email')
                     ->label('البريد الإلكتروني'),
+                Tables\Columns\TextColumn::make('website_url')
+                    ->label('الموقع الإلكتروني')
+                    ->limit(30)
+                    ->toggleable(isToggledHiddenByDefault: true),
+                Tables\Columns\ImageColumn::make('image')
+                    ->label('الصورة')
+                    ->circular()
+                    ->size(40)
+                    ->toggleable(),
+                Tables\Columns\TextColumn::make('description')
+                    ->label('الوصف')
+                    ->limit(50)
+                    ->toggleable(isToggledHiddenByDefault: true),
+                Tables\Columns\IconColumn::make('is_active')
+                    ->label('الحالة')
+                    ->boolean()
+                    ->trueIcon('heroicon-o-check-circle')
+                    ->falseIcon('heroicon-o-x-circle')
+                    ->trueColor('success')
+                    ->falseColor('danger'),
                 Tables\Columns\TextColumn::make('created_at')
                     ->label('تاريخ الإنشاء')
                     ->dateTime()
@@ -78,7 +115,13 @@ class PublisherResource extends Resource
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
-                //
+                SelectFilter::make('is_active')
+                    ->label('الحالة')
+                    ->options([
+                        1 => 'مفعل',
+                        0 => 'غير مفعل',
+                    ])
+                    ->placeholder('جميع الحالات'),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),

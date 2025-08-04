@@ -592,15 +592,38 @@ class BookResource extends Resource
                 ->required()
                 ->maxLength(255),
             
-            TextInput::make('slug')
-                ->label('الرابط الثابت')
-                ->maxLength(255)
-                ->unique(Publisher::class, 'slug', ignoreRecord: true)
-                ->rules(['alpha_dash']),
+            TextInput::make('address')
+                ->label('العنوان')
+                ->maxLength(255),
+            
+            TextInput::make('phone')
+                ->label('رقم الهاتف')
+                ->tel()
+                ->maxLength(20),
+            
+            TextInput::make('email')
+                ->label('البريد الإلكتروني')
+                ->email()
+                ->maxLength(255),
+            
+            TextInput::make('website_url')
+                ->label('الموقع الإلكتروني')
+                ->url()
+                ->maxLength(255),
             
             Textarea::make('description')
                 ->label('وصف الناشر')
                 ->rows(3)
+                ->maxLength(1000)
+                ->columnSpanFull(),
+            
+            FileUpload::make('image')
+                ->label('صورة الناشر')
+                ->image()
+                ->imageEditor()
+                ->maxSize(2048)
+                ->directory('publishers')
+                ->visibility('public')
                 ->columnSpanFull(),
         ];
     }

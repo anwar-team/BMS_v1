@@ -12,11 +12,12 @@ class Publisher extends Model
 
     protected $fillable = [
         'name',
-        'country',
+        'address',
         'email',
         'phone',
         'description',
         'website_url',
+        'image',
         'is_active',
     ];
 
