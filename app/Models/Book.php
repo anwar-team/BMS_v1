@@ -178,13 +178,6 @@ class Book extends Model
         return $this->hasMany(Reference::class);
     }
 
-    /**
-     * العلاقة مع التعليقات
-     */
-    public function annotations(): HasMany
-    {
-        return $this->hasMany(Annotation::class);
-    }
 
     /**
      * العلاقة مع البيانات الوصفية
