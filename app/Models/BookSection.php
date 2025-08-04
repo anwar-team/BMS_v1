@@ -18,6 +18,7 @@ class BookSection extends Model
         'sort_order',
         'is_active',
         'slug',
+        'logo_path', // إضافة logo_path
     ];
 
     protected $casts = [
@@ -62,5 +63,37 @@ class BookSection extends Model
     public function scopeMain($query)
     {
         return $query->whereNull('parent_id');
+    }
+
+    /**
+     * Get sections with book count for homepage
+     */
+    public static function getForHomepage($limit = 6)
+    {
+        return self::where('is_active', true)
+            ->whereNull('parent_id')
+            ->withCount('books')
+            ->orderBy('sort_order')
+            ->limit($limit)
+            ->get();
+    }
+
+    /**
+     * Get all active sections with book count for categories page
+     */
+    public static function getAllWithBookCount()
+    {
+        return self::where('is_active', true)
+            ->withCount('books')
+            ->orderBy('sort_order')
+            ->get();
+    }
+
+    /**
+     * Get section by slug
+     */
+    public static function findBySlug($slug)
+    {
+        return self::where('slug', $slug)->where('is_active', true)->first();
     }
 }
