@@ -134,31 +134,37 @@ class AuthorResource extends Resource
                 Tables\Columns\ImageColumn::make('image')
                     ->label('الصورة')
                     ->circular()
-                    ->size(50),
+                    ->size(50)
+                    ->toggleable(),
                 Tables\Columns\TextColumn::make('full_name')
                     ->label('الاسم الكامل')
                     ->searchable()
-                    ->sortable(),
+                    ->sortable()
+                    ->toggleable(),
                 Tables\Columns\TextColumn::make('madhhab')
                     ->label('المذهب')
                     ->searchable()
                     ->badge()
-                    ->color('info'),
+                    ->color('info')
+                    ->toggleable(),
                 Tables\Columns\IconColumn::make('is_living')
                     ->label('على قيد الحياة')
                     ->boolean()
                     ->trueIcon('heroicon-o-check-circle')
                     ->falseIcon('heroicon-o-x-circle')
                     ->trueColor('success')
-                    ->falseColor('danger'),
+                    ->falseColor('danger')
+                    ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('birth_year')
                     ->label('سنة الميلاد')
                     ->formatStateUsing(fn ($record) => $record->birth_year ? $record->birth_year . ' (' . ($record->birth_year_type === 'hijri' ? 'هـ' : 'م') . ')' : '-')
-                    ->sortable(),
+                    ->sortable()
+                    ->toggleable(),
                 Tables\Columns\TextColumn::make('death_year')
                     ->label('سنة الوفاة')
                     ->formatStateUsing(fn ($record) => !$record->is_living && $record->death_year ? $record->death_year . ' (' . ($record->death_year_type === 'hijri' ? 'هـ' : 'م') . ')' : ($record->is_living ? 'على قيد الحياة' : '-'))
-                    ->sortable(),
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('created_at')
                     ->label('تاريخ الإنشاء')
                     ->dateTime()
@@ -228,34 +234,6 @@ class AuthorResource extends Resource
                             );
                     })
                     ->label('سنة الوفاة'),
-                Tables\Filters\SelectFilter::make('columns_display')
-                    ->label('عدد الأعمدة')
-                    ->options([
-                        '1' => 'عمود واحد',
-                        '2' => 'عمودين',
-                        '3' => 'ثلاثة أعمدة',
-                        '4' => 'أربعة أعمدة',
-                        '5' => 'خمسة أعمدة',
-                        '6' => 'ستة أعمدة',
-                    ])
-                    ->default('3')
-                    ->query(function (Builder $query, array $data): Builder {
-                        // This filter is for UI display only, no database query needed
-                        return $query;
-                    }),
-                Tables\Filters\SelectFilter::make('column_visibility')
-                    ->label('إعدادات الأعمدة')
-                    ->options([
-                        'all' => 'عرض جميع الأعمدة',
-                        'essential' => 'الأعمدة الأساسية فقط',
-                        'minimal' => 'الحد الأدنى من الأعمدة',
-                        'custom' => 'تخصيص الأعمدة',
-                    ])
-                    ->default('all')
-                    ->query(function (Builder $query, array $data): Builder {
-                        // This filter is for UI display only, no database query needed
-                        return $query;
-                    }),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
