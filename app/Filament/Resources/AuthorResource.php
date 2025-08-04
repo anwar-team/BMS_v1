@@ -228,6 +228,34 @@ class AuthorResource extends Resource
                             );
                     })
                     ->label('سنة الوفاة'),
+                Tables\Filters\SelectFilter::make('columns_display')
+                    ->label('عدد الأعمدة')
+                    ->options([
+                        '1' => 'عمود واحد',
+                        '2' => 'عمودين',
+                        '3' => 'ثلاثة أعمدة',
+                        '4' => 'أربعة أعمدة',
+                        '5' => 'خمسة أعمدة',
+                        '6' => 'ستة أعمدة',
+                    ])
+                    ->default('3')
+                    ->query(function (Builder $query, array $data): Builder {
+                        // This filter is for UI display only, no database query needed
+                        return $query;
+                    }),
+                Tables\Filters\SelectFilter::make('column_visibility')
+                    ->label('إعدادات الأعمدة')
+                    ->options([
+                        'all' => 'عرض جميع الأعمدة',
+                        'essential' => 'الأعمدة الأساسية فقط',
+                        'minimal' => 'الحد الأدنى من الأعمدة',
+                        'custom' => 'تخصيص الأعمدة',
+                    ])
+                    ->default('all')
+                    ->query(function (Builder $query, array $data): Builder {
+                        // This filter is for UI display only, no database query needed
+                        return $query;
+                    }),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
