@@ -17,6 +17,11 @@ return new class extends Migration
             $table->string('full_name', 255);
             $table->text('biography')->nullable();
             $table->enum('madhhab', ['المذهب الحنفي', 'المذهب المالكي', 'المذهب الشافعي', 'المذهب الحنبلي', 'آخرون'])->nullable();
+            $table->boolean('is_living')->default(true);
+            $table->enum('birth_year_type', ['gregorian', 'hijri'])->default('gregorian');
+            $table->integer('birth_year')->nullable();
+            $table->enum('death_year_type', ['gregorian', 'hijri'])->default('gregorian')->nullable();
+            $table->integer('death_year')->nullable();
             $table->date('birth_date')->nullable();
             $table->date('death_date')->nullable();
             $table->timestamps();

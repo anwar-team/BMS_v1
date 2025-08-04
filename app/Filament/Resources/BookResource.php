@@ -549,38 +549,73 @@ class BookResource extends Resource
     private static function getAuthorForm(): array
     {
         return [
+            TextInput::make('full_name')
+                ->label('الاسم الكامل')
+                ->required()
+                ->maxLength(255)
+                ->columnSpanFull(),
+
             Grid::make(2)->schema([
-                TextInput::make('full_name')
-                    ->label('الاسم الكامل')
-                    ->required()
-                    ->maxLength(255),
+                Select::make('madhhab')
+                    ->label('المذهب')
+                    ->options([
+                        'المذهب الحنفي' => 'المذهب الحنفي',
+                        'المذهب المالكي' => 'المذهب المالكي',
+                        'المذهب الشافعي' => 'المذهب الشافعي',
+                        'المذهب الحنبلي' => 'المذهب الحنبلي',
+                        'آخرون' => 'آخرون',
+                    ])
+                    ->placeholder('اختر المذهب'),
                 
-                TextInput::make('slug')
-                    ->label('الرابط الثابت')
-                    ->maxLength(255)
-                    ->unique(Author::class, 'slug', ignoreRecord: true)
-                    ->rules(['alpha_dash']),
+                Toggle::make('is_living')
+                    ->label('هل المؤلف على قيد الحياة؟')
+                    ->default(true)
+                    ->live(),
             ]),
-            
-            Grid::make(2)->schema([
-                TextInput::make('birth_year')
-                    ->label('سنة الميلاد')
-                    ->numeric()
-                    ->minValue(1)
-                    ->maxValue(date('Y')),
-                
-                TextInput::make('death_year')
-                    ->label('سنة الوفاة')
-                    ->numeric()
-                    ->minValue(1)
-                    ->maxValue(date('Y'))
-                    ->gte('birth_year'),
-            ]),
-            
+
             Textarea::make('biography')
                 ->label('السيرة الذاتية')
                 ->rows(4)
                 ->columnSpanFull(),
+            
+            // Birth year fields
+            Grid::make(2)->schema([
+                Select::make('birth_year_type')
+                    ->label('نوع تقويم الميلاد')
+                    ->options([
+                        'gregorian' => 'ميلادي',
+                        'hijri' => 'هجري',
+                    ])
+                    ->default('gregorian')
+                    ->live(),
+                
+                TextInput::make('birth_year')
+                    ->label(fn ($get) => $get('birth_year_type') === 'hijri' ? 'سنة الميلاد (هجري)' : 'سنة الميلاد (ميلادي)')
+                    ->numeric()
+                    ->minValue(1)
+                    ->maxValue(fn ($get) => $get('birth_year_type') === 'hijri' ? 1500 : date('Y')),
+            ]),
+            
+            // Death year fields (conditional)
+            Grid::make(2)->schema([
+                Select::make('death_year_type')
+                    ->label('نوع تقويم الوفاة')
+                    ->options([
+                        'gregorian' => 'ميلادي',
+                        'hijri' => 'هجري',
+                    ])
+                    ->default('gregorian')
+                    ->live()
+                    ->visible(fn ($get) => !$get('is_living')),
+                
+                TextInput::make('death_year')
+                    ->label(fn ($get) => $get('death_year_type') === 'hijri' ? 'سنة الوفاة (هجري)' : 'سنة الوفاة (ميلادي)')
+                    ->numeric()
+                    ->minValue(1)
+                    ->maxValue(fn ($get) => $get('death_year_type') === 'hijri' ? 1500 : date('Y'))
+                    ->visible(fn ($get) => !$get('is_living'))
+                    ->nullable(),
+            ]),
         ];
     }
 

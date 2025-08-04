@@ -14,6 +14,11 @@ class Author extends Model
         'full_name',     // اسم العمود في جدول authors
         'biography',
         'madhhab',
+        'is_living',
+        'birth_year_type',
+        'birth_year',
+        'death_year_type',
+        'death_year',
         'birth_date',
         'death_date',
     ];
@@ -21,6 +26,7 @@ class Author extends Model
     protected $casts = [
         'birth_date' => 'date',
         'death_date' => 'date',
+        'is_living' => 'boolean',
     ];
 
     /**
