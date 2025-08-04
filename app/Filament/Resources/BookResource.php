@@ -567,8 +567,12 @@ class BookResource extends Resource
                     ])
                     ->placeholder('اختر المذهب'),
                 
-                Toggle::make('is_living')
-                    ->label('هل المؤلف على قيد الحياة؟')
+                Select::make('is_living')
+                    ->label('حالة المؤلف')
+                    ->options([
+                        true => 'على قيد الحياة',
+                        false => 'متوفى',
+                    ])
                     ->default(true)
                     ->live(),
             ]),
