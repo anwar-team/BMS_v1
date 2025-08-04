@@ -31,6 +31,7 @@
     "license": "MIT",
     "require": {
         "php": "^8.2",
+        "aymanalhattami/filament-slim-scrollbar": "^2.1",
         "bezhansalleh/filament-exceptions": "^2.1",
         "bezhansalleh/filament-shield": "^3.2",
         "codeat3/blade-fluentui-system-icons": "^1.32",
@@ -48,6 +49,7 @@
         "laravel/tinker": "^2.8",
         "league/commonmark": "^2.4",
         "opcodesio/log-viewer": "^3.11",
+        "pxlrbt/filament-excel": "2.4",
         "riodwanto/filament-ace-editor": "^1.0",
         "stichoza/google-translate-php": "^5.2",
         "tomatophp/filament-media-manager": "^1.1",

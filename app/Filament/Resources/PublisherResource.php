@@ -14,6 +14,9 @@ use Filament\Tables\Table;
 use Filament\Tables\Filters\SelectFilter;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use pxlrbt\FilamentExcel\Actions\Tables\ExportBulkAction;
+use pxlrbt\FilamentExcel\Exports\ExcelExport;
+use pxlrbt\FilamentExcel\Columns\Column;
 
 class PublisherResource extends Resource
 {
@@ -122,6 +125,37 @@ class PublisherResource extends Resource
                         0 => 'غير مفعل',
                     ])
                     ->placeholder('جميع الحالات'),
+                Tables\Filters\Filter::make('name')
+                    ->form([
+                        Forms\Components\TextInput::make('name')
+                            ->label('اسم الناشر')
+                            ->placeholder('ابحث عن ناشر...'),
+                    ])
+                    ->query(function (Builder $query, array $data): Builder {
+                        return $query
+                            ->when(
+                                $data['name'],
+                                fn (Builder $query, $name): Builder => $query->where('name', 'like', "%{$name}%"),
+                            );
+                    })
+                    ->label('البحث بالاسم'),
+                Tables\Filters\Filter::make('address')
+                    ->form([
+                        Forms\Components\TextInput::make('address')
+                            ->label('العنوان')
+                            ->placeholder('ابحث عن عنوان...'),
+                    ])
+                    ->query(function (Builder $query, array $data): Builder {
+                        return $query
+                            ->when(
+                                $data['address'],
+                                fn (Builder $query, $address): Builder => $query->where('address', 'like', "%{$address}%"),
+                            );
+                    })
+                    ->label('البحث بالعنوان'),
+                Tables\Filters\Filter::make('has_website')
+                    ->query(fn (Builder $query): Builder => $query->whereNotNull('website_url'))
+                    ->label('لديه موقع إلكتروني'),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
@@ -129,6 +163,23 @@ class PublisherResource extends Resource
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
+                    ExportBulkAction::make()
+                        ->exports([
+                            ExcelExport::make()
+                                ->fromTable()
+                                ->withFilename(fn () => 'publishers-' . date('Y-m-d'))
+                                ->withWriterType(\Maatwebsite\Excel\Excel::XLSX)
+                                ->withColumns([
+                                    Column::make('name')->heading('اسم الناشر'),
+                                    Column::make('address')->heading('العنوان'),
+                                    Column::make('phone')->heading('رقم الهاتف'),
+                                    Column::make('email')->heading('البريد الإلكتروني'),
+                                    Column::make('website_url')->heading('الموقع الإلكتروني'),
+                                    Column::make('description')->heading('الوصف'),
+                                    Column::make('is_active')->heading('الحالة'),
+                                ]),
+                        ])
+                        ->label('تصدير إلى Excel'),
                 ]),
             ]);
     }

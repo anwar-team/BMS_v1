@@ -19,6 +19,9 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use pxlrbt\FilamentExcel\Actions\Tables\ExportBulkAction;
+use pxlrbt\FilamentExcel\Exports\ExcelExport;
+use pxlrbt\FilamentExcel\Columns\Column;
 
 class AuthorResource extends Resource
 {
@@ -170,7 +173,63 @@ class AuthorResource extends Resource
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
-                //
+                Tables\Filters\SelectFilter::make('madhhab')
+                    ->label('المذهب')
+                    ->options([
+                        'المذهب الحنفي' => 'المذهب الحنفي',
+                        'المذهب المالكي' => 'المذهب المالكي',
+                        'المذهب الشافعي' => 'المذهب الشافعي',
+                        'المذهب الحنبلي' => 'المذهب الحنبلي',
+                        'آخرون' => 'آخرون',
+                    ])
+                    ->placeholder('جميع المذاهب'),
+                Tables\Filters\TernaryFilter::make('is_living')
+                    ->label('حالة المؤلف')
+                    ->placeholder('الكل')
+                    ->trueLabel('على قيد الحياة')
+                    ->falseLabel('متوفى'),
+                Tables\Filters\Filter::make('birth_year')
+                    ->form([
+                        Forms\Components\TextInput::make('from')
+                            ->label('من سنة')
+                            ->numeric(),
+                        Forms\Components\TextInput::make('until')
+                            ->label('إلى سنة')
+                            ->numeric(),
+                    ])
+                    ->query(function (Builder $query, array $data): Builder {
+                        return $query
+                            ->when(
+                                $data['from'],
+                                fn (Builder $query, $date): Builder => $query->where('birth_year', '>=', $date),
+                            )
+                            ->when(
+                                $data['until'],
+                                fn (Builder $query, $date): Builder => $query->where('birth_year', '<=', $date),
+                            );
+                    })
+                    ->label('سنة الميلاد'),
+                Tables\Filters\Filter::make('death_year')
+                    ->form([
+                        Forms\Components\TextInput::make('from')
+                            ->label('من سنة')
+                            ->numeric(),
+                        Forms\Components\TextInput::make('until')
+                            ->label('إلى سنة')
+                            ->numeric(),
+                    ])
+                    ->query(function (Builder $query, array $data): Builder {
+                        return $query
+                            ->when(
+                                $data['from'],
+                                fn (Builder $query, $date): Builder => $query->where('death_year', '>=', $date),
+                            )
+                            ->when(
+                                $data['until'],
+                                fn (Builder $query, $date): Builder => $query->where('death_year', '<=', $date),
+                            );
+                    })
+                    ->label('سنة الوفاة'),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
@@ -178,6 +237,22 @@ class AuthorResource extends Resource
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
+                    ExportBulkAction::make()
+                        ->exports([
+                            ExcelExport::make()
+                                ->fromTable()
+                                ->withFilename(fn () => 'authors-' . date('Y-m-d'))
+                                ->withWriterType(\Maatwebsite\Excel\Excel::XLSX)
+                                ->withColumns([
+                                    Column::make('full_name')->heading('الاسم الكامل'),
+                                    Column::make('madhhab')->heading('المذهب'),
+                                    Column::make('is_living')->heading('على قيد الحياة'),
+                                    Column::make('birth_year')->heading('سنة الميلاد'),
+                                    Column::make('death_year')->heading('سنة الوفاة'),
+                                    Column::make('biography')->heading('السيرة الذاتية'),
+                                ]),
+                        ])
+                        ->label('تصدير إلى Excel'),
                 ]),
             ]);
     }

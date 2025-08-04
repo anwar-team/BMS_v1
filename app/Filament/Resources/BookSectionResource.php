@@ -12,6 +12,9 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use pxlrbt\FilamentExcel\Actions\Tables\ExportBulkAction;
+use pxlrbt\FilamentExcel\Exports\ExcelExport;
+use pxlrbt\FilamentExcel\Columns\Column;
 
 class BookSectionResource extends Resource
 {
@@ -120,6 +123,25 @@ class BookSectionResource extends Resource
                     ->relationship('parent', 'name')
                     ->searchable()
                     ->preload(),
+                    
+                Tables\Filters\Filter::make('name')
+                    ->form([
+                        Forms\Components\TextInput::make('name')
+                            ->label('اسم القسم')
+                            ->placeholder('ابحث عن قسم...'),
+                    ])
+                    ->query(function (Builder $query, array $data): Builder {
+                        return $query
+                            ->when(
+                                $data['name'],
+                                fn (Builder $query, $name): Builder => $query->where('name', 'like', "%{$name}%"),
+                            );
+                    })
+                    ->label('البحث بالاسم'),
+                    
+                Tables\Filters\Filter::make('has_books')
+                    ->query(fn (Builder $query): Builder => $query->has('books'))
+                    ->label('يحتوي على كتب'),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
@@ -127,6 +149,23 @@ class BookSectionResource extends Resource
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
+                    ExportBulkAction::make()
+                        ->exports([
+                            ExcelExport::make()
+                                ->fromTable()
+                                ->withFilename(fn () => 'book-sections-' . date('Y-m-d'))
+                                ->withWriterType(\Maatwebsite\Excel\Excel::XLSX)
+                                ->withColumns([
+                                    Column::make('name')->heading('اسم القسم'),
+                                    Column::make('description')->heading('الوصف'),
+                                    Column::make('parent.name')->heading('القسم الأب'),
+                                    Column::make('sort_order')->heading('ترتيب الفرز'),
+                                    Column::make('slug')->heading('الرابط المختصر'),
+                                    Column::make('is_active')->heading('نشط'),
+                                    Column::make('books_count')->heading('عدد الكتب'),
+                                ]),
+                        ])
+                        ->label('تصدير إلى Excel'),
                 ]),
             ]);
     }
