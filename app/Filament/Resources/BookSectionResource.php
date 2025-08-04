@@ -12,9 +12,7 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
-use pxlrbt\FilamentExcel\Actions\Tables\ExportBulkAction;
-use pxlrbt\FilamentExcel\Exports\ExcelExport;
-use pxlrbt\FilamentExcel\Columns\Column;
+use AlperenErsoy\FilamentExport\Actions\FilamentExportBulkAction;
 
 class BookSectionResource extends Resource
 {
@@ -149,23 +147,8 @@ class BookSectionResource extends Resource
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
-                    ExportBulkAction::make()
-                        ->exports([
-                            ExcelExport::make()
-                                ->fromTable()
-                                ->withFilename(fn () => 'book-sections-' . date('Y-m-d'))
-                                ->withWriterType(\Maatwebsite\Excel\Excel::XLSX)
-                                ->withColumns([
-                                    Column::make('name')->heading('اسم القسم'),
-                                    Column::make('description')->heading('الوصف'),
-                                    Column::make('parent.name')->heading('القسم الأب'),
-                                    Column::make('sort_order')->heading('ترتيب الفرز'),
-                                    Column::make('slug')->heading('الرابط المختصر'),
-                                    Column::make('is_active')->heading('نشط'),
-                                    Column::make('books_count')->heading('عدد الكتب'),
-                                ]),
-                        ])
-                        ->label('تصدير إلى Excel'),
+                    FilamentExportBulkAction::make('export')
+                        ->label('تصدير'),
                 ]),
             ]);
     }

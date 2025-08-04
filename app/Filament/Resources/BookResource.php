@@ -39,9 +39,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 use Filament\Forms\Components\Hidden;
-use pxlrbt\FilamentExcel\Actions\Tables\ExportBulkAction;
-use pxlrbt\FilamentExcel\Exports\ExcelExport;
-use pxlrbt\FilamentExcel\Columns\Column;
+use AlperenErsoy\FilamentExport\Actions\FilamentExportBulkAction;
 
 class BookResource extends Resource
 {
@@ -945,24 +943,8 @@ class BookResource extends Resource
                         })
                         ->deselectRecordsAfterCompletion(),
                     
-                    ExportBulkAction::make()
-                        ->exports([
-                            ExcelExport::make()
-                                ->fromTable()
-                                ->withFilename(fn () => 'books-' . date('Y-m-d'))
-                                ->withWriterType(\Maatwebsite\Excel\Excel::XLSX)
-                                ->withColumns([
-                                    Column::make('title')->heading('عنوان الكتاب'),
-                                    Column::make('description')->heading('الوصف'),
-                                    Column::make('isbn')->heading('رقم ISBN'),
-                                    Column::make('published_year')->heading('سنة النشر'),
-                                    Column::make('publisher.name')->heading('الناشر'),
-                                    Column::make('bookSection.name')->heading('قسم الكتاب'),
-                                    Column::make('status')->heading('الحالة'),
-                                    Column::make('visibility')->heading('الرؤية'),
-                                ]),
-                        ])
-                        ->label('تصدير إلى Excel'),
+                    FilamentExportBulkAction::make('export')
+                        ->label('تصدير'),
                 ]),
             ])
             ->defaultSort('created_at', 'desc')

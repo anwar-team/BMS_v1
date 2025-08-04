@@ -14,9 +14,7 @@ use Filament\Tables\Table;
 use Filament\Tables\Filters\SelectFilter;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
-use pxlrbt\FilamentExcel\Actions\Tables\ExportBulkAction;
-use pxlrbt\FilamentExcel\Exports\ExcelExport;
-use pxlrbt\FilamentExcel\Columns\Column;
+use AlperenErsoy\FilamentExport\Actions\FilamentExportBulkAction;
 
 class PublisherResource extends Resource
 {
@@ -163,23 +161,8 @@ class PublisherResource extends Resource
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
-                    ExportBulkAction::make()
-                        ->exports([
-                            ExcelExport::make()
-                                ->fromTable()
-                                ->withFilename(fn () => 'publishers-' . date('Y-m-d'))
-                                ->withWriterType(\Maatwebsite\Excel\Excel::XLSX)
-                                ->withColumns([
-                                    Column::make('name')->heading('اسم الناشر'),
-                                    Column::make('address')->heading('العنوان'),
-                                    Column::make('phone')->heading('رقم الهاتف'),
-                                    Column::make('email')->heading('البريد الإلكتروني'),
-                                    Column::make('website_url')->heading('الموقع الإلكتروني'),
-                                    Column::make('description')->heading('الوصف'),
-                                    Column::make('is_active')->heading('الحالة'),
-                                ]),
-                        ])
-                        ->label('تصدير إلى Excel'),
+                    FilamentExportBulkAction::make('export')
+                        ->label('تصدير'),
                 ]),
             ]);
     }

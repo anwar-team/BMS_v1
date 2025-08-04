@@ -19,9 +19,7 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
-use pxlrbt\FilamentExcel\Actions\Tables\ExportBulkAction;
-use pxlrbt\FilamentExcel\Exports\ExcelExport;
-use pxlrbt\FilamentExcel\Columns\Column;
+use AlperenErsoy\FilamentExport\Actions\FilamentExportBulkAction;
 
 class AuthorResource extends Resource
 {
@@ -237,22 +235,8 @@ class AuthorResource extends Resource
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
-                    ExportBulkAction::make()
-                        ->exports([
-                            ExcelExport::make()
-                                ->fromTable()
-                                ->withFilename(fn () => 'authors-' . date('Y-m-d'))
-                                ->withWriterType(\Maatwebsite\Excel\Excel::XLSX)
-                                ->withColumns([
-                                    Column::make('full_name')->heading('الاسم الكامل'),
-                                    Column::make('madhhab')->heading('المذهب'),
-                                    Column::make('is_living')->heading('على قيد الحياة'),
-                                    Column::make('birth_year')->heading('سنة الميلاد'),
-                                    Column::make('death_year')->heading('سنة الوفاة'),
-                                    Column::make('biography')->heading('السيرة الذاتية'),
-                                ]),
-                        ])
-                        ->label('تصدير إلى Excel'),
+                    FilamentExportBulkAction::make('export')
+                        ->label('تصدير')
                 ]),
             ]);
     }
