@@ -104,7 +104,8 @@ class VolumeResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            VolumeResource\RelationManagers\ChaptersRelationManager::class,
+            VolumeResource\RelationManagers\PagesRelationManager::class,
         ];
     }
 

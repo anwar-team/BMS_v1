@@ -252,7 +252,7 @@ class AuthorResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            AuthorResource\RelationManagers\BooksRelationManager::class,
         ];
     }
 

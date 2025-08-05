@@ -160,7 +160,7 @@ class BookSectionResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            BookSectionResource\RelationManagers\BooksRelationManager::class,
         ];
     }
 

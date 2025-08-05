@@ -118,7 +118,7 @@ class ChapterResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            ChapterResource\RelationManagers\PagesRelationManager::class,
         ];
     }
 

@@ -957,7 +957,11 @@ class BookResource extends Resource
     public static function getRelations(): array
     {
         return [
-            // يمكن إضافة علاقات إضافية هنا إذا لزم الأمر
+            BookResource\RelationManagers\AuthorsRelationManager::class,
+            BookResource\RelationManagers\VolumesRelationManager::class,
+            BookResource\RelationManagers\ChaptersRelationManager::class,
+            BookResource\RelationManagers\BookMetadataRelationManager::class,
+            BookResource\RelationManagers\ReferencesRelationManager::class,
         ];
     }
 

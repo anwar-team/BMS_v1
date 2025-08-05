@@ -93,7 +93,7 @@ class PageResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            PageResource\RelationManagers\FootnotesRelationManager::class,
         ];
     }
 
