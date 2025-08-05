@@ -2,7 +2,7 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Clusters\ContentManagement;
+use App\Filament\Clusters\BookManagement;
 
 use App\Filament\Resources\AuthorResource\Pages;
 use App\Filament\Resources\AuthorResource\RelationManagers;
@@ -26,8 +26,8 @@ use AlperenErsoy\FilamentExport\Actions\FilamentExportBulkAction;
 class AuthorResource extends Resource
 {
     protected static ?string $model = Author::class;
-    protected static ?string $cluster = ContentManagement::class;
-    protected static ?int $navigationSort = 1;
+    protected static ?string $cluster = BookManagement::class;
+    protected static ?int $navigationSort = 10;
 
     protected static ?string $navigationIcon = 'heroicon-o-user-group';
     protected static ?string $navigationGroup = 'Book Management';
