@@ -2,6 +2,8 @@
 
 namespace App\Filament\Resources;
 
+use App\Filament\Clusters\ContentManagement;
+
 use App\Filament\Resources\BookSectionResource\Pages;
 use App\Filament\Resources\BookSectionResource\RelationManagers;
 use App\Models\BookSection;
@@ -17,6 +19,8 @@ use AlperenErsoy\FilamentExport\Actions\FilamentExportBulkAction;
 class BookSectionResource extends Resource
 {
     protected static ?string $model = BookSection::class;
+    protected static ?string $cluster = ContentManagement::class;
+    protected static ?int $navigationSort = 3;
 
     protected static ?string $navigationIcon = 'heroicon-o-folder';
     
