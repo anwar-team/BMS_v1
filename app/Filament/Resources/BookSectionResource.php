@@ -19,7 +19,10 @@ class BookSectionResource extends Resource
     protected static ?string $model = BookSection::class;
     protected static ?int $navigationSort = 12;
 
-    protected static ?string $navigationGroup = 'إدارة المحتوى';
+    public static function getNavigationGroup(): ?string
+    {
+        return __('menu.nav_group.content_management');
+    }
 
     protected static ?string $navigationIcon = 'heroicon-o-folder';
     

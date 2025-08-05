@@ -22,7 +22,10 @@ class PublisherResource extends Resource
     protected static ?int $navigationSort = 11;
 
     protected static ?string $navigationIcon = 'heroicon-o-building-office';
-    protected static ?string $navigationGroup = 'إدارة المحتوى';
+    public static function getNavigationGroup(): ?string
+     {
+         return __('menu.nav_group.content_management');
+     }
     
     protected static ?string $navigationLabel = 'دور النشر';
     

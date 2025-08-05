@@ -3,6 +3,7 @@
 return [
     'nav_group.access' => 'وصول',
     'nav_group.activities' => 'أنشطة',
+    'nav_group.content_management' => 'إدارة المحتوى',
     'nav_group.banner' => 'لافتة',
     'nav_group.blog' => 'مدونة',
     'nav_group.content' => 'محتوى',

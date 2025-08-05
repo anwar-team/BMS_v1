@@ -26,7 +26,10 @@ class AuthorResource extends Resource
     protected static ?string $model = Author::class;
     protected static ?int $navigationSort = 10;
 
-    protected static ?string $navigationGroup = 'إدارة المحتوى';
+    public static function getNavigationGroup(): ?string
+    {
+        return __('menu.nav_group.content_management');
+    }
 
     protected static ?string $navigationIcon = 'heroicon-o-user-group';
     
