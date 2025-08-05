@@ -15,21 +15,21 @@ class AuthorStatsWidget extends BaseWidget
     protected function getStats(): array
     {
         $totalAuthors = Author::count();
-        $activeAuthors = Author::where('is_active', true)->count();
+        $livingAuthors = Author::where('is_living', true)->count();
         $authorsWithBooks = Author::has('books')->count();
         $newAuthorsThisMonth = Author::where('created_at', '>=', Carbon::now()->startOfMonth())->count();
-        
+
         // Calculate percentage of authors with books
         $authorsWithBooksPercentage = $totalAuthors > 0 ? round(($authorsWithBooks / $totalAuthors) * 100) : 0;
-        
+
         return [
             Stat::make('إجمالي المؤلفين', $totalAuthors)
                 ->description('جميع المؤلفين في النظام')
                 ->descriptionIcon('heroicon-m-users')
                 ->color('primary'),
-                
-            Stat::make('المؤلفين النشطين', $activeAuthors)
-                ->description('المؤلفين المفعلين حالياً')
+
+            Stat::make('المؤلفين الأحياء', $livingAuthors)
+                ->description('المؤلفين الأحياء حالياً')
                 ->descriptionIcon('heroicon-m-check-circle')
                 ->color('success'),
                 
