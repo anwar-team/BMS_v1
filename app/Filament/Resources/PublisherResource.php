@@ -19,13 +19,10 @@ use AlperenErsoy\FilamentExport\Actions\FilamentExportBulkAction;
 class PublisherResource extends Resource
 {
     protected static ?string $model = Publisher::class;
-    protected static ?int $navigationSort = 11;
+    protected static ?int $navigationSort = -4;
 
     protected static ?string $navigationIcon = 'heroicon-o-building-office';
-    public static function getNavigationGroup(): ?string
-     {
-         return __('menu.nav_group.content_management');
-     }
+    protected static ?string $navigationGroup = 'إدارة المحتوى';
     
     protected static ?string $navigationLabel = 'دور النشر';
     
