@@ -2,6 +2,8 @@
 
 namespace App\Filament\Resources;
 
+use App\Filament\Clusters\BookImport;
+
 use App\Filament\Resources\BokImportResource\Pages;
 use App\Filament\Resources\BokImportResource\RelationManagers;
 use App\Models\BokImport;
@@ -16,6 +18,8 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 class BokImportResource extends Resource
 {
     protected static ?string $model = BokImport::class;
+    protected static ?string $cluster = BookImport::class;
+    protected static ?int $navigationSort = 1;
 
     protected static ?string $navigationIcon = 'heroicon-o-arrow-up-tray';
     
