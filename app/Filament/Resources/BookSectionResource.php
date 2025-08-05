@@ -23,7 +23,8 @@ class BookSectionResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-folder';
     
-    protected static ?string $navigationGroup = 'إدارة المحتوى';
+    //protected static ?string $navigationGroup = 'إدارة المحتوى';
+    
     
     protected static ?string $navigationLabel = 'أقسام الكتب';
     
