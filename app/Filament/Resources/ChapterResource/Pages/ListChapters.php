@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\ChapterResource\Pages;
 
 use App\Filament\Resources\ChapterResource;
+use App\Filament\Resources\ChapterResource\Widgets\ChapterStatsWidget;
 use Filament\Actions;
 use Filament\Resources\Pages\ListRecords;
 
@@ -14,6 +15,13 @@ class ListChapters extends ListRecords
     {
         return [
             Actions\CreateAction::make(),
+        ];
+    }
+    
+    protected function getHeaderWidgets(): array
+    {
+        return [
+            ChapterStatsWidget::class,
         ];
     }
 }

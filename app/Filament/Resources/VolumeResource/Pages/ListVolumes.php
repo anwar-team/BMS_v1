@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\VolumeResource\Pages;
 
 use App\Filament\Resources\VolumeResource;
+use App\Filament\Resources\VolumeResource\Widgets\VolumeStatsWidget;
 use Filament\Actions;
 use Filament\Resources\Pages\ListRecords;
 
@@ -14,6 +15,13 @@ class ListVolumes extends ListRecords
     {
         return [
             Actions\CreateAction::make(),
+        ];
+    }
+    
+    protected function getHeaderWidgets(): array
+    {
+        return [
+            VolumeStatsWidget::class,
         ];
     }
 }

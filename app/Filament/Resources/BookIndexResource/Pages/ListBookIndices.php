@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\BookIndexResource\Pages;
 
 use App\Filament\Resources\BookIndexResource;
+use App\Filament\Resources\BookIndexResource\Widgets\BookIndexStatsWidget;
 use Filament\Actions;
 use Filament\Resources\Pages\ListRecords;
 
@@ -14,6 +15,13 @@ class ListBookIndices extends ListRecords
     {
         return [
             Actions\CreateAction::make(),
+        ];
+    }
+    
+    protected function getHeaderWidgets(): array
+    {
+        return [
+            BookIndexStatsWidget::class,
         ];
     }
 }
