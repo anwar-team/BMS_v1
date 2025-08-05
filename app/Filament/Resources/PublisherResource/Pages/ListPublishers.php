@@ -3,6 +3,10 @@
 namespace App\Filament\Resources\PublisherResource\Pages;
 
 use App\Filament\Resources\PublisherResource;
+use App\Filament\Resources\PublisherResource\Widgets\PublisherStatsWidget;
+use App\Filament\Resources\PublisherResource\Widgets\TopPublishersWidget;
+use App\Filament\Resources\PublisherResource\Widgets\PublisherCountryChart;
+use App\Filament\Resources\PublisherResource\Widgets\RecentPublishersWidget;
 use Filament\Actions;
 use Filament\Resources\Pages\ListRecords;
 
@@ -14,6 +18,16 @@ class ListPublishers extends ListRecords
     {
         return [
             Actions\CreateAction::make(),
+        ];
+    }
+    
+    protected function getHeaderWidgets(): array
+    {
+        return [
+            PublisherStatsWidget::class,
+            TopPublishersWidget::class,
+            PublisherCountryChart::class,
+            RecentPublishersWidget::class,
         ];
     }
 }
