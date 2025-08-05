@@ -2,8 +2,6 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Clusters\BookManagement;
-
 use App\Filament\Resources\PublisherResource\Pages;
 use App\Filament\Resources\PublisherResource\RelationManagers;
 use App\Models\Publisher;
@@ -21,13 +19,12 @@ use AlperenErsoy\FilamentExport\Actions\FilamentExportBulkAction;
 class PublisherResource extends Resource
 {
     protected static ?string $model = Publisher::class;
-    protected static ?string $cluster = BookManagement::class;
     protected static ?int $navigationSort = 11;
 
     protected static ?string $navigationIcon = 'heroicon-o-building-office';
-    protected static ?string $navigationGroup = 'Book Management';
+    protected static ?string $navigationGroup = 'إدارة المحتوى';
     
-    protected static ?string $navigationLabel = 'الناشرين';
+    protected static ?string $navigationLabel = 'دور النشر';
     
     protected static ?string $modelLabel = 'ناشر';
     
