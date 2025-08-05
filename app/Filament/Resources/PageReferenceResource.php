@@ -2,6 +2,8 @@
 
 namespace App\Filament\Resources;
 
+use App\Filament\Clusters\BookManagement;
+
 use App\Filament\Resources\PageReferenceResource\Pages;
 use App\Filament\Resources\PageReferenceResource\RelationManagers;
 use App\Models\PageReference;
@@ -19,6 +21,8 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 class PageReferenceResource extends Resource
 {
     protected static ?string $model = PageReference::class;
+    protected static ?string $cluster = BookManagement::class;
+    protected static ?int $navigationSort = 7;
 
     protected static ?string $navigationIcon = 'heroicon-o-link';
     

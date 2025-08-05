@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources;
 
+use App\Filament\Clusters\BookManagement;
 use App\Filament\Resources\BookResource\Pages;
 use App\Models\Book;
 use App\Models\Author;
@@ -44,12 +45,12 @@ use AlperenErsoy\FilamentExport\Actions\FilamentExportBulkAction;
 class BookResource extends Resource
 {
     protected static ?string $model = Book::class;
+    protected static ?string $cluster = BookManagement::class;
     protected static ?string $navigationIcon = 'heroicon-o-book-open';
     protected static ?string $navigationLabel = 'الكتب';
     protected static ?string $modelLabel = 'كتاب';
     protected static ?string $pluralModelLabel = 'الكتب';
     protected static ?int $navigationSort = 1;
-    protected static ?string $navigationGroup = 'Books';
 
     public static function form(Form $form): Form
     {

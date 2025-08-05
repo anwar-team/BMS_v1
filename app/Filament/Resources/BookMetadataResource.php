@@ -2,6 +2,8 @@
 
 namespace App\Filament\Resources;
 
+use App\Filament\Clusters\BookManagement;
+
 use App\Filament\Resources\BookMetadataResource\Pages;
 use App\Filament\Resources\BookMetadataResource\RelationManagers;
 use App\Models\BookMetadata;
@@ -17,6 +19,8 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 class BookMetadataResource extends Resource
 {
     protected static ?string $model = BookMetadata::class;
+    protected static ?string $cluster = BookManagement::class;
+    protected static ?int $navigationSort = 9;
 
     protected static ?string $navigationIcon = 'heroicon-o-tag';
     

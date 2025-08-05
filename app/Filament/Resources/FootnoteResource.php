@@ -2,6 +2,8 @@
 
 namespace App\Filament\Resources;
 
+use App\Filament\Clusters\BookManagement;
+
 use App\Filament\Resources\FootnoteResource\Pages;
 use App\Filament\Resources\FootnoteResource\RelationManagers;
 use App\Models\Footnote;
@@ -16,6 +18,8 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 class FootnoteResource extends Resource
 {
     protected static ?string $model = Footnote::class;
+    protected static ?string $cluster = BookManagement::class;
+    protected static ?int $navigationSort = 5;
 
     protected static ?string $navigationIcon = 'heroicon-o-document-text';
     protected static ?string $navigationGroup = 'Book Management';

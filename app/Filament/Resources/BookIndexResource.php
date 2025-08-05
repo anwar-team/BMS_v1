@@ -2,6 +2,8 @@
 
 namespace App\Filament\Resources;
 
+use App\Filament\Clusters\BookManagement;
+
 use App\Filament\Resources\BookIndexResource\Pages;
 use App\Filament\Resources\BookIndexResource\RelationManagers;
 use App\Models\BookIndex;
@@ -16,6 +18,8 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 class BookIndexResource extends Resource
 {
     protected static ?string $model = BookIndex::class;
+    protected static ?string $cluster = BookManagement::class;
+    protected static ?int $navigationSort = 6;
 
     protected static ?string $navigationIcon = 'heroicon-o-magnifying-glass';
     protected static ?string $navigationGroup = 'Book Management';
