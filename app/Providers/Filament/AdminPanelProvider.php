@@ -4,8 +4,18 @@ namespace App\Providers\Filament;
 
 use App\Filament\Pages\Auth\EmailVerification;
 use App\Filament\Pages\Auth\Login;
+use App\Filament\Pages\Auth\Register;
 use App\Filament\Pages\Auth\RequestPasswordReset;
 use App\Filament\Resources\MenuResource;
+use App\Filament\Widgets\AuthorsBooksChartWidget;
+use App\Filament\Widgets\AuthorsStatsWidget;
+use App\Filament\Widgets\BooksStatsWidget;
+use App\Filament\Widgets\BooksSectionChartWidget;
+use App\Filament\Widgets\GrowthChartWidget;
+use App\Filament\Widgets\LatestBlogPostsTableWidget;
+use App\Filament\Widgets\LatestBooksTableWidget;
+use App\Filament\Widgets\LatestUsersTableWidget;
+use App\Filament\Widgets\UsersAndBlogStatsWidget;
 use App\Http\Middleware\FilamentRobotsMiddleware;
 use App\Livewire\MyProfileExtended;
 use App\Settings\GeneralSettings;
@@ -35,8 +45,10 @@ class AdminPanelProvider extends PanelProvider
             ->id('admin')
             ->path('admin')
             ->login(Login::class)
+            ->registration(Register::class)
             ->passwordReset(RequestPasswordReset::class)
             ->emailVerification(EmailVerification::class)
+            
             ->favicon(fn(GeneralSettings $settings) => Storage::url($settings->site_favicon))
             ->brandName(fn(GeneralSettings $settings) => $settings->brand_name)
             ->brandLogo(fn(GeneralSettings $settings) => Storage::url($settings->brand_logo))
@@ -82,6 +94,15 @@ class AdminPanelProvider extends PanelProvider
             ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\\Filament\\Widgets')
             ->widgets([
                 Widgets\FilamentInfoWidget::class,
+                BooksStatsWidget::class,
+                AuthorsStatsWidget::class,
+                UsersAndBlogStatsWidget::class,
+                BooksSectionChartWidget::class,
+                GrowthChartWidget::class,
+                AuthorsBooksChartWidget::class,
+                LatestBooksTableWidget::class,
+                LatestUsersTableWidget::class,
+                LatestBlogPostsTableWidget::class,
             ])
             ->discoverClusters(in: app_path('Filament/Clusters'), for: 'App\\Filament\\Clusters')
             ->middleware([
