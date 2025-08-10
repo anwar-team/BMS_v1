@@ -71,13 +71,6 @@ class LatestBlogPostsTableWidget extends BaseWidget
                     ->dateTime('d/m/Y')
                     ->sortable(),
             ])
-            ->actions([
-                Tables\Actions\Action::make('view')
-                    ->label('عرض')
-                    ->icon('heroicon-m-eye')
-                    ->url(fn (Post $record): string => route('filament.admin.resources.blog.posts.view', $record))
-                    ->openUrlInNewTab(),
-            ])
             ->paginated(false);
     }
 }

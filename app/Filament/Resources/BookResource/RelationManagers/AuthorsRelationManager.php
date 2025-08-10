@@ -205,9 +205,7 @@ class AuthorsRelationManager extends RelationManager
                     }),
             ])
             ->actions([
-                Tables\Actions\ViewAction::make()
-                    ->label('عرض')
-                    ->url(fn ($record) => route('filament.admin.resources.authors.view', $record)),
+
                 Tables\Actions\EditAction::make()
                     ->label('تعديل')
                     ->form([

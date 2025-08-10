@@ -62,13 +62,6 @@ class LatestBooksTableWidget extends BaseWidget
                     ->dateTime('d/m/Y')
                     ->sortable(),
             ])
-            ->actions([
-                Tables\Actions\Action::make('view')
-                    ->label('عرض')
-                    ->icon('heroicon-m-eye')
-                    ->url(fn (Book $record): string => route('filament.admin.resources.books.view', $record))
-                    ->openUrlInNewTab(),
-            ])
             ->paginated(false);
     }
 }

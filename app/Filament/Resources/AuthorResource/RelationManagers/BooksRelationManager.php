@@ -291,9 +291,7 @@ class BooksRelationManager extends RelationManager
                     }),
             ])
             ->actions([
-                Tables\Actions\ViewAction::make()
-                    ->label('عرض')
-                    ->url(fn ($record) => route('filament.admin.resources.books.view', $record)),
+
                 Tables\Actions\EditAction::make()
                     ->label('تعديل')
                     ->url(fn ($record) => route('filament.admin.resources.books.edit', $record)),
