@@ -208,8 +208,8 @@
                                             <div class="flex items-center space-x-2 sm:space-x-3 space-x-reverse order-2 lg:order-1">
                                                 <!-- Page Navigation -->
                                                 <div class="flex items-center space-x-1 sm:space-x-2 space-x-reverse">
-                                                    @if($navigationInfo['previousPage'])
-                                                        <a href="{{ route('book.read', ['bookId' => $book->id, 'pageNumber' => $navigationInfo['previousPage']]) }}" 
+                                                    @if($navigationInfo['previous_page'])
+                                                    <a href="{{ route('book.read', ['bookId' => $book->id, 'pageNumber' => $navigationInfo['previous_page']->page_number]) }}" 
                                                            class="bg-[#f0e9de] hover:bg-[#e8e0d0] p-1.5 sm:p-2 rounded-full transition-colors">
                                                             <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 sm:h-5 sm:w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
@@ -223,21 +223,21 @@
                                                         </button>
                                                     @endif
                                                     <div class="flex items-center space-x-1 sm:space-x-2 space-x-reverse">
-                                                        <form action="{{ route('book.goto', ['bookId' => $book->id]) }}" method="POST" class="inline-flex items-center">
-                                                            @csrf
-                                                            <input
-                                                                type="number"
-                                                                name="pageNumber"
-                                                                min="1"
-                                                                max="{{ $navigationInfo['total_pages'] }}"
-                                                                value="{{ $navigationInfo['current_page_number'] }}"
-                                                                class="w-12 sm:w-16 px-2 py-1 border border-[#e0d9cc] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#957717] text-center text-sm"
-                                                                onchange="this.form.submit()">
-                                                        </form>
+                                                        <form action="#" method="POST" class="inline-flex items-center" onsubmit="return goToPageFromInput(event)">
+                                            @csrf
+                                            <input
+                                                type="number"
+                                                name="pageNumber"
+                                                min="1"
+                                                max="{{ $navigationInfo['total_pages'] }}"
+                                                value="{{ $navigationInfo['current_page_number'] }}"
+                                                class="w-12 sm:w-16 px-2 py-1 border border-[#e0d9cc] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#957717] text-center text-sm"
+                                                onchange="goToPageFromInput(event)">
+                                        </form>
                                                         <span class="text-[#39100C] font-medium text-sm sm:text-base">/ {{ $navigationInfo['total_pages'] }}</span>
                                                     </div>
-                                                    @if($navigationInfo['nextPage'])
-                                                        <a href="{{ route('book.read', ['bookId' => $book->id, 'pageNumber' => $navigationInfo['nextPage']]) }}" 
+                                                    @if($navigationInfo['next_page'])
+                                                    <a href="{{ route('book.read', ['bookId' => $book->id, 'pageNumber' => $navigationInfo['next_page']->page_number]) }}" 
                                                            class="bg-[#f0e9de] hover:bg-[#e8e0d0] p-1.5 sm:p-2 rounded-full transition-colors">
                                                             <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 sm:h-5 sm:w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
@@ -319,6 +319,16 @@
             if (page >= 1 && page <= {{ $navigationInfo['total_pages'] }}) {
                 window.location.href = `{{ route('book.read', ['bookId' => $book->id, 'pageNumber' => '']) }}${page}`;
             }
+        }
+
+        function goToPageFromInput(event) {
+            event.preventDefault();
+            const pageInput = event.target.querySelector('input[name="pageNumber"]') || event.target;
+            const pageNumber = parseInt(pageInput.value);
+            if (pageNumber >= 1 && pageNumber <= {{ $navigationInfo['total_pages'] }}) {
+                goToPage(pageNumber);
+            }
+            return false;
         }
 
         // Navigate to specific volume
