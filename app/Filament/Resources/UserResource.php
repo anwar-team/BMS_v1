@@ -214,15 +214,30 @@ class UserResource extends Resource
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
-            ->filters([
-                //
-            ])
             ->actions([
+                Tables\Actions\Action::make('verify_email')
+                    ->label('تأكيد البريد الإلكتروني')
+                    ->icon('heroicon-o-check-badge')
+                    ->color('success')
+                    ->action(function (User $record) {
+                        $record->forceFill([
+                            'email_verified_at' => now(),
+                        ])->save();
+
+                        Notification::make()
+                            ->title('تم تأكيد البريد الإلكتروني بنجاح!')
+                            ->success()
+                            ->send();
+                    })
+                    ->hidden(fn (User $record): bool => $record->hasVerifiedEmail()),
                 Tables\Actions\ActionGroup::make([
                     ImpersonateTableAction::make()->tooltip('Impersonate this user'),
                     Tables\Actions\EditAction::make()->tooltip('Edit user'),
                     Tables\Actions\DeleteAction::make()->tooltip('Delete user'),
                 ])->label('Actions')->icon('heroicon-m-ellipsis-horizontal'),
+            ])
+            ->filters([
+                //
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -247,54 +262,57 @@ class UserResource extends Resource
         ];
     }
 
-    public static function getGlobalSearchResultTitle(Model $record): string|Htmlable
-    {
-        return $record->email;
-    }
-
     public static function getGloballySearchableAttributes(): array
     {
-        return ['email', 'firstname', 'lastname'];
+        return ['firstname', 'lastname', 'username', 'email'];
     }
 
     public static function getGlobalSearchResultDetails(Model $record): array
     {
         return [
-            'name' => $record->firstname . ' ' . $record->lastname,
+            'Email' => $record->email,
         ];
     }
 
-    public static function getNavigationGroup(): ?string
+    public static function getGlobalSearchResultUrl(Model $record): string
     {
-        return __("menu.nav_group.access");
+        return static::getUrl('edit', ['record' => $record]);
     }
 
-    public static function doResendEmailVerification($settings = null, $user): void
+    public static function getNavigationBadge(): ?string
     {
-        if (!method_exists($user, 'notify')) {
-            $userClass = $user::class;
+        return static::getModel()::count();
+    }
 
-            throw new Exception("Model [{$userClass}] does not have a [notify()] method.");
+    public static function getNavigationBadgeColor(): ?string
+    {
+        return static::getModel()::count() > 10 ? 'warning' : 'primary';
+    }
+
+    protected static function doResendEmailVerification(MailSettings $settings, Model $record): void
+    {
+        if (!$settings->mail_enabled) {
+            Notification::make()
+                ->title(__('resource.user.notifications.mail_disabled.title'))
+                ->body(__('resource.user.notifications.mail_disabled.body'))
+                ->danger()
+                ->send();
+
+            return;
         }
 
-        if ($settings->isMailSettingsConfigured()) {
-            $notification = new VerifyEmail();
-            $notification->url = Filament::getVerifyEmailUrl($user);
-
-            $settings->loadMailSettingsToConfig();
-
-            $user->notify($notification);
-
+        try {
+            $record->sendEmailVerificationNotification();
 
             Notification::make()
-                ->title(__('resource.user.notifications.verify_sent.title'))
+                ->title(__('resource.user.notifications.verification_resent.title'))
                 ->success()
                 ->send();
-        } else {
+        } catch (Exception $e) {
             Notification::make()
-                ->title(__('resource.user.notifications.verify_warning.title'))
-                ->body(__('resource.user.notifications.verify_warning.description'))
-                ->warning()
+                ->title(__('resource.user.notifications.error_resending_verification.title'))
+                ->body(__('resource.user.notifications.error_resending_verification.body', ['error' => $e->getMessage()]))
+                ->danger()
                 ->send();
         }
     }
