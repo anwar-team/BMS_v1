@@ -70,10 +70,10 @@ class LatestUsersTableWidget extends BaseWidget
                     ->sortable(),
             ])
             ->actions([
-                Tables\Actions\Action::make('view')
-                    ->label('عرض')
-                    ->icon('heroicon-m-eye')
-                    ->url(fn (User $record): string => route('filament.admin.resources.users.view', $record))
+                Tables\Actions\Action::make('edit')
+                    ->label('تعديل')
+                    ->icon('heroicon-m-pencil-square')
+                    ->url(fn (User $record): string => route('filament.admin.resources.users.edit', $record))
                     ->openUrlInNewTab(),
             ])
             ->paginated(false);

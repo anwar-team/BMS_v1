@@ -117,13 +117,7 @@ class Page extends Model
         return $this->hasMany(PageReference::class);
     }
 
-    /**
-     * العلاقة مع التعليقات
-     */
-    public function annotations(): HasMany
-    {
-        return $this->hasMany(Annotation::class);
-    }
+
 
     /**
      * الحصول على الحواشي مرتبة حسب الموقع
