@@ -24,7 +24,7 @@ class BookReadController extends Controller
         // جلب الكتاب مع العلاقات المطلوبة
         $book = Book::with([
             'authors' => function($query) {
-                $query->orderBy('author_book.display_order', 'asc');
+                $query->orderByPivot('display_order', 'asc');
             },
             'bookSection',
             'volumes' => function($query) {
