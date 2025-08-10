@@ -1,0 +1,23 @@
+{
+  "processed": [
+    {
+      "book_id": "12106",
+      "success": true,
+      "json_file": "shamela_books\\book_12106_20250810_153201.json",
+      "db_saved": false,
+      "error": null,
+      "stats": {
+        "title": "كتاب موقف الإمام والمأموم",
+        "authors": [
+          "والد إمام الحرمين الجويني"
+        ],
+        "pages_count": 5,
+        "chapters_count": 14,
+        "volumes_count": 1,
+        "total_words": 1077
+      }
+    }
+  ],
+  "failed": [],
+  "last_update": "2025-08-10T15:32:01.826549"
+}

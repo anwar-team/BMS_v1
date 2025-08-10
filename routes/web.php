@@ -6,6 +6,7 @@ use App\Livewire\SuperDuper\Pages\ContactUs;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\CategoriesController;
 use App\Http\Controllers\ShowAllController;
+use App\Http\Controllers\BookReadController;
 use Illuminate\Support\Facades\Route;
 use Lab404\Impersonate\Services\ImpersonateManager;
 
@@ -45,9 +46,18 @@ Route::get('/coming-soon', function () {
     return view('components.superduper.pages.coming-soon', ['page_type' => 'generic']);
 })->name('coming-soon');
 
-Route::get('/book', function () {
-    return view('pages.book-read');
-})->name('book');
+// طرق قراءة الكتب
+Route::get('/book/{bookId}/{pageNumber?}', [BookReadController::class, 'show'])
+    ->name('book.read')
+    ->where(['bookId' => '[0-9]+', 'pageNumber' => '[0-9]+']);
+
+Route::get('/book/{bookId}/search', [BookReadController::class, 'search'])
+    ->name('book.search')
+    ->where('bookId', '[0-9]+');
+
+Route::post('/book/{bookId}/goto/{pageNumber}', [BookReadController::class, 'goToPage'])
+    ->name('book.goto')
+    ->where(['bookId' => '[0-9]+', 'pageNumber' => '[0-9]+']);
 
 Route::post('/contact', [App\Http\Controllers\ContactController::class, 'submit'])
     ->name('contact.submit');

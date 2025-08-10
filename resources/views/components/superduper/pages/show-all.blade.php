@@ -104,7 +104,12 @@
                                             </td>
                                             @if($type === 'books')
                                                 <td class="px-6 py-4 whitespace-nowrap">
-                                                    <div class="text-sm font-medium text-gray-900">{{ $item->title }}</div>
+                                                    <div class="text-sm font-medium text-gray-900">
+                                                        <a href="{{ route('book.read', ['bookId' => $item->id]) }}" 
+                                                           class="text-blue-600 hover:text-blue-800 hover:underline transition-colors duration-200">
+                                                            {{ $item->title }}
+                                                        </a>
+                                                    </div>
                                                     @if($item->description)
                                                         <div class="text-sm text-gray-500 truncate max-w-xs">{{ Str::limit($item->description, 50) }}</div>
                                                     @endif
