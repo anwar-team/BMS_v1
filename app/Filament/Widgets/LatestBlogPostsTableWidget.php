@@ -45,16 +45,18 @@ class LatestBlogPostsTableWidget extends BaseWidget
                 Tables\Columns\TextColumn::make('status')
                     ->label('الحالة')
                     ->badge()
-                    ->color(fn (string $state): string => match ($state) {
+                    ->color(fn ($state): string => match ($state?->value ?? $state) {
                         'published' => 'success',
                         'draft' => 'warning',
                         'archived' => 'danger',
+                        'pending' => 'info',
                         default => 'gray',
                     })
-                    ->formatStateUsing(fn (string $state): string => match ($state) {
+                    ->formatStateUsing(fn ($state): string => match ($state?->value ?? $state) {
                         'published' => 'منشور',
                         'draft' => 'مسودة',
                         'archived' => 'مؤرشف',
+                        'pending' => 'قيد المراجعة',
                         default => $state,
                     }),
 
