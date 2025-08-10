@@ -916,6 +916,12 @@ class BookResource extends Resource
                 DeleteAction::make()
                     ->label('حذف')
                     ->color('danger'),
+                Tables\Actions\Action::make('view_book')
+                    ->label('عرض الكتاب')
+                    ->icon('heroicon-o-book-open')
+                    ->color('success')
+                    ->url(fn (Book $record): string => 'https://home.anwaralolmaa.com/book?id=' . $record->id)
+                    ->openUrlInNewTab(),
             ])
             ->bulkActions([
                 BulkActionGroup::make([
