@@ -7,8 +7,79 @@
         });
     })
 ">
-    <x-superduper.components.breadcrumb title="Contact Us" />
+    <div class="page-wrapper relative z-[1]" dir="rtl">
+        <main class="relative overflow-hidden main-wrapper ">
+            <!-- يمكنك وضع أنماط الخلفية هنا إذا أردت -->
+            <div class="relative">
+                <div class="pattern-top top-24"></div>
+                <!-- نهاية أنماط الخلفية -->
 
+                <!-- هذا هو المكان الذي تضع فيه محتواك الرئيسي -->
+                <section class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 pt-32">
+                    
+                    <!-- قسم رسالتنـا -->
+                    <div class="mb-12 z-10">
+                        <div class="flex items-center gap-3 mb-8">
+                            <img src="{{ asset('images/group0.svg') }}" alt="Icon" class="w-16 h-16">
+                            <h2 class="text-4xl text-green-800 font-bold">رسالتنـا</h2>
+                        </div>
+                    </div>
+
+                    <!-- Section: رسالتنـا -->
+                    <div class="bg-white rounded-lg shadow-md overflow-hidden border border-gray-200 p-8 mb-16">
+                        <div class="grid grid-cols-1 gap-6 md:grid-cols-3">
+                            <!-- Card 1 -->
+                            <div class="bg-white p-6 border border-gray-200 rounded-lg">
+                                <div class="flex justify-center mb-4">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="w-12 h-12 text-primary-800" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                                    </svg>
+                                </div>
+                                <h4 class="text-xl font-semibold text-primary-800 text-center">إثراء المحتوى العربي والاسلامي</h4>
+                                <p class="mt-2 text-gray-600 text-center">
+                                    نُقدّم محتوى عربي إسلامي غني ومتنوع يلبي احتياجات الباحثين والمُهتمين بالثقافة والتراث الإسلامي.
+                                </p>
+                            </div>
+
+                            <!-- Card 2 -->
+                            <div class="bg-white p-6 border border-gray-200 rounded-lg">
+                                <div class="flex justify-center mb-4">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="w-12 h-12 text-primary-800" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                                    </svg>
+                                </div>
+                                <h4 class="text-xl font-semibold text-primary-800 text-center">توفير محتوى ديني موثوق</h4>
+                                <p class="mt-2 text-gray-600 text-center">
+                                    نحرص على تقديم محتوى ديني مدقق ومُراجَع من مصادر موثوقة مثل الكتب المُعتبرة وأقوال العلماء الأجلاء.
+                                </p>
+                            </div>
+
+                            <!-- Card 3 -->
+                            <div class="bg-white p-6 border border-gray-200 rounded-lg">
+                                <div class="flex justify-center mb-4">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="w-12 h-12 text-primary-800" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                                    </svg>
+                                </div>
+                                <h4 class="text-xl font-semibold text-primary-800 text-center">نشر المعرفة الإسلامية بأسلوب حديث</h4>
+                                <p class="mt-2 text-gray-600 text-center">
+                                    نستخدم أساليب تكنولوجية مبتكرة لجعل المعرفة الإسلامية سهلة الفهم والوصول عبر منصات رقمية متنوعة.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- نهاية قسم رسالتنـا -->
+                    <!-- قسم تواصل معنا -->
+                    <div class="mb-12 z-10">
+                        <div class="flex items-center gap-3 mb-8">
+                            <img src="{{ asset('images/group0.svg') }}" alt="Icon" class="w-16 h-16">
+                            <h2 class="text-4xl text-green-800 font-bold">تواصل معنا</h2>
+                        </div>
+                    </div>
+
+                    <!-- محتوى صفحتك الفعلي يذهب هنا. على سبيل المثال، جدول، بطاقات، نصوص، إلخ. -->
+                    <div class="bg-white rounded-lg shadow-md overflow-hidden border border-gray-200 p-8">
+                        <!-- محتوى الـ div هذا سيتم توسيطه وتحديد عرضه بواسطة الـ section الأبوية -->
     <div class="section-contact-info">
         <!-- Section Space -->
         <div class="py-12 md:py-16 lg:py-20">
@@ -19,10 +90,10 @@
                     <div class="flex flex-col">
                         <!-- Section Title -->
                         <div class="mb-4 md:mb-16">
-                            <h2 class="mb-3 text-3xl font-bold text-primary-800">Get in Touch</h2>
+                            <h2 class="mb-3 text-3xl font-bold text-primary-800">تواصل معنا</h2>
                             <p class="max-w-xl text-gray-600">
-                                Have questions about our services or need assistance? We're here to help!
-                                Reach out through any of the channels below.
+                                هل لديك أسئلة حول خدماتنا أو تحتاج إلى مساعدة؟ نحن هنا لمساعدتك!
+                                تواصل معنا من خلال أي من القنوات أدناه.
                             </p>
                         </div>
 
@@ -39,11 +110,11 @@
                                 </div>
                                 <div>
                                     <h3 class="ml-2 text-xl font-semibold text-primary-800">
-                                        Chat with us
+                                        تحدث معنا
                                     </h3>
                                     <p class="mt-1 ml-4 text-gray-600">
-                                        We're waiting to help you every Monday-Friday from 9 am
-                                        to 5 pm {{ $siteSettings->timezone ?? 'UTC' }}.
+                                        نحن في انتظارك لمساعدتك كل يوم من الاثنين إلى الجمعة من 9 صباحاً
+                                        إلى 5 مساءً {{ $siteSettings->timezone ?? 'UTC' }}.
                                     </p>
                                 </div>
                             </div>
@@ -59,15 +130,15 @@
                                 </div>
                                 <div>
                                     <h3 class="ml-2 text-xl font-semibold text-primary-800">
-                                        Give us a call
+                                        اتصل بنا
                                     </h3>
                                     <p class="mt-1 ml-4 text-gray-600">
-                                        Give us a ring at
+                                        اتصل بنا على
                                         <a href="tel:{{ $siteSettings->company_phone ?? '+1234567890' }}"
                                            class="font-semibold transition-colors text-primary-600 hover:text-primary-800">
                                             {{ $siteSettings->company_phone ?? '+1234567890' }}
                                         </a>.
-                                        Every monday-friday from 9 am to 5 pm.
+                                        كل يوم من الاثنين إلى الجمعة من 9 صباحاً إلى 5 مساءً.
                                     </p>
                                 </div>
                             </div>
@@ -83,15 +154,15 @@
                                 </div>
                                 <div>
                                     <h3 class="ml-2 text-xl font-semibold text-primary-800">
-                                        Email Us
+                                        راسلنا
                                     </h3>
                                     <p class="mt-1 ml-4 text-gray-600">
-                                        Drop us an email at
+                                        أرسل لنا بريداً إلكترونياً على
                                         <a href="mailto:{{ $siteSettings->company_email ?? 'contact@starter-kit.com' }}"
                                            class="font-semibold underline text-primary-600 hover:text-primary-800 underline-offset-4">
                                             {{ $siteSettings->company_email ?? 'contact@starter-kit.com' }}
                                         </a>
-                                        and you'll receive a reply within 24 hours.
+                                        وستحصل على رد خلال 24 ساعة.
                                     </p>
                                 </div>
                             </div>
@@ -108,26 +179,26 @@
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
                                         </svg>
                                     </div>
-                                    <h3 class="ml-3 text-xl font-semibold text-green-800">Message Sent Successfully!</h3>
+                                    <h3 class="ml-3 text-xl font-semibold text-green-800">تم إرسال الرسالة بنجاح!</h3>
                                 </div>
                                 <p class="mb-5 text-green-700">
-                                    Thank you for reaching out to us. We've received your message and will get back to you soon.
+                                    شكراً لتواصلك معنا. لقد استلمنا رسالتك وسنرد عليك قريباً.
                                 </p>
                                 <button wire:click="resetForm"
                                     class="inline-flex items-center px-5 py-3 text-white transition-colors rounded-lg bg-success hover:bg-green-600">
                                     <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
                                     </svg>
-                                    Send Another Message
+                                    إرسال رسالة أخرى
                                 </button>
                             </div>
                         @else
                             <div class="mb-6">
                                 <h2 class="mb-2 text-2xl font-bold text-primary-800">
-                                    Send us a message
+                                    أرسل لنا رسالة
                                 </h2>
                                 <p class="text-gray-600">
-                                    Fill out the form below and we'll get back to you as soon as possible.
+                                    املأ النموذج أدناه وسنرد عليك في أقرب وقت ممكن.
                                 </p>
                             </div>
 
@@ -135,9 +206,9 @@
                                 <!-- First name and Last name -->
                                 <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
                                     <div>
-                                        <label for="firstname" class="block mb-1 text-sm font-medium text-gray-700">First name</label>
+                                        <label for="firstname" class="block mb-1 text-sm font-medium text-gray-700">الاسم الأول</label>
                                         <input type="text" wire:model.blur="firstname" id="firstname"
-                                            placeholder="John"
+                                            placeholder="أحمد"
                                             class="w-full px-4 py-2 bg-background-light rounded-md placeholder:text-gray-400 focus:outline-none transition-all
                                             @error('firstname')
                                                 border border-error focus:border-error focus:ring-1 focus:ring-error/20
@@ -149,9 +220,9 @@
                                         @enderror
                                     </div>
                                     <div>
-                                        <label for="lastname" class="block mb-1 text-sm font-medium text-gray-700">Last name</label>
+                                        <label for="lastname" class="block mb-1 text-sm font-medium text-gray-700">اسم العائلة</label>
                                         <input type="text" wire:model.blur="lastname" id="lastname"
-                                            placeholder="Doe"
+                                            placeholder="محمد"
                                             class="w-full px-4 py-2 bg-background-light rounded-md placeholder:text-gray-400 focus:outline-none transition-all
                                             @error('lastname')
                                                 border border-error focus:border-error focus:ring-1 focus:ring-error/20
@@ -166,7 +237,7 @@
 
                                 <!-- Email address -->
                                 <div>
-                                    <label for="email" class="block mb-1 text-sm font-medium text-gray-700">Email address</label>
+                                    <label for="email" class="block mb-1 text-sm font-medium text-gray-700">البريد الإلكتروني</label>
                                     <input type="email" wire:model.blur="email" id="email"
                                         placeholder="your@email.com"
                                         class="w-full px-4 py-2 bg-background-light rounded-md placeholder:text-gray-400 focus:outline-none transition-all
@@ -182,25 +253,25 @@
 
                                 <!-- Phone number -->
                                 <div>
-                                    <label for="phone" class="block mb-1 text-sm font-medium text-gray-700">Phone number (optional)</label>
+                                    <label for="phone" class="block mb-1 text-sm font-medium text-gray-700">رقم الهاتف (اختياري)</label>
                                     <input type="tel" wire:model.blur="phone" id="phone"
-                                        placeholder="+1 (123) 456-7890"
+                                        placeholder="+966 50 123 4567"
                                         class="w-full px-4 py-2 transition-all border border-gray-300 rounded-md bg-background-light placeholder:text-gray-400 focus:outline-none focus:ring-1 focus:border-primary-600 focus:ring-primary-600" />
                                 </div>
 
                                 <!-- Company information -->
                                 <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
                                     <div>
-                                        <label for="company" class="block mb-1 text-sm font-medium text-gray-700">Company (optional)</label>
+                                        <label for="company" class="block mb-1 text-sm font-medium text-gray-700">المؤسسة (اختياري)</label>
                                         <input type="text" wire:model.blur="company" id="company"
-                                            placeholder="Your company name"
+                                            placeholder="اسم مؤسستك"
                                             class="w-full px-4 py-2 transition-all border border-gray-300 rounded-md bg-background-light placeholder:text-gray-400 focus:outline-none focus:ring-1 focus:border-primary-600 focus:ring-primary-600" />
                                     </div>
                                     <div>
-                                        <label for="employees" class="block mb-1 text-sm font-medium text-gray-700">Company size</label>
+                                        <label for="employees" class="block mb-1 text-sm font-medium text-gray-700">حجم المؤسسة</label>
                                         <select wire:model.blur="employees" id="employees"
                                             class="w-full px-4 py-2 text-gray-700 transition-all border border-gray-300 rounded-md bg-background-light focus:outline-none focus:ring-1 focus:border-primary-600 focus:ring-primary-600">
-                                            <option value="">Select company size</option>
+                                            <option value="">اختر حجم المؤسسة</option>
                                             @foreach($employeeOptions as $value => $label)
                                                 <option value="{{ $value }}">{{ $label }}</option>
                                             @endforeach
@@ -210,9 +281,9 @@
 
                                 <!-- Subject -->
                                 <div>
-                                    <label for="subject" class="block mb-1 text-sm font-medium text-gray-700">Subject</label>
+                                    <label for="subject" class="block mb-1 text-sm font-medium text-gray-700">الموضوع</label>
                                     <input type="text" wire:model.blur="subject" id="subject"
-                                        placeholder="What is your message about?"
+                                        placeholder="ما موضوع رسالتك؟"
                                         class="w-full px-4 py-2 bg-background-light rounded-md placeholder:text-gray-400 focus:outline-none transition-all
                                         @error('subject')
                                             border border-error focus:border-error focus:ring-1 focus:ring-error/20
@@ -226,9 +297,9 @@
 
                                 <!-- Message -->
                                 <div>
-                                    <label for="message" class="block mb-1 text-sm font-medium text-gray-700">Message</label>
+                                    <label for="message" class="block mb-1 text-sm font-medium text-gray-700">الرسالة</label>
                                     <textarea wire:model.blur="message" id="message"
-                                        placeholder="Write your message here..."
+                                        placeholder="اكتب رسالتك هنا..."
                                         rows="5"
                                         class="w-full px-4 py-2 bg-background-light rounded-md placeholder:text-gray-400 focus:outline-none transition-all
                                         @error('message')
@@ -251,7 +322,7 @@
 
                                         <!-- Normal state -->
                                         <span wire:loading.remove wire:target="submit">
-                                            Send Message
+                                            إرسال الرسالة
                                         </span>
 
                                         <!-- Loading state -->
@@ -279,6 +350,10 @@
                 </div>
             </div>
         </div>
+                    </div>
+                    </div> <!-- إغلاق div الـ pattern لقسم تواصل معنا -->
+                </section>
+            </div>
+        </main>
     </div>
 </div>
-
