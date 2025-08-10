@@ -162,7 +162,13 @@ class Book extends Model
         return $this->hasMany(Footnote::class);
     }
 
-
+    /**
+     * العلاقة مع بيانات الكتاب الوصفية (metadata)
+     */
+    public function bookMetadata(): HasMany
+    {
+        return $this->hasMany(BookMetadata::class);
+    }
 
 
     public function importantIndexes()

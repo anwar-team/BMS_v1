@@ -12,7 +12,7 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class BookMetadataRelationManager extends RelationManager
 {
-    protected static string $relationship = 'metadata';
+    protected static string $relationship = 'bookMetadata';
 
     public function form(Form $form): Form
     {
