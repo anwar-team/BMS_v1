@@ -960,7 +960,7 @@ class BookResource extends Resource
             BookResource\RelationManagers\AuthorsRelationManager::class,
             BookResource\RelationManagers\VolumesRelationManager::class,
             BookResource\RelationManagers\ChaptersRelationManager::class,
-            BookResource\RelationManagers\BookMetadataRelationManager::class,
+
             BookResource\RelationManagers\ReferencesRelationManager::class,
         ];
     }
