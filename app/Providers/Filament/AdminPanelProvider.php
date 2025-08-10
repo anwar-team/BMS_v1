@@ -11,7 +11,7 @@ use App\Filament\Widgets\AuthorsBooksChartWidget;
 use App\Filament\Widgets\AuthorsStatsWidget;
 use App\Filament\Widgets\BooksStatsWidget;
 use App\Filament\Widgets\BooksSectionChartWidget;
-use App\Filament\Widgets\GrowthChartWidget;
+
 use App\Filament\Widgets\LatestBlogPostsTableWidget;
 use App\Filament\Widgets\LatestBooksTableWidget;
 use App\Filament\Widgets\LatestUsersTableWidget;
@@ -98,7 +98,7 @@ class AdminPanelProvider extends PanelProvider
                 AuthorsStatsWidget::class,
                 UsersAndBlogStatsWidget::class,
                 BooksSectionChartWidget::class,
-                GrowthChartWidget::class,
+
                 AuthorsBooksChartWidget::class,
                 LatestBooksTableWidget::class,
                 LatestUsersTableWidget::class,
