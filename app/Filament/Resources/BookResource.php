@@ -438,41 +438,15 @@ class BookResource extends Resource
                     ->rows(3)
                     ->maxLength(500)
                     ->columnSpanFull(),
-                
-                //Grid::make(2)->schema([
-                //    TextInput::make('start_page')
-                //        ->label('الصفحة الأولى')
-                //        ->numeric()
-                //        ->minValue(1),
-                //    
-                //    TextInput::make('end_page')
-                //        ->label('الصفحة الأخيرة')
-                //        ->numeric()
-                //        ->minValue(1)
-                //        ->gte('start_page'),
-                //]),
-                
-                // Hidden field to ensure book_id is set
-                Hidden::make('book_id')
-                    ->default(function ($livewire, $state, $get) {
-                        // First try to get the book ID from the current record
-                        if (isset($livewire->record) && $livewire->record) {
-                            return $livewire->record->id;
-                        }
-                        
-                        // Fallback to parent container data
-                        return $get('../../id');
-                    }),
             ])
             ->addActionLabel('إضافة فصل جديد')
             ->reorderableWithButtons()
             ->collapsible()
             ->itemLabel(fn (array $state): ?string => 
-                'فصل ' . ($state['chapter_number'] ?? '') . 
-                ($state['title'] ? ' - ' . $state['title'] : 'جديد')
+                'فصل ' . ($state['chapter_number'] ?? 'جديد') . 
+                ($state['title'] ? ' - ' . $state['title'] : '')
             )
-            ->defaultItems(0)
-            ->columnSpanFull();
+            ->defaultItems(0);
     }
 
     private static function getPagesRepeater(): Repeater
@@ -481,43 +455,17 @@ class BookResource extends Resource
             ->label('صفحات الكتاب')
             ->relationship('pages')
             ->schema([
-                Grid::make(3)->schema([
-                    TextInput::make('page_number')
-                        ->label('رقم الصفحة')
-                        ->required()
-                        ->numeric()
-                        ->minValue(1)
-                        ->unique(ignoreRecord: true),
-                    
-                    Select::make('volume_id')
-                        ->label('المجلد')
-                        ->relationship('volume', 'title', function (Builder $query, $livewire) {
-                            if (isset($livewire->record) && $livewire->record) {
-                                return $query->where('book_id', $livewire->record->id);
-                            }
-                            return $query;
-                        })
-                        ->getOptionLabelFromRecordUsing(fn ($record) => 'مجلد ' . $record->number . ($record->title ? ' - ' . $record->title : ''))
-                        ->searchable()
-                        ->preload()
-                        ->live(),
-                    
-                    Select::make('chapter_id')
-                        ->label('الفصل')
-                        ->relationship('chapter', 'title', function (Builder $query, callable $get) {
-                            $volumeId = $get('volume_id');
-                            if ($volumeId) {
-                                return $query->where('volume_id', $volumeId);
-                            }
-                            return $query;
-                        })
-                        ->getOptionLabelFromRecordUsing(fn ($record) => 'فصل ' . $record->chapter_number . ' - ' . $record->title)
-                        ->searchable()
-                        ->preload()
-                        ->disabled(fn (callable $get) => !$get('volume_id')),
-                ]),
-                
+                TextInput::make('page_number')
+                    ->label('رقم الصفحة')
+                    ->required()
+                    ->numeric(),
                 RichEditor::make('content')
+                    ->label('محتوى الصفحة')
+                    ->columnSpanFull(),
+            ])
+            ->addActionLabel('إضافة صفحة جديدة')
+            ->defaultItems(0);
+    }
                     ->label('محتوى الصفحة')
                     ->toolbarButtons([
                         'bold',
@@ -731,7 +679,6 @@ class BookResource extends Resource
                     ->circular()
                     ->size(60)
                     ->defaultImageUrl(url('/images/default-book-cover.png')),
-                
                 TextColumn::make('title')
                     ->label('عنوان الكتاب')
                     ->searchable()
@@ -744,7 +691,6 @@ class BookResource extends Resource
                         }
                         return $state;
                     }),
-                
                 TextColumn::make('mainAuthors')
                     ->label('المؤلف الرئيسي')
                     ->getStateUsing(function ($record) {
@@ -755,7 +701,6 @@ class BookResource extends Resource
                             ->pluck('author.full_name')
                             ->filter()
                             ->join('، ');
-                        
                         return $mainAuthors ?: $record->authorBooks()
                             ->with('author')
                             ->first()?->author?->full_name ?? 'غير محدد';
@@ -766,40 +711,24 @@ class BookResource extends Resource
                         });
                     })
                     ->limit(30),
-                
                 TextColumn::make('bookSection.name')
                     ->label('القسم')
                     ->searchable()
                     ->sortable()
                     ->badge()
                     ->color('info'),
-                
-                TextColumn::make('publisher.name')
-                    ->label('الناشر')
-                    ->searchable()
-                    ->sortable()
-                    ->limit(30)
-                    ->toggleable(),
-                
-                TextColumn::make('published_year')
-                    ->label('سنة النشر')
-                    ->sortable()
-                    ->toggleable(),
-                
                 TextColumn::make('volumes_count')
                     ->label('المجلدات')
                     ->getStateUsing(fn ($record) => $record->volumes()->count())
                     ->badge()
                     ->color('success')
                     ->toggleable(),
-                
                 TextColumn::make('pages_count')
                     ->label('الصفحات')
                     ->getStateUsing(fn ($record) => $record->pages()->count())
                     ->badge()
                     ->color('warning')
                     ->toggleable(),
-                
                 TextColumn::make('status')
                     ->label('الحالة')
                     ->badge()
@@ -815,7 +744,6 @@ class BookResource extends Resource
                         'archived' => 'مؤرشف',
                         default => $state,
                     }),
-                
                 TextColumn::make('visibility')
                     ->label('الرؤية')
                     ->badge()
@@ -830,13 +758,11 @@ class BookResource extends Resource
                         default => $state,
                     })
                     ->toggleable(),
-                
                 TextColumn::make('created_at')
                     ->label('تاريخ الإنشاء')
                     ->dateTime('d/m/Y H:i')
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
-                
                 TextColumn::make('updated_at')
                     ->label('آخر تحديث')
                     ->dateTime('d/m/Y H:i')
@@ -849,13 +775,6 @@ class BookResource extends Resource
                     ->relationship('bookSection', 'name')
                     ->searchable()
                     ->preload(),
-                
-                SelectFilter::make('publisher_id')
-                    ->label('الناشر')
-                    ->relationship('publisher', 'name')
-                    ->searchable()
-                    ->preload(),
-                
                 SelectFilter::make('status')
                     ->label('الحالة')
                     ->options([
@@ -863,48 +782,12 @@ class BookResource extends Resource
                         'published' => 'منشور',
                         'archived' => 'مؤرشف',
                     ]),
-                
                 SelectFilter::make('visibility')
                     ->label('الرؤية')
                     ->options([
                         'public' => 'عام',
                         'private' => 'خاص',
                     ]),
-                
-                Filter::make('published_year')
-                    ->form([
-                        Grid::make(2)->schema([
-                            TextInput::make('from')
-                                ->label('من سنة')
-                                ->numeric()
-                                ->placeholder('مثال: 1400'),
-                            TextInput::make('until')
-                                ->label('إلى سنة')
-                                ->numeric()
-                                ->placeholder('مثال: 1450'),
-                        ]),
-                    ])
-                    ->query(function (Builder $query, array $data): Builder {
-                        return $query
-                            ->when(
-                                $data['from'],
-                                fn (Builder $query, $date): Builder => $query->where('published_year', '>=', $date),
-                            )
-                            ->when(
-                                $data['until'],
-                                fn (Builder $query, $date): Builder => $query->where('published_year', '<=', $date),
-                            );
-                    })
-                    ->indicateUsing(function (array $data): array {
-                        $indicators = [];
-                        if ($data['from'] ?? null) {
-                            $indicators['from'] = 'من سنة: ' . $data['from'];
-                        }
-                        if ($data['until'] ?? null) {
-                            $indicators['until'] = 'إلى سنة: ' . $data['until'];
-                        }
-                        return $indicators;
-                    }),
             ])
             ->actions([
                 ViewAction::make()

@@ -22,8 +22,6 @@ class Book extends Model
         'description',
         'slug',
         'cover_image',
-        'published_year',
-        'publisher',
         'publisher_id',
         'pages_count',
         'volumes_count',
@@ -32,12 +30,15 @@ class Book extends Model
         'cover_image_url',
         'source_url',
         'book_section_id',
+        'edition',
+        'edition_DATA',
     ];
 
     protected $casts = [
-        'published_year' => 'integer',
         'pages_count' => 'integer',
         'volumes_count' => 'integer',
+        'edition' => 'integer',
+        'edition_DATA' => 'integer',
     ];
 
     protected static function booted()
