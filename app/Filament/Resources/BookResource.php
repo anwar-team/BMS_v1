@@ -365,32 +365,18 @@ class BookResource extends Resource
             ->label('فصول هذا المجلد')
             ->relationship('chapters')
             ->schema([
-                Grid::make(2)->schema([
-                    TextInput::make('chapter_number')
-                        ->label('رقم الفصل')
-                        ->numeric()
-                        ->minValue(1)
-                        ->default(1),
-                    
-                    TextInput::make('title')
-                        ->label('عنوان الفصل')
-                        ->required()
-                        ->maxLength(255)
-                        ->placeholder('مثال: المقدمة'),
-                ]),
-                
-                Textarea::make('summary')
-                    ->label('ملخص الفصل')
-                    ->rows(3)
-                    ->maxLength(500)
+                TextInput::make('title')
+                    ->label('عنوان الفصل')
+                    ->required()
+                    ->maxLength(255)
+                    ->placeholder('مثال: المقدمة')
                     ->columnSpanFull(),
             ])
             ->addActionLabel('إضافة فصل جديد')
             ->reorderableWithButtons()
             ->collapsible()
             ->itemLabel(fn (array $state): ?string => 
-                'فصل ' . ($state['chapter_number'] ?? 'جديد') . 
-                ($state['title'] ? ' - ' . $state['title'] : '')
+                ($state['title'] ?? 'فصل جديد')
             )
             ->defaultItems(0);
     }

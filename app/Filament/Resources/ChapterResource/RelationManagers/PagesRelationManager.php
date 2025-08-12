@@ -60,16 +60,6 @@ class PagesRelationManager extends RelationManager
                 Forms\Components\Toggle::make('is_published')
                     ->label('منشورة')
                     ->default(true),
-                Forms\Components\Toggle::make('has_footnotes')
-                    ->label('تحتوي على هوامش')
-                    ->default(false)
-                    ->disabled()
-                    ->helperText('يتم تحديثها تلقائياً عند إضافة هوامش'),
-                Forms\Components\TextInput::make('word_count')
-                    ->label('عدد الكلمات')
-                    ->numeric()
-                    ->disabled()
-                    ->helperText('يتم حسابها تلقائياً من المحتوى'),
             ]);
     }
 
@@ -114,17 +104,8 @@ class PagesRelationManager extends RelationManager
                         $state <= 15 => 'warning',
                         default => 'danger',
                     }),
-                Tables\Columns\TextColumn::make('word_count')
-                    ->label('عدد الكلمات')
-                    ->sortable()
-                    ->placeholder('غير محسوب')
-                    ->toggleable(),
                 Tables\Columns\IconColumn::make('is_published')
                     ->label('منشورة')
-                    ->boolean()
-                    ->sortable(),
-                Tables\Columns\IconColumn::make('has_footnotes')
-                    ->label('لها هوامش')
                     ->boolean()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
@@ -191,11 +172,6 @@ class PagesRelationManager extends RelationManager
                             $data['volume_id'] = $livewire->getOwnerRecord()->volume_id;
                         }
                         
-                        // Calculate word count if content exists
-                        if (!empty($data['content'])) {
-                            $data['word_count'] = str_word_count(strip_tags($data['content']));
-                        }
-                        
                         return $data;
                     }),
             ])
@@ -208,14 +184,7 @@ class PagesRelationManager extends RelationManager
                         ]);
                     }),
                 Tables\Actions\EditAction::make()
-                    ->label('تعديل')
-                    ->mutateFormDataUsing(function (array $data): array {
-                        // Update word count if content changed
-                        if (!empty($data['content'])) {
-                            $data['word_count'] = str_word_count(strip_tags($data['content']));
-                        }
-                        return $data;
-                    }),
+                    ->label('تعديل'),
                 Tables\Actions\DeleteAction::make()
                     ->label('حذف')
                     ->requiresConfirmation()

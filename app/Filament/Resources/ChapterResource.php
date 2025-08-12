@@ -42,10 +42,6 @@ class ChapterResource extends Resource
                     ->label('المجلد')
                     ->relationship('volume', 'title')
                     ->nullable(),
-                Forms\Components\TextInput::make('chapter_number')
-                    ->label('رقم الفصل')
-                    ->numeric()
-                    ->required(),
                 Forms\Components\TextInput::make('title')
                     ->label('عنوان الفصل')
                     ->required()
@@ -66,13 +62,6 @@ class ChapterResource extends Resource
                     ->label('الصفحة الأخيرة')
                     ->numeric()
                     ->nullable(),
-                Forms\Components\Select::make('chapter_type')
-                    ->label('نوع الفصل')
-                    ->options([
-                        'main' => 'رئيسي',
-                        'sub' => 'فرعي',
-                    ])
-                    ->nullable(),
             ]);
     }
 
@@ -83,9 +72,6 @@ class ChapterResource extends Resource
                 Tables\Columns\TextColumn::make('book.title')
                     ->label('الكتاب')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('chapter_number')
-                    ->label('رقم الفصل')
-                    ->sortable(),
                 Tables\Columns\TextColumn::make('title')
                     ->label('عنوان الفصل')
                     ->searchable(),

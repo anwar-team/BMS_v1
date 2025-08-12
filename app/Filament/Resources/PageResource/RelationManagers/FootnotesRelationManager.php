@@ -214,11 +214,6 @@ class FootnotesRelationManager extends RelationManager
                         }
                         
                         return $data;
-                    })
-                    ->after(function ($record, RelationManager $livewire) {
-                        // Update page's has_footnotes flag
-                        $page = $livewire->getOwnerRecord();
-                        $page->update(['has_footnotes' => $page->footnotes()->exists()]);
                     }),
             ])
             ->actions([
@@ -236,12 +231,7 @@ class FootnotesRelationManager extends RelationManager
                     ->requiresConfirmation()
                     ->modalHeading('حذف الهامش')
                     ->modalDescription('هل أنت متأكد من حذف هذا الهامش؟')
-                    ->modalSubmitActionLabel('حذف')
-                    ->after(function ($record, RelationManager $livewire) {
-                        // Update page's has_footnotes flag
-                        $page = $livewire->getOwnerRecord();
-                        $page->update(['has_footnotes' => $page->footnotes()->exists()]);
-                    }),
+                    ->modalSubmitActionLabel('حذف'),
                 Tables\Actions\Action::make('duplicate')
                     ->label('نسخ')
                     ->icon('heroicon-o-document-duplicate')
@@ -274,12 +264,7 @@ class FootnotesRelationManager extends RelationManager
                         ->requiresConfirmation()
                         ->modalHeading('حذف الهوامش المحددة')
                         ->modalDescription('هل أنت متأكد من حذف الهوامش المحددة؟')
-                        ->modalSubmitActionLabel('حذف')
-                        ->after(function (RelationManager $livewire) {
-                            // Update page's has_footnotes flag
-                            $page = $livewire->getOwnerRecord();
-                            $page->update(['has_footnotes' => $page->footnotes()->exists()]);
-                        }),
+                        ->modalSubmitActionLabel('حذف'),
                     Tables\Actions\BulkAction::make('verify')
                         ->label('تحقق من المحدد')
                         ->icon('heroicon-o-check-circle')

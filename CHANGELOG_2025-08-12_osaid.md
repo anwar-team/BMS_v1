@@ -66,3 +66,77 @@
 
 ---
 تم التغيير بنجاح بواسطة osaid.
+
+## التغيير الثالث:
+
+- حذف الأعمدة التالية من جدول الفصول (chapters):
+  - chapter_number
+  - arabic_number
+  - is_conclusion
+  - is_introduction
+  - is_appendix
+  - description
+  - section_type
+  - word_count
+  - has_subsections
+  - metadata
+  - chapter_type
+
+- إنشاء ملف migration لحذف هذه الأعمدة مع إمكانية التراجع (rollback)
+- تحديث نموذج Chapter:
+  - حذف الأعمدة المحذوفة من $fillable
+  - الاحتفاظ بالحقول الأساسية: volume_id, book_id, title, parent_id, order, page_start, page_end
+  - إصلاح العلاقات المكسورة (حذف bookIndexes, pageReferences, annotations)
+- تحديث ChapterResource:
+  - حذف جميع الحقول المحذوفة من النموذج (form)
+  - حذف عمود chapter_number من جدول العرض (table)
+- تحديث BookResource:
+  - تحديث getChaptersRepeater لإزالة حقلي chapter_number و summary
+  - تبسيط عرض الفصول ليركز على العنوان فقط
+- تم تنفيذ الـ migration بنجاح
+
+**الهدف:**
+تبسيط جدول الفصول والتخلص من الحقول غير المستخدمة، والاحتفاظ بالمعلومات الأساسية فقط (العنوان، الترتيب، الصفحات، العلاقات).
+
+**الحالة:** ✅ مكتمل
+
+## التغيير الرابع:
+
+### 1. حذف جدول annotations بالكامل:
+- إنشاء migration لحذف جدول `annotations` مع إمكانية التراجع
+- حذف المراجع لعلاقة `annotations` من نموذج Page
+- حذف دوال `publicAnnotations()` و `hasAnnotations()` من نموذج Page
+
+### 2. حذف أعمدة من جدول pages:
+- حذف الأعمدة التالية من جدول `pages`:
+  - shamela_page_id
+  - content_hash
+  - content_type
+  - word_count
+  - character_count
+  - has_images
+  - has_footnotes
+  - has_tables
+  - formatting_info
+  - plain_text
+  - reading_time_minutes
+
+- إنشاء migration لحذف هذه الأعمدة مع إمكانية التراجع
+- تحديث جميع Resources المتأثرة:
+  - VolumeResource/RelationManagers/PagesRelationManager: حذف حقول `has_footnotes` و `word_count` من form وtable
+  - ChapterResource/RelationManagers/PagesRelationManager: حذف نفس الحقول
+  - PageResource/RelationManagers/FootnotesRelationManager: حذف منطق تحديث `has_footnotes`
+- حذف منطق حساب `word_count` التلقائي من جميع الأماكن
+- حذف فلاتر `has_footnotes` من جداول العرض
+- تم تنفيذ الـ migrations بنجاح
+
+**الهدف:**
+- إزالة جدول `annotations` غير المستخدم بالكامل
+- تبسيط جدول `pages` بإزالة الحقول غير الضرورية  
+- تنظيف جميع Resources من المراجع للحقول المحذوفة
+- تحسين الأداء بإزالة العمليات الحسابية غير الضرورية
+
+**الحالة:** ✅ مكتمل
+
+---
+تم التغيير بنجاح بواسطة osaid.

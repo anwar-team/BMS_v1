@@ -102,23 +102,6 @@ class Page extends Model
     }
 
     /**
-     * العلاقة مع الفهارس
-     */
-    public function bookIndexes(): HasMany
-    {
-        return $this->hasMany(BookIndex::class);
-    }
-
-    /**
-     * العلاقة مع مراجع الصفحة
-     */
-    public function pageReferences(): HasMany
-    {
-        return $this->hasMany(PageReference::class);
-    }
-
-
-
     /**
      * الحصول على الحواشي مرتبة حسب الموقع
      */
@@ -144,27 +127,11 @@ class Page extends Model
     }
 
     /**
-     * الحصول على التعليقات العامة
-     */
-    public function publicAnnotations()
-    {
-        return $this->annotations()->public();
-    }
-
-    /**
      * التحقق من وجود حواشي
      */
     public function hasFootnotes(): bool
     {
         return $this->footnotes()->exists();
-    }
-
-    /**
-     * التحقق من وجود تعليقات
-     */
-    public function hasAnnotations(): bool
-    {
-        return $this->annotations()->exists();
     }
 
     /**

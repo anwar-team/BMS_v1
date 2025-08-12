@@ -14,13 +14,11 @@ class Chapter extends Model
     protected $fillable = [
         'volume_id',
         'book_id',
-        'chapter_number',
         'title',
         'parent_id',
         'order',
         'page_start',
         'page_end',
-        'chapter_type',
     ];
 
     protected $casts = [
@@ -125,30 +123,6 @@ protected static function booted()
     public function footnotes(): HasMany
     {
         return $this->hasMany(Footnote::class);
-    }
-
-    /**
-     * العلاقة مع الفهارس
-     */
-    public function bookIndexes(): HasMany
-    {
-        return $this->hasMany(BookIndex::class);
-    }
-
-    /**
-     * العلاقة مع مراجع الصفحات
-     */
-    public function pageReferences(): HasMany
-    {
-        return $this->hasMany(PageReference::class);
-    }
-
-    /**
-     * العلاقة مع التعليقات
-     */
-    public function annotations(): HasMany
-    {
-        return $this->hasMany(Annotation::class);
     }
 
     /**
