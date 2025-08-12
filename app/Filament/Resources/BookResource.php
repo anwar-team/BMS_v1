@@ -130,7 +130,7 @@ class BookResource extends Resource
                     ->maxLength(1000)
                     ->columnSpanFull(),
 
-                Grid::make(2)->schema([
+                Grid::make(3)->schema([
                     TextInput::make('slug')
                         ->label('الرابط الثابت')
                         ->required()
@@ -154,9 +154,9 @@ class BookResource extends Resource
                         ->placeholder('1'),
                     
                     TextInput::make('edition_DATA')
-                        ->label('بيانات الطبعة الإضافية')
+                        ->label(' سنة الطباعة ')
                         ->numeric()
-                        ->placeholder('معلومات إضافية عن الطبعة'),
+                        ->placeholder('2025'),
                 ]),
             ])
             ->collapsible();
