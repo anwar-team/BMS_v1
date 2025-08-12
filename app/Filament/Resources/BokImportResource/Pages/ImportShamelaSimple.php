@@ -13,13 +13,13 @@ use Filament\Forms\Components\Placeholder;
 use Filament\Actions\Action;
 use Filament\Notifications\Notification;
 
-class ImportShamela extends Page
+class ImportShamelaSimple extends Page
 {
     protected static string $resource = BokImportResource::class;
     
-    protected static string $view = 'filament.resources.bok-import-resource.pages.import-shamela';
+    protected static string $view = 'filament.resources.bok-import-resource.pages.import-shamela-simple';
     
-    protected static ?string $title = 'استيراد من الشاملة';
+    protected static ?string $title = 'استيراد من الشاملة (بسيط)';
 
     public $shamela_url = '';
     public $status = 'idle';

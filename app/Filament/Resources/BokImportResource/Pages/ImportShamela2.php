@@ -18,17 +18,17 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Symfony\Component\Process\Process;
 
-class ImportShamela extends Page
+class ImportShamela2 extends Page
 {
     protected static string $resource = BokImportResource::class;
     
-    protected static string $view = 'filament.resources.bok-import-resource.pages.import-shamela';
+    protected static string $view = 'filament.resources.bok-import-resource.pages.import-shamela2';
     
     protected static ?string $navigationIcon = 'heroicon-o-cloud-arrow-down';
     
-    protected static ?string $title = 'استيراد من الشاملة';
+    protected static ?string $title = 'استيراد من الشاملة (الإصدار الثاني)';
     
-    protected static ?string $navigationLabel = 'استيراد من الشاملة';
+    protected static ?string $navigationLabel = 'استيراد من الشاملة (الإصدار الثاني)';
 
     public ?string $shamela_url = '';
     public bool $save_to_db = true;

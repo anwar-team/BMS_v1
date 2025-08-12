@@ -238,6 +238,8 @@ class BokImportResource extends Resource
             'create' => Pages\CreateBokImport::route('/create'),
             'edit' => Pages\EditBokImport::route('/{record}/edit'),
             'import-shamela' => Pages\ImportShamela::route('/import-shamela'),
+            'import-shamela2' => Pages\ImportShamela2::route('/import-shamela2'),
+            'import-shamela-simple' => Pages\ImportShamelaSimple::route('/import-shamela-simple'),
         ];
     }
 }
