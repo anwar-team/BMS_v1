@@ -461,12 +461,6 @@ class BookResource extends Resource
                     ->numeric(),
                 RichEditor::make('content')
                     ->label('محتوى الصفحة')
-                    ->columnSpanFull(),
-            ])
-            ->addActionLabel('إضافة صفحة جديدة')
-            ->defaultItems(0);
-    }
-                    ->label('محتوى الصفحة')
                     ->toolbarButtons([
                         'bold',
                         'italic',
@@ -480,24 +474,9 @@ class BookResource extends Resource
                         'link',
                     ])
                     ->columnSpanFull(),
-                
-                // Hidden field to ensure book_id is set
-                Hidden::make('book_id')
-                    ->default(function ($livewire, $state, $get) {
-                        if (isset($livewire->record) && $livewire->record) {
-                            return $livewire->record->id;
-                        }
-                        return $get('../../id');
-                    }),
             ])
             ->addActionLabel('إضافة صفحة جديدة')
-            ->reorderableWithButtons()
-            ->collapsible()
-            ->itemLabel(fn (array $state): ?string => 
-                'صفحة ' . ($state['page_number'] ?? 'جديدة')
-            )
-            ->defaultItems(0)
-            ->columnSpanFull();
+            ->defaultItems(0);
     }
 
     private static function getAuthorForm(): array
