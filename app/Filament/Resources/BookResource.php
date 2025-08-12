@@ -8,7 +8,6 @@ use App\Models\Book;
 use App\Models\Author;
 use App\Models\Publisher;
 use App\Models\BookSection;
-use App\Support\DateHelper;
 use Filament\Forms;
 use Filament\Tables;
 use Filament\Forms\Form;
@@ -62,7 +61,6 @@ class BookResource extends Resource
                         ->icon('heroicon-o-book-open')
                         ->schema([
                             self::getBasicInfoSection(),
-                            self::getPublishingDetailsSection(),
                             self::getBookPropertiesSection(),
                             self::getCoverImageSection(),
                         ]),
@@ -150,56 +148,26 @@ class BookResource extends Resource
                                 })
                         ),
                     
-                    TextInput::make('isbn')
-                        ->label('رقم ISBN')
-                        ->maxLength(20)
-                        ->placeholder('978-0-123456-78-9')
-                        ->rule('isbn'),
+                    TextInput::make('edition')
+                        ->label('رقم الطبعة')
+                        ->numeric()
+                        ->placeholder('1'),
+                    
+                    TextInput::make('edition_DATA')
+                        ->label('بيانات الطبعة الإضافية')
+                        ->numeric()
+                        ->placeholder('معلومات إضافية عن الطبعة'),
                 ]),
             ])
             ->collapsible();
     }
 
-    private static function getPublishingDetailsSection(): Section
+    private static function getBookPropertiesSection(): Section
     {
-        return Section::make('تفاصيل النشر')
-            ->description('معلومات النشر والناشر وتاريخ الإصدار')
-            ->icon('heroicon-o-calendar')
+        return Section::make('خصائص الكتاب')
+            ->description('الخصائص الفيزيائية والرقمية للكتاب ومعلومات النشر')
+            ->icon('heroicon-o-book-open')
             ->schema([
-                Grid::make(3)->schema([
-                    Select::make('published_year_type')
-                        ->label('نوع التقويم')
-                        ->options([
-                            'gregorian' => 'ميلادي',
-                            'hijri' => 'هجري',
-                        ])
-                        ->default('gregorian')
-                        ->live()
-                        ->columnSpan(1),
-                    
-                    TextInput::make('published_year')
-                        ->label(fn ($get) => $get('published_year_type') === 'hijri' ? 'سنة النشر (هجري)' : 'سنة النشر (ميلادي)')
-                        ->numeric()
-                        ->minValue(1)
-                        ->maxValue(fn ($get) => $get('published_year_type') === 'hijri' ? DateHelper::getCurrentHijriYear() : date('Y'))
-                        ->placeholder(fn ($get) => $get('published_year_type') === 'hijri' ? 'مثال: ' . DateHelper::getCurrentHijriYear() : 'مثال: ' . date('Y'))
-                        ->helperText(fn ($get) => $get('published_year_type') === 'hijri' ? 'أدخل السنة بالتقويم الهجري' : 'أدخل السنة بالتقويم الميلادي')
-                        ->rules([
-                            fn ($get) => function (string $attribute, $value, callable $fail) use ($get) {
-                                if (!$value) return;
-                                
-                                $type = $get('published_year_type') ?? 'gregorian';
-                                
-                                if ($type === 'hijri' && !DateHelper::isValidHijriYear((int) $value)) {
-                                    $fail('السنة الهجرية غير صحيحة. يجب أن تكون بين 1 و ' . DateHelper::getCurrentHijriYear());
-                                } elseif ($type === 'gregorian' && !DateHelper::isValidGregorianYear((int) $value)) {
-                                    $fail('السنة الميلادية غير صحيحة. يجب أن تكون بين 1 و ' . date('Y'));
-                                }
-                            },
-                        ])
-                        ->columnSpan(2),
-                ]),
-
                 Grid::make(2)->schema([
                     Select::make('publisher_id')
                         ->label('الناشر')
@@ -219,30 +187,8 @@ class BookResource extends Resource
                         ->url()
                         ->placeholder('https://example.com'),
                 ]),
-            ])
-            ->collapsible();
-    }
-
-    private static function getBookPropertiesSection(): Section
-    {
-        return Section::make('خصائص الكتاب')
-            ->description('الخصائص الفيزيائية والرقمية للكتاب')
-            ->icon('heroicon-o-book-open')
-            ->schema([
+                
                 Grid::make(4)->schema([
-                    //TextInput::make('pages_count')
-                    //    ->label('عدد الصفحات')
-                    //    ->numeric()
-                    //    ->minValue(1)
-                    //    ->placeholder('300'),
-                    //
-                    //TextInput::make('volumes_count')
-                    //    ->label('عدد المجلدات')
-                    //    ->numeric()
-                    //    ->minValue(1)
-                    //    ->placeholder('5')
-                    //    ->default(1),
-                    
                     Select::make('visibility')
                         ->label('الرؤية')
                         ->options([
@@ -696,6 +642,19 @@ class BookResource extends Resource
                     ->sortable()
                     ->badge()
                     ->color('info'),
+                TextColumn::make('edition')
+                    ->label('الطبعة')
+                    ->sortable()
+                    ->badge()
+                    ->color('primary')
+                    ->formatStateUsing(fn (?int $state): string => $state ? "الطبعة {$state}" : 'غير محدد')
+                    ->toggleable(),
+                TextColumn::make('edition_DATA')
+                    ->label('بيانات الطبعة')
+                    ->badge()
+                    ->color('secondary')
+                    ->formatStateUsing(fn (?int $state): string => $state ? "رقم {$state}" : 'غير محدد')
+                    ->toggleable(),
                 TextColumn::make('volumes_count')
                     ->label('المجلدات')
                     ->getStateUsing(fn ($record) => $record->volumes()->count())
