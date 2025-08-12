@@ -298,8 +298,8 @@ class AuthorsRelationManager extends RelationManager
                         ->modalDescription('هل تريد تغيير دور المؤلفين المحددين؟')
                         ->modalSubmitActionLabel('تغيير'),
                 ]),
-            ])
-            ->defaultSort('pivot.display_order')
-            ->reorderable('pivot.display_order');
+            ]);
+            // ->defaultSort('author_book.display_order')
+            // ->reorderable('author_book.display_order');
     }
 }

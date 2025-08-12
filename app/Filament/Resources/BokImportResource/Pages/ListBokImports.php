@@ -15,6 +15,11 @@ class ListBokImports extends ListRecords
     {
         return [
             Actions\CreateAction::make(),
+            Actions\Action::make('import_shamela')
+                ->label('استيراد من الشاملة')
+                ->icon('heroicon-o-cloud-arrow-down')
+                ->color('success')
+                ->url(fn (): string => static::$resource::getUrl('import-shamela'))
         ];
     }
     

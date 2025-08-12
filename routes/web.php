@@ -62,6 +62,11 @@ Route::post('/book/{bookId}/goto/{pageNumber}', [BookReadController::class, 'goT
 Route::post('/contact', [App\Http\Controllers\ContactController::class, 'submit'])
     ->name('contact.submit');
 
+// Shamela Import Route
+Route::get('/admin/shamela-import', App\Livewire\ShamelaScraper::class)
+    ->name('shamela.import')
+    ->middleware('auth');
+
 // TODO: Create actual blog preview component
 Route::post('/blog-preview', function () {
     // Implementation pending
