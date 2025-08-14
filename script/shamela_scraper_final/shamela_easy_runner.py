@@ -48,7 +48,7 @@ class ShamelaScraper:
                 self.db_manager = ShamelaDatabaseManager(db_config)
                 logger.info("تم الاتصال بقاعدة البيانات بنجاح")
             except Exception as e:
-                logger.error(f"فشل الاتصال بقاعدة البيانات: {e}")
+                logger.error(f"فشل الاتصال بقاعدة البيانات: {e}", exc_info=True)
                 self.db_manager = None
     
     def extract_single_book(self, book_input: str, 
@@ -88,7 +88,7 @@ class ShamelaScraper:
                     self.db_manager.save_complete_book(book_data)
                     logger.info("تم حفظ الكتاب في قاعدة البيانات")
                 except Exception as e:
-                    logger.error(f"فشل حفظ الكتاب في قاعدة البيانات: {e}")
+                    logger.error(f"فشل حفظ الكتاب في قاعدة البيانات: {e}", exc_info=True)
                     success = False
             
             # حفظ في ملف JSON

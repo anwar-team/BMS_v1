@@ -48,6 +48,7 @@ class ShamelaDatabaseManager:
         self.tables = {
             'books': 'books',
             'authors': 'authors', 
+            'publishers': 'publishers',
             'author_book': 'author_book',
             'volumes': 'volumes',
             'chapters': 'chapters',
@@ -71,6 +72,8 @@ class ShamelaDatabaseManager:
             logger.info("تم الاتصال بقاعدة البيانات بنجاح")
         except Error as e:
             logger.error(f"خطأ في الاتصال بقاعدة البيانات: {e}")
+            logger.error(f"رمز الخطأ: {e.errno}")
+            logger.error(f"رسالة الخطأ: {e.msg}")
             raise
     
     def disconnect(self) -> None:
@@ -103,6 +106,8 @@ class ShamelaDatabaseManager:
             logger.error(f"خطأ في تنفيذ الاستعلام: {e}")
             logger.error(f"الاستعلام: {query}")
             logger.error(f"المعاملات: {params}")
+            logger.error(f"رمز الخطأ: {e.errno}")
+            logger.error(f"رسالة الخطأ: {e.msg}")
             raise
     
     def execute_insert(self, query: str, params: tuple = None) -> int:
@@ -114,6 +119,8 @@ class ShamelaDatabaseManager:
             logger.error(f"خطأ في تنفيذ INSERT: {e}")
             logger.error(f"الاستعلام: {query}")
             logger.error(f"المعاملات: {params}")
+            logger.error(f"رمز الخطأ: {e.errno}")
+            logger.error(f"رسالة الخطأ: {e.msg}")
             raise
     
     def save_author(self, author: Author) -> int:
@@ -127,12 +134,12 @@ class ShamelaDatabaseManager:
             # تحديث البيانات إذا كانت متوفرة
             update_query = f"""
                 UPDATE {self.tables['authors']} 
-                SET full_name = %s, slug = %s, biography = %s, madhhab = %s, 
+                SET full_name = %s, biography = %s, madhhab = %s, 
                     birth_date = %s, death_date = %s, updated_at = %s
                 WHERE id = %s
             """
             self.cursor.execute(update_query, (
-                author.name, author.slug, author.biography, author.madhhab,
+                author.name, author.biography, author.madhhab,
                 author.birth_date, author.death_date, 
                 datetime.now(), author_id
             ))
@@ -141,11 +148,11 @@ class ShamelaDatabaseManager:
             # إدراج مؤلف جديد
             insert_query = f"""
                 INSERT INTO {self.tables['authors']} 
-                (full_name, slug, biography, madhhab, birth_date, death_date, created_at, updated_at)
-                VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
+                (full_name, biography, madhhab, birth_date, death_date, created_at, updated_at)
+                VALUES (%s, %s, %s, %s, %s, %s, %s)
             """
             author_id = self.execute_insert(insert_query, (
-                author.name, author.slug, author.biography, author.madhhab,
+                author.name, author.biography, author.madhhab,
                 author.birth_date, author.death_date, 
                 datetime.now(), datetime.now()
             ))
@@ -153,46 +160,78 @@ class ShamelaDatabaseManager:
         
         return author_id
     
+    def save_publisher(self, publisher_name: str) -> Optional[int]:
+        """حفظ الناشر وإرجاع ID"""
+        if not publisher_name:
+            return None
+            
+        # البحث عن الناشر الموجود
+        query = "SELECT id FROM publishers WHERE name = %s LIMIT 1"
+        result = self.execute_query(query, (publisher_name,))
+        
+        if result:
+            return result[0]['id']
+        else:
+            # إدراج ناشر جديد
+            insert_query = """
+                INSERT INTO publishers (name, created_at, updated_at)
+                VALUES (%s, %s, %s)
+            """
+            publisher_id = self.execute_insert(insert_query, (
+                publisher_name, datetime.now(), datetime.now()
+            ))
+            logger.info(f"تم إدراج ناشر جديد: {publisher_name} (ID: {publisher_id})")
+            return publisher_id
+
     def save_book(self, book: Book) -> int:
         """حفظ كتاب وإرجاع ID"""
         # البحث عن الكتاب الموجود
         query = f"SELECT id FROM {self.tables['books']} WHERE shamela_id = %s LIMIT 1"
         result = self.execute_query(query, (book.shamela_id,))
         
-        # تحضير البيانات
-        categories_json = json.dumps(book.categories, ensure_ascii=False) if book.categories else None
+        # حفظ الناشر والحصول على ID
+        publisher_id = self.save_publisher(book.publisher) if book.publisher else None
+        
+        # تحويل edition إلى integer إذا كان نص
+        edition_int = None
+        if book.edition:
+            try:
+                # استخراج الأرقام من النص
+                import re
+                numbers = re.findall(r'\d+', str(book.edition))
+                if numbers:
+                    edition_int = int(numbers[0])
+            except:
+                edition_int = None
         
         if result:
             book_id = result[0]['id']
             # تحديث الكتاب الموجود
             update_query = f"""
                 UPDATE {self.tables['books']} 
-                SET title = %s, slug = %s, publisher = %s, edition = %s,
-                    published_year = %s, pages_count = %s, volumes_count = %s,
-                    categories = %s, description = %s, language = %s,
-                    source_url = %s, updated_at = %s
+                SET title = %s, slug = %s, publisher_id = %s, edition = %s,
+                    pages_count = %s, volumes_count = %s,
+                    description = %s, source_url = %s, updated_at = %s
                 WHERE id = %s
             """
             self.cursor.execute(update_query, (
-                book.title, book.slug, book.publisher, book.edition,
-                book.publication_year, book.page_count, book.volume_count,
-                categories_json, book.description, book.language,
-                book.source_url, datetime.now(), book_id
+                book.title, book.slug, publisher_id, edition_int,
+                book.page_count, book.volume_count,
+                book.description, book.source_url, datetime.now(), book_id
             ))
             logger.info(f"تم تحديث الكتاب: {book.title}")
         else:
             # إدراج كتاب جديد
             insert_query = f"""
                 INSERT INTO {self.tables['books']} 
-                (title, slug, shamela_id, publisher, edition, published_year,
-                 pages_count, volumes_count, categories, description, language,
+                (title, slug, shamela_id, publisher_id, edition,
+                 pages_count, volumes_count, description,
                  source_url, created_at, updated_at)
-                VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+                VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
             """
             book_id = self.execute_insert(insert_query, (
-                book.title, book.slug, book.shamela_id, book.publisher, book.edition,
-                book.publication_year, book.page_count, book.volume_count,
-                categories_json, book.description, book.language,
+                book.title, book.slug, book.shamela_id, publisher_id, edition_int,
+                book.page_count, book.volume_count, book.description,
                 book.source_url, datetime.now(), datetime.now()
             ))
             logger.info(f"تم إدراج كتاب جديد: {book.title} (ID: {book_id})")

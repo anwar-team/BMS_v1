@@ -91,11 +91,11 @@ REMOVE_ATTRIBUTES = [
 
 # إعدادات MySQL الافتراضية
 DEFAULT_DB_CONFIG = {
-    'host': 'localhost',
+    'host': 'srv1800.hstgr.io',
     'port': 3306,
-    'user': 'root',
-    'password': '',  # يجب تعيينها عند الاستخدام
-    'database': 'bms',
+    'user': 'u994369532_test',
+    'password': 'Test20205',
+    'database': 'u994369532_test',
     'charset': 'utf8mb4',
     'autocommit': False,
     'raise_on_warnings': True
