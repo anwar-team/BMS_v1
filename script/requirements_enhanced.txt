@@ -1,0 +1,17 @@
+aiohttp>=3.8.0
+beautifulsoup4>=4.11.0
+mysql-connector-python>=8.0.0
+lxml>=4.9.0
+asyncio
+dataclasses
+typing
+pathlib
+argparse
+logging
+datetime
+re
+json
+hashlib
+threading
+concurrent.futures
+urllib.parse
