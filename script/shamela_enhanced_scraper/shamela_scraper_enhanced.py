@@ -295,15 +295,15 @@ class EnhancedDatabaseManager:
             
             # حفظ الكتاب
             query = """
-            INSERT INTO books (title, description, slug, cover_image, published_year,
+            INSERT INTO books (title, description, slug, cover_image,
                              pages_count, volumes_count, status, visibility, source_url,
                              book_section_id, publisher_id, edition, edition_DATA,
                              created_at, updated_at)
-            VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, NOW(), NOW())
+            VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, NOW(), NOW())
             """
             
             params = (
-                book.title, book.description, book.slug, book.cover_image, book.published_year,
+                book.title, book.description, book.slug, book.cover_image,
                 book.pages_count, book.volumes_count, book.status, book.visibility, book.source_url,
                 book.book_section_id, book.publisher_id, book.edition, book.edition_DATA
             )
@@ -377,14 +377,14 @@ class EnhancedDatabaseManager:
                 volume_id = list(volume_ids.values())[0]  # استخدام أول مجلد كافتراضي
             
             query = """
-            INSERT INTO chapters (volume_id, book_id, chapter_number, title, parent_id, 
-                                `order`, page_start, page_end, chapter_type, created_at, updated_at)
-            VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, NOW(), NOW())
+            INSERT INTO chapters (volume_id, book_id, title, parent_id, 
+                                `order`, page_start, page_end, created_at, updated_at)
+            VALUES (%s, %s, %s, %s, %s, %s, %s, NOW(), NOW())
             """
             
             params = (
-                volume_id, book_id, chapter.chapter_number, chapter.title, parent_id,
-                chapter.order or i, chapter.page_start, chapter.page_end, chapter.chapter_type
+                volume_id, book_id, chapter.title, parent_id,
+                chapter.order or i, chapter.page_start, chapter.page_end
             )
             
             self.execute_query(query, params)
@@ -464,17 +464,22 @@ class EnhancedShamelaExtractor:
         html = await self.safe_request(url)
         soup = BeautifulSoup(html, "html.parser")
         
-        # البحث عن بطاقة الكتاب
-        card_section = soup.find('h2', string='بطاقة الكتاب وفهرس الموضوعات')
-        if not card_section:
+        # استخراج النص الكامل للصفحة
+        page_text = soup.get_text()
+        
+        # البحث عن بداية ونهاية بطاقة الكتاب
+        card_start = page_text.find('الكتاب:')
+        if card_start == -1:
             raise ShamelaScraperError("لم يتم العثور على بطاقة الكتاب")
         
-        card_container = card_section.find_next_sibling()
-        if not card_container:
-            raise ShamelaScraperError("لم يتم العثور على محتوى بطاقة الكتاب")
+        # البحث عن نهاية البطاقة (عادة قبل "فهرس الموضوعات")
+        card_end = page_text.find('فهرس الموضوعات', card_start)
+        if card_end == -1:
+            # إذا لم نجد فهرس، نأخذ أول 1000 حرف
+            card_end = card_start + 1000
         
         # استخراج النص الخام للبطاقة
-        raw_card_text = self.clean_text(card_container.get_text())
+        raw_card_text = page_text[card_start:card_end].strip()
         
         # استخراج المعلومات المهيكلة
         title = ""
@@ -496,7 +501,7 @@ class EnhancedShamelaExtractor:
             author = self.clean_text(author_match.group(1))
         
         # استخراج رابط صفحة المؤلف
-        author_link = card_container.find('a', href=re.compile(r'/author/'))
+        author_link = soup.find('a', href=re.compile(r'/author/'))
         if author_link:
             author_page_url = urljoin(BASE_URL, author_link.get('href'))
         
@@ -538,12 +543,21 @@ class EnhancedShamelaExtractor:
         soup = BeautifulSoup(html, "html.parser")
         
         # البحث عن فهرس الموضوعات
-        index_section = soup.find('h2', string='فهرس الموضوعات')
+        index_section = soup.find(string='فهرس الموضوعات')
         if not index_section:
             logger.warning(f"لم يتم العثور على فهرس للكتاب {book_id}")
             return []
         
-        index_container = index_section.find_next_sibling('ul')
+        # البحث عن قائمة الفهرس
+        index_container = None
+        current = index_section.parent
+        while current:
+            ul_element = current.find('ul')
+            if ul_element:
+                index_container = ul_element
+                break
+            current = current.find_next_sibling()
+        
         if not index_container:
             logger.warning(f"لم يتم العثور على قائمة الفهرس للكتاب {book_id}")
             return []
@@ -910,8 +924,9 @@ def main():
     args = parser.parse_args()
     
     # تحديث إعدادات التوازي
-    global MAX_CONCURRENT_REQUESTS
-    MAX_CONCURRENT_REQUESTS = args.concurrent
+    if hasattr(args, 'concurrent'):
+        import config_enhanced
+        config_enhanced.MAX_CONCURRENT_REQUESTS = args.concurrent
     
     async def run_scraper():
         save_to_db = not args.no_db
