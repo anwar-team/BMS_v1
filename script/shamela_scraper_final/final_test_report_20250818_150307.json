@@ -1,0 +1,45 @@
+{
+  "timestamp": "2025-08-18T15:03:07.775164",
+  "success_rate": 66.66666666666666,
+  "status": "ACCEPTABLE",
+  "results": {
+    "volumes_extraction": {
+      "success": true,
+      "count": 24,
+      "details": "تم استخراج 24 جزء"
+    },
+    "phase_1": {
+      "success": false,
+      "error": "'Volume' object has no attribute 'start_page'"
+    },
+    "page_counting": {
+      "success": true,
+      "internal_count": 14577,
+      "printed_count": 711,
+      "details": "داخلي: 14577, مطبوع: 711"
+    },
+    "enhanced_publisher": {
+      "success": true,
+      "name": "دار الكتب العلمية، بيروت، لبنان",
+      "location": null,
+      "details": "الناشر: دار الكتب العلمية، بيروت، لبنان"
+    },
+    "html_formatting": {
+      "success": true,
+      "has_hr": true,
+      "has_br": false,
+      "has_newlines": true,
+      "content_length": 857,
+      "details": "طول المحتوى: 857 حرف"
+    },
+    "full_extraction": {
+      "success": false,
+      "error": "'Book' object has no attribute 'chapters'"
+    }
+  },
+  "summary": {
+    "successful_tests": 4,
+    "total_tests": 6,
+    "enhancements_applied": 7
+  }
+}

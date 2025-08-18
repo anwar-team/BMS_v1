@@ -435,9 +435,11 @@ def extract_book_card(soup: BeautifulSoup) -> str:
     description = re.sub(r'\d+\s*-\s*[^\n]*', '', description)  # إزالة أسطر مثل "1 - عنوان الفصل"
     description = re.sub(r'[+]\s*[^\n]*', '', description)  # إزالة أسطر مثل "[+]عنوان"
     
-    # تنظيف المسافات الزائدة
-    description = re.sub(r'\s+', ' ', description).strip()
-    description = clean_text(description)
+    # تنظيف المسافات الزائدة مع الحفاظ على فواصل الأسطر
+    # بدلاً من دمج الأسطر، نقلل التكرارات الزائدة فقط
+    description = re.sub(r'\n{3,}', '\n\n', description)  # تقليل تكرارات \n الزائدة
+    description = re.sub(r'[ \t]+', ' ', description)     # تنظيف المسافات الأفقية فقط
+    description = description.strip()
     
     # إذا لم نجد محتوى كافي، نستخدم الطريقة القديمة كبديل
     if len(description) < 50:
@@ -460,13 +462,17 @@ def extract_book_card(soup: BeautifulSoup) -> str:
                 for share_elem in element_copy.select(".share, .social, .social-share, .share-buttons, .social-links"):
                     share_elem.decompose()
                 
-                text = clean_text(element_copy.get_text())
+                # استخراج النص مع الحفاظ على فواصل الأسطر
+                text = element_copy.get_text(separator="\n", strip=True)
                 
                 # تنظيف إضافي
                 for phrase in unwanted_phrases:
                     text = text.replace(phrase, "")
                 
-                text = re.sub(r'\s+', ' ', text).strip()
+                # تطبيع فواصل الأسطر مع الحفاظ عليها
+                text = re.sub(r'\n{3,}', '\n\n', text)  # تقليل التكرارات الزائدة
+                text = re.sub(r'[ \t]+', ' ', text)     # تنظيف المسافات الأفقية فقط
+                text = text.strip()
                 
                 if len(text) > 50:
                     description = text
@@ -1206,7 +1212,7 @@ def extract_enhanced_page_content(book_id: str, page_number: int, has_original_p
     if not main_content:
         main_content = soup.find("body") or soup
     
-    # إزالة العناصر غير المرغوبة
+    # إزالة العناصر غير المرغوبة (لكن نحافظ على <hr> و <br> و .hamesh)
     unwanted_selectors = [
         "script", "style", "nav", ".share", ".social", ".ad", 
         ".advertisement", ".menu", ".sidebar", ".header", ".footer"
@@ -1216,7 +1222,20 @@ def extract_enhanced_page_content(book_id: str, page_number: int, has_original_p
         for element in main_content.select(selector):
             element.decompose()
     
-    content = clean_text(main_content.get_text())
+    # استبدال <hr> و <br> بنص واضح قبل استخراج النص
+    for hr in main_content.find_all("hr"):
+        hr.replace_with("\n<hr/>\n")
+    
+    for br in main_content.find_all("br"):
+        br.replace_with("<br/>\n")
+    
+    # استخراج النص مع الحفاظ على فواصل الأسطر
+    content = main_content.get_text(separator="\n", strip=True)
+    
+    # تطبيع فواصل الأسطر - تقليل التكرارات الزائدة
+    content = re.sub(r'\n{3,}', '\n\n', content)
+    content = content.strip()
+    
     html_content = str(main_content)
     
     # استخراج الترقيم المطبوع من <title>
