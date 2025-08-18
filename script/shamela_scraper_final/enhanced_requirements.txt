@@ -1,0 +1,28 @@
+# متطلبات السكربت المحسن للمكتبة الشاملة
+# Enhanced Shamela Scraper Requirements
+
+# مكتبات أساسية
+requests>=2.31.0
+beautifulsoup4>=4.13.4
+lxml>=6.0.0
+
+# قاعدة البيانات
+mysql-connector-python>=9.4.0
+
+# معالجة النصوص
+html2text>=2025.4.15
+
+# تحسين الطلبات
+requests-ratelimiter>=0.7.0
+
+# أدوات إضافية
+colorama>=0.4.6
+python-dateutil>=2.9.0
+
+# للاختبار (اختياري)
+pytest>=7.0.0
+pytest-cov>=4.0.0
+
+# للتطوير (اختياري)
+black>=23.0.0
+flake8>=6.0.0
