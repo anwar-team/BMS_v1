@@ -16,6 +16,8 @@ class Page extends Model
         'volume_id',
         'chapter_id',
         'page_number',
+        'internal_index',
+        'part',
         'content',
     ];
 
