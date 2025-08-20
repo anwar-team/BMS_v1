@@ -189,21 +189,49 @@ class EnhancedShamelaDatabaseManager:
                 edition_number INT NULL,
                 publication_year INT NULL,
                 edition_date_hijri VARCHAR(50) NULL,
+                edition_DATA INT NULL,
                 pages_count INT NULL,
                 volumes_count INT NULL,
                 description LONGTEXT NULL,
                 language VARCHAR(10) DEFAULT 'ar',
                 source_url VARCHAR(500) NULL,
                 has_original_pagination BOOLEAN DEFAULT FALSE,
+                status VARCHAR(20) DEFAULT 'published',
+                visibility VARCHAR(20) DEFAULT 'public',
                 created_at TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
                 updated_at TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
                 UNIQUE KEY books_shamela_id_unique (shamela_id),
                 UNIQUE KEY books_slug_unique (slug),
                 INDEX books_title_index (title),
                 INDEX books_publication_year_index (publication_year),
+                INDEX books_status_index (status),
                 FOREIGN KEY (publisher_id) REFERENCES {self.tables['publishers']}(id) ON DELETE SET NULL,
                 FOREIGN KEY (book_section_id) REFERENCES {self.tables['book_sections']}(id) ON DELETE SET NULL
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
+        """
+        
+        # إضافة الحقول المفقودة إذا لم تكن موجودة
+        alter_books_table = f"""
+            ALTER TABLE {self.tables['books']} 
+            ADD COLUMN IF NOT EXISTS has_original_pagination BOOLEAN DEFAULT FALSE,
+            ADD COLUMN IF NOT EXISTS edition_DATA INT NULL,
+            ADD COLUMN IF NOT EXISTS status VARCHAR(20) DEFAULT 'published',
+            ADD COLUMN IF NOT EXISTS visibility VARCHAR(20) DEFAULT 'public'
+        """
+        
+        # تحديث جدول الفصول لجعل volume_id يقبل NULL
+        alter_chapters_table = f"""
+            ALTER TABLE {self.tables['chapters']} 
+            MODIFY COLUMN volume_id BIGINT UNSIGNED NULL
+        """
+        
+        # تحديث جدول الصفحات لإضافة الحقول المفقودة
+        alter_pages_table = f"""
+            ALTER TABLE {self.tables['pages']} 
+            ADD COLUMN IF NOT EXISTS original_page_number INT NULL,
+            ADD COLUMN IF NOT EXISTS word_count INT NULL,
+            ADD COLUMN IF NOT EXISTS html_content LONGTEXT NULL,
+            ADD COLUMN IF NOT EXISTS printed_missing BOOLEAN DEFAULT FALSE
         """
         
         # جدول ربط المؤلفين بالكتب
@@ -272,13 +300,25 @@ class EnhancedShamelaDatabaseManager:
                 chapter_id BIGINT UNSIGNED NULL,
                 page_number INT NOT NULL,
                 original_page_number INT NULL,
+                internal_index INT NULL,
                 content LONGTEXT NULL,
                 html_content LONGTEXT NULL,
                 word_count INT NULL,
+                content_type VARCHAR(20) DEFAULT 'text',
+                content_hash VARCHAR(64) NULL,
+                character_count INT NULL,
+                has_footnotes BOOLEAN DEFAULT FALSE,
+                has_images BOOLEAN DEFAULT FALSE,
+                has_tables BOOLEAN DEFAULT FALSE,
+                formatting_info JSON NULL,
+                plain_text LONGTEXT NULL,
+                reading_time_minutes INT NULL,
+                printed_missing BOOLEAN DEFAULT FALSE,
                 created_at TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
                 updated_at TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
                 INDEX pages_book_id_index (book_id),
                 INDEX pages_page_number_index (page_number),
+                INDEX pages_internal_index_index (internal_index),
                 UNIQUE KEY pages_book_page_unique (book_id, page_number),
                 FOREIGN KEY (book_id) REFERENCES {self.tables['books']}(id) ON DELETE CASCADE,
                 FOREIGN KEY (volume_id) REFERENCES {self.tables['volumes']}(id) ON DELETE CASCADE,
@@ -324,6 +364,30 @@ class EnhancedShamelaDatabaseManager:
             except Error as e:
                 logger.error(f"خطأ في إنشاء الجدول: {e}")
                 raise
+        
+        # تنفيذ تحديث جدول الكتب لإضافة الحقول المفقودة
+        try:
+            self.cursor.execute(alter_books_table)
+            logger.info("تم تحديث جدول الكتب بالحقول المفقودة")
+        except Error as e:
+            # تجاهل الخطأ إذا كانت الحقول موجودة بالفعل
+            if "Duplicate column name" not in str(e):
+                logger.warning(f"تحذير في تحديث جدول الكتب: {e}")
+        
+        # تنفيذ تحديث جدول الفصول
+        try:
+            self.cursor.execute(alter_chapters_table)
+            logger.info("تم تحديث جدول الفصول لجعل volume_id يقبل NULL")
+        except Error as e:
+            logger.warning(f"تحذير في تحديث جدول الفصول: {e}")
+        
+        # تنفيذ تحديث جدول الصفحات
+        try:
+            self.cursor.execute(alter_pages_table)
+            logger.info("تم تحديث جدول الصفحات بالحقول المفقودة")
+        except Error as e:
+            if "Duplicate column name" not in str(e):
+                logger.warning(f"تحذير في تحديث جدول الصفحات: {e}")
         
         self.connection.commit()
         logger.info("تم إنشاء جميع الجداول المحسنة بنجاح")
@@ -451,20 +515,32 @@ class EnhancedShamelaDatabaseManager:
         # حفظ قسم الكتاب والحصول على ID
         book_section_id = self.save_book_section(book.book_section) if book.book_section else None
         
+        # تحويل edition_date_hijri إلى رقم
+        edition_data_int = None
+        if hasattr(book, 'edition_date_hijri') and book.edition_date_hijri:
+            try:
+                # استخراج الأرقام من النص
+                import re
+                numbers = re.findall(r'\d+', str(book.edition_date_hijri))
+                if numbers:
+                    edition_data_int = int(numbers[0])
+            except (ValueError, AttributeError):
+                edition_data_int = None
+        
         if result:
             book_id = result[0]['id']
             # تحديث الكتاب الموجود
             update_query = f"""
                 UPDATE {self.tables['books']} 
                 SET title = %s, slug = %s, publisher_id = %s, book_section_id = %s,
-                    edition = %s, edition_number = %s, pages_count = %s, volumes_count = %s,
-                    description = %s, source_url = %s, updated_at = %s
+                    edition = %s, edition_number = %s, edition_DATA = %s, pages_count = %s, volumes_count = %s,
+                    description = %s, source_url = %s, has_original_pagination = %s, status = %s, updated_at = %s
                 WHERE id = %s
             """
             self.cursor.execute(update_query, (
                 book.title, book.slug, publisher_id, book_section_id,
-                book.edition, book.edition_number, book.page_count, book.volume_count,
-                book.description, book.source_url, datetime.now(), book_id
+                book.edition, book.edition_number, edition_data_int, book.page_count, book.volume_count,
+                book.description, book.source_url, book.has_original_pagination, 'published', datetime.now(), book_id
             ))
             logger.info(f"تم تحديث الكتاب: {book.title}")
         else:
@@ -472,14 +548,14 @@ class EnhancedShamelaDatabaseManager:
             insert_query = f"""
                 INSERT INTO {self.tables['books']} 
                 (title, slug, shamela_id, publisher_id, book_section_id,
-                 edition, edition_number, pages_count, volumes_count, 
-                 description, source_url, status, visibility, created_at, updated_at)
-                VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+                 edition, edition_number, edition_DATA, pages_count, volumes_count, 
+                 description, source_url, has_original_pagination, status, visibility, created_at, updated_at)
+                VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
             """
             book_id = self.execute_insert(insert_query, (
                 book.title, book.slug, book.shamela_id, publisher_id, book_section_id,
-                book.edition, book.edition_number, book.page_count, book.volume_count,
-                book.description, book.source_url, 'published', 'public', 
+                book.edition, book.edition_number, edition_data_int, book.page_count, book.volume_count,
+                book.description, book.source_url, book.has_original_pagination, 'published', 'public', 
                 datetime.now(), datetime.now()
             ))
             logger.info(f"تم إدراج كتاب جديد: {book.title} (ID: {book_id})")
@@ -535,16 +611,16 @@ class EnhancedShamelaDatabaseManager:
         
         if result:
             chapter_id = result[0]['id']
-            # تحديث الفصل
+            # تحديث الفصل (بدون chapter_type لأنه محفوظ في JSON فقط)
             update_query = f"""
                 UPDATE {self.tables['chapters']} 
                 SET volume_id = %s, page_start = %s, page_end = %s, parent_id = %s,
-                    level = %s, chapter_type = %s, updated_at = %s
+                    level = %s, updated_at = %s
                 WHERE id = %s
             """
             self.cursor.execute(update_query, (
                 volume_id, chapter.page_number, chapter.page_end, parent_id,
-                chapter.level, chapter.chapter_type, datetime.now(), chapter_id
+                chapter.level, datetime.now(), chapter_id
             ))
             logger.debug(f"تم تحديث الفصل: {chapter.title}")
         else:
@@ -574,27 +650,40 @@ class EnhancedShamelaDatabaseManager:
         """
         result = self.execute_query(query, (book_id, page.page_number))
         
+        # استخراج البيانات الإضافية من PageContent
+        internal_index = getattr(page, 'page_index_internal', None) or getattr(page, 'internal_index', None)
+        original_page_number = getattr(page, 'original_page_number', None)
+        word_count = getattr(page, 'word_count', None)
+        html_content = getattr(page, 'html_content', None)
+        printed_missing = getattr(page, 'printed_missing', False)
+        
         if result:
             page_id = result[0]['id']
             # تحديث الصفحة
             update_query = f"""
                 UPDATE {self.tables['pages']} 
-                SET volume_id = %s, chapter_id = %s, content = %s, updated_at = %s
+                SET volume_id = %s, chapter_id = %s, content = %s, internal_index = %s, 
+                    original_page_number = %s, word_count = %s, html_content = %s, 
+                    printed_missing = %s, updated_at = %s
                 WHERE id = %s
             """
             self.cursor.execute(update_query, (
-                volume_id, chapter_id, page.content, datetime.now(), page_id
+                volume_id, chapter_id, page.content, internal_index,
+                original_page_number, word_count, html_content, 
+                printed_missing, datetime.now(), page_id
             ))
             logger.debug(f"تم تحديث الصفحة: {page.page_number}")
         else:
             # إدراج صفحة جديدة
             insert_query = f"""
                 INSERT INTO {self.tables['pages']} 
-                (book_id, volume_id, chapter_id, page_number, content, created_at, updated_at)
-                VALUES (%s, %s, %s, %s, %s, %s, %s)
+                (book_id, volume_id, chapter_id, page_number, content, internal_index,
+                 original_page_number, word_count, html_content, printed_missing, created_at, updated_at)
+                VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
             """
             page_id = self.execute_insert(insert_query, (
-                book_id, volume_id, chapter_id, page.page_number, page.content,
+                book_id, volume_id, chapter_id, page.page_number, page.content, internal_index,
+                original_page_number, word_count, html_content, printed_missing,
                 datetime.now(), datetime.now()
             ))
             logger.debug(f"تم إدراج صفحة جديدة: {page.page_number} (ID: {page_id})")
@@ -612,6 +701,9 @@ class EnhancedShamelaDatabaseManager:
         try:
             # بدء المعاملة
             self.connection.start_transaction()
+            
+            # 0. حساب internal_index للصفحات
+            self.calculate_internal_index_for_pages(book)
             
             # 1. حفظ الكتاب المحسن
             book_id = self.save_enhanced_book(book)
@@ -769,6 +861,39 @@ class EnhancedShamelaDatabaseManager:
         """
         result = self.execute_query(query, (book_id, page_number))
         return result[0]['id'] if result else None
+    
+    def calculate_internal_index_for_pages(self, book: Book) -> None:
+        """حساب internal_index للصفحات بناءً على has_original_pagination
+        
+        المنطق المعكوس:
+        - page_number: الرقم التسلسلي (1, 2, 3, ...)
+        - internal_index: رقم الصفحة الفعلي/الأصلي
+        """
+        if not book.has_original_pagination:
+            # إذا لم يكن هناك ترقيم أصلي، internal_index = page_number الأصلي
+            for i, page in enumerate(book.pages, 1):
+                # حفظ الرقم الأصلي في internal_index
+                original_page_num = page.page_number
+                if not hasattr(page, 'internal_index') or page.internal_index is None:
+                    page.internal_index = original_page_num
+                if not hasattr(page, 'page_index_internal') or page.page_index_internal is None:
+                    page.page_index_internal = original_page_num
+                # تحديث page_number ليكون الرقم التسلسلي
+                page.page_number = i
+        else:
+            # إذا كان هناك ترقيم أصلي، internal_index = الرقم الأصلي، page_number = التسلسلي
+            for i, page in enumerate(book.pages, 1):
+                # حفظ الرقم الأصلي في internal_index
+                original_page_num = page.page_number
+                if not hasattr(page, 'internal_index') or page.internal_index is None:
+                    page.internal_index = original_page_num
+                if not hasattr(page, 'page_index_internal') or page.page_index_internal is None:
+                    page.page_index_internal = original_page_num
+                # تحديث page_number ليكون الرقم التسلسلي
+                page.page_number = i
+        
+        logger.info(f"تم حساب internal_index لـ {len(book.pages)} صفحة (has_original_pagination: {book.has_original_pagination})")
+        logger.info(f"المنطق المعكوس: page_number = تسلسلي، internal_index = رقم فعلي")
     
     def get_enhanced_book_stats(self, book_id: int) -> Dict[str, Any]:
         """الحصول على إحصائيات الكتاب المحسنة"""
