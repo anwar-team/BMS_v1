@@ -1299,11 +1299,12 @@ def scrape_enhanced_book(book_id: str, max_pages: Optional[int] = None,
     # تحديث page_count للتوافق مع الكود القديم (مؤقتاً)
     book.page_count = page_count_internal
     
-    # 6. بناء خريطة التنقل للترقيم المطبوع
-    if book.has_original_pagination:
-        book.page_navigation_map = build_page_navigation_map(
-            book_id, page_count_internal, book.has_original_pagination
-        )
+    # 6. بناء خريطة التنقل للترقيم المطبوع (معطل لتسريع العملية)
+    # if book.has_original_pagination:
+    #     book.page_navigation_map = build_page_navigation_map(
+    #         book_id, page_count_internal, book.has_original_pagination
+    #     )
+    book.page_navigation_map = {}  # خريطة فارغة
     
     # 7. ربط الفصول بالأجزاء
     assign_chapters_to_volumes_enhanced(book.index, book.volumes)

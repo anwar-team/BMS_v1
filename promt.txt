@@ -1,147 +1,323 @@
-برومبت: إصلاح المجلدات والصفحات المطبوعـة فقط
-نطاق التنفيذ
+# برومبت مفصل لـ AI Agent: تعديل الكود ليناسب متطلبات قاعدة البيانات
 
-عدّل السكربت الحالي بحيث:
+## المهمة المطلوبة
 
-يبني المجلدات من قائمة ج: في صفحة القراءة، ويحسب internal_start / internal_end بدقّة.
+أريدك أن تقوم بتعديل كود السكربتات المرفقة (enhanced_shamela_scraper.py و enhanced_database_manager.py) لجعلها متوافقة تماماً مع هيكل قاعدة البيانات المطلوب في ملف "متطلباتي.md". يجب أن تركز على التعديلات التالية:
 
-يفعّل الترقيم المطبوع إن وُجد الوسم في بطاقة الكتاب، ويقرأ رقم ص: لكل صفحة من <title> ويخزّنه كرقم الصفحة المعتمد.
+## 1. جدول المؤلفين (authors)
 
-ممنوع تغيير أي منطق آخر (العنوان، المؤلف، الناشر، الوصف، الفهرس… إلخ).
+### المتطلبات المطلوبة:
+- **إضافة الحقول المطلوبة**:
+  - `is_living` (منطقي) - افتراضي: true
+  - `birth_year_type` (نص) - افتراضي: "gregorian"
+  - `birth_year` (عدد صحيح) - محول من Author.birth_date
+  - `death_year_type` (نص) - افتراضي: "gregorian"
+  - `death_year` (عدد صحيح) - محول من Author.death_date
 
-اختبر على كتاب المرجع ID=43 (بطاقته تذكر عدد الأجزاء: ٢٤، وصفحته تعرض في العنوان رقم الصفحة المطبوع بصيغة ص5 - ...). 
-المكتبة الشاملة
+- **الحقول التي يجب إزالتها**:
+  - `birth_date` و `death_date` (موجودتان في المتطلبات بـ "x" لكن مكتوب أنهما غير مطلوبتين)
 
-القسم A — المجلدات (Volumes) من قائمة “ج:”
-من أين؟
+### ما يجب فعله:
+1. قم بتعديل دالة `save_author` في ملف `enhanced_database_manager.py` لاستخراج السنة من `birth_date` و `death_date`:
+   ```python
+   def parse_year(date_text: str) -> tuple:
+       """تحليل النص إلى سنة ونوع السنة (هجري/ميلادي)"""
+       if not date_text:
+           return None, 'gregorian'
+       
+       # محاولة استخراج السنة الرقمية
+       year_match = re.search(r'(\d{3,4})\s*(ه|م)', date_text)
+       if year_match:
+           year = int(year_match.group(1))
+           era = 'hijri' if 'ه' in year_match.group(2) else 'gregorian'
+           return year, era
+       
+       # إذا لم يكن هناك تحديد للعصر
+       year_match = re.search(r'\d{3,4}', date_text)
+       if year_match:
+           return int(year_match.group()), 'gregorian'  # افتراضي
+       
+       return None, 'gregorian'
+   ```
 
-افتح صفحة قراءة واحدة: /book/{id}/1.
+2. قم بتعديل استعلام إدخال المؤلف لاستخدام القيم الجديدة:
+   ```python
+   # في دالة save_author
+   birth_year, birth_year_type = parse_year(author.birth_date)
+   death_year, death_year_type = parse_year(author.death_date)
+   is_living = not bool(author.death_date) and not bool(death_year)
+   
+   insert_query = f"""
+       INSERT INTO {self.tables['authors']} 
+       (full_name, slug, biography, madhhab, is_living,
+        birth_year_type, birth_year, death_year_type, death_year,
+        created_at, updated_at)
+       VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+   """
+   ```
 
-اقرأ قائمة “رقم الجزء (ج:)” الظاهرة في الـHTML (Dropdown فيه روابط 1..N). في كتاب 43 تظهر قائمة “ج:” بـ 1..24 ضمن الصفحة (DOM) من دون جافاسكربت. 
-المكتبة الشاملة
+3. تأكد من تحديث هيكل جدول المؤلفين في `create_enhanced_tables` ليتوافق مع المتطلبات:
+   ```python
+   authors_table = f"""
+       CREATE TABLE IF NOT EXISTS {self.tables['authors']} (
+           id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+           full_name VARCHAR(255) NOT NULL,
+           slug VARCHAR(255) NULL,
+           biography TEXT NULL,
+           madhhab VARCHAR(100) NULL,
+           is_living BOOLEAN DEFAULT TRUE,
+           birth_year_type VARCHAR(20) DEFAULT 'gregorian',
+           birth_year INT NULL,
+           death_year_type VARCHAR(20) DEFAULT 'gregorian',
+           death_year INT NULL,
+           created_at TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
+           updated_at TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+           UNIQUE KEY authors_slug_unique (slug),
+           INDEX authors_full_name_index (full_name)
+       ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
+   """
+   ```
 
-ماذا نلتقط؟
+## 2. جدول الكتب (books)
 
-لكل عنصر <a> في القائمة:
+### المتطلبات المطلوبة:
+- `edition` يجب أن يكون `Book.edition_number` (قيمة عددية)
+- `edition_DATA` يجب أن يكون `Book.edition_date_hijri` (محول إلى عدد صحيح)
 
-رقم الجزء من نص الرابط (يدعم الأرقام العربية-الهندية بتحويل Unicode U+0660..U+0669 إلى 0..9).
+### ما يجب فعله:
+1. قم بتعديل هيكل جدول الكتب في `create_enhanced_tables`:
+   ```python
+   books_table = f"""
+       CREATE TABLE IF NOT EXISTS {self.tables['books']} (
+           id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+           title VARCHAR(500) NOT NULL,
+           slug VARCHAR(255) NULL,
+           shamela_id VARCHAR(50) NOT NULL,
+           publisher_id BIGINT UNSIGNED NULL,
+           book_section_id BIGINT UNSIGNED NULL,
+           edition INT NULL,  -- هنا التصحيح (كان VARCHAR)
+           edition_DATA INT NULL,  -- جديد (كان اسمه edition_date_hijri)
+           pages_count INT NULL,
+           volumes_count INT NULL,
+           description LONGTEXT NULL,
+           language VARCHAR(10) DEFAULT 'ar',
+           source_url VARCHAR(500) NULL,
+           has_original_pagination BOOLEAN DEFAULT FALSE,
+           created_at TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
+           updated_at TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+           UNIQUE KEY books_shamela_id_unique (shamela_id),
+           UNIQUE KEY books_slug_unique (slug),
+           INDEX books_title_index (title),
+           INDEX books_publication_year_index (publication_year),
+           FOREIGN KEY (publisher_id) REFERENCES {self.tables['publishers']}(id) ON DELETE SET NULL,
+           FOREIGN KEY (book_section_id) REFERENCES {self.tables['book_sections']}(id) ON DELETE SET NULL
+       ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
+   """
+   ```
 
-بداية الجزء داخلياً = N من href="/book/{id}/{N}#p1".
+2. قم بتعديل دالة `save_enhanced_book` لاستخدام الحقول الجديدة:
+   ```python
+   update_query = f"""
+       UPDATE {self.tables['books']} 
+       SET title = %s, slug = %s, publisher_id = %s, book_section_id = %s,
+           edition = %s, edition_DATA = %s, pages_count = %s, volumes_count = %s,
+           description = %s, source_url = %s, updated_at = %s
+       WHERE id = %s
+   """
+   self.cursor.execute(update_query, (
+       book.title, book.slug, publisher_id, book_section_id,
+       book.edition_number,  # هنا التصحيح
+       int(book.edition_date_hijri) if book.edition_date_hijri else None,  # تحويل إلى عدد صحيح
+       book.page_count, book.volume_count,
+       book.description, book.source_url, datetime.now(), book_id
+   ))
+   ```
 
-بعد الجمع:
+## 3. جدول الصفحات (pages)
 
-أزِل التكرارات (خذ أصغر startN لنفس رقم الجزء).
+### المتطلبات المطلوبة:
+- `internal_index` يجب أن يكون "رقم التسلسلي للصفحه من 1 ل آخر صفحه بالكتاب" للكتب ذات `"has_original_pagination": true`
 
-رتّب تصاعديًا: [(1, N1), (2, N2), …].
+### ما يجب فعله:
+1. قم بتعديل دالة `extract_all_pages_enhanced` لإنشاء ترقيم تسلسلي صحيح:
+   ```python
+   def extract_all_pages_enhanced(book_id: str, total_pages: int, max_pages: Optional[int], 
+                                 has_original_pagination: bool) -> List[PageContent]:
+       """
+       استخراج جميع صفحات الكتاب بطريقة محسنة مع ترقيم تسلسلي صحيح
+       """
+       pages = []
+       actual_max = min(total_pages, max_pages) if max_pages else total_pages
+       logger.info(f"استخراج {actual_max} صفحة للكتاب {book_id}")
+       
+       # إنشاء خريطة للترقيم التسلسلي
+       sequential_number = 1
+       
+       for page_num in range(1, actual_max + 1):
+           try:
+               logger.info(f"استخراج الصفحة {page_num}/{actual_max}")
+               page_content = extract_enhanced_page_content(
+                   book_id, page_num, has_original_pagination
+               )
+               
+               # إضافة الرقم التسلسلي
+               if has_original_pagination:
+                   page_content.internal_index = sequential_number
+                   sequential_number += 1
+               else:
+                   page_content.internal_index = page_num
+                   
+               if page_content.content.strip():  # تجاهل الصفحات الفارغة
+                   pages.append(page_content)
+               # تأخير محترم
+               time.sleep(REQUEST_DELAY)
+           except Exception as e:
+               logger.warning(f"فشل في استخراج الصفحة {page_num}: {e}")
+               continue
+       logger.info(f"تم استخراج {len(pages)} صفحة بنجاح")
+       return pages
+   ```
 
-حساب النهايات:
-internal_end لكل جزء = بداية الجزء التالي − 1، وآخر جزء نهايته = أكبر N داخلي ظاهر في روابط الصفحة. (تظهر روابط كثيرة على الشكل /book/43/N داخل الصفحة). 
-المكتبة الشاملة
+2. قم بتعديل هيكل جدول الصفحات في `create_enhanced_tables`:
+   ```python
+   pages_table = f"""
+       CREATE TABLE IF NOT EXISTS {self.tables['pages']} (
+           id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+           book_id BIGINT UNSIGNED NOT NULL,
+           volume_id BIGINT UNSIGNED NULL,
+           chapter_id BIGINT UNSIGNED NULL,
+           page_number INT NOT NULL,
+           content LONGTEXT NULL,
+           word_count INT NULL,
+           created_at TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
+           updated_at TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+           INDEX pages_book_id_index (book_id),
+           INDEX pages_page_number_index (page_number),
+           UNIQUE KEY pages_book_page_unique (book_id, page_number),
+           FOREIGN KEY (book_id) REFERENCES {self.tables['books']}(id) ON DELETE CASCADE,
+           FOREIGN KEY (volume_id) REFERENCES {self.tables['volumes']}(id) ON DELETE CASCADE,
+           FOREIGN KEY (chapter_id) REFERENCES {self.tables['chapters']}(id) ON DELETE CASCADE
+       ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
+   """
+   ```
 
-مثال HTML (مصدر الحقيقة لبدايات الأجزاء)
+3. قم بتعديل دالة `save_enhanced_page` لتخزين القيمة الجديدة:
+   ```python
+   insert_query = f"""
+       INSERT INTO {self.tables['pages']} 
+       (book_id, volume_id, chapter_id, page_number, content, word_count, internal_index, created_at, updated_at)
+       VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)
+   """
+   page_id = self.execute_insert(insert_query, (
+       book_id, volume_id, chapter_id, page.page_number, page.content,
+       page.word_count, page.internal_index, datetime.now(), datetime.now()
+   ))
+   ```
 
-استخدم القائمة التالية كنموذج تطبيقي لفكّ startN لكل جزء (كل #p1 تعني أول صفحة في ذلك الجزء):
+## 4. جدول الفصول (chapters)
 
-<ul class="dropdown-menu" role="menu" style="max-height:305px; overflow:scroll">
-  <li class="active"><a href="javascript:;">رقم الجزء</a></li>
-  <li><a href="https://shamela.ws/book/43/1#p1" class="text-info">1</a></li>
-  <li><a href="https://shamela.ws/book/43/599#p1">2</a></li>
-  <li><a href="https://shamela.ws/book/43/1188#p1">3</a></li>
-  ...
-  <li><a href="https://shamela.ws/book/43/13939#p1">24</a></li>
-</ul>
+### المتطلبات المطلوبة:
+- `chapter_type` يجب أن يكون "just keept in jason" (موجود في JSON فقط)
 
-مخرجات الدالة
+### ما يجب فعله:
+1. قم بحذف `chapter_type` من جدول الفصول في `create_enhanced_tables`:
+   ```python
+   chapters_table = f"""
+       CREATE TABLE IF NOT EXISTS {self.tables['chapters']} (
+           id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+           volume_id BIGINT UNSIGNED NULL,
+           book_id BIGINT UNSIGNED NOT NULL,
+           title VARCHAR(255) NOT NULL,
+           parent_id BIGINT UNSIGNED NULL,
+           order_number INT DEFAULT 0,
+           page_start INT NULL,
+           page_end INT NULL,
+           level INT DEFAULT 0,
+           created_at TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
+           updated_at TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+           INDEX chapters_book_id_index (book_id),
+           INDEX chapters_order_index (order_number),
+           FOREIGN KEY (volume_id) REFERENCES {self.tables['volumes']}(id) ON DELETE CASCADE,
+           FOREIGN KEY (book_id) REFERENCES {self.tables['books']}(id) ON DELETE CASCADE,
+           FOREIGN KEY (parent_id) REFERENCES {self.tables['chapters']}(id) ON DELETE CASCADE
+       ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
+   """
+   ```
 
-أعد قائمة كائنات/قواميس بالمفاتيح:
+2. قم بتعديل دالة `save_enhanced_chapter` لإزالة `chapter_type`:
+   ```python
+   insert_query = f"""
+       INSERT INTO {self.tables['chapters']} 
+       (book_id, volume_id, title, page_start, page_end, parent_id,
+        `order`, level, created_at, updated_at)
+       VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+   """
+   ```
 
-number, internal_start, internal_end
+## 5. ملاحظات عامة
 
-(اختياري) printed_start, printed_end (انظر أدناه).
+1. **التأكد من التوافق مع JSON**:
+   - احتفظ بـ `chapter_type` في ملف JSON فقط (لا تقم بحذفه من نموذج الفصل)
+   - قم بتعديل دالة `convert_chapters_to_dict` في `enhanced_shamela_scraper.py` لإضافة `chapter_type`:
+     ```python
+     def convert_chapters_to_dict(chapters: List[Chapter]) -> List[Dict]:
+         result = []
+         for chapter in chapters:
+             chapter_dict = {
+                 'title': chapter.title,
+                 'order': chapter.order,
+                 'page_number': chapter.page_number,
+                 'page_end': chapter.page_end,
+                 'volume_number': chapter.volume_number,
+                 'level': chapter.level,
+                 'chapter_type': chapter.chapter_type,  # مطلوب في JSON فقط
+                 'children': convert_chapters_to_dict(chapter.children) if chapter.children else []
+             }
+             result.append(chapter_dict)
+         return result
+     ```
 
-معايير القبول (Volumes)
+2. **الحقول التي يجب إهمالها**:
+   - `publisher` في جدول الكتب (استخدم `publisher_id` بدلاً منه)
+   - `published_year` في جدول الكتب (استخدم `publication_year` بدلاً منه)
 
-عدد المجلدات المستخرجة يساوي عدد الأجزاء في البطاقة (43 ⇒ 24).
+3. **الحقول التي يجب إزالتها من الكود**:
+   - `birth_date` و `death_date` من جدول المؤلفين
+   - `edition_date_hijri` من جدول الكتب (استبدلها بـ `edition_DATA`)
+   - `chapter_type` من جدول الفصول
 
-يغطي المجال الداخلي 1..maxInternalPage بدون فجوات أو تداخل.
+4. **الحقول التي يجب إضافتها**:
+   - `edition_DATA` في جدول الكتب
+   - `internal_index` في جدول الصفحات
 
-تحقق عيّنة: افتح internal_start لجزءين عشوائيين وتأكد أن شريط “ج:” بالصفحة يعرض نفس رقم الجزء. 
-المكتبة الشاملة
+5. **التأكد من أن جميع القيم تُحسب بشكل صحيح**:
+   - `is_living` يجب أن يكون `true` إذا لم يكن هناك تاريخ وفاة
+   - `internal_index` يجب أن يكون ترقيماً تسلسلياً من 1 إلى العدد الكلي للصفحات
+   - `edition_DATA` يجب أن يكون عدداً صحيحاً (تحويل النص إلى رقم)
 
-القسم B — الترقيم المطبوع (Printed pagination)
-متى نفعّله؟
+## التعليمات النهائية
 
-إذا وُجد في بطاقة الكتاب الوسم [ترقيم الكتاب موافق للمطبوع] ⇒ فعّل وضع المطبوع.
+1. قم بتعديل الملفات التالية:
+   - `enhanced_database_manager.py` (لتعديل هيكل قاعدة البيانات)
+   - `enhanced_shamela_scraper.py` (لتعديل استخراج البيانات)
 
-من أين نقرأ رقم ص؟
+2. تأكد من أن التعديلات تتم دون كسر بقية الكود:
+   - حافظ على التوافق مع الوظائف الأخرى
+   - لا تحذف أي شيء إلا إذا كان مطلوباً في "متطلباتي.md"
+   - تأكد من أن جميع الوظائف التي تعتمد على الحقول المُحذفة تعمل بشكل صحيح
 
-أثناء جلب كل صفحة /book/{id}/{N}:
+3. أضف تعليقات توضيحية في الكود لشرح التغييرات:
+   ```python
+   # START: تعديل حسب متطلباتي.md
+   # تم تغيير edition من VARCHAR إلى INT كما هو مطلوب
+   # END: تعديل حسب متطلباتي.md
+   ```
 
-اقرأ <title> واستخرج رقم ص بــ Regex مرن:
+4. قم باختبار جميع الوظائف بعد التعديل للتأكد من أنها تعمل كما هو متوقع:
+   - استخراج كتاب
+   - حفظه في قاعدة البيانات
+   - استخراج إحصائيات الكتاب
 
-[صس]\\s*[:：]?\\s*([0-9\\u0660-\\u0669]+)
+5. تأكد من أن جميع الحقول المطلوبة في "متطلباتي.md" موجودة في قاعدة البيانات، وأن جميع الحقول غير المطلوبة تم إزالتها أو تعديلها وفقاً للمتطلبات.
 
-حوّل الأرقام العربية-الهندية (Unicode U+0660..U+0669) إلى أرقام غربية ثم int. 
-ويكيبيديا
-+1
-
-إن نجح: page_number = printed، ودوّن دائمًا page_index_internal = N.
-
-إن فشل نادرًا: page_number = N وعلّمها داخليًا printed_missing=true.
-
-ملاحظة مرجعية: عنوان صفحة 43 يبدأ بـ ص5 - ... وهذا تأكيد أن <title> يحمل الرقم المطبوع. 
-المكتبة الشاملة
-
-أثره على الفصول
-
-مهم جدًا: أرقام الفهرس/عناوين الفصول هي ترقيم تسلسلي داخلي (أو جزء من الاسم) — لا تُستخدم كترقيم صفحات مطبوعة.
-
-نحسب page_start/page_end للفصول من N الداخلي، ثم نُحوِّلها إلى مطبوع باستعمال خريطة N → printed بعدما أصبح لدينا رقم ص لكل صفحة تم جلبها. (لا نقرأ أي رقم من نص عنوان الفصل نفسه).
-
-(اختياري) حدود مطبوعة للمجلد
-
-لأجل printed_start/printed_end: افتح صفحتين فقط لكل جزء (أول/آخر) واقرأ رقم ص من <title> لكلٍ منهما.
-
-معايير القبول (Printed)
-
-عند تفعيل وضع المطبوع: pages[i].page_number يساوي رقم ص من <title> لنفس الصفحة. 
-المكتبة الشاملة
-
-خريطة N→printed متسقة بدون قفزات غير منطقية.
-
-لا تعديل على أي حقول أخرى خارج النطاق.
-
-تعليمات دمج (Minimal)
-
-أضِف/عدِّل دالتين فقط:
-
-extract_volumes_from_dropdown(book_id)
-
-تُرجع: [{number, internal_start, internal_end, (printed_start?), (printed_end?)}] بالاعتماد على قائمة ج: في DOM.
-
-انتبه: الأرقام العربية-الهندية تحتاج تحويل Unicode قبل int. 
-ويكيبيديا
-
-extract_printed_page_number(soup_or_title)
-
-تُرجع int|None من <title> عبر الـRegex أعلاه.
-
-اربط الأولى في مرحلة بناء المجلدات فقط، والثانية داخل حلقة جلب الصفحات.
-
-لا تغيّر أي شيء آخر (عنوان/مؤلف/ناشر/وصف/فهرس…).
-
-ملاحظات تقنية قصيرة
-
-استخدام CSS selectors عبر select() وقراءة نص نظيف عبر get_text(separator, strip=True) موثّق رسميًا في BeautifulSoup؛ التزم بهما عند الحاجة. 
-crummy.com
-tutorialspoint.com
-
-اختبار قبول نهائي على 43
-
-Volumes: 24 عنصر من القائمة (مطابق للبطاقة)، ونطاق داخلي كامل بلا فجوات/تداخل. 
-المكتبة الشاملة
-
-Printed: <title> يعطي أرقام ص صحيحة (مثال: ص5 - ...) وتُسجّل كـ page_number. 
-المكتبة الشاملة
-
-تذكير مهم: ترقيم الفهرس/الفصول = داخلي/تسلسلي فقط، لا يُستعمل كترقيم مطبوع إطلاقًا — المرجعية الوحيدة للصفحات المطبوعة هي <title> أثناء القراءة.
+ملاحظة: يجب أن يكون التعديل دقيقاً 100% وفقاً لمتطلباتي.md بدون أي تغييرات إضافية غير مطلوبة.
