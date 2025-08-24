@@ -48,7 +48,10 @@
 #### إزالة Components ثقيلة:
 - ❌ حذف `getPagesRepeater()` - كان يحمل جميع الصفحات دفعة واحدة
 - ❌ إزالة tab الصفحات من الـ form
-- ✅ إضافة PagesRelationManager للعلاقات
+- ❌ حذف `AuthorsRelationManager.php` - غير مستخدم
+- ❌ حذف `VolumesRelationManager.php` - غير مستخدم  
+- ❌ حذف `ChaptersRelationManager.php` - غير مستخدم
+- ✅ إضافة PagesRelationManager المحسن فقط
 
 #### تحسين الـ Repeaters:
 ```php

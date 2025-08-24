@@ -724,12 +724,7 @@ class BookResource extends Resource
     public static function getRelations(): array
     {
         return [
-            BookResource\RelationManagers\AuthorsRelationManager::class,
-            BookResource\RelationManagers\VolumesRelationManager::class,
-            BookResource\RelationManagers\ChaptersRelationManager::class,
-            BookResource\RelationManagers\PagesRelationManager::class, // جديد - لتحسين الأداء
-
-
+            BookResource\RelationManagers\PagesRelationManager::class, // فقط RelationManager الصفحات المحسن
         ];
     }
 
