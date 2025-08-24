@@ -79,25 +79,6 @@ class BookResource extends Resource
                         ->schema([
                             self::getVolumesRepeater(),
                         ]),
-
-                    // Tab 4: الصفحات (تظهر فقط إذا كان الكتاب محفوظ)
-                    Tab::make('الصفحات')
-                        ->icon('heroicon-o-document-text')
-                        ->visible(fn ($livewire) => $livewire->record && $livewire->record->exists)
-                        ->schema([
-                            self::getPagesRepeater(),
-                        ]),
-
-                    // Tab 4b: رسالة ودية إذا لم يكن الكتاب محفوظاً
-                    Tab::make('الصفحات')
-                        ->icon('heroicon-o-document-text')
-                        ->visible(fn ($livewire) => !$livewire->record || !$livewire->record->exists)
-                        ->schema([
-                            \Filament\Forms\Components\Placeholder::make('save_book_first')
-                                ->label('تنبيه')
-                                ->content('يرجى حفظ الكتاب أولاً لإضافة الصفحات. بعد الحفظ ستتمكن من إضافة الصفحات وربطها بالمجلدات والفصول.')
-                                ->columnSpanFull(),
-                        ]),
                 ])
                 ->columnSpanFull()
                 ->persistTabInQueryString(),
@@ -355,6 +336,7 @@ class BookResource extends Resource
                 'مجلد ' . ($state['number'] ?? 'جديد') . 
                 ($state['title'] ? ' - ' . $state['title'] : '')
             )
+            ->maxItems(100) // حد أقصى 100 مجلد لتحسين الأداء
             ->defaultItems(1)
             ->columnSpanFull();
     }
@@ -378,36 +360,7 @@ class BookResource extends Resource
             ->itemLabel(fn (array $state): ?string => 
                 ($state['title'] ?? 'فصل جديد')
             )
-            ->defaultItems(0);
-    }
-
-    private static function getPagesRepeater(): Repeater
-    {
-        return Repeater::make('pages')
-            ->label('صفحات الكتاب')
-            ->relationship('pages')
-            ->schema([
-                TextInput::make('page_number')
-                    ->label('رقم الصفحة')
-                    ->required()
-                    ->numeric(),
-                RichEditor::make('content')
-                    ->label('محتوى الصفحة')
-                    ->toolbarButtons([
-                        'bold',
-                        'italic',
-                        'underline',
-                        'strike',
-                        'h2',
-                        'h3',
-                        'bulletList',
-                        'orderedList',
-                        'blockquote',
-                        'link',
-                    ])
-                    ->columnSpanFull(),
-            ])
-            ->addActionLabel('إضافة صفحة جديدة')
+            ->maxItems(200) // حد أقصى 200 فصل لتحسين الأداء
             ->defaultItems(0);
     }
 
@@ -763,8 +716,9 @@ class BookResource extends Resource
             ])
             ->defaultSort('created_at', 'desc')
             ->striped()
-            ->paginated([10, 25, 50, 100])
-            ->poll('30s');
+            ->paginated([10, 25, 50]) // تقليل خيارات الصفحات لتحسين الأداء
+            ->poll('60s') // تحديث كل دقيقة بدلاً من 30 ثانية
+            ->deferLoading(); // تأجيل التحميل لتحسين الأداء
     }
 
     public static function getRelations(): array
@@ -773,6 +727,7 @@ class BookResource extends Resource
             BookResource\RelationManagers\AuthorsRelationManager::class,
             BookResource\RelationManagers\VolumesRelationManager::class,
             BookResource\RelationManagers\ChaptersRelationManager::class,
+            BookResource\RelationManagers\PagesRelationManager::class, // جديد - لتحسين الأداء
 
 
         ];
