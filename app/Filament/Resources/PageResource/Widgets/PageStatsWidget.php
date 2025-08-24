@@ -15,7 +15,6 @@ class PageStatsWidget extends BaseWidget
     {
         $totalPages = Page::count();
         $pagesWithContent = Page::whereNotNull('content')->where('content', '!=', '')->count();
-        $pagesWithFootnotes = Page::has('footnotes')->count();
         $newPagesThisMonth = Page::where('created_at', '>=', Carbon::now()->startOfMonth())->count();
 
         // Calculate percentage of pages with content
@@ -31,11 +30,6 @@ class PageStatsWidget extends BaseWidget
                 ->description($pagesWithContentPercentage . '% من إجمالي الصفحات')
                 ->descriptionIcon('heroicon-m-document-check')
                 ->color('success'),
-
-            Stat::make('الصفحات مع حواشي', $pagesWithFootnotes)
-                ->description('الصفحات التي تحتوي على حواشي')
-                ->descriptionIcon('heroicon-m-chat-bubble-bottom-center-text')
-                ->color('info'),
 
             Stat::make('صفحات جديدة هذا الشهر', $newPagesThisMonth)
                 ->description('تمت إضافتها في ' . Carbon::now()->format('F Y'))

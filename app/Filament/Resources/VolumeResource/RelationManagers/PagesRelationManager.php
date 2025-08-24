@@ -109,17 +109,6 @@ class PagesRelationManager extends RelationManager
                     ->limit(100)
                     ->placeholder('لا يوجد محتوى')
                     ->toggleable(),
-                Tables\Columns\TextColumn::make('footnotes_count')
-                    ->label('الهوامش')
-                    ->counts('footnotes')
-                    ->sortable()
-                    ->badge()
-                    ->color(fn (int $state): string => match (true) {
-                        $state === 0 => 'gray',
-                        $state <= 5 => 'success',
-                        $state <= 15 => 'warning',
-                        default => 'danger',
-                    }),
                 Tables\Columns\IconColumn::make('is_published')
                     ->label('منشورة')
                     ->boolean()

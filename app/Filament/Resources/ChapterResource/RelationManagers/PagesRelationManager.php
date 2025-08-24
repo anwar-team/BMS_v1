@@ -93,17 +93,6 @@ class PagesRelationManager extends RelationManager
                     ->limit(100)
                     ->placeholder('لا يوجد محتوى')
                     ->toggleable(),
-                Tables\Columns\TextColumn::make('footnotes_count')
-                    ->label('الهوامش')
-                    ->counts('footnotes')
-                    ->sortable()
-                    ->badge()
-                    ->color(fn (int $state): string => match (true) {
-                        $state === 0 => 'gray',
-                        $state <= 5 => 'success',
-                        $state <= 15 => 'warning',
-                        default => 'danger',
-                    }),
                 Tables\Columns\IconColumn::make('is_published')
                     ->label('منشورة')
                     ->boolean()
@@ -127,8 +116,6 @@ class PagesRelationManager extends RelationManager
                     ->preload(),
                 Tables\Filters\TernaryFilter::make('is_published')
                     ->label('منشورة'),
-                Tables\Filters\TernaryFilter::make('has_footnotes')
-                    ->label('لها هوامش'),
                 Tables\Filters\Filter::make('has_content')
                     ->label('لها محتوى')
                     ->query(fn (Builder $query): Builder => $query->whereNotNull('content')->where('content', '!=', '')),

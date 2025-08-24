@@ -155,14 +155,6 @@ class Book extends Model
         return $this->latestBokImport;
     }
 
-    /**
-     * العلاقة مع الحواشي
-     */
-    public function footnotes(): HasMany
-    {
-        return $this->hasMany(Footnote::class);
-    }
-
 
 
 

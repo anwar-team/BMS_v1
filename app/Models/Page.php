@@ -96,23 +96,6 @@ class Page extends Model
     }
 
     /**
-     * العلاقة مع الحواشي
-     */
-    public function footnotes(): HasMany
-    {
-        return $this->hasMany(Footnote::class);
-    }
-
-    /**
-    /**
-     * الحصول على الحواشي مرتبة حسب الموقع
-     */
-    public function orderedFootnotes()
-    {
-        return $this->footnotes()->orderedByPosition();
-    }
-
-    /**
      * الحصول على الفهارس عالية الأهمية
      */
     public function importantIndexes()
@@ -126,14 +109,6 @@ class Page extends Model
     public function directReferences()
     {
         return $this->pageReferences()->directQuotes();
-    }
-
-    /**
-     * التحقق من وجود حواشي
-     */
-    public function hasFootnotes(): bool
-    {
-        return $this->footnotes()->exists();
     }
 
     /**

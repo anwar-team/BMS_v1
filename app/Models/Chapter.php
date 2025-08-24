@@ -118,14 +118,6 @@ protected static function booted()
     }
 
     /**
-     * العلاقة مع الحواشي
-     */
-    public function footnotes(): HasMany
-    {
-        return $this->hasMany(Footnote::class);
-    }
-
-    /**
      * الحصول على جميع الفصول الفرعية (بشكل هرمي)
      */
     public function allChildren()

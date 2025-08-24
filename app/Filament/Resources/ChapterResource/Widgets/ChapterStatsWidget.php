@@ -15,7 +15,6 @@ class ChapterStatsWidget extends BaseWidget
     {
         $totalChapters = Chapter::count();
         $chaptersWithPages = Chapter::has('pages')->count();
-        $chaptersWithFootnotes = Chapter::has('footnotes')->count();
         $newChaptersThisMonth = Chapter::where('created_at', '>=', Carbon::now()->startOfMonth())->count();
 
         // Calculate percentage of chapters with pages
@@ -31,11 +30,6 @@ class ChapterStatsWidget extends BaseWidget
                 ->description($chaptersWithPagesPercentage . '% من إجمالي الفصول')
                 ->descriptionIcon('heroicon-m-document-text')
                 ->color('success'),
-
-            Stat::make('الفصول مع حواشي', $chaptersWithFootnotes)
-                ->description('الفصول التي تحتوي على حواشي')
-                ->descriptionIcon('heroicon-m-chat-bubble-bottom-center-text')
-                ->color('info'),
 
             Stat::make('فصول جديدة هذا الشهر', $newChaptersThisMonth)
                 ->description('تمت إضافتها في ' . Carbon::now()->format('F Y'))
