@@ -19,6 +19,10 @@ class Page extends Model
         'internal_index',
         'part',
         'content',
+        'html_content',
+        'original_page_number',
+        'word_count',
+        'printed_missing',
     ];
 
     protected $casts = [

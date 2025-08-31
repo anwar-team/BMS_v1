@@ -7,6 +7,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\CategoriesController;
 use App\Http\Controllers\ShowAllController;
 use App\Http\Controllers\BookReadController;
+use App\Livewire\Reader\BookReader;
 use Illuminate\Support\Facades\Route;
 use Lab404\Impersonate\Services\ImpersonateManager;
 
@@ -46,18 +47,19 @@ Route::get('/coming-soon', function () {
     return view('components.superduper.pages.coming-soon', ['page_type' => 'generic']);
 })->name('coming-soon');
 
-// طرق قراءة الكتب
-Route::get('/book/{bookId}/{pageNumber?}', [BookReadController::class, 'show'])
+// طرق قراءة الكتب - Livewire Component
+Route::get('/book/{bookId}/{pageNumber?}', BookReader::class)
     ->name('book.read')
     ->where(['bookId' => '[0-9]+', 'pageNumber' => '[0-9]+']);
 
-Route::get('/book/{bookId}/search', [BookReadController::class, 'search'])
-    ->name('book.search')
-    ->where('bookId', '[0-9]+');
-
-Route::post('/book/{bookId}/goto/{pageNumber}', [BookReadController::class, 'goToPage'])
-    ->name('book.goto')
-    ->where(['bookId' => '[0-9]+', 'pageNumber' => '[0-9]+']);
+// Legacy routes for backward compatibility (can be removed later)
+// Route::get('/book/{bookId}/search', [BookReadController::class, 'search'])
+//     ->name('book.search')
+//     ->where('bookId', '[0-9]+');
+// 
+// Route::post('/book/{bookId}/goto/{pageNumber}', [BookReadController::class, 'goToPage'])
+//     ->name('book.goto')
+//     ->where(['bookId' => '[0-9]+', 'pageNumber' => '[0-9]+']);
 
 Route::post('/contact', [App\Http\Controllers\ContactController::class, 'submit'])
     ->name('contact.submit');
