@@ -26,6 +26,7 @@ class BookReader extends Component
     public bool $showSearchResults = false;
     public int $fontSize = 100;
     public bool $showMovements = false;
+    public ?int $selectedVolume = null;
 
     // URL parameters for routing
     protected $queryString = [
@@ -56,6 +57,11 @@ class BookReader extends Component
         
         // Load book statistics
         $this->loadBookStatistics();
+        
+        // Set selected volume if current page has one
+        if ($this->currentPage && $this->currentPage->volume_id) {
+            $this->selectedVolume = $this->currentPage->volume_id;
+        }
     }
 
     /**
@@ -181,6 +187,11 @@ class BookReader extends Component
 
         // Load navigation info
         $this->loadNavigation();
+        
+        // Update selected volume
+        if ($this->currentPage && $this->currentPage->volume_id) {
+            $this->selectedVolume = $this->currentPage->volume_id;
+        }
     }
 
     /**
@@ -280,6 +291,16 @@ class BookReader extends Component
     }
 
     /**
+     * Handle page number updates from input/slider
+     * 
+     * @return void
+     */
+    public function updatedPageNumber(): void
+    {
+        $this->gotoPage($this->pageNumber);
+    }
+
+    /**
      * Navigate to previous page
      * 
      * @return void
@@ -316,6 +337,29 @@ class BookReader extends Component
         if ($volume && $volume->pages->isNotEmpty()) {
             $firstPage = $volume->pages->min('page_number');
             $this->gotoPage($firstPage);
+        }
+    }
+
+    /**
+     * Handle volume selection change
+     * 
+     * @param string $volumeId
+     * @return void
+     */
+    public function changeVolume(string $volumeId): void
+    {
+        $this->gotoVolume((int) $volumeId);
+    }
+
+    /**
+     * Handle selected volume updates
+     * 
+     * @return void
+     */
+    public function updatedSelectedVolume(): void
+    {
+        if ($this->selectedVolume) {
+            $this->gotoVolume($this->selectedVolume);
         }
     }
 

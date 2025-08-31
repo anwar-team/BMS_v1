@@ -16,6 +16,7 @@
         <title>{{ $book->title }} - قراءة الكتاب</title>
         <script src="https://cdn.tailwindcss.com"></script>
         <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700&display=swap" rel="stylesheet">
+        @livewireStyles
         <style>
             .font-tajawal {
                 font-family: 'Tajawal', sans-serif;
@@ -272,6 +273,7 @@
                                                     <div class="flex items-center space-x-1 mx-2">
                                                         <input type="number" 
                                                                wire:model.live.debounce.500ms="pageNumber" 
+                                                               wire:keydown.enter="gotoPage($event.target.value)"
                                                                min="1" 
                                                                max="{{ $navigation['total_pages'] }}" 
                                                                class="w-16 px-2 py-1 text-center border border-[#e0d9cc] rounded focus:outline-none focus:ring-2 focus:ring-[#957717] text-sm">
@@ -319,7 +321,7 @@
                                             @if($book->volumes()->count() > 0)
                                                 <div class="flex items-center space-x-1 sm:space-x-2 space-x-reverse order-3">
                                                     <span class="text-[#39100C] font-medium text-sm sm:text-base whitespace-nowrap">الأجزاء:</span>
-                                                    <select wire:change="gotoVolume($event.target.value)" class="bg-white border border-[#e0d9cc] rounded-lg px-2 py-1 sm:px-3 sm:py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#957717] min-w-[80px]">
+                                                    <select wire:model.live="selectedVolume" class="bg-white border border-[#e0d9cc] rounded-lg px-2 py-1 sm:px-3 sm:py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#957717] min-w-[80px]">
                                                         @foreach($book->volumes()->orderBy('number')->get() as $volume)
                                                             <option value="{{ $volume->id }}" {{ $currentPage && $currentPage->volume_id == $volume->id ? 'selected' : '' }}>
                                                                 {{ $volume->title ?: 'الجزء ' . $volume->number }}
@@ -390,4 +392,7 @@
             display: none;
         }
     </style>
+    
+    <!-- Livewire Scripts -->
+    @livewireScripts
 </div>
