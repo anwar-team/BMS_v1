@@ -215,9 +215,6 @@ class BookReader extends Component
             $this->selectedVolume = $this->currentPage->volume_id;
         }
         
-        // Update internal index (use actual internal_index from database)
-        $this->internalIndex = $this->currentPage->internal_index ?? $this->currentPage->page_number;
-        
         // Update current section for TOC
         $this->updateCurrentSection();
     }
@@ -384,11 +381,18 @@ class BookReader extends Component
      */
     public function gotoVolume(int $volumeId): void
     {
-        $volume = Volume::with('pages')->find($volumeId);
+        $volume = Volume::where('book_id', $this->bookId)->find($volumeId);
         
-        if ($volume && $volume->pages->isNotEmpty()) {
-            $firstPage = $volume->pages->min('page_number');
-            $this->gotoPage($firstPage);
+        if ($volume) {
+            // Find the first page of this volume
+            $firstPage = Page::where('book_id', $this->bookId)
+                ->where('volume_id', $volumeId)
+                ->orderBy('page_number')
+                ->first();
+            
+            if ($firstPage) {
+                $this->gotoPage($firstPage->page_number);
+            }
         }
     }
 
