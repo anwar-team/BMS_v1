@@ -251,7 +251,7 @@
                                                     </h2>
                                                 @endif
                                                 
-                                                <div class="prose prose-lg max-w-none {{ $showMovements ? '' : 'no-movements' }}">
+                                                <div class="prose prose-lg max-w-none {{ $showMovements ? '' : 'no-movements' }}" style="font-size: {{ $fontPercent / 100 }}em !important;">
                                                     {!! $currentContent !!}
                                                 </div>
                                                 
@@ -356,7 +356,7 @@
                                             @if($book->volumes()->count() > 0)
                                                 <div class="flex items-center space-x-1 sm:space-x-2 space-x-reverse order-3">
                                                     <span class="text-[#39100C] font-medium text-sm sm:text-base whitespace-nowrap">الأجزاء:</span>
-                                                    <select wire:model.live="selectedVolume" class="bg-white border border-[#e0d9cc] rounded-lg px-2 py-1 sm:px-3 sm:py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#957717] min-w-[80px]">
+                                                    <select x-data x-on:change="$wire.call('gotoVolume', $event.target.value)" class="bg-white border border-[#e0d9cc] rounded-lg px-2 py-1 sm:px-3 sm:py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#957717] min-w-[80px]">
                                                         @foreach($book->volumes()->orderBy('number')->get() as $volume)
                                                             <option value="{{ $volume->id }}" {{ $currentPage && $currentPage->volume_id == $volume->id ? 'selected' : '' }}>
                                                                 {{ $volume->title ?: 'الجزء ' . $volume->number }}
@@ -423,18 +423,25 @@
             });
             
             // Listen for font size changes
-            Livewire.on('fontSizeChanged', (fontPercent) => {
+            Livewire.on('fontSizeChanged', (event) => {
+                const fontPercent = event.detail ? event.detail[0] : event;
                 console.log('Font size changed to:', fontPercent);
                 const contentArea = document.querySelector('[data-book-content]');
+                const proseArea = document.querySelector('.prose');
                 const fontDisplay = document.getElementById('font-percent-display');
                 
+                const relativeSize = (fontPercent / 100) + 'em';
+                
+                // Apply to main content area
                 if (contentArea) {
-                    // Convert percentage to relative size (100% = 1em, 120% = 1.2em)
-                    const relativeSize = (fontPercent / 100) + 'em';
                     contentArea.style.fontSize = relativeSize;
-                    console.log('Applied font size:', relativeSize);
-                } else {
-                    console.error('Content area not found');
+                    console.log('Applied font size to content area:', relativeSize);
+                }
+                
+                // Apply to prose area with !important
+                if (proseArea) {
+                    proseArea.style.setProperty('font-size', relativeSize, 'important');
+                    console.log('Applied font size to prose area:', relativeSize);
                 }
                 
                 // Update font display
@@ -445,6 +452,71 @@
                     console.error('Font display element not found');
                 }
             });
+            
+            // Also listen for Livewire updates to refresh font display and movements
+            document.addEventListener('livewire:updated', () => {
+                const fontDisplay = document.getElementById('font-percent-display');
+                if (fontDisplay) {
+                    console.log('Livewire updated, font display found');
+                }
+                
+                // Apply movements toggle after Livewire update
+                applyMovementsToggle();
+            });
+            
+            // Function to toggle Arabic diacritics
+            function applyMovementsToggle() {
+                const proseArea = document.querySelector('.prose');
+                if (proseArea) {
+                    const showMovements = !proseArea.classList.contains('no-movements');
+                    toggleArabicDiacritics(proseArea, showMovements);
+                }
+            }
+            
+            function toggleArabicDiacritics(element, show) {
+                if (!element) return;
+                
+                // Arabic diacritics Unicode ranges
+                const diacriticsRegex = /[\u064B-\u065F\u0670\u06D6-\u06ED]/g;
+                
+                const walker = document.createTreeWalker(
+                    element,
+                    NodeFilter.SHOW_TEXT,
+                    null,
+                    false
+                );
+                
+                const textNodes = [];
+                let node;
+                while (node = walker.nextNode()) {
+                    textNodes.push(node);
+                }
+                
+                textNodes.forEach(textNode => {
+                    if (!textNode.originalText) {
+                        textNode.originalText = textNode.textContent;
+                    }
+                    
+                    if (show) {
+                        textNode.textContent = textNode.originalText;
+                    } else {
+                        textNode.textContent = textNode.originalText.replace(diacriticsRegex, '');
+                    }
+                });
+            }
+            
+            // Listen for movements toggle
+            Livewire.on('movementsToggled', (showMovements) => {
+                const proseArea = document.querySelector('.prose');
+                if (proseArea) {
+                    toggleArabicDiacritics(proseArea, showMovements);
+                }
+            });
+            
+            // Apply initial state
+            setTimeout(() => {
+                applyMovementsToggle();
+            }, 100);
         });
         
         // Test font size buttons and page input on page load
@@ -545,9 +617,27 @@
     
     <!-- CSS for movements toggle and TOC enhancements -->
     <style>
+        /* Hide diacritics and Arabic vowel marks */
         .no-movements .diacritic,
-        .no-movements .harakat {
-            display: none;
+        .no-movements .harakat,
+        .no-movements [class*="diacritic"],
+        .no-movements [class*="harakat"],
+        .no-movements [class*="tashkeel"] {
+            display: none !important;
+        }
+        
+        /* Hide common Arabic diacritical marks by Unicode range */
+        .no-movements {
+            font-feature-settings: "kern" off;
+        }
+        
+        .no-movements * {
+            text-decoration: none;
+        }
+        
+        /* Remove Arabic diacritics using CSS */
+        .no-movements {
+            font-variant-ligatures: none;
         }
         
         /* Enhanced TOC animations */
@@ -608,6 +698,15 @@
         
         .toc-container::-webkit-scrollbar-thumb:hover {
             background: #4a4d13;
+        }
+        
+        /* Force font size inheritance for prose content */
+        .prose * {
+            font-size: inherit !important;
+        }
+        
+        .prose p, .prose div, .prose span {
+            font-size: inherit !important;
         }
     </style>
 </div>

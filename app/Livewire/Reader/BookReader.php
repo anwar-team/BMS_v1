@@ -25,7 +25,7 @@ class BookReader extends Component
     public array $searchResults = [];
     public bool $showSearchResults = false;
     public int $fontPercent = 100;
-    public bool $showMovements = false;
+    public bool $showMovements = true;
     public ?int $selectedVolume = null;
     public ?int $internalIndex = null;
     
@@ -392,6 +392,23 @@ class BookReader extends Component
             
             if ($firstPage) {
                 $this->gotoPage($firstPage->page_number);
+            } else {
+                // If no pages found with volume_id, try finding by chapter
+                $firstChapter = Chapter::where('book_id', $this->bookId)
+                    ->where('volume_id', $volumeId)
+                    ->orderBy('order')
+                    ->first();
+                
+                if ($firstChapter) {
+                    $firstPageByChapter = Page::where('book_id', $this->bookId)
+                        ->where('chapter_id', $firstChapter->id)
+                        ->orderBy('page_number')
+                        ->first();
+                    
+                    if ($firstPageByChapter) {
+                        $this->gotoPage($firstPageByChapter->page_number);
+                    }
+                }
             }
         }
     }
@@ -564,6 +581,9 @@ class BookReader extends Component
     public function toggleMovements(): void
     {
         $this->showMovements = !$this->showMovements;
+        
+        // Dispatch event to JavaScript
+        $this->dispatch('movementsToggled', $this->showMovements);
     }
 
     /**
