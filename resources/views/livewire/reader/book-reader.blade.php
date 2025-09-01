@@ -4,25 +4,10 @@
          class="fixed z-50 flex items-center gap-3 px-4 py-3 bg-white rounded-lg shadow-lg bottom-4 right-4">
         <svg class="w-5 h-5 text-primary-600 animate-spin" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
             <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 714 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
         </svg>
         <span class="text-sm font-medium text-gray-700">جاري التحميل...</span>
     </div>
-
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <meta name="csrf-token" content="{{ csrf_token() }}">
-        <title>{{ $book->title }} - قراءة الكتاب</title>
-        <script src="https://cdn.tailwindcss.com"></script>
-        <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700&display=swap" rel="stylesheet">
-        @livewireStyles
-        <style>
-            .font-tajawal {
-                font-family: 'Tajawal', sans-serif;
-            }
-        </style>
-    </head>
     
     <div class="page-wrapper relative z-[1]" dir="rtl">
         <main class="relative overflow-hidden main-wrapper bg-[#f8f5f0]">
@@ -83,11 +68,11 @@
                             <div class="flex flex-col sm:flex-row sm:flex-wrap items-center gap-2 sm:gap-3">
                                 <!-- Font Size Controls -->
                                 <div class="flex items-center border-b border-[#e0d9cc] pb-2 w-full sm:w-auto sm:border-0 sm:pb-0 sm:border-r sm:pr-4">
-                                    <button wire:click="decreaseFontSize" class="w-8 h-8 sm:w-10 sm:h-10 flex items-center justify-center rounded-full bg-[#f0e9de] hover:bg-[#e8e0d0] text-[#5D6019] font-bold transition-colors text-sm sm:text-base">
+                                    <button id="decrease-font-btn" wire:click="decreaseFontSize" class="w-8 h-8 sm:w-10 sm:h-10 flex items-center justify-center rounded-full bg-[#f0e9de] hover:bg-[#e8e0d0] text-[#5D6019] font-bold transition-colors text-sm sm:text-base">
                                         A-
                                     </button>
-                                    <span class="mx-1 sm:mx-2 text-[#39100C] font-medium text-sm sm:text-base">{{ $fontSize }}%</span>
-                                    <button wire:click="increaseFontSize" class="w-8 h-8 sm:w-10 sm:h-10 flex items-center justify-center rounded-full bg-[#f0e9de] hover:bg-[#e8e0d0] text-[#5D6019] font-bold transition-colors text-sm sm:text-base">
+                                    <span id="font-percent-display" class="mx-1 sm:mx-2 text-[#39100C] font-medium text-sm sm:text-base">{{ $fontPercent }}%</span>
+                                    <button id="increase-font-btn" wire:click="increaseFontSize" class="w-8 h-8 sm:w-10 sm:h-10 flex items-center justify-center rounded-full bg-[#f0e9de] hover:bg-[#e8e0d0] text-[#5D6019] font-bold transition-colors text-sm sm:text-base">
                                         A+
                                     </button>
                                 </div>
@@ -159,23 +144,36 @@
                             <aside class="lg:w-72 flex-shrink-0 w-full">
                                 <div class="bg-white rounded-xl shadow-md overflow-hidden border border-[#e0d9cc] h-full">
                                     <div class="bg-[#5D6019] p-3 sm:p-4">
-                                        <h2 class="text-white text-lg sm:text-xl font-bold font-tajawal">فهرس المحتويات</h2>
+                                        <h2 class="text-white text-xl sm:text-2xl font-bold font-tajawal">فهرس المحتويات</h2>
                                     </div>
-                                    <div class="p-3 sm:p-4 max-h-[70vh] overflow-y-auto">
+                                    <div class="p-4 sm:p-5 max-h-[70vh] overflow-y-auto toc-container">
                                         @if($tableOfContents['type'] === 'volumes_with_chapters')
                                             <!-- عرض الأجزاء مع الفصول -->
-                                            <ul class="space-y-2">
+                                            <ul class="space-y-3">
                                                 @foreach($tableOfContents['data'] as $volume)
                                                     <li>
-                                                        <div class="text-[#5D6019] font-bold flex items-center text-base sm:text-lg mb-2 cursor-pointer" 
-                                                             wire:click="gotoVolume({{ $volume->id }})">
-                                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3 sm:h-4 sm:w-4 ml-1 sm:ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-                                                            </svg>
-                                                            {{ $volume->title ?: 'الجزء ' . $volume->number }}
+                                                        <div class="toc-item flex items-center justify-between p-2 rounded-lg 
+                                                                    {{ $currentVolumeId === $volume->id ? 'bg-[#5D6019] text-white shadow-md active' : 'hover:bg-[#f0e9de]' }}">
+                                                            <div class="flex items-center cursor-pointer flex-1" 
+                                                                 wire:click="gotoVolume({{ $volume->id }})">
+                                                                <span class="font-bold text-lg sm:text-xl {{ $currentVolumeId === $volume->id ? 'text-white' : 'text-[#5D6019]' }}">
+                                                                    {{ $volume->title ?: 'الجزء ' . $volume->number }}
+                                                                </span>
+                                                            </div>
+                                                            @if($volume->chapters->isNotEmpty())
+                                                                <button wire:click="toggleVolume({{ $volume->id }})" 
+                                                                        class="toc-expand-btn p-1 rounded-full hover:bg-black/10 transition-colors">
+                                                                    <svg xmlns="http://www.w3.org/2000/svg" 
+                                                                         class="h-4 w-4 sm:h-5 sm:w-5 transition-transform duration-200 
+                                                                                {{ in_array($volume->id, $expandedVolumes) ? 'rotate-180' : '' }}" 
+                                                                         fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                                                                    </svg>
+                                                                </button>
+                                                            @endif
                                                         </div>
-                                                        @if($volume->chapters->isNotEmpty())
-                                                            <ul class="mr-3 space-y-1 border-r-2 border-[#e0d9cc] pr-2 sm:pr-3">
+                                                        @if($volume->chapters->isNotEmpty() && in_array($volume->id, $expandedVolumes))
+                                                            <ul class="toc-children mr-4 mt-2 space-y-1 border-r-2 border-[#e0d9cc] pr-3 sm:pr-4">
                                                                 @foreach($volume->chapters as $chapter)
                                                                     @include('livewire.reader.partials.chapter-tree', ['chapter' => $chapter, 'level' => 0])
                                                                 @endforeach
@@ -186,9 +184,37 @@
                                             </ul>
                                         @else
                                             <!-- عرض الفصول فقط -->
-                                            <ul class="space-y-2">
+                                            <ul class="space-y-3">
                                                 @foreach($tableOfContents['data'] as $chapter)
-                                                    @include('livewire.reader.partials.chapter-tree', ['chapter' => $chapter, 'level' => 0])
+                                                    <li>
+                                                        <div class="toc-item flex items-center justify-between p-2 rounded-lg 
+                                                                     {{ $currentChapterId === $chapter->id ? 'bg-[#5D6019] text-white shadow-md active' : 'hover:bg-[#f0e9de]' }}">
+                                                            <div class="flex items-center cursor-pointer flex-1" 
+                                                                 wire:click="gotoChapter({{ $chapter->id }})">
+                                                                <span class="font-bold text-lg sm:text-xl {{ $currentChapterId === $chapter->id ? 'text-white' : 'text-[#5D6019]' }}">
+                                                                    {{ $chapter->title }}
+                                                                </span>
+                                                            </div>
+                                                            @if($chapter->children->isNotEmpty())
+                                                                <button wire:click="toggleChapter({{ $chapter->id }})" 
+                                                                        class="toc-expand-btn p-1 rounded-full hover:bg-black/10 transition-colors">
+                                                                    <svg xmlns="http://www.w3.org/2000/svg" 
+                                                                         class="h-4 w-4 sm:h-5 sm:w-5 transition-transform duration-200 
+                                                                                {{ in_array($chapter->id, $expandedChapters) ? 'rotate-180' : '' }}" 
+                                                                         fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                                                                    </svg>
+                                                                </button>
+                                                            @endif
+                                                        </div>
+                                                        @if($chapter->children->isNotEmpty() && in_array($chapter->id, $expandedChapters))
+                                                            <ul class="toc-children mr-4 mt-2 space-y-1 border-r-2 border-[#e0d9cc] pr-3 sm:pr-4">
+                                                                @foreach($chapter->children as $subChapter)
+                                                                    @include('livewire.reader.partials.chapter-tree', ['chapter' => $subChapter, 'level' => 1])
+                                                                @endforeach
+                                                            </ul>
+                                                        @endif
+                                                    </li>
                                                 @endforeach
                                             </ul>
                                         @endif
@@ -202,7 +228,8 @@
                                 <div class="bg-white rounded-xl shadow-md overflow-hidden border border-[#e0d9cc] min-h-[50vh] sm:min-h-[60vh] md:min-h-[70vh] flex flex-col">
                                     <!-- Book Content -->
                                     <div class="flex-1 p-4 sm:p-6 md:p-8 font-tajawal text-right leading-loose text-base sm:text-lg text-[#39100C] bg-[#faf8f5]" 
-                                         style="font-size: {{ $fontSize }}%">
+                                         style="font-size: {{ $fontPercent / 100 }}em" 
+                                         data-book-content>
                                         <div class="max-w-3xl mx-auto">
                                             @if($currentPage)
                                                 @if($currentPage->chapter)
@@ -256,13 +283,13 @@
                                             <div class="flex items-center space-x-2 sm:space-x-3 space-x-reverse order-2 lg:order-1">
                                                 <div class="flex items-center space-x-1 sm:space-x-2 space-x-reverse">
                                                     @if($navigation['previous_page'])
-                                                        <button wire:click="previousPage" class="bg-[#f0e9de] hover:bg-[#e8e0d0] p-1.5 sm:p-2 rounded-full transition-colors">
+                                                        <button id="prev-page-btn" wire:click="previousPage" class="bg-[#f0e9de] hover:bg-[#e8e0d0] p-1.5 sm:p-2 rounded-full transition-colors">
                                                             <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 sm:h-5 sm:w-5 text-[#5D6019]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
                                                             </svg>
                                                         </button>
                                                     @else
-                                                        <button disabled class="bg-gray-200 p-1.5 sm:p-2 rounded-full cursor-not-allowed">
+                                                        <button id="prev-page-btn-disabled" disabled class="bg-gray-200 p-1.5 sm:p-2 rounded-full cursor-not-allowed">
                                                             <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 sm:h-5 sm:w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
                                                             </svg>
@@ -271,9 +298,9 @@
                                                     
                                                     <!-- Page Input -->
                                                     <div class="flex items-center space-x-1 mx-2">
-                                                        <input type="number" 
-                                                               wire:model.live.debounce.500ms="pageNumber" 
-                                                               wire:keydown.enter="gotoPage($event.target.value)"
+                                                        <input id="page-number-input" 
+                                                               type="number" 
+                                                               wire:model.live.debounce.500ms="internalIndex" 
                                                                min="1" 
                                                                max="{{ $navigation['total_pages'] }}" 
                                                                class="w-16 px-2 py-1 text-center border border-[#e0d9cc] rounded focus:outline-none focus:ring-2 focus:ring-[#957717] text-sm">
@@ -281,13 +308,13 @@
                                                     </div>
                                                     
                                                     @if($navigation['next_page'])
-                                                        <button wire:click="nextPage" class="bg-[#f0e9de] hover:bg-[#e8e0d0] p-1.5 sm:p-2 rounded-full transition-colors">
+                                                        <button id="next-page-btn" wire:click="nextPage" class="bg-[#f0e9de] hover:bg-[#e8e0d0] p-1.5 sm:p-2 rounded-full transition-colors">
                                                             <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 sm:h-5 sm:w-5 text-[#5D6019]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
                                                             </svg>
                                                         </button>
                                                     @else
-                                                        <button disabled class="bg-gray-200 p-1.5 sm:p-2 rounded-full cursor-not-allowed">
+                                                        <button id="next-page-btn-disabled" disabled class="bg-gray-200 p-1.5 sm:p-2 rounded-full cursor-not-allowed">
                                                             <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 sm:h-5 sm:w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
                                                             </svg>
@@ -372,24 +399,207 @@
         // Hide search results when clicking outside
         document.addEventListener('click', function(e) {
             const searchContainer = e.target.closest('.relative');
-            if (!searchContainer || !searchContainer.querySelector('input[wire\\:model\.live\.debounce\.500ms="search"]')) {
+            const searchInput = document.querySelector('input[placeholder="ابحث في النص..."]');
+            if (!searchContainer || !searchContainer.contains(searchInput)) {
                 @this.set('showSearchResults', false);
             }
         });
         
-        // Listen for URL updates
+        // Listen for URL updates and font size changes
         document.addEventListener('livewire:init', () => {
+            console.log('Livewire initialized successfully');
+            
             Livewire.on('url-update', (event) => {
+                console.log('URL update:', event);
                 window.history.pushState({}, '', event.url);
+            });
+            
+            // Listen for font size changes
+            Livewire.on('fontSizeChanged', (fontPercent) => {
+                console.log('Font size changed to:', fontPercent);
+                const contentArea = document.querySelector('[data-book-content]');
+                const fontDisplay = document.getElementById('font-percent-display');
+                
+                if (contentArea) {
+                    // Convert percentage to relative size (100% = 1em, 120% = 1.2em)
+                    const relativeSize = (fontPercent / 100) + 'em';
+                    contentArea.style.fontSize = relativeSize;
+                    console.log('Applied font size:', relativeSize);
+                } else {
+                    console.error('Content area not found');
+                }
+                
+                // Update font display
+                if (fontDisplay) {
+                    fontDisplay.textContent = fontPercent + '%';
+                    console.log('Updated font display to:', fontPercent + '%');
+                } else {
+                    console.error('Font display element not found');
+                }
+            });
+        });
+        
+        // Test font size buttons and page input on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('DOM loaded, testing components');
+            
+            // Debug TOC expansion state
+            console.log('Expanded volumes:', @json($expandedVolumes ?? []));
+            console.log('Expanded chapters:', @json($expandedChapters ?? []));
+            
+            // Test font size buttons
+            const increaseFontBtn = document.getElementById('increase-font-btn');
+            const decreaseFontBtn = document.getElementById('decrease-font-btn');
+            const fontDisplay = document.getElementById('font-percent-display');
+            
+            if (increaseFontBtn) {
+                console.log('Increase font button found');
+                // Add click event listener for testing
+                increaseFontBtn.addEventListener('click', function() {
+                    console.log('Increase font button clicked!');
+                });
+            } else {
+                console.error('Increase font button NOT found');
+            }
+            
+            if (decreaseFontBtn) {
+                console.log('Decrease font button found');
+                // Add click event listener for testing
+                decreaseFontBtn.addEventListener('click', function() {
+                    console.log('Decrease font button clicked!');
+                });
+            } else {
+                console.error('Decrease font button NOT found');
+            }
+            
+            if (fontDisplay) {
+                console.log('Font display found, current text:', fontDisplay.textContent);
+            } else {
+                console.error('Font display NOT found');
+            }
+            
+            // Test page input field
+            const pageInput = document.getElementById('page-number-input');
+            if (pageInput) {
+                console.log('Page input field found, current value:', pageInput.value);
+                // Add input event listener for testing
+                pageInput.addEventListener('input', function() {
+                    console.log('Page input changed to:', this.value);
+                });
+                
+                // Add change event listener
+                pageInput.addEventListener('change', function() {
+                    console.log('Page input change event triggered, value:', this.value);
+                });
+            } else {
+                console.error('Page input field NOT found');
+            }
+            
+            // Test navigation buttons (check both enabled and disabled states)
+            const prevBtn = document.getElementById('prev-page-btn');
+            const prevBtnDisabled = document.getElementById('prev-page-btn-disabled');
+            const nextBtn = document.getElementById('next-page-btn');
+            const nextBtnDisabled = document.getElementById('next-page-btn-disabled');
+            
+            if (prevBtn) {
+                console.log('Previous page button found (enabled)');
+                prevBtn.addEventListener('click', function() {
+                    console.log('Previous page button clicked!');
+                });
+            } else if (prevBtnDisabled) {
+                console.log('Previous page button found (disabled - at first page)');
+            } else {
+                console.log('Previous page button not found at all');
+            }
+            
+            if (nextBtn) {
+                console.log('Next page button found (enabled)');
+                nextBtn.addEventListener('click', function() {
+                    console.log('Next page button clicked!');
+                });
+            } else if (nextBtnDisabled) {
+                console.log('Next page button found (disabled - at last page)');
+            } else {
+                console.log('Next page button not found at all');
+            }
+            
+            // Test TOC expand buttons
+            const expandButtons = document.querySelectorAll('.toc-expand-btn');
+            console.log('Found', expandButtons.length, 'TOC expand buttons');
+            
+            expandButtons.forEach((btn, index) => {
+                btn.addEventListener('click', function() {
+                    console.log('TOC expand button', index, 'clicked!');
+                });
             });
         });
     </script>
     
-    <!-- CSS for movements toggle -->
+    <!-- CSS for movements toggle and TOC enhancements -->
     <style>
         .no-movements .diacritic,
         .no-movements .harakat {
             display: none;
+        }
+        
+        /* Enhanced TOC animations */
+        .toc-item {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .toc-item:hover {
+            transform: translateX(-2px);
+            box-shadow: 0 2px 8px rgba(93, 96, 25, 0.15);
+        }
+        
+        .toc-item.active {
+            transform: translateX(-3px);
+            box-shadow: 0 4px 12px rgba(93, 96, 25, 0.25);
+        }
+        
+        .toc-expand-btn {
+            transition: transform 0.2s ease-in-out;
+        }
+        
+        .toc-children {
+            animation: slideDown 0.3s ease-out;
+        }
+        
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                max-height: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                max-height: 500px;
+                transform: translateY(0);
+            }
+        }
+        
+        /* Smooth scrolling for TOC */
+        .toc-container {
+            scroll-behavior: smooth;
+        }
+        
+        /* Custom scrollbar for TOC */
+        .toc-container::-webkit-scrollbar {
+            width: 6px;
+        }
+        
+        .toc-container::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 3px;
+        }
+        
+        .toc-container::-webkit-scrollbar-thumb {
+            background: #5D6019;
+            border-radius: 3px;
+        }
+        
+        .toc-container::-webkit-scrollbar-thumb:hover {
+            background: #4a4d13;
         }
     </style>
     

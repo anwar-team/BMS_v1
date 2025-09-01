@@ -24,9 +24,16 @@ class BookReader extends Component
     public string $search = '';
     public array $searchResults = [];
     public bool $showSearchResults = false;
-    public int $fontSize = 100;
+    public int $fontPercent = 100;
     public bool $showMovements = false;
     public ?int $selectedVolume = null;
+    public ?int $internalIndex = null;
+    
+    // Table of Contents interactive properties
+    public array $expandedVolumes = [];
+    public array $expandedChapters = [];
+    public ?int $currentVolumeId = null;
+    public ?int $currentChapterId = null;
 
     // URL parameters for routing
     protected $queryString = [
@@ -62,6 +69,18 @@ class BookReader extends Component
         if ($this->currentPage && $this->currentPage->volume_id) {
             $this->selectedVolume = $this->currentPage->volume_id;
         }
+        
+        // Initialize internal index (use actual internal_index from database)
+        if ($this->currentPage) {
+            $this->internalIndex = $this->currentPage->internal_index ?? $this->currentPage->page_number;
+        }
+        
+        // Initialize TOC expansion state
+        $this->expandedVolumes = [];
+        $this->expandedChapters = [];
+        
+        // Apply initial font size
+        $this->applyFontSize();
     }
 
     /**
@@ -184,6 +203,9 @@ class BookReader extends Component
         } else {
             $this->currentContent = $this->currentPage->content ?? '';
         }
+        
+        // Set the internal_index value to show in the input field (use actual internal_index from database)
+        $this->internalIndex = $this->currentPage->internal_index ?? $this->currentPage->page_number;
 
         // Load navigation info
         $this->loadNavigation();
@@ -192,6 +214,12 @@ class BookReader extends Component
         if ($this->currentPage && $this->currentPage->volume_id) {
             $this->selectedVolume = $this->currentPage->volume_id;
         }
+        
+        // Update internal index (use actual internal_index from database)
+        $this->internalIndex = $this->currentPage->internal_index ?? $this->currentPage->page_number;
+        
+        // Update current section for TOC
+        $this->updateCurrentSection();
     }
 
     /**
@@ -298,6 +326,30 @@ class BookReader extends Component
     public function updatedPageNumber(): void
     {
         $this->gotoPage($this->pageNumber);
+    }
+
+    /**
+     * Handle internal index updates from input field
+     * 
+     * @return void
+     */
+    public function updatedInternalIndex(): void
+    {
+        if ($this->internalIndex) {
+            // First try to find page by internal_index
+            $page = Page::where('book_id', $this->bookId)
+                ->where('internal_index', $this->internalIndex)
+                ->first();
+            
+            if ($page) {
+                $this->gotoPage($page->page_number);
+            } else {
+                // Fallback: treat as page_number if internal_index not found
+                if ($this->internalIndex >= 1 && $this->internalIndex <= $this->navigation['total_pages']) {
+                    $this->gotoPage($this->internalIndex);
+                }
+            }
+        }
     }
 
     /**
@@ -470,8 +522,9 @@ class BookReader extends Component
      */
     public function increaseFontSize(): void
     {
-        if ($this->fontSize < 200) {
-            $this->fontSize += 10;
+        if ($this->fontPercent < 200) {
+            $this->fontPercent += 10;
+            $this->applyFontSize();
         }
     }
 
@@ -482,9 +535,21 @@ class BookReader extends Component
      */
     public function decreaseFontSize(): void
     {
-        if ($this->fontSize > 50) {
-            $this->fontSize -= 10;
+        if ($this->fontPercent > 50) {
+            $this->fontPercent -= 10;
+            $this->applyFontSize();
         }
+    }
+
+    /**
+     * Apply the new font size to the content dynamically
+     * 
+     * @return void
+     */
+    public function applyFontSize(): void
+    {
+        // Apply the new font size to the content dynamically
+        $this->dispatch('fontSizeChanged', $this->fontPercent);
     }
 
     /**
@@ -495,6 +560,79 @@ class BookReader extends Component
     public function toggleMovements(): void
     {
         $this->showMovements = !$this->showMovements;
+    }
+
+    /**
+     * Toggle volume expansion in TOC
+     * 
+     * @param int $volumeId
+     * @return void
+     */
+    public function toggleVolume(int $volumeId): void
+    {
+        if (in_array($volumeId, $this->expandedVolumes)) {
+            $this->expandedVolumes = array_diff($this->expandedVolumes, [$volumeId]);
+        } else {
+            $this->expandedVolumes[] = $volumeId;
+        }
+    }
+
+    /**
+     * Toggle chapter expansion in TOC
+     * 
+     * @param int $chapterId
+     * @return void
+     */
+    public function toggleChapter(int $chapterId): void
+    {
+        if (in_array($chapterId, $this->expandedChapters)) {
+            $this->expandedChapters = array_diff($this->expandedChapters, [$chapterId]);
+        } else {
+            $this->expandedChapters[] = $chapterId;
+        }
+    }
+
+    /**
+     * Update current section based on current page
+     * 
+     * @return void
+     */
+    public function updateCurrentSection(): void
+    {
+        if ($this->currentPage) {
+            // Update current volume and chapter
+            $this->currentVolumeId = $this->currentPage->volume_id;
+            $this->currentChapterId = $this->currentPage->chapter_id;
+            
+            // Auto-expand current volume and chapter
+            if ($this->currentVolumeId && !in_array($this->currentVolumeId, $this->expandedVolumes)) {
+                $this->expandedVolumes[] = $this->currentVolumeId;
+            }
+            
+            if ($this->currentChapterId && !in_array($this->currentChapterId, $this->expandedChapters)) {
+                $this->expandedChapters[] = $this->currentChapterId;
+                
+                // Also expand parent chapters
+                $this->expandParentChapters($this->currentChapterId);
+            }
+        }
+    }
+
+    /**
+     * Expand parent chapters recursively
+     * 
+     * @param int $chapterId
+     * @return void
+     */
+    private function expandParentChapters(int $chapterId): void
+    {
+        $chapter = Chapter::find($chapterId);
+        if ($chapter && $chapter->parent_id) {
+            if (!in_array($chapter->parent_id, $this->expandedChapters)) {
+                $this->expandedChapters[] = $chapter->parent_id;
+            }
+            $this->expandParentChapters($chapter->parent_id);
+        }
     }
 
     /**
