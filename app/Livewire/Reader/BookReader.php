@@ -581,9 +581,6 @@ class BookReader extends Component
     public function toggleMovements(): void
     {
         $this->showMovements = !$this->showMovements;
-        
-        // Dispatch event to JavaScript
-        $this->dispatch('movementsToggled', $this->showMovements);
     }
 
     /**

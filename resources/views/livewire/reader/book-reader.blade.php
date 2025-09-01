@@ -251,8 +251,12 @@
                                                     </h2>
                                                 @endif
                                                 
-                                                <div class="prose prose-lg max-w-none {{ $showMovements ? '' : 'no-movements' }}" style="font-size: {{ $fontPercent / 100 }}em !important;">
-                                                    {!! $currentContent !!}
+                                                <div class="prose prose-lg max-w-none {{ $showMovements ? '' : 'no-movements' }}" style="font-size: {{ $fontPercent / 100 }}em !important;" id="book-content">
+                                                    @if($showMovements)
+                                                        {!! $currentContent !!}
+                                                    @else
+                                                        {!! preg_replace('/[\x{064B}-\x{065F}\x{0670}\x{06D6}-\x{06ED}]/u', '', $currentContent) !!}
+                                                    @endif
                                                 </div>
                                                 
                                                 @if(!$currentContent || trim(strip_tags($currentContent)) === '')
@@ -453,70 +457,13 @@
                 }
             });
             
-            // Also listen for Livewire updates to refresh font display and movements
-            document.addEventListener('livewire:updated', () => {
-                const fontDisplay = document.getElementById('font-percent-display');
-                if (fontDisplay) {
-                    console.log('Livewire updated, font display found');
-                }
-                
-                // Apply movements toggle after Livewire update
-                applyMovementsToggle();
-            });
-            
-            // Function to toggle Arabic diacritics
-            function applyMovementsToggle() {
-                const proseArea = document.querySelector('.prose');
-                if (proseArea) {
-                    const showMovements = !proseArea.classList.contains('no-movements');
-                    toggleArabicDiacritics(proseArea, showMovements);
-                }
-            }
-            
-            function toggleArabicDiacritics(element, show) {
-                if (!element) return;
-                
-                // Arabic diacritics Unicode ranges
-                const diacriticsRegex = /[\u064B-\u065F\u0670\u06D6-\u06ED]/g;
-                
-                const walker = document.createTreeWalker(
-                    element,
-                    NodeFilter.SHOW_TEXT,
-                    null,
-                    false
-                );
-                
-                const textNodes = [];
-                let node;
-                while (node = walker.nextNode()) {
-                    textNodes.push(node);
-                }
-                
-                textNodes.forEach(textNode => {
-                    if (!textNode.originalText) {
-                        textNode.originalText = textNode.textContent;
-                    }
-                    
-                    if (show) {
-                        textNode.textContent = textNode.originalText;
-                    } else {
-                        textNode.textContent = textNode.originalText.replace(diacriticsRegex, '');
-                    }
-                });
-            }
-            
-            // Listen for movements toggle
-            Livewire.on('movementsToggled', (showMovements) => {
-                const proseArea = document.querySelector('.prose');
-                if (proseArea) {
-                    toggleArabicDiacritics(proseArea, showMovements);
-                }
-            });
-            
-            // Apply initial state
-            setTimeout(() => {
-                applyMovementsToggle();
-            }, 100);
+            // Also listen for Livewire updates to refresh font display
+             document.addEventListener('livewire:updated', () => {
+                 const fontDisplay = document.getElementById('font-percent-display');
+                 if (fontDisplay) {
+                     console.log('Livewire updated, font display found');
+                 }
+             });
         });
         
         // Test font size buttons and page input on page load
