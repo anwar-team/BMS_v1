@@ -34,11 +34,24 @@ class BookReader extends Component
     public array $expandedChapters = [];
     public ?int $currentVolumeId = null;
     public ?int $currentChapterId = null;
+    
+    // Table of Contents search properties
+    public string $tocSearch = '';
+    public array $filteredTableOfContents = [];
+    
+    // Options menu properties
+    public bool $showOptionsMenu = false;
+    public bool $darkMode = false;
+    
+    // Mobile TOC properties
+    public bool $showMobileToc = false;
 
     // URL parameters for routing
     protected $queryString = [
         'pageNumber' => ['except' => 1, 'as' => 'page'],
         'search' => ['except' => '', 'as' => 'q'],
+        'tocSearch' => ['except' => '', 'as' => 'toc_q'],
+        'showMobileToc' => ['except' => false, 'as' => ''],
     ];
 
     /**
@@ -58,6 +71,9 @@ class BookReader extends Component
         
         // Load table of contents
         $this->loadTableOfContents();
+        
+        // Initialize filtered table of contents
+        $this->filteredTableOfContents = $this->tableOfContents;
         
         // Load current page and navigation
         $this->loadPage();
@@ -654,6 +670,143 @@ class BookReader extends Component
             }
             $this->expandParentChapters($chapter->parent_id);
         }
+    }
+
+    /**
+     * Filter table of contents based on search
+     * 
+     * @return void
+     */
+    public function filterTableOfContents(): void
+    {
+        if (empty(trim($this->tocSearch))) {
+            $this->filteredTableOfContents = $this->tableOfContents;
+            return;
+        }
+
+        $searchQuery = trim($this->tocSearch);
+        $filtered = $this->tableOfContents;
+        
+        if ($filtered['type'] === 'volumes_with_chapters') {
+            $filteredVolumes = collect($filtered['data'])->filter(function($volume) use ($searchQuery) {
+                // Check if volume title matches
+                $volumeMatches = stripos($volume->title ?: 'الجزء ' . $volume->number, $searchQuery) !== false;
+                
+                // Check if any chapter matches
+                $chapterMatches = $volume->chapters->filter(function($chapter) use ($searchQuery) {
+                    return $this->chapterMatchesSearch($chapter, $searchQuery);
+                })->isNotEmpty();
+                
+                return $volumeMatches || $chapterMatches;
+            });
+            
+            $filtered['data'] = $filteredVolumes;
+        } else {
+            $filteredChapters = collect($filtered['data'])->filter(function($chapter) use ($searchQuery) {
+                return $this->chapterMatchesSearch($chapter, $searchQuery);
+            });
+            
+            $filtered['data'] = $filteredChapters;
+        }
+        
+        $this->filteredTableOfContents = $filtered;
+    }
+    
+    /**
+     * Check if chapter matches search recursively
+     * 
+     * @param object $chapter
+     * @param string $searchQuery
+     * @return bool
+     */
+    private function chapterMatchesSearch($chapter, string $searchQuery): bool
+    {
+        // Check chapter title
+        if (stripos($chapter->title, $searchQuery) !== false) {
+            return true;
+        }
+        
+        // Check children recursively
+        if ($chapter->children && $chapter->children->isNotEmpty()) {
+            return $chapter->children->filter(function($child) use ($searchQuery) {
+                return $this->chapterMatchesSearch($child, $searchQuery);
+            })->isNotEmpty();
+        }
+        
+        return false;
+    }
+    
+    /**
+     * Handle TOC search input changes
+     * 
+     * @return void
+     */
+    public function updatedTocSearch(): void
+    {
+        $this->filterTableOfContents();
+    }
+    
+    /**
+     * Clear TOC search
+     * 
+     * @return void
+     */
+    public function clearTocSearch(): void
+    {
+        $this->tocSearch = '';
+        $this->filteredTableOfContents = $this->tableOfContents;
+    }
+    
+    /**
+     * Toggle options menu
+     * 
+     * @return void
+     */
+    public function toggleOptionsMenu(): void
+    {
+        $this->showOptionsMenu = !$this->showOptionsMenu;
+    }
+    
+    /**
+     * Toggle dark mode
+     * 
+     * @return void
+     */
+    public function toggleDarkMode(): void
+    {
+        $this->darkMode = !$this->darkMode;
+        $this->dispatch('darkModeToggled', $this->darkMode);
+    }
+    
+    /**
+     * Reset font size to default
+     * 
+     * @return void
+     */
+    public function resetFontSize(): void
+    {
+        $this->fontPercent = 100;
+        $this->applyFontSize();
+    }
+    
+    /**
+     * Toggle mobile TOC visibility
+     * 
+     * @return void
+     */
+    public function toggleMobileToc(): void
+    {
+        $this->showMobileToc = !$this->showMobileToc;
+    }
+    
+    /**
+     * Close mobile TOC
+     * 
+     * @return void
+     */
+    public function closeMobileToc(): void
+    {
+        $this->showMobileToc = false;
     }
 
     /**
