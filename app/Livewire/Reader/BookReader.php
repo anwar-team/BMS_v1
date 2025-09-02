@@ -213,11 +213,13 @@ class BookReader extends Component
         }
 
         // Set content based on source_url existence
-        // If source_url exists, use html_content, otherwise use content
+        // If source_url exists, use html_content, otherwise use content with nl2br formatting
         if (!empty($this->book->source_url)) {
             $this->currentContent = $this->currentPage->html_content ?? $this->currentPage->content ?? '';
         } else {
-            $this->currentContent = $this->currentPage->content ?? '';
+            // For books with null source_url, apply nl2br to convert line breaks to <br> tags
+            $content = $this->currentPage->content ?? '';
+            $this->currentContent = !empty($content) ? nl2br($content) : '';
         }
         
         // Set the internal_index value to show in the input field (use actual internal_index from database)
