@@ -32,53 +32,17 @@
                         </div>
                     </div>
                     
-                    <!-- Header -->
-                    <header class="bg-white shadow-sm py-2 sm:py-3 px-4 sm:px-6 rounded-xl mb-4 sm:mb-6">
-                        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4">
-                            <div class="flex items-center w-full sm:w-auto">
-                                <img src="{{ asset('images/logo-01.jpg') }}" alt="الشعار" class="h-10 sm:h-12 ml-3 sm:ml-4">
-                                <div class="w-full sm:w-auto">
-                                    <h1 class="text-xl sm:text-2xl font-bold text-[#5D6019] font-tajawal">{{ $book->title }}</h1>
-                                    <p class="text-gray-600 text-base sm:text-lg">
-                                        تأليف: 
-                                        @if($book->authors->isNotEmpty())
-                                            {{ $book->authors->pluck('name')->join('، ') }}
-                                        @else
-                                            غير محدد
-                                        @endif
-                                    </p>
-                                </div>
-                            </div>
-                            <div class="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-3 w-full sm:w-auto">
-                                <div class="flex items-center bg-[#f0e9de] rounded-full px-3 py-1 sm:px-4 sm:py-1.5 w-full sm:w-auto">
-                                    <span class="text-[#39100C] font-medium text-sm sm:text-base ml-2 sm:ml-2">الصفحة</span>
-                                    <span class="bg-[#5D6019] text-white rounded-full w-6 h-6 sm:w-8 sm:h-8 flex items-center justify-center font-bold text-sm sm:text-base">{{ $navigation['current_page_number'] }}</span>
-                                    @if($currentPage && $currentPage->internal_index)
-                                        <span class="text-[#39100C] mx-1 sm:mx-2 text-sm sm:text-base">({{ $currentPage->internal_index }})</span>
-                                    @endif
-                                    <span class="text-[#39100C] mx-1 sm:mx-2 text-sm sm:text-base">من</span>
-                                    <span class="text-[#957717] font-bold text-sm sm:text-base">{{ $navigation['total_pages'] }}</span>
-                                </div>
-                                <button class="bg-[#FF7300] hover:bg-[#e06600] text-white px-3 py-1.5 sm:px-4 sm:py-2 rounded-lg font-medium transition-colors flex items-center w-full sm:w-auto justify-center mt-2 sm:mt-0">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3 sm:h-4 sm:w-4 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5h12M9 3v2m0 4v2m-6 4h12m-6 4v2m-6-8h12a2 2 0 012 2v4a2 2 0 01-2 2H3a2 2 0 01-2-2v-4a2 2 0 012-2z" />
-                                    </svg>
-                                    English
-                                </button>
-                            </div>
-                        </div>
-                    </header>
-                    
                     <!-- Main Content -->
                     <div class="flex flex-col gap-4 sm:gap-6">
                         <!-- Toolbar -->
                         <div class="bg-white rounded-xl shadow-md overflow-hidden border border-[#e0d9cc] p-2 sm:p-3">
-                            <div class="flex flex-col sm:flex-row sm:flex-wrap items-center gap-2 sm:gap-3">
-                                <!-- Font Size Controls and Mobile Menu -->
-                                <div class="flex items-center border-b border-[#e0d9cc] pb-2 w-full sm:w-auto sm:border-0 sm:pb-0 sm:border-r sm:pr-4 gap-2">
+                            <!-- Top Row: All Action Buttons -->
+                            <div class="flex items-center justify-between mb-3 pb-2 border-b border-[#e0d9cc] gap-2">
+                                <!-- Left Side: Menu and Font Controls -->
+                                <div class="flex items-center gap-1 sm:gap-2">
                                     <!-- Enhanced Mobile Hamburger Menu Button -->
                                     <button id="book-reader-hamburger" wire:click="toggleMobileToc" class="lg:hidden flex items-center justify-center w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-[#f0e9de] hover:bg-[#e8e0d0] text-[#5D6019] transition-all duration-200 {{ $showMobileToc ? 'bg-[#5D6019] text-white shadow-lg scale-105' : 'hover:scale-105' }}">
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 sm:h-6 sm:w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 sm:h-5 sm:w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                             @if($showMobileToc)
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
                                             @else
@@ -87,17 +51,97 @@
                                         </svg>
                                     </button>
                                     
-                                    <button id="decrease-font-btn" wire:click="decreaseFontSize" class="w-8 h-8 sm:w-10 sm:h-10 flex items-center justify-center rounded-full bg-[#f0e9de] hover:bg-[#e8e0d0] text-[#5D6019] font-bold transition-colors text-sm sm:text-base">
+                                    <button id="decrease-font-btn" wire:click="decreaseFontSize" class="w-7 h-7 sm:w-8 sm:h-8 flex items-center justify-center rounded-full bg-[#f0e9de] hover:bg-[#e8e0d0] text-[#5D6019] font-bold transition-colors text-xs sm:text-sm">
                                         A-
                                     </button>
-                                    <span id="font-percent-display" class="mx-1 sm:mx-2 text-[#39100C] font-medium text-sm sm:text-base">{{ $fontPercent }}%</span>
-                                    <button id="increase-font-btn" wire:click="increaseFontSize" class="w-8 h-8 sm:w-10 sm:h-10 flex items-center justify-center rounded-full bg-[#f0e9de] hover:bg-[#e8e0d0] text-[#5D6019] font-bold transition-colors text-sm sm:text-base">
+                                    <span id="font-percent-display" class="px-1 text-[#39100C] font-medium text-xs sm:text-sm">{{ $fontPercent }}%</span>
+                                    <button id="increase-font-btn" wire:click="increaseFontSize" class="w-7 h-7 sm:w-8 sm:h-8 flex items-center justify-center rounded-full bg-[#f0e9de] hover:bg-[#e8e0d0] text-[#5D6019] font-bold transition-colors text-xs sm:text-sm">
                                         A+
                                     </button>
                                 </div>
-                                
-                                <!-- Search -->
-                                <div class="flex items-center flex-1 min-w-[150px] w-full sm:w-auto relative">
+
+                                <!-- Center: Movements Toggle (Responsive) -->
+                                <div class="flex items-center">
+                                    <button wire:click="toggleMovements" class="{{ $showMovements ? 'bg-[#5D6019] text-white' : 'bg-[#f0e9de] text-[#5D6019]' }} px-2 py-1 sm:px-3 sm:py-1.5 rounded-lg hover:bg-[#e8e0d0] transition-colors font-tajawal text-xs sm:text-sm whitespace-nowrap">
+                                        <span class="hidden sm:inline">{{ $showMovements ? 'إخفاء الحركات' : 'إظهار الحركات' }}</span>
+                                        <span class="sm:hidden">{{ $showMovements ? 'إخفاء' : 'إظهار' }}</span>
+                                    </button>
+                                </div>
+
+                                <!-- Right Side: Action Buttons -->
+                                <div class="flex items-center gap-1">
+                                    <!-- Share Button -->
+                                    <button class="text-gray-600 hover:text-[#5D6019] p-1 sm:p-1.5 rounded-full hover:bg-[#f0e9de] transition-colors flex items-center justify-center">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 sm:h-5 sm:w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6.632L15.316 9m-4.065 8.814a5.97 5.97 0 001.23.247m-1.23-.247A5.97 5.97 0 015 12c0-.95.23-1.84-.632-2.684m0 2.684a3 3 0 110-2.684m0 2.684L8.684 13.342m0-2.684l6.632-3.316m-4.065-1.186a5.97 5.97 0 011.23-.247m-1.23.247A5.97 5.97 0 005 12c0-.95.23-1.84-.632-2.684m0 2.684a3 3 0 110-2.684" />
+                                        </svg>
+                                    </button>
+                                    <!-- Fullscreen Button -->
+                                    <button onclick="toggleFullscreen()" class="text-gray-600 hover:text-[#5D6019] p-1 sm:p-1.5 rounded-full hover:bg-[#f0e9de] transition-colors flex items-center justify-center">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 sm:h-5 sm:w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16h4m0 0v4m-4 0l5-5m11-1h-4m4 0v4m-4 0l5-5" />
+                                        </svg>
+                                    </button>
+                                    <!-- Options Menu Button -->
+                                    <div class="relative">
+                                        <button wire:click="toggleOptionsMenu" class="text-gray-600 hover:text-[#5D6019] p-1 sm:p-1.5 rounded-full hover:bg-[#f0e9de] transition-colors flex items-center justify-center {{ $showOptionsMenu ? 'bg-[#f0e9de] text-[#5D6019]' : '' }}">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 sm:h-5 sm:w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z" />
+                                            </svg>
+                                        </button>
+                                        
+                                        <!-- Options Dropdown Menu -->
+                                        @if($showOptionsMenu)
+                                            <div class="absolute left-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-[#e0d9cc] z-50 options-menu transition-all" x-data x-on:click.away="$wire.set('showOptionsMenu', false)">
+                                                <div class="py-2">
+                                                    <!-- Dark Mode Toggle -->
+                                                    <button wire:click="toggleDarkMode" class="w-full text-right px-4 py-2 text-sm text-gray-700 hover:bg-[#f0e9de] flex items-center justify-between">
+                                                        <span>{{ $darkMode ? 'الوضع الفاتح' : 'الوضع المظلم' }}</span>
+                                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                            @if($darkMode)
+                                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+                                                            @else
+                                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+                                                            @endif
+                                                        </svg>
+                                                    </button>
+                                                    
+                                                    <!-- Font Size Reset -->
+                                                    <button wire:click="resetFontSize" class="w-full text-right px-4 py-2 text-sm text-gray-700 hover:bg-[#f0e9de] flex items-center justify-between">
+                                                        <span>إعادة تعيين حجم الخط</span>
+                                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                                                        </svg>
+                                                    </button>
+                                                    
+                                                    <!-- Separator -->
+                                                    <div class="border-t border-gray-200 my-1"></div>
+                                                    
+                                                    <!-- Print Page -->
+                                                    <button class="w-full text-right px-4 py-2 text-sm text-gray-700 hover:bg-[#f0e9de] flex items-center justify-between" onclick="window.print()">
+                                                        <span>طباعة الصفحة</span>
+                                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
+                                                        </svg>
+                                                    </button>
+                                                    
+                                                    <!-- Add to Favorites -->
+                                                    <button class="w-full text-right px-4 py-2 text-sm text-gray-700 hover:bg-[#f0e9de] flex items-center justify-between">
+                                                        <span>إضافة إلى المفضلة</span>
+                                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                                                        </svg>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        @endif
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Middle Row: Search Box -->
+                            <div class="mb-3">
+                                <div class="flex items-center relative">
                                     <input type="text" 
                                            wire:model.live.debounce.500ms="search" 
                                            placeholder="ابحث في النص..." 
@@ -129,84 +173,121 @@
                                         </div>
                                     @endif
                                 </div>
-                                
-                                <!-- Toggle Movements -->
-                                <div class="flex items-center border-t border-[#e0d9cc] pt-2 w-full sm:w-auto sm:border-0 sm:pt-0 sm:border-l sm:pl-4">
-                                    <button wire:click="toggleMovements" class="{{ $showMovements ? 'bg-[#5D6019] text-white' : 'bg-[#f0e9de] text-[#5D6019]' }} px-3 py-1.5 sm:px-4 sm:py-2 rounded-lg hover:bg-[#e8e0d0] transition-colors font-tajawal text-sm sm:text-base whitespace-nowrap">
-                                        {{ $showMovements ? 'إخفاء الحركات' : 'إظهار الحركات' }}
-                                    </button>
-                                </div>
-                                
-                                <!-- Action Buttons -->
-                                <div class="flex items-center w-full sm:w-auto justify-end pt-2 sm:pt-0 sm:border-l sm:pl-4">
-                                    <div class="flex space-x-1 sm:space-x-2 space-x-reverse">
-                                        <!-- Share Button -->
-                                        <button class="text-gray-600 hover:text-[#5D6019] p-1.5 sm:p-2 rounded-full hover:bg-[#f0e9de] transition-colors flex items-center justify-center">
-                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6.632L15.316 9m-4.065 8.814a5.97 5.97 0 001.23.247m-1.23-.247A5.97 5.97 0 015 12c0-.95.23-1.84-.632-2.684m0 2.684a3 3 0 110-2.684m0 2.684L8.684 13.342m0-2.684l6.632-3.316m-4.065-1.186a5.97 5.97 0 011.23-.247m-1.23.247A5.97 5.97 0 005 12c0-.95.23-1.84-.632-2.684m0 2.684a3 3 0 110-2.684" />
-                                            </svg>
-                                        </button>
-                                        <!-- Fullscreen Button -->
-                                        <button onclick="toggleFullscreen()" class="text-gray-600 hover:text-[#5D6019] p-1.5 sm:p-2 rounded-full hover:bg-[#f0e9de] transition-colors flex items-center justify-center">
-                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16h4m0 0v4m-4 0l5-5m11-1h-4m4 0v4m-4 0l5-5" />
-                                            </svg>
-                                        </button>
-                                        <!-- Options Menu Button -->
-                                        <div class="relative">
-                                            <button wire:click="toggleOptionsMenu" class="text-gray-600 hover:text-[#5D6019] p-1.5 sm:p-2 rounded-full hover:bg-[#f0e9de] transition-colors flex items-center justify-center {{ $showOptionsMenu ? 'bg-[#f0e9de] text-[#5D6019]' : '' }}">
-                                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z" />
-                                                </svg>
-                                            </button>
+                            </div>
+
+                            <!-- Bottom Row: Page Navigation -->
+                            <div class="pt-2 border-t border-[#e0d9cc] bg-[#faf8f5] -mx-2 -mb-2 px-2 pb-2 sm:-mx-3 sm:-mb-3 sm:px-3 sm:pb-3">
+                                <div class="flex flex-col sm:flex-row items-center justify-between gap-3 sm:gap-4">
+                                    <!-- Page Navigation -->
+                                    <div class="flex items-center space-x-2 sm:space-x-3 space-x-reverse order-2 sm:order-1">
+                                        <div class="flex items-center space-x-1 sm:space-x-2 space-x-reverse">
+                                            <!-- First Page Button -->
+                                            @if($navigation['current_page_number'] > 1)
+                                                <button wire:click="gotoPage(1)" class="bg-[#f0e9de] hover:bg-[#e8e0d0] p-1.5 sm:p-2 rounded-full transition-colors" title="الصفحة الأولى">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 sm:h-5 sm:w-5 text-[#5D6019]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 5l7 7-7 7M5 5l7 7-7 7" />
+                                                    </svg>
+                                                </button>
+                                            @else
+                                                <button disabled class="bg-gray-200 p-1.5 sm:p-2 rounded-full cursor-not-allowed" title="الصفحة الأولى">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 sm:h-5 sm:w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 5l7 7-7 7M5 5l7 7-7 7" />
+                                                    </svg>
+                                                </button>
+                                            @endif
+
+                                            <!-- Previous Page Button -->
+                                            @if($navigation['previous_page'])
+                                                <button id="prev-page-btn" wire:click="previousPage" class="bg-[#f0e9de] hover:bg-[#e8e0d0] p-1.5 sm:p-2 rounded-full transition-colors">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 sm:h-5 sm:w-5 text-[#5D6019]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                                                    </svg>
+                                                </button>
+                                            @else
+                                                <button id="prev-page-btn-disabled" disabled class="bg-gray-200 p-1.5 sm:p-2 rounded-full cursor-not-allowed">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 sm:h-5 sm:w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                                                    </svg>
+                                                </button>
+                                            @endif
                                             
-                                            <!-- Options Dropdown Menu -->
-                                            @if($showOptionsMenu)
-                                                <div class="absolute left-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-[#e0d9cc] z-50 options-menu transition-all" x-data x-on:click.away="$wire.set('showOptionsMenu', false)">
-                                                    <div class="py-2">
-                                                        <!-- Dark Mode Toggle -->
-                                                        <button wire:click="toggleDarkMode" class="w-full text-right px-4 py-2 text-sm text-gray-700 hover:bg-[#f0e9de] flex items-center justify-between">
-                                                            <span>{{ $darkMode ? 'الوضع الفاتح' : 'الوضع المظلم' }}</span>
-                                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                                @if($darkMode)
-                                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
-                                                                @else
-                                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
-                                                                @endif
-                                                            </svg>
-                                                        </button>
-                                                        
-                                                        <!-- Font Size Reset -->
-                                                        <button wire:click="resetFontSize" class="w-full text-right px-4 py-2 text-sm text-gray-700 hover:bg-[#f0e9de] flex items-center justify-between">
-                                                            <span>إعادة تعيين حجم الخط</span>
-                                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
-                                                            </svg>
-                                                        </button>
-                                                        
-                                                        <!-- Separator -->
-                                                        <div class="border-t border-gray-200 my-1"></div>
-                                                        
-                                                        <!-- Print Page -->
-                                                        <button class="w-full text-right px-4 py-2 text-sm text-gray-700 hover:bg-[#f0e9de] flex items-center justify-between" onclick="window.print()">
-                                                            <span>طباعة الصفحة</span>
-                                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
-                                                            </svg>
-                                                        </button>
-                                                        
-                                                        <!-- Add to Favorites -->
-                                                        <button class="w-full text-right px-4 py-2 text-sm text-gray-700 hover:bg-[#f0e9de] flex items-center justify-between">
-                                                            <span>إضافة إلى المفضلة</span>
-                                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
-                                                            </svg>
-                                                        </button>
-                                                    </div>
-                                                </div>
+                                            <!-- Page Input -->
+                                            <div class="flex items-center space-x-1 mx-2">
+                                                <input id="page-number-input" 
+                                                       type="number" 
+                                                       wire:model.live.debounce.500ms="internalIndex" 
+                                                       min="1" 
+                                                       max="{{ $navigation['total_pages'] }}" 
+                                                       class="w-16 px-2 py-1 text-center border border-[#e0d9cc] rounded focus:outline-none focus:ring-2 focus:ring-[#957717] text-sm">
+                                                <span class="text-sm text-gray-600">من {{ $navigation['total_pages'] }}</span>
+                                            </div>
+                                            
+                                            <!-- Next Page Button -->
+                                            @if($navigation['next_page'])
+                                                <button id="next-page-btn" wire:click="nextPage" class="bg-[#f0e9de] hover:bg-[#e8e0d0] p-1.5 sm:p-2 rounded-full transition-colors">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 sm:h-5 sm:w-5 text-[#5D6019]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+                                                    </svg>
+                                                </button>
+                                            @else
+                                                <button id="next-page-btn-disabled" disabled class="bg-gray-200 p-1.5 sm:p-2 rounded-full cursor-not-allowed">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 sm:h-5 sm:w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+                                                    </svg>
+                                                </button>
+                                            @endif
+
+                                            <!-- Last Page Button -->
+                                            @if($navigation['current_page_number'] < $navigation['total_pages'])
+                                                <button wire:click="gotoPage({{ $navigation['total_pages'] }})" class="bg-[#f0e9de] hover:bg-[#e8e0d0] p-1.5 sm:p-2 rounded-full transition-colors" title="الصفحة الأخيرة">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 sm:h-5 sm:w-5 text-[#5D6019]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 19l-7-7 7-7m8 14l-7-7 7-7" />
+                                                    </svg>
+                                                </button>
+                                            @else
+                                                <button disabled class="bg-gray-200 p-1.5 sm:p-2 rounded-full cursor-not-allowed" title="الصفحة الأخيرة">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 sm:h-5 sm:w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 19l-7-7 7-7m8 14l-7-7 7-7" />
+                                                    </svg>
+                                                </button>
                                             @endif
                                         </div>
                                     </div>
+                                    
+                                    <!-- Progress Bar -->
+                                    <div class="flex-1 max-w-md mx-4 order-1 sm:order-2">
+                                        <div class="relative">
+                                            <div class="flex items-center justify-center mb-2">
+                                                <span class="text-xs sm:text-sm font-semibold text-[#5D6019] bg-[#f8f5f0] px-2 py-1 rounded-full border border-[#e0d9cc]">
+                                                    {{ $navigation['progress_percentage'] }}%
+                                                </span>
+                                            </div>
+                                            <div class="relative">
+                                                <div class="overflow-hidden h-2 sm:h-2.5 rounded-full bg-[#f0e9de] border border-[#e0d9cc]">
+                                                    <div class="h-full bg-gradient-to-r from-[#5D6019] to-[#957717] transition-all duration-300" style="width: {{ $navigation['progress_percentage'] }}%"></div>
+                                                </div>
+                                                <input type="range" 
+                                                       wire:model.live.debounce.300ms="pageNumber"
+                                                       min="1" 
+                                                       max="{{ $navigation['total_pages'] }}" 
+                                                       class="absolute top-0 w-full h-full opacity-0 cursor-pointer">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Volume Selection -->
+                                    @if($book->volumes()->count() > 0)
+                                        <div class="flex items-center space-x-1 sm:space-x-2 space-x-reverse order-3">
+                                            <span class="text-[#39100C] font-medium text-sm sm:text-base whitespace-nowrap">الأجزاء:</span>
+                                            <select x-data x-on:change="$wire.call('gotoVolume', $event.target.value)" class="bg-white border border-[#e0d9cc] rounded-lg px-2 py-1 sm:px-3 sm:py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#957717] min-w-[80px]">
+                                                @foreach($book->volumes()->orderBy('number')->get() as $volume)
+                                                    <option value="{{ $volume->id }}" {{ $currentPage && $currentPage->volume_id == $volume->id ? 'selected' : '' }}>
+                                                        {{ $volume->title ?: 'الجزء ' . $volume->number }}
+                                                    </option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    @endif
                                 </div>
                             </div>
                         </div>
@@ -512,20 +593,36 @@
                                         </div>
                                     </div>
                                     
-                                    <!-- Navigation Bar -->
+                                    <!-- Navigation Bar - Original Position -->
                                     <div class="px-3 py-2 sm:px-4 sm:py-3 border-t border-[#e0d9cc] bg-[#faf8f5]">
                                         <div class="flex flex-col lg:flex-row items-center justify-between gap-3 sm:gap-4">
                                             <!-- Page Navigation -->
                                             <div class="flex items-center space-x-2 sm:space-x-3 space-x-reverse order-2 lg:order-1">
                                                 <div class="flex items-center space-x-1 sm:space-x-2 space-x-reverse">
+                                                    <!-- First Page Button -->
+                                                    @if($navigation['current_page_number'] > 1)
+                                                        <button wire:click="gotoPage(1)" class="bg-[#f0e9de] hover:bg-[#e8e0d0] p-1.5 sm:p-2 rounded-full transition-colors" title="الصفحة الأولى">
+                                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 sm:h-5 sm:w-5 text-[#5D6019]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 5l7 7-7 7M5 5l7 7-7 7" />
+                                                            </svg>
+                                                        </button>
+                                                    @else
+                                                        <button disabled class="bg-gray-200 p-1.5 sm:p-2 rounded-full cursor-not-allowed" title="الصفحة الأولى">
+                                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 sm:h-5 sm:w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 5l7 7-7 7M5 5l7 7-7 7" />
+                                                            </svg>
+                                                        </button>
+                                                    @endif
+
+                                                    <!-- Previous Page Button -->
                                                     @if($navigation['previous_page'])
-                                                        <button id="prev-page-btn" wire:click="previousPage" class="bg-[#f0e9de] hover:bg-[#e8e0d0] p-1.5 sm:p-2 rounded-full transition-colors">
+                                                        <button wire:click="previousPage" class="bg-[#f0e9de] hover:bg-[#e8e0d0] p-1.5 sm:p-2 rounded-full transition-colors">
                                                             <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 sm:h-5 sm:w-5 text-[#5D6019]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
                                                             </svg>
                                                         </button>
                                                     @else
-                                                        <button id="prev-page-btn-disabled" disabled class="bg-gray-200 p-1.5 sm:p-2 rounded-full cursor-not-allowed">
+                                                        <button disabled class="bg-gray-200 p-1.5 sm:p-2 rounded-full cursor-not-allowed">
                                                             <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 sm:h-5 sm:w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
                                                             </svg>
@@ -534,8 +631,7 @@
                                                     
                                                     <!-- Page Input -->
                                                     <div class="flex items-center space-x-1 mx-2">
-                                                        <input id="page-number-input" 
-                                                               type="number" 
+                                                        <input type="number" 
                                                                wire:model.live.debounce.500ms="internalIndex" 
                                                                min="1" 
                                                                max="{{ $navigation['total_pages'] }}" 
@@ -543,16 +639,32 @@
                                                         <span class="text-sm text-gray-600">من {{ $navigation['total_pages'] }}</span>
                                                     </div>
                                                     
+                                                    <!-- Next Page Button -->
                                                     @if($navigation['next_page'])
-                                                        <button id="next-page-btn" wire:click="nextPage" class="bg-[#f0e9de] hover:bg-[#e8e0d0] p-1.5 sm:p-2 rounded-full transition-colors">
+                                                        <button wire:click="nextPage" class="bg-[#f0e9de] hover:bg-[#e8e0d0] p-1.5 sm:p-2 rounded-full transition-colors">
                                                             <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 sm:h-5 sm:w-5 text-[#5D6019]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
                                                             </svg>
                                                         </button>
                                                     @else
-                                                        <button id="next-page-btn-disabled" disabled class="bg-gray-200 p-1.5 sm:p-2 rounded-full cursor-not-allowed">
+                                                        <button disabled class="bg-gray-200 p-1.5 sm:p-2 rounded-full cursor-not-allowed">
                                                             <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 sm:h-5 sm:w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+                                                            </svg>
+                                                        </button>
+                                                    @endif
+
+                                                    <!-- Last Page Button -->
+                                                    @if($navigation['current_page_number'] < $navigation['total_pages'])
+                                                        <button wire:click="gotoPage({{ $navigation['total_pages'] }})" class="bg-[#f0e9de] hover:bg-[#e8e0d0] p-1.5 sm:p-2 rounded-full transition-colors" title="الصفحة الأخيرة">
+                                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 sm:h-5 sm:w-5 text-[#5D6019]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 19l-7-7 7-7m8 14l-7-7 7-7" />
+                                                            </svg>
+                                                        </button>
+                                                    @else
+                                                        <button disabled class="bg-gray-200 p-1.5 sm:p-2 rounded-full cursor-not-allowed" title="الصفحة الأخيرة">
+                                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 sm:h-5 sm:w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 19l-7-7 7-7m8 14l-7-7 7-7" />
                                                             </svg>
                                                         </button>
                                                     @endif
