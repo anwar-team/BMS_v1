@@ -3,9 +3,11 @@
 use App\Livewire\SuperDuper\BlogList;
 use App\Livewire\SuperDuper\BlogDetails;
 use App\Livewire\SuperDuper\Pages\ContactUs;
-use App\Http\Controllers\HomeController;
+use App\Livewire\SuperDuper\Tables\BooksTable;
+use App\Livewire\SuperDuper\Tables\AuthorsTable;
 use App\Http\Controllers\CategoriesController;
-use App\Http\Controllers\ShowAllController;
+use App\Livewire\HomePage;
+use App\Livewire\ShowAllPage;
 use App\Http\Controllers\BookReadController;
 use App\Http\Controllers\BookController;
 use App\Livewire\Reader\BookReader;
@@ -23,7 +25,7 @@ use Lab404\Impersonate\Services\ImpersonateManager;
 |
 */
 
-Route::get('/', [HomeController::class, 'index'])->name('home');
+Route::get('/', HomePage::class)->name('home');
 
 Route::get('/blog', BlogList::class)->name('blog');
 
@@ -34,7 +36,10 @@ Route::get('/contact-us', ContactUs::class)->name('contact-us');
 Route::get('/categories', [CategoriesController::class, 'index'])->name('categories');
 
 // روابط عرض جميع الكتب والمؤلفين مع إمكانية التصفية
-Route::get('/show-all', [ShowAllController::class, 'index'])->name('show-all');
+Route::get('/show-all', ShowAllPage::class)->name('show-all');
+
+// Search route
+Route::get('/search', ShowAllPage::class)->name('search');
 
 // Book routes
 Route::get('/books', [BookController::class, 'index'])->name('books.index');
@@ -77,6 +82,16 @@ Route::get('/admin/shamela-import', App\Livewire\ShamelaScraper::class)
     ->name('shamela.import')
     ->middleware('auth');
 
+// Books Table Route
+Route::get('/admin/books-table', BooksTable::class)
+    ->name('books.table')
+    ->middleware('auth');
+
+// Authors Table Route
+Route::get('/admin/authors-table', AuthorsTable::class)
+    ->name('authors.table')
+    ->middleware('auth');
+
 // TODO: Create actual blog preview component
 Route::post('/blog-preview', function () {
     // Implementation pending
@@ -93,3 +108,7 @@ Route::get('impersonate/leave', function () {
         session()->pull('impersonate.back_to')
     );
 })->name('impersonate.leave')->middleware('web');
+
+// Authentication routes for welcome page compatibility
+Route::redirect('/login', '/admin/login')->name('login');
+Route::redirect('/register', '/admin/register')->name('register');

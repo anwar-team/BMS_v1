@@ -84,3 +84,96 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 });
+
+// ===== Home Banner Swiper Initialization =====
+// تهيئة آمنة لـ Swiper مع منع التكرار
+window.initHomeSwiper = function() {
+    // تدمير أي نسخة سابقة من Swiper
+    if (window.homeSwiper && typeof window.homeSwiper.destroy === 'function') {
+        window.homeSwiper.destroy(true, true);
+        window.homeSwiper = null;
+    }
+    
+    // التأكد من وجود العنصر قبل التهيئة
+    const swiperElement = document.querySelector('.myHomeSwiper');
+    if (!swiperElement) {
+        console.warn('Home Swiper element not found');
+        return;
+    }
+    
+    // تهيئة Swiper الجديدة
+    window.homeSwiper = new Swiper('.myHomeSwiper', {
+        slidesPerView: 1,
+        spaceBetween: 0,
+        loop: true,
+        autoplay: {
+            delay: 2500,
+            disableOnInteraction: false,
+        },
+        effect: 'fade',
+        fadeEffect: {
+            crossFade: true
+        },
+        speed: 1000,
+        navigation: false,
+        pagination: {
+            el: '.myHomeSwiper-pagination',
+            clickable: true,
+        },
+        on: {
+            init: function() {
+                trackBannerView(this);
+            },
+            slideChange: function() {
+                // trackBannerView(this);
+            }
+        }
+    });
+    
+    console.log('Home Swiper initialized successfully');
+};
+
+// تهيئة Swiper عند تحميل Livewire
+document.addEventListener('livewire:load', () => {
+    requestAnimationFrame(() => window.initHomeSwiper && window.initHomeSwiper());
+});
+
+// إعادة تهيئة Swiper عند تغيير بيانات البانرز
+window.addEventListener('init-swiper', () => {
+    requestAnimationFrame(() => window.initHomeSwiper && window.initHomeSwiper());
+});
+
+// للتوافق مع Livewire Navigation (اختياري)
+document.addEventListener('livewire:navigated', () => {
+    requestAnimationFrame(() => window.initHomeSwiper && window.initHomeSwiper());
+});
+
+// دوال تتبع البانر (نفس الكود الأصلي)
+function trackBannerView(swiper) {
+    if (!swiper || !swiper.slides) return;
+
+    const activeSlide = swiper.slides[swiper.activeIndex];
+    if (!activeSlide || !activeSlide.dataset.bannerId) return;
+
+    const bannerId = activeSlide.dataset.bannerId;
+
+    fetch(`/api/banners/${bannerId}/impression`, {
+        method: 'POST',
+        headers: {
+            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+            'Content-Type': 'application/json'
+        },
+        keepalive: true
+    }).catch(() => {});
+}
+
+function trackBannerClick(bannerId) {
+    fetch(`/api/banners/${bannerId}/click`, {
+        method: 'POST',
+        headers: {
+            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+            'Content-Type': 'application/json'
+        },
+        keepalive: true
+    }).catch(() => {});
+}

@@ -1,323 +1,271 @@
-# برومبت مفصل لـ AI Agent: تعديل الكود ليناسب متطلبات قاعدة البيانات
+أنت مساعد ترحيل كود Laravel → Livewire v3. المطلوب تنفيذ التحويل مع:
+(أ) الحفاظ الكامل على التصميم (HTML/CSS/classes) دون أي تغيير،
+(ب) الحفاظ على طريقة جلب البيانات الحالية (نفس الاستعلامات/Repositories/Scopes/Endpoints) دون استبدال المنطق.
 
-## المهمة المطلوبة
+========================
+🎯 الأهداف
+1) اكتشاف جميع الجداول (كتب/مؤلفين…) وتوثيق مواقعها وعناصرها (أعمدة، فلاتر، أزرار).
+2) تحويل كل جدول إلى Livewire **مع إعادة استخدام نفس طريقة الجلب الحالية**:
+   - إذا كان الجلب يتم عبر Controller + Repository/Scopes → استخدم نفس الواجهة (methods) داخل Livewire.
+   - إذا كان الجلب يتم عبر Endpoint (API/DataTables server-side) → استخدم **Adapter** داخل المكوّن لاستدعاء نفس الـ Endpoint، ثم اعرض النتائج كما هي.
+3) تحويل صفحات "كل الكتب" و"كل المؤلفين" إلى Livewire (بحث/فرز/ترقيم) **بدون تعديل التصميم**.
+4) إضافة تعليقات واضحة على كل تغيير + تقريرين في docs/ يشرحان الاكتشاف والتنفيذ.
 
-أريدك أن تقوم بتعديل كود السكربتات المرفقة (enhanced_shamela_scraper.py و enhanced_database_manager.py) لجعلها متوافقة تماماً مع هيكل قاعدة البيانات المطلوب في ملف "متطلباتي.md". يجب أن تركز على التعديلات التالية:
+========================
+🧭 مرحلة الاكتشاف (Discovery)
+- امسح:
+  resources/views/**/*.blade.php
+- حدّد لكل جدول:
+  - الملف، الأعمدة، الفلاتر، الأزرار، وأي سكربت ملحق.
+  - **مصدر البيانات الحالي** بدقة: (Controller action → Repository/Scope) أو (Endpoint server-side).
+- اكتب تقرير:
+  docs/refactor-tables-discovery.md
+  يتضمن خريطة الصفحات والـ Routes وروابط نسبية للملفات.
 
-## 1. جدول المؤلفين (authors)
+========================
+🧩 قواعد صارمة للحفاظ على التصميم
+- يُمنع تعديل:
+  - بنية الـ HTML (thead/tbody/tr/td)
+  - أسماء أو ترتيب الأعمدة
+  - أي CSS classes (Tailwind/Bootstrap/Utility)
+- فقط أضف سمات Livewire (wire:model/ wire:click) عند الحاجة، **بدون** حذف أو تبديل classes.
+- إن وُجد DataTables/JS للبحث/الفرز:
+  - عطّل **الوظائف المتعارضة فقط** (init/filter/sort) واحتفظ بكل CSS/ستايلات.
+  - ضع تعليق Blade يشرح التعطيل.
 
-### المتطلبات المطلوبة:
-- **إضافة الحقول المطلوبة**:
-  - `is_living` (منطقي) - افتراضي: true
-  - `birth_year_type` (نص) - افتراضي: "gregorian"
-  - `birth_year` (عدد صحيح) - محول من Author.birth_date
-  - `death_year_type` (نص) - افتراضي: "gregorian"
-  - `death_year` (عدد صحيح) - محول من Author.death_date
+========================
+🛠️ الحفاظ على طريقة جلب البيانات (بدون تغييرات منطقية)
+اعمل بأحد الوضعين حسب المشروع:
 
-- **الحقول التي يجب إزالتها**:
-  - `birth_date` و `death_date` (موجودتان في المتطلبات بـ "x" لكن مكتوب أنهما غير مطلوبتين)
+(وضع A — Eloquent/Repository قائم):
+- استخدم نفس Repository/Scopes/Query Methods المستعملة في الـ Controller.
+- ممنوع كتابة Query جديدة مختلفة؛ فقط استدعِ نفس الدوال (مثلاً: BookRepository::indexQuery($filters)).
+- لو الاستعلام موجود داخل Controller: استخرج منطق الاستعلام إلى Trait/Service مشتركة:
+  - أنشئ Trait في app/Queries/BooksIndexQuery.php (أو Service app/Services/BooksIndex.php)
+  - **استخدم نفس الـ Trait/Service في الـ Controller وLivewire** لتضمن عدم تغيّر السلوك.
+- احفظ نفس eager-load والـ where/when/filters كما هي.
 
-### ما يجب فعله:
-1. قم بتعديل دالة `save_author` في ملف `enhanced_database_manager.py` لاستخراج السنة من `birth_date` و `death_date`:
-   ```python
-   def parse_year(date_text: str) -> tuple:
-       """تحليل النص إلى سنة ونوع السنة (هجري/ميلادي)"""
-       if not date_text:
-           return None, 'gregorian'
-       
-       # محاولة استخراج السنة الرقمية
-       year_match = re.search(r'(\d{3,4})\s*(ه|م)', date_text)
-       if year_match:
-           year = int(year_match.group(1))
-           era = 'hijri' if 'ه' in year_match.group(2) else 'gregorian'
-           return year, era
-       
-       # إذا لم يكن هناك تحديد للعصر
-       year_match = re.search(r'\d{3,4}', date_text)
-       if year_match:
-           return int(year_match.group()), 'gregorian'  # افتراضي
-       
-       return None, 'gregorian'
-   ```
+(وضع B — API/DataTables server-side):
+- أنشئ Adapter بسيط داخل المكوّن يستدعي نفس الـ Endpoint (باستخدام Http::get أو Guzzle) ويحوّل JSON → Collection/Paginator لعرضها.
+- لا تغيّر الـ Endpoint ولا صيغة الـ payload ولا البارامترات (search, sort, page, per_page…)، فقط مرّرها من خصائص Livewire كما هي.
 
-2. قم بتعديل استعلام إدخال المؤلف لاستخدام القيم الجديدة:
-   ```python
-   # في دالة save_author
-   birth_year, birth_year_type = parse_year(author.birth_date)
-   death_year, death_year_type = parse_year(author.death_date)
-   is_living = not bool(author.death_date) and not bool(death_year)
-   
-   insert_query = f"""
-       INSERT INTO {self.tables['authors']} 
-       (full_name, slug, biography, madhhab, is_living,
-        birth_year_type, birth_year, death_year_type, death_year,
-        created_at, updated_at)
-       VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
-   """
-   ```
+========================
+🧱 هيكلة وأسماء معبّرة
+- Components:
+  app/Livewire/Tables/BooksTable.php
+  app/Livewire/Tables/AuthorsTable.php
+  resources/views/livewire/tables/books-table.blade.php
+  resources/views/livewire/tables/authors-table.blade.php
+- Pages (إن لزم):
+  resources/views/books/index.blade.php
+  resources/views/authors/index.blade.php
+- Partials للأكشنز (ابقِها كما هي):
+  resources/views/partials/books/row-actions.blade.php
+  resources/views/partials/authors/row-actions.blade.php
+- Docs:
+  docs/refactor-tables-discovery.md
+  docs/refactor-tables-implementation.md
 
-3. تأكد من تحديث هيكل جدول المؤلفين في `create_enhanced_tables` ليتوافق مع المتطلبات:
-   ```python
-   authors_table = f"""
-       CREATE TABLE IF NOT EXISTS {self.tables['authors']} (
-           id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
-           full_name VARCHAR(255) NOT NULL,
-           slug VARCHAR(255) NULL,
-           biography TEXT NULL,
-           madhhab VARCHAR(100) NULL,
-           is_living BOOLEAN DEFAULT TRUE,
-           birth_year_type VARCHAR(20) DEFAULT 'gregorian',
-           birth_year INT NULL,
-           death_year_type VARCHAR(20) DEFAULT 'gregorian',
-           death_year INT NULL,
-           created_at TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
-           updated_at TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-           UNIQUE KEY authors_slug_unique (slug),
-           INDEX authors_full_name_index (full_name)
-       ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
-   """
-   ```
+========================
+🗒️ أسلوب التعليقات (إلزامي)
+- PHP DocBlocks للخصائص والميثودز توضح أنها **تعكس نفس مصدر البيانات**.
+- Blade تعليقات توثّق أن HTML/CSS غير معدّلين:
+  {{-- [Preserve-Design] أبقينا بنية الجدول والـ classes كما هي --}}
+  {{-- [Preserve-Data-Source] هذا الجدول يعتمد على BookRepository::indexQuery نفسها المستخدمة في Controller --}}
+  {{-- [Disable-Overlap] تعطيل فرز DataTables لأن Livewire يتولاه (التصميم بقي كما هو) --}}
 
-## 2. جدول الكتب (books)
+========================
+✍️ قوالب كود (اختر A أو B حسب طريقتكم الحالية)
 
-### المتطلبات المطلوبة:
-- `edition` يجب أن يكون `Book.edition_number` (قيمة عددية)
-- `edition_DATA` يجب أن يكون `Book.edition_date_hijri` (محول إلى عدد صحيح)
+(قالب A — Repository/Scopes محفوظة)
+--------------------------------
+<?php
 
-### ما يجب فعله:
-1. قم بتعديل هيكل جدول الكتب في `create_enhanced_tables`:
-   ```python
-   books_table = f"""
-       CREATE TABLE IF NOT EXISTS {self.tables['books']} (
-           id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
-           title VARCHAR(500) NOT NULL,
-           slug VARCHAR(255) NULL,
-           shamela_id VARCHAR(50) NOT NULL,
-           publisher_id BIGINT UNSIGNED NULL,
-           book_section_id BIGINT UNSIGNED NULL,
-           edition INT NULL,  -- هنا التصحيح (كان VARCHAR)
-           edition_DATA INT NULL,  -- جديد (كان اسمه edition_date_hijri)
-           pages_count INT NULL,
-           volumes_count INT NULL,
-           description LONGTEXT NULL,
-           language VARCHAR(10) DEFAULT 'ar',
-           source_url VARCHAR(500) NULL,
-           has_original_pagination BOOLEAN DEFAULT FALSE,
-           created_at TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
-           updated_at TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-           UNIQUE KEY books_shamela_id_unique (shamela_id),
-           UNIQUE KEY books_slug_unique (slug),
-           INDEX books_title_index (title),
-           INDEX books_publication_year_index (publication_year),
-           FOREIGN KEY (publisher_id) REFERENCES {self.tables['publishers']}(id) ON DELETE SET NULL,
-           FOREIGN KEY (book_section_id) REFERENCES {self.tables['book_sections']}(id) ON DELETE SET NULL
-       ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
-   """
-   ```
+namespace App\Livewire\Tables;
 
-2. قم بتعديل دالة `save_enhanced_book` لاستخدام الحقول الجديدة:
-   ```python
-   update_query = f"""
-       UPDATE {self.tables['books']} 
-       SET title = %s, slug = %s, publisher_id = %s, book_section_id = %s,
-           edition = %s, edition_DATA = %s, pages_count = %s, volumes_count = %s,
-           description = %s, source_url = %s, updated_at = %s
-       WHERE id = %s
-   """
-   self.cursor.execute(update_query, (
-       book.title, book.slug, publisher_id, book_section_id,
-       book.edition_number,  # هنا التصحيح
-       int(book.edition_date_hijri) if book.edition_date_hijri else None,  # تحويل إلى عدد صحيح
-       book.page_count, book.volume_count,
-       book.description, book.source_url, datetime.now(), book_id
-   ))
-   ```
+use Livewire\Attributes\Url;
+use Livewire\Component;
+use Livewire\WithPagination;
+use App\Repositories\BookRepository; // نفس الريبو المستخدم في الـ Controller
 
-## 3. جدول الصفحات (pages)
+class BooksTable extends Component
+{
+    use WithPagination;
 
-### المتطلبات المطلوبة:
-- `internal_index` يجب أن يكون "رقم التسلسلي للصفحه من 1 ل آخر صفحه بالكتاب" للكتب ذات `"has_original_pagination": true`
+    /** @var int|null نفس الفلاتر المستخدمة سابقًا */
+    public ?int $authorId = null;
+    public ?int $categoryId = null;
 
-### ما يجب فعله:
-1. قم بتعديل دالة `extract_all_pages_enhanced` لإنشاء ترقيم تسلسلي صحيح:
-   ```python
-   def extract_all_pages_enhanced(book_id: str, total_pages: int, max_pages: Optional[int], 
-                                 has_original_pagination: bool) -> List[PageContent]:
-       """
-       استخراج جميع صفحات الكتاب بطريقة محسنة مع ترقيم تسلسلي صحيح
-       """
-       pages = []
-       actual_max = min(total_pages, max_pages) if max_pages else total_pages
-       logger.info(f"استخراج {actual_max} صفحة للكتاب {book_id}")
-       
-       # إنشاء خريطة للترقيم التسلسلي
-       sequential_number = 1
-       
-       for page_num in range(1, actual_max + 1):
-           try:
-               logger.info(f"استخراج الصفحة {page_num}/{actual_max}")
-               page_content = extract_enhanced_page_content(
-                   book_id, page_num, has_original_pagination
-               )
-               
-               # إضافة الرقم التسلسلي
-               if has_original_pagination:
-                   page_content.internal_index = sequential_number
-                   sequential_number += 1
-               else:
-                   page_content.internal_index = page_num
-                   
-               if page_content.content.strip():  # تجاهل الصفحات الفارغة
-                   pages.append(page_content)
-               # تأخير محترم
-               time.sleep(REQUEST_DELAY)
-           except Exception as e:
-               logger.warning(f"فشل في استخراج الصفحة {page_num}: {e}")
-               continue
-       logger.info(f"تم استخراج {len(pages)} صفحة بنجاح")
-       return pages
-   ```
+    /** @var int يحاكي نفس حجم الصفحة الافتراضي */
+    public int $pageSize = 10;
 
-2. قم بتعديل هيكل جدول الصفحات في `create_enhanced_tables`:
-   ```python
-   pages_table = f"""
-       CREATE TABLE IF NOT EXISTS {self.tables['pages']} (
-           id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
-           book_id BIGINT UNSIGNED NOT NULL,
-           volume_id BIGINT UNSIGNED NULL,
-           chapter_id BIGINT UNSIGNED NULL,
-           page_number INT NOT NULL,
-           content LONGTEXT NULL,
-           word_count INT NULL,
-           created_at TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
-           updated_at TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-           INDEX pages_book_id_index (book_id),
-           INDEX pages_page_number_index (page_number),
-           UNIQUE KEY pages_book_page_unique (book_id, page_number),
-           FOREIGN KEY (book_id) REFERENCES {self.tables['books']}(id) ON DELETE CASCADE,
-           FOREIGN KEY (volume_id) REFERENCES {self.tables['volumes']}(id) ON DELETE CASCADE,
-           FOREIGN KEY (chapter_id) REFERENCES {self.tables['chapters']}(id) ON DELETE CASCADE
-       ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
-   """
-   ```
+    /** @var string بحث مطابق لمنطق الـ Controller/Repository */
+    #[Url] public string $search = '';
+    #[Url] public string $sortField = 'title';
+    #[Url] public string $sortDir   = 'asc';
 
-3. قم بتعديل دالة `save_enhanced_page` لتخزين القيمة الجديدة:
-   ```python
-   insert_query = f"""
-       INSERT INTO {self.tables['pages']} 
-       (book_id, volume_id, chapter_id, page_number, content, word_count, internal_index, created_at, updated_at)
-       VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)
-   """
-   page_id = self.execute_insert(insert_query, (
-       book_id, volume_id, chapter_id, page.page_number, page.content,
-       page.word_count, page.internal_index, datetime.now(), datetime.now()
-   ))
-   ```
+    // [Preserve-Data-Source] استخدم نفس الريبو بدون تعديل المنطق
+    protected BookRepository $repo;
 
-## 4. جدول الفصول (chapters)
+    public function boot(BookRepository $repo): void
+    {
+        $this->repo = $repo;
+    }
 
-### المتطلبات المطلوبة:
-- `chapter_type` يجب أن يكون "just keept in jason" (موجود في JSON فقط)
+    public function mount(?int $authorId = null, ?int $categoryId = null, int $pageSize = 10): void
+    {
+        $this->authorId   = $authorId;
+        $this->categoryId = $categoryId;
+        $this->pageSize   = $pageSize;
+    }
 
-### ما يجب فعله:
-1. قم بحذف `chapter_type` من جدول الفصول في `create_enhanced_tables`:
-   ```python
-   chapters_table = f"""
-       CREATE TABLE IF NOT EXISTS {self.tables['chapters']} (
-           id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
-           volume_id BIGINT UNSIGNED NULL,
-           book_id BIGINT UNSIGNED NOT NULL,
-           title VARCHAR(255) NOT NULL,
-           parent_id BIGINT UNSIGNED NULL,
-           order_number INT DEFAULT 0,
-           page_start INT NULL,
-           page_end INT NULL,
-           level INT DEFAULT 0,
-           created_at TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
-           updated_at TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-           INDEX chapters_book_id_index (book_id),
-           INDEX chapters_order_index (order_number),
-           FOREIGN KEY (volume_id) REFERENCES {self.tables['volumes']}(id) ON DELETE CASCADE,
-           FOREIGN KEY (book_id) REFERENCES {self.tables['books']}(id) ON DELETE CASCADE,
-           FOREIGN KEY (parent_id) REFERENCES {self.tables['chapters']}(id) ON DELETE CASCADE
-       ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
-   """
-   ```
+    public function updatingSearch(): void { $this->resetPage(); }
 
-2. قم بتعديل دالة `save_enhanced_chapter` لإزالة `chapter_type`:
-   ```python
-   insert_query = f"""
-       INSERT INTO {self.tables['chapters']} 
-       (book_id, volume_id, title, page_start, page_end, parent_id,
-        `order`, level, created_at, updated_at)
-       VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
-   """
-   ```
+    public function setSort(string $field): void
+    {
+        $this->sortDir = ($this->sortField === $field && $this->sortDir === 'asc') ? 'desc' : 'asc';
+        $this->sortField = $field;
+        $this->resetPage();
+    }
 
-## 5. ملاحظات عامة
+    public function render()
+    {
+        // [Preserve-Data-Source] نعيد استخدام نفس الدالة التي يستخدمها الـ Controller
+        $filters = [
+            'author_id' => $this->authorId,
+            'category_id' => $this->categoryId,
+            'search' => $this->search,
+            'sort_field' => $this->sortField,
+            'sort_dir' => $this->sortDir,
+            'per_page' => $this->pageSize,
+        ];
 
-1. **التأكد من التوافق مع JSON**:
-   - احتفظ بـ `chapter_type` في ملف JSON فقط (لا تقم بحذفه من نموذج الفصل)
-   - قم بتعديل دالة `convert_chapters_to_dict` في `enhanced_shamela_scraper.py` لإضافة `chapter_type`:
-     ```python
-     def convert_chapters_to_dict(chapters: List[Chapter]) -> List[Dict]:
-         result = []
-         for chapter in chapters:
-             chapter_dict = {
-                 'title': chapter.title,
-                 'order': chapter.order,
-                 'page_number': chapter.page_number,
-                 'page_end': chapter.page_end,
-                 'volume_number': chapter.volume_number,
-                 'level': chapter.level,
-                 'chapter_type': chapter.chapter_type,  # مطلوب في JSON فقط
-                 'children': convert_chapters_to_dict(chapter.children) if chapter.children else []
-             }
-             result.append(chapter_dict)
-         return result
-     ```
+        $books = $this->repo->indexPaginated($filters); // نفس المنهجية القائمة
 
-2. **الحقول التي يجب إهمالها**:
-   - `publisher` في جدول الكتب (استخدم `publisher_id` بدلاً منه)
-   - `published_year` في جدول الكتب (استخدم `publication_year` بدلاً منه)
+        return view('livewire.tables.books-table', compact('books'));
+    }
+}
 
-3. **الحقول التي يجب إزالتها من الكود**:
-   - `birth_date` و `death_date` من جدول المؤلفين
-   - `edition_date_hijri` من جدول الكتب (استبدلها بـ `edition_DATA`)
-   - `chapter_type` من جدول الفصول
+(قالب B — API/DataTables Adapter)
+--------------------------------
+<?php
 
-4. **الحقول التي يجب إضافتها**:
-   - `edition_DATA` في جدول الكتب
-   - `internal_index` في جدول الصفحات
+namespace App\Livewire\Tables;
 
-5. **التأكد من أن جميع القيم تُحسب بشكل صحيح**:
-   - `is_living` يجب أن يكون `true` إذا لم يكن هناك تاريخ وفاة
-   - `internal_index` يجب أن يكون ترقيماً تسلسلياً من 1 إلى العدد الكلي للصفحات
-   - `edition_DATA` يجب أن يكون عدداً صحيحاً (تحويل النص إلى رقم)
+use Illuminate\Support\Facades\Http;
+use Livewire\Attributes\Url;
+use Livewire\Component;
 
-## التعليمات النهائية
+class BooksTable extends Component
+{
+    #[Url] public string $search = '';
+    #[Url] public string $sortField = 'title';
+    #[Url] public string $sortDir   = 'asc';
+    public int $page = 1;
+    public int $pageSize = 10;
 
-1. قم بتعديل الملفات التالية:
-   - `enhanced_database_manager.py` (لتعديل هيكل قاعدة البيانات)
-   - `enhanced_shamela_scraper.py` (لتعديل استخراج البيانات)
+    /** [Preserve-Data-Source] نفس الـ Endpoint الذي تستخدمه الصفحة القديمة */
+    protected string $endpoint = '/api/books'; // لا تغيّر؛ استخرجه من الكود لو مختلف
 
-2. تأكد من أن التعديلات تتم دون كسر بقية الكود:
-   - حافظ على التوافق مع الوظائف الأخرى
-   - لا تحذف أي شيء إلا إذا كان مطلوباً في "متطلباتي.md"
-   - تأكد من أن جميع الوظائف التي تعتمد على الحقول المُحذفة تعمل بشكل صحيح
+    public function setSort(string $field): void
+    {
+        $this->sortDir = ($this->sortField === $field && $this->sortDir === 'asc') ? 'desc' : 'asc';
+        $this->sortField = $field;
+        $this->page = 1;
+    }
 
-3. أضف تعليقات توضيحية في الكود لشرح التغييرات:
-   ```python
-   # START: تعديل حسب متطلباتي.md
-   # تم تغيير edition من VARCHAR إلى INT كما هو مطلوب
-   # END: تعديل حسب متطلباتي.md
-   ```
+    public function render()
+    {
+        // مرّر نفس أسماء البارامترات كما في الكود القديم تمامًا
+        $response = Http::get($this->endpoint, [
+            'search'    => $this->search,
+            'sort'      => $this->sortField,
+            'direction' => $this->sortDir,
+            'page'      => $this->page,
+            'per_page'  => $this->pageSize,
+        ])->json();
 
-4. قم باختبار جميع الوظائف بعد التعديل للتأكد من أنها تعمل كما هو متوقع:
-   - استخراج كتاب
-   - حفظه في قاعدة البيانات
-   - استخراج إحصائيات الكتاب
+        // حوّل JSON إلى بنية قابلة للعرض (لا تغيّر الحقول)
+        $books = collect($response['data'] ?? []);
+        $meta  = $response['meta']  ?? [];
 
-5. تأكد من أن جميع الحقول المطلوبة في "متطلباتي.md" موجودة في قاعدة البيانات، وأن جميع الحقول غير المطلوبة تم إزالتها أو تعديلها وفقاً للمتطلبات.
+        return view('livewire.tables.books-table', [
+            'books' => $books,
+            'meta'  => $meta,
+        ]);
+    }
+}
 
-ملاحظة: يجب أن يكون التعديل دقيقاً 100% وفقاً لمتطلباتي.md بدون أي تغييرات إضافية غير مطلوبة.
+(Blade — الحفاظ على التصميم)
+--------------------------------
+{{-- [Preserve-Design] أبقينا الـ classes والترتيب كما هو تمامًا --}}
+{{-- [Preserve-Data-Source] يعتمد على نفس المصدر (Repository/Endpoint) --}}
+<div class="space-y-3">
+  {{-- [Livewire] فقط ربط بدون تعديل CSS --}}
+  <div class="flex items-center gap-2">
+    <input type="text" wire:model.live="search" placeholder="ابحث…" class="border px-3 py-1 rounded">
+    <select wire:model.live="pageSize" class="border px-2 py-1 rounded">
+      <option value="10">10</option><option value="25">25</option><option value="50">50</option>
+    </select>
+  </div>
+
+  <table class="w-full border text-sm">
+    <thead>
+      <tr>
+        <th class="p-2 cursor-pointer" wire:click="setSort('title')">العنوان</th>
+        <th class="p-2 cursor-pointer" wire:click="setSort('author')">المؤلف</th>
+        <th class="p-2 cursor-pointer" wire:click="setSort('year')">السنة</th>
+        <th class="p-2">إجراءات</th>
+      </tr>
+    </thead>
+    <tbody>
+      {{-- استخدم نفس الحقول/الأعمدة كما في الكود القديم --}}
+      @forelse($books as $book)
+        <tr class="border-t">
+          <td class="p-2">{{ $book['title'] ?? $book->title }}</td>
+          <td class="p-2">
+            {{ $book['author']['name'] ?? optional($book->author)->name }}
+          </td>
+          <td class="p-2">{{ $book['year'] ?? $book->year }}</td>
+          <td class="p-2">@includeIf('partials.books.row-actions', ['book'=>$book])</td>
+        </tr>
+      @empty
+        <tr><td class="p-4 text-center" colspan="4">لا توجد نتائج</td></tr>
+      @endforelse
+    </tbody>
+  </table>
+
+  {{-- في وضع A: {{ $books->links() }} / في وضع B: استخدم meta للترقيم إن لزم --}}
+  @isset($meta)
+    {{-- TODO: إن كان الـ Endpoint يعيد meta/links، اعرض أزرار الترقيم بنفس تصميمك القديم --}}
+  @else
+    <div>{{ method_exists($books,'links') ? $books->links() : '' }}</div>
+  @endisset
+</div>
+
+========================
+🔎 التعرف على العناصر داخل الصفحات
+- ضع أعلى كل View قبل التحويل:
+  {{-- [Page-Map] عناصر الصفحة: جدول الكتب (عنوان/مؤلف/سنة)، فلاتر (بحث/حجم)، أكشنز… --}}
+- عند تعطيل وظائف DataTables المتعارضة:
+  {{-- [Disable-Overlap] تعطيل init للبحث/الفرز فقط — التصميم كما هو --}}
+  <script>
+    // اترك أي CSS/Theme كما هو، عطل فقط الميزات المتداخلة مع Livewire
+  </script>
+
+========================
+📦 مخرجات لازمة
+1) docs/refactor-tables-implementation.md
+   - الملفات المعدّلة وروابطها
+   - قبل/بعد مختصر
+   - شرح كيف أعدنا استخدام نفس مصدر البيانات (A أو B)
+   - ملاحظات أداء/فهارس
+2) التزامات Git منظمة (discovery → books → authors → views → docs)
+
+========================
+✅ Checklist
+- [ ] HTML/CSS/classes لم تتغيّر.
+- [ ] نفس طريقة الجلب (Repository/Scopes أو Endpoint) مُعاد استخدامها كما هي.
+- [ ] البحث/الفرز/الترقيم يعملون عبر Livewire.
+- [ ] تعليقات توثّق كل تغيير ومصدر البيانات.
+- [ ] لا تعارض JS، والتصميم مطابق.

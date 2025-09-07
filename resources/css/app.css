@@ -2,6 +2,62 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Swiper Fix for Livewire - Ensure proper structure */
+.myHomeSwiper {
+    width: 100%;
+    height: 100vh;
+}
+
+.myHomeSwiper .swiper-wrapper {
+    display: flex;
+    transform: translate3d(0px, 0px, 0px);
+    transition-duration: 0ms;
+}
+
+.myHomeSwiper .swiper-slide {
+    flex-shrink: 0;
+    width: 100%;
+    height: 100%;
+    position: relative;
+    transition-property: transform;
+}
+
+/* Ensure pagination styling */
+.myHomeSwiper-pagination {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 10;
+}
+
+.myHomeSwiper-pagination .swiper-pagination-bullet {
+    width: 12px;
+    height: 12px;
+    background: rgba(255, 255, 255, 0.5);
+    opacity: 1;
+    margin: 0 6px;
+}
+
+.myHomeSwiper-pagination .swiper-pagination-bullet-active {
+    background: white;
+}
+
+/* Navigation buttons styling */
+.myHomeSwiper .swiper-button-next,
+.myHomeSwiper .swiper-button-prev {
+    color: white;
+    width: 50px;
+    height: 50px;
+    margin-top: -25px;
+}
+
+.myHomeSwiper .swiper-button-next:after,
+.myHomeSwiper .swiper-button-prev:after {
+    font-size: 20px;
+    font-weight: bold;
+}
+
 :root {
     /* Primary Colors */
     --color-primary-50: #F1F8F3;

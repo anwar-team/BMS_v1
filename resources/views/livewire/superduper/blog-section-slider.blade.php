@@ -60,13 +60,13 @@
 
                     <button id="article-slider-prev" class="absolute left-0 z-20 flex items-center justify-center w-12 h-12 text-white transition-all duration-300 -translate-x-6 -translate-y-1/2 shadow-lg cursor-pointer bg-primary-700 articles-slider-prev top-1/2 hover:scale-110 hover:bg-primary-800 focus:outline-none focus:ring-2 focus:ring-primary-400 focus:ring-offset-2">
                         <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
                         </svg>
                     </button>
 
                     <button id="article-slider-next" class="absolute right-0 z-20 flex items-center justify-center w-12 h-12 text-white transition-all duration-300 translate-x-6 -translate-y-1/2 shadow-lg cursor-pointer bg-primary-700 articles-slider-next top-1/2 hover:scale-110 hover:bg-primary-800 focus:outline-none focus:ring-2 focus:ring-primary-400 focus:ring-offset-2">
                         <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
                         </svg>
                     </button>
 
