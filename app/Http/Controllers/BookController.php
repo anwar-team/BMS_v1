@@ -20,16 +20,6 @@ class BookController extends Controller
     }
 
     /**
-     * Display the specified book.
-     */
-    public function show($id)
-    {
-        $book = Book::with(['authors', 'mainAuthors', 'publisher'])->findOrFail($id);
-        
-        return view('books.show', compact('book'));
-    }
-
-    /**
      * Display detailed information about the book.
      */
     public function details($id)

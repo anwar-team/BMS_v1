@@ -132,7 +132,12 @@
                                                 </td>
                                             @else
                                                 <td class="px-6 py-4 whitespace-nowrap">
-                                                    <div class="text-sm font-medium text-gray-900">{{ $item->full_name }}</div>
+                                                    <div class="text-sm font-medium">
+                                                        <a href="{{ route('authors.details', $item->id) }}" 
+                                                           class="text-green-700 hover:text-green-900 hover:underline transition-colors duration-200">
+                                                            {{ $item->full_name }}
+                                                        </a>
+                                                    </div>
                                                     @if($item->biography)
                                                         <div class="text-sm text-gray-500 truncate max-w-xs">{{ Str::limit($item->biography, 60) }}</div>
                                                     @endif

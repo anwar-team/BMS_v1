@@ -44,11 +44,17 @@
                                                 <span class="font-semibold text-gray-700">المؤلف:</span>
                                                 <span class="text-gray-600">
                                                     @foreach($book->mainAuthors as $author)
-                                                        {{ $author->full_name }}@if(!$loop->last), @endif
+                                                        <a href="{{ route('authors.details', $author->id) }}" 
+                                                           class="text-green-600 hover:text-green-800 hover:underline transition-colors duration-200">
+                                                            {{ $author->full_name }}
+                                                        </a>@if(!$loop->last), @endif
                                                     @endforeach
                                                     @if($book->mainAuthors->count() == 0)
                                                         @foreach($book->authors->take(1) as $author)
-                                                            {{ $author->full_name }}
+                                                            <a href="{{ route('authors.details', $author->id) }}" 
+                                                               class="text-green-600 hover:text-green-800 hover:underline transition-colors duration-200">
+                                                                {{ $author->full_name }}
+                                                            </a>
                                                         @endforeach
                                                     @endif
                                                 </span>

@@ -39,7 +39,6 @@ Route::get('/show-all', [ShowAllController::class, 'index'])->name('show-all');
 
 // Book routes
 Route::get('/books', [BookController::class, 'index'])->name('books.index');
-Route::get('/books/{id}', [BookController::class, 'show'])->name('books.show')->where('id', '[0-9]+');
 Route::get('/books/{id}/details', [BookController::class, 'details'])->name('books.details')->where('id', '[0-9]+');
 Route::get('/books/{id}/read', [BookController::class, 'read'])->name('books.read')->where('id', '[0-9]+');
 Route::get('/books/{id}/download', [BookController::class, 'download'])->name('books.download')->where('id', '[0-9]+');
