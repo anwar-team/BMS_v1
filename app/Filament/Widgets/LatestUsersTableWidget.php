@@ -13,6 +13,9 @@ class LatestUsersTableWidget extends BaseWidget
     protected static ?string $heading = 'أحدث المستخدمين المسجلين';
     protected static ?int $sort = 7;
     protected int | string | array $columnSpan = 'full';
+    
+    // تعطيل التحديث التلقائي
+    protected static ?string $pollingInterval = null;
 
     public function table(Table $table): Table
     {
