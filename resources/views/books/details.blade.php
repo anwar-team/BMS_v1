@@ -64,7 +64,12 @@
                                         @if($book->publisher)
                                             <div class="flex items-center gap-2">
                                                 <span class="font-semibold text-gray-700">الناشر:</span>
-                                                <span class="text-gray-600">{{ $book->publisher->name }}</span>
+                                                <span class="text-gray-600">
+                                                    <a href="{{ route('publishers.details', $book->publisher->id) }}" 
+                                                       class="text-green-600 hover:text-green-800 hover:underline transition-colors duration-200">
+                                                        {{ $book->publisher->name }}
+                                                    </a>
+                                                </span>
                                             </div>
                                         @endif
                                         
