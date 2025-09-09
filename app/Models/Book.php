@@ -51,7 +51,7 @@ class Book extends Model
     {
         return $this->belongsTo(BookSection::class);
     }
-
+//OSIAD 
     /**
      * العلاقة مع المجلدات
      */
