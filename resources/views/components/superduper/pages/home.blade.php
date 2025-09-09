@@ -142,7 +142,7 @@
                                     القسم
                                 </th>
                                 <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    سنة النشر
+                                    تاريخ الإضافة
                                 </th>
                             </tr>
                         </thead>
@@ -177,7 +177,7 @@
                                         @endif
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                                        {{ $book->published_year ?: 'غير محدد' }}
+                                        {{ $book->created_at->format('Y-m-d') }}
                                     </td>
                                 </tr>
                             @empty
@@ -293,7 +293,12 @@
                                         {{ $loop->iteration }}
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap">
-                                        <div class="text-sm font-medium text-gray-900">{{ $author->full_name }}</div>
+                                        <div class="text-sm font-medium">
+                                            <a href="{{ route('authors.details', $author->id) }}" 
+                                               class="text-green-700 hover:text-green-900 hover:underline transition-colors duration-200">
+                                                {{ $author->full_name }}
+                                            </a>
+                                        </div>
                                         @if($author->biography)
                                             <div class="text-sm text-gray-500 truncate max-w-xs">{{ Str::limit($author->biography, 60) }}</div>
                                         @endif

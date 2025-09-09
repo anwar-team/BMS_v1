@@ -11,7 +11,6 @@
                             <img src="{{ asset('images/group0.svg') }}" alt="Icon" class="w-16 h-16">
                             <h1 class="text-4xl text-green-800 font-bold">تفاصيل الكتاب</h1>
                         </div>
-                        <h2 class="text-2xl text-gray-700 font-semibold">{{ $book->title }}</h2>
                     </div>
 
                     <!-- Main Book Details Section -->
@@ -36,7 +35,7 @@
                                     <!-- Card Title with Icon -->
                                     <div class="flex items-center gap-3 mb-6">
                                         <img src="{{ asset('images/group0.svg') }}" alt="Icon" class="w-6 h-6">
-                                        <h3 class="text-xl font-semibold text-green-800">معلومات الكتاب</h3>
+                                        <h3 class="text-xl font-semibold text-green-800">{{ $book->title }}</h3>
                                     </div>
                                     
                                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -45,11 +44,11 @@
                                                 <span class="font-semibold text-gray-700">المؤلف:</span>
                                                 <span class="text-gray-600">
                                                     @foreach($book->mainAuthors as $author)
-                                                        {{ $author->name }}@if(!$loop->last), @endif
+                                                        {{ $author->full_name }}@if(!$loop->last), @endif
                                                     @endforeach
                                                     @if($book->mainAuthors->count() == 0)
                                                         @foreach($book->authors->take(1) as $author)
-                                                            {{ $author->name }}
+                                                            {{ $author->full_name }}
                                                         @endforeach
                                                     @endif
                                                 </span>
@@ -63,13 +62,7 @@
                                             </div>
                                         @endif
                                         
-                                        @if($book->published_year)
-                                            <div class="flex items-center gap-2">
-                                                <span class="font-semibold text-gray-700">سنة النشر:</span>
-                                                <span class="text-gray-600">{{ $book->published_year }}</span>
-                                            </div>
-                                        @endif
-                                        
+
                                         @if($book->pages()->count() > 0)
                                             <div class="flex items-center gap-2">
                                                 <span class="font-semibold text-gray-700">عدد الصفحات:</span>
@@ -113,15 +106,6 @@
                                                 قراءة الكتاب
                                             </a>
                                         @endif
-                                        
-                                        <a href="{{ route('books.show', $book->id) }}" 
-                                           class="inline-flex items-center px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-lg transition-colors duration-200">
-                                            <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
-                                            </svg>
-                                            عرض الكتاب
-                                        </a>
                                     </div>
                                 </div>
                             </div>
