@@ -29,6 +29,11 @@ use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Filters\Filter;
+use Filament\Tables\Filters\DateRangeFilter;
+use Filament\Tables\Filters\TernaryFilter;
+use Filament\Forms\Components\DatePicker;
+use Filament\Forms\Components\Group;
+use Carbon\Carbon;
 use Filament\Tables\Actions\ViewAction;
 use Filament\Tables\Actions\EditAction;
 use Filament\Tables\Actions\DeleteAction;
@@ -663,24 +668,352 @@ class BookResource extends Resource
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
+                // 1. مرشحات أساسية
                 SelectFilter::make('book_section_id')
                     ->label('قسم الكتاب')
                     ->relationship('bookSection', 'name')
                     ->searchable()
-                    ->preload(),
+                    ->preload()
+                    ->indicator('القسم'),
+                
+                SelectFilter::make('publisher_id')
+                    ->label('الناشر')
+                    ->relationship('publisher', 'name')
+                    ->searchable()
+                    ->preload()
+                    ->indicator('الناشر'),
+                
+                SelectFilter::make('author')
+                    ->label('المؤلف')
+                    ->query(function (Builder $query, array $data): Builder {
+                        return $query->when(
+                            $data['value'],
+                            fn (Builder $query, $value): Builder => $query->whereHas(
+                                'authorBooks.author',
+                                fn (Builder $query): Builder => $query->where('id', $value)
+                            )
+                        );
+                    })
+                    ->options(function (): array {
+                        return Author::whereHas('authorBooks')
+                            ->orderBy('full_name')
+                            ->pluck('full_name', 'id')
+                            ->toArray();
+                    })
+                    ->searchable()
+                    ->preload()
+                    ->indicator('المؤلف'),
+
+                // 2. مرشحات الحالة والرؤية
                 SelectFilter::make('status')
                     ->label('الحالة')
                     ->options([
                         'draft' => 'مسودة',
                         'published' => 'منشور',
                         'archived' => 'مؤرشف',
-                    ]),
+                    ])
+                    ->multiple()
+                    ->indicator('الحالة'),
+                
                 SelectFilter::make('visibility')
                     ->label('الرؤية')
                     ->options([
                         'public' => 'عام',
                         'private' => 'خاص',
-                    ]),
+                    ])
+                    ->indicator('الرؤية'),
+
+                // 3. مرشحات دور المؤلف
+                SelectFilter::make('author_role')
+                    ->label('دور المؤلف')
+                    ->query(function (Builder $query, array $data): Builder {
+                        return $query->when(
+                            $data['value'],
+                            fn (Builder $query, $value): Builder => $query->whereHas(
+                                'authorBooks',
+                                fn (Builder $query): Builder => $query->where('role', $value)
+                            )
+                        );
+                    })
+                    ->options([
+                        'author' => 'مؤلف',
+                        'co_author' => 'مؤلف مشارك',
+                        'editor' => 'محرر',
+                        'translator' => 'مترجم',
+                        'reviewer' => 'مراجع',
+                        'commentator' => 'معلق',
+                    ])
+                    ->indicator('دور المؤلف'),
+
+                // 4. مرشحات رقمية للطبعة والسنة
+                Filter::make('edition_range')
+                    ->form([
+                        Grid::make(2)->schema([
+                            TextInput::make('edition_from')
+                                ->label('الطبعة من')
+                                ->numeric()
+                                ->placeholder('1'),
+                            TextInput::make('edition_to')
+                                ->label('إلى')
+                                ->numeric()
+                                ->placeholder('10'),
+                        ]),
+                    ])
+                    ->query(function (Builder $query, array $data): Builder {
+                        return $query
+                            ->when(
+                                $data['edition_from'],
+                                fn (Builder $query, $value): Builder => $query->where('edition', '>=', $value)
+                            )
+                            ->when(
+                                $data['edition_to'],
+                                fn (Builder $query, $value): Builder => $query->where('edition', '<=', $value)
+                            );
+                    })
+                    ->indicateUsing(function (array $data): ?string {
+                        if ($data['edition_from'] || $data['edition_to']) {
+                            return 'نطاق الطبعة: ' . ($data['edition_from'] ?? '∞') . ' - ' . ($data['edition_to'] ?? '∞');
+                        }
+                        return null;
+                    }),
+
+                Filter::make('edition_year_range')
+                    ->form([
+                        Grid::make(2)->schema([
+                            TextInput::make('year_from')
+                                ->label('سنة الطباعة من')
+                                ->numeric()
+                                ->placeholder('1400'),
+                            TextInput::make('year_to')
+                                ->label('إلى')
+                                ->numeric()
+                                ->placeholder('2025'),
+                        ]),
+                    ])
+                    ->query(function (Builder $query, array $data): Builder {
+                        return $query
+                            ->when(
+                                $data['year_from'],
+                                fn (Builder $query, $value): Builder => $query->where('edition_DATA', '>=', $value)
+                            )
+                            ->when(
+                                $data['year_to'],
+                                fn (Builder $query, $value): Builder => $query->where('edition_DATA', '<=', $value)
+                            );
+                    })
+                    ->indicateUsing(function (array $data): ?string {
+                        if ($data['year_from'] || $data['year_to']) {
+                            return 'نطاق السنة: ' . ($data['year_from'] ?? '∞') . ' - ' . ($data['year_to'] ?? '∞');
+                        }
+                        return null;
+                    }),
+
+                // 5. مرشحات عدد المجلدات والصفحات
+                Filter::make('volumes_range')
+                    ->form([
+                        Grid::make(2)->schema([
+                            TextInput::make('volumes_from')
+                                ->label('عدد المجلدات من')
+                                ->numeric()
+                                ->placeholder('1'),
+                            TextInput::make('volumes_to')
+                                ->label('إلى')
+                                ->numeric()
+                                ->placeholder('20'),
+                        ]),
+                    ])
+                    ->query(function (Builder $query, array $data): Builder {
+                        return $query
+                            ->when(
+                                $data['volumes_from'],
+                                fn (Builder $query, $value): Builder => $query->has('volumes', '>=', $value)
+                            )
+                            ->when(
+                                $data['volumes_to'],
+                                fn (Builder $query, $value): Builder => $query->has('volumes', '<=', $value)
+                            );
+                    })
+                    ->indicateUsing(function (array $data): ?string {
+                        if ($data['volumes_from'] || $data['volumes_to']) {
+                            return 'عدد المجلدات: ' . ($data['volumes_from'] ?? '∞') . ' - ' . ($data['volumes_to'] ?? '∞');
+                        }
+                        return null;
+                    }),
+
+                Filter::make('pages_range')
+                    ->form([
+                        Grid::make(2)->schema([
+                            TextInput::make('pages_from')
+                                ->label('عدد الصفحات من')
+                                ->numeric()
+                                ->placeholder('100'),
+                            TextInput::make('pages_to')
+                                ->label('إلى')
+                                ->numeric()
+                                ->placeholder('1000'),
+                        ]),
+                    ])
+                    ->query(function (Builder $query, array $data): Builder {
+                        return $query
+                            ->when(
+                                $data['pages_from'],
+                                fn (Builder $query, $value): Builder => $query->has('pages', '>=', $value)
+                            )
+                            ->when(
+                                $data['pages_to'],
+                                fn (Builder $query, $value): Builder => $query->has('pages', '<=', $value)
+                            );
+                    })
+                    ->indicateUsing(function (array $data): ?string {
+                        if ($data['pages_from'] || $data['pages_to']) {
+                            return 'عدد الصفحات: ' . ($data['pages_from'] ?? '∞') . ' - ' . ($data['pages_to'] ?? '∞');
+                        }
+                        return null;
+                    }),
+
+                // 6. مرشحات وجود البيانات
+                TernaryFilter::make('has_cover_image')
+                    ->label('صورة الغلاف')
+                    ->nullable()
+                    ->trueLabel('مع صورة غلاف')
+                    ->falseLabel('بدون صورة غلاف')
+                    ->queries(
+                        true: fn (Builder $query) => $query->whereNotNull('cover_image'),
+                        false: fn (Builder $query) => $query->whereNull('cover_image'),
+                        blank: fn (Builder $query) => $query,
+                    )
+                    ->indicator('صورة الغلاف'),
+
+                TernaryFilter::make('has_source_url')
+                    ->label('رابط المصدر')
+                    ->nullable()
+                    ->trueLabel('مع رابط مصدر')
+                    ->falseLabel('بدون رابط مصدر')
+                    ->queries(
+                        true: fn (Builder $query) => $query->whereNotNull('source_url')->where('source_url', '!=', ''),
+                        false: fn (Builder $query) => $query->where(function ($query) {
+                            $query->whereNull('source_url')->orWhere('source_url', '');
+                        }),
+                        blank: fn (Builder $query) => $query,
+                    )
+                    ->indicator('رابط المصدر'),
+
+                TernaryFilter::make('has_description')
+                    ->label('وصف الكتاب')
+                    ->nullable()
+                    ->trueLabel('مع وصف')
+                    ->falseLabel('بدون وصف')
+                    ->queries(
+                        true: fn (Builder $query) => $query->whereNotNull('description')->where('description', '!=', ''),
+                        false: fn (Builder $query) => $query->where(function ($query) {
+                            $query->whereNull('description')->orWhere('description', '');
+                        }),
+                        blank: fn (Builder $query) => $query,
+                    )
+                    ->indicator('الوصف'),
+
+                // 7. مرشح المؤلف الرئيسي
+                TernaryFilter::make('has_main_author')
+                    ->label('المؤلف الرئيسي')
+                    ->nullable()
+                    ->trueLabel('مع مؤلف رئيسي')
+                    ->falseLabel('بدون مؤلف رئيسي')
+                    ->queries(
+                        true: fn (Builder $query) => $query->whereHas('authorBooks', fn ($q) => $q->where('is_main', true)),
+                        false: fn (Builder $query) => $query->whereDoesntHave('authorBooks', fn ($q) => $q->where('is_main', true)),
+                        blank: fn (Builder $query) => $query,
+                    )
+                    ->indicator('المؤلف الرئيسي'),
+
+                // 8. مرشحات تاريخية
+                Filter::make('created_date_range')
+                    ->form([
+                        Grid::make(2)->schema([
+                            DatePicker::make('created_from')
+                                ->label('تاريخ الإنشاء من')
+                                ->native(false)
+                                ->displayFormat('d/m/Y'),
+                            DatePicker::make('created_until')
+                                ->label('إلى')
+                                ->native(false)
+                                ->displayFormat('d/m/Y'),
+                        ]),
+                    ])
+                    ->query(function (Builder $query, array $data): Builder {
+                        return $query
+                            ->when(
+                                $data['created_from'],
+                                fn (Builder $query, $date): Builder => $query->whereDate('created_at', '>=', $date)
+                            )
+                            ->when(
+                                $data['created_until'],
+                                fn (Builder $query, $date): Builder => $query->whereDate('created_at', '<=', $date)
+                            );
+                    })
+                    ->indicateUsing(function (array $data): ?string {
+                        if ($data['created_from'] || $data['created_until']) {
+                            return 'تاريخ الإنشاء: ' . 
+                                ($data['created_from'] ? Carbon::parse($data['created_from'])->format('d/m/Y') : '∞') . 
+                                ' - ' . 
+                                ($data['created_until'] ? Carbon::parse($data['created_until'])->format('d/m/Y') : '∞');
+                        }
+                        return null;
+                    }),
+
+                Filter::make('updated_date_range')
+                    ->form([
+                        Grid::make(2)->schema([
+                            DatePicker::make('updated_from')
+                                ->label('تاريخ التحديث من')
+                                ->native(false)
+                                ->displayFormat('d/m/Y'),
+                            DatePicker::make('updated_until')
+                                ->label('إلى')
+                                ->native(false)
+                                ->displayFormat('d/m/Y'),
+                        ]),
+                    ])
+                    ->query(function (Builder $query, array $data): Builder {
+                        return $query
+                            ->when(
+                                $data['updated_from'],
+                                fn (Builder $query, $date): Builder => $query->whereDate('updated_at', '>=', $date)
+                            )
+                            ->when(
+                                $data['updated_until'],
+                                fn (Builder $query, $date): Builder => $query->whereDate('updated_at', '<=', $date)
+                            );
+                    })
+                    ->indicateUsing(function (array $data): ?string {
+                        if ($data['updated_from'] || $data['updated_until']) {
+                            return 'تاريخ التحديث: ' . 
+                                ($data['updated_from'] ? Carbon::parse($data['updated_from'])->format('d/m/Y') : '∞') . 
+                                ' - ' . 
+                                ($data['updated_until'] ? Carbon::parse($data['updated_until'])->format('d/m/Y') : '∞');
+                        }
+                        return null;
+                    }),
+
+                // 9. مرشح نصي متقدم للبحث في الوصف
+                Filter::make('description_search')
+                    ->form([
+                        TextInput::make('description_text')
+                            ->label('البحث في الوصف')
+                            ->placeholder('ابحث في وصف الكتاب...')
+                            ->maxLength(255),
+                    ])
+                    ->query(function (Builder $query, array $data): Builder {
+                        return $query->when(
+                            $data['description_text'],
+                            fn (Builder $query, $text): Builder => $query->where('description', 'like', "%{$text}%")
+                        );
+                    })
+                    ->indicateUsing(function (array $data): ?string {
+                        if ($data['description_text']) {
+                            return 'البحث في الوصف: ' . $data['description_text'];
+                        }
+                        return null;
+                    }),
             ])
             ->actions([
                 ViewAction::make()
