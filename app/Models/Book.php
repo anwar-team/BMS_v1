@@ -135,13 +135,6 @@ class Book extends Model
         return $query->where('visibility', 'public');
     }
 
-    /**
-     * العلاقة مع فهارس الكتاب
-     */
-    public function bookIndexes(): HasMany
-    {
-        return $this->hasMany(BookIndex::class);
-    }
 
     /**
      * التحقق من كون الكتاب مستورد من BOK
