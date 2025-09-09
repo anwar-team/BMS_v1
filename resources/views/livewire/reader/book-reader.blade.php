@@ -28,13 +28,33 @@
                     <div class="mb-6 sm:mb-8 md:mb-10 lg:mb-12 z-10">
                         <div class="flex flex-col sm:flex-row items-center gap-3 sm:gap-4 mb-4 sm:mb-6">
                             <img src="{{ asset('images/group0.svg') }}" alt="Icon" class="w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16">
-                            <h2 class="text-2xl sm:text-3xl md:text-4xl text-[#5D6019] font-bold font-tajawal">
-                                معاينة كتاب: 
-                                <a href="{{ route('books.details', $book->id) }}" 
-                                   class="hover:text-green-600 transition-colors duration-200 cursor-pointer underline decoration-2 underline-offset-4">
-                                    {{ $book->title }}
-                                </a>
-                            </h2>
+                            <div class="text-center sm:text-right">
+                                <h2 class="text-2xl sm:text-3xl md:text-4xl text-[#5D6019] font-bold font-tajawal">
+                                    <a href="{{ route('books.details', $book->id) }}" 
+                                       class="hover:text-green-600 transition-colors duration-200 cursor-pointer underline decoration-2 underline-offset-4">
+                                        {{ $book->title }}
+                                    </a>
+                                </h2>
+                                @if($book->authors->count() > 0)
+                                    <div class="mt-2 text-lg sm:text-xl text-gray-600">
+                                        <span class="font-medium">المؤلف: </span>
+                                        @foreach($book->mainAuthors as $author)
+                                            <a href="{{ route('authors.details', $author->id) }}" 
+                                               class="text-green-600 hover:text-green-800 hover:underline transition-colors duration-200 font-medium">
+                                                {{ $author->full_name }}
+                                            </a>@if(!$loop->last), @endif
+                                        @endforeach
+                                        @if($book->mainAuthors->count() == 0)
+                                            @foreach($book->authors->take(1) as $author)
+                                                <a href="{{ route('authors.details', $author->id) }}" 
+                                                   class="text-green-600 hover:text-green-800 hover:underline transition-colors duration-200 font-medium">
+                                                    {{ $author->full_name }}
+                                                </a>
+                                            @endforeach
+                                        @endif
+                                    </div>
+                                @endif
+                            </div>
                         </div>
                     </div>
                     
