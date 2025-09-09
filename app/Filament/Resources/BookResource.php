@@ -29,7 +29,6 @@ use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Filters\Filter;
-use Filament\Tables\Filters\DateRangeFilter;
 use Filament\Tables\Filters\TernaryFilter;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Group;
@@ -335,12 +334,6 @@ class BookResource extends Resource
                         ->label('عنوان المجلد')
                         ->maxLength(255)
                         ->placeholder('مثال: الجزء الأول'),
-                    
-                    //TextInput::make('pages_count')
-                    //    ->label('عدد الصفحات')
-                    //    ->numeric()
-                    //    ->minValue(1)
-                    //    ->placeholder('300'),
                 ]),
                 
                 Textarea::make('description')
@@ -357,7 +350,7 @@ class BookResource extends Resource
                 'مجلد ' . ($state['number'] ?? 'جديد') . 
                 ($state['title'] ? ' - ' . $state['title'] : '')
             )
-            ->maxItems(100) // حد أقصى 100 مجلد لتحسين الأداء
+            ->maxItems(100)
             ->defaultItems(1)
             ->columnSpanFull();
     }
@@ -381,7 +374,7 @@ class BookResource extends Resource
             ->itemLabel(fn (array $state): ?string => 
                 ($state['title'] ?? 'فصل جديد')
             )
-            ->maxItems(200) // حد أقصى 200 فصل لتحسين الأداء
+            ->maxItems(200)
             ->defaultItems(0);
     }
 
@@ -428,7 +421,6 @@ class BookResource extends Resource
                 ->rows(4)
                 ->columnSpanFull(),
             
-            // Birth year fields
             Grid::make(2)->schema([
                 Select::make('birth_year_type')
                     ->label('نوع تقويم الميلاد')
@@ -446,7 +438,6 @@ class BookResource extends Resource
                     ->maxValue(fn ($get) => $get('birth_year_type') === 'hijri' ? 1500 : date('Y')),
             ]),
             
-            // Death year fields (conditional)
             Grid::make(2)->schema([
                 Select::make('death_year_type')
                     ->label('نوع تقويم الوفاة')
@@ -559,11 +550,13 @@ class BookResource extends Resource
     {
         return $table
             ->columns([
+                // الأعمدة الثابتة (غير قابلة للإخفاء)
                 ImageColumn::make('cover_image')
                     ->label('الغلاف')
                     ->circular()
                     ->size(60)
                     ->defaultImageUrl(url('/images/default-book-cover.png')),
+                
                 TextColumn::make('title')
                     ->label('عنوان الكتاب')
                     ->searchable()
@@ -576,10 +569,10 @@ class BookResource extends Resource
                         }
                         return $state;
                     }),
+                
                 TextColumn::make('mainAuthors')
                     ->label('المؤلف الرئيسي')
                     ->getStateUsing(function ($record) {
-                        // استخدام البيانات المحملة مسبقاً من getEloquentQuery()
                         $mainAuthor = $record->authorBooks
                             ->where('is_main', true)
                             ->first();
@@ -588,7 +581,6 @@ class BookResource extends Resource
                             return $mainAuthor->author->full_name;
                         }
                         
-                        // في حالة عدم وجود مؤلف رئيسي، أخذ أول مؤلف
                         $firstAuthor = $record->authorBooks->first();
                         return $firstAuthor?->author?->full_name ?? 'غير محدد';
                     })
@@ -598,69 +590,14 @@ class BookResource extends Resource
                         });
                     })
                     ->limit(30),
+                
                 TextColumn::make('bookSection.name')
                     ->label('القسم')
                     ->searchable()
                     ->sortable()
                     ->badge()
                     ->color('info'),
-                TextColumn::make('publisher.name')
-                    ->label('الناشر')
-                    ->searchable()
-                    ->sortable()
-                    ->badge()
-                    ->color('gray')
-                    ->toggleable(),
-                TextColumn::make('edition')
-                    ->label('الطبعة')
-                    ->sortable()
-                    ->badge()
-                    ->color('primary')
-                    ->formatStateUsing(fn (?int $state): string => $state ? "الطبعة {$state}" : 'غير محدد')
-                    ->toggleable(),
-                TextColumn::make('edition_DATA')
-                    ->label('سنة الطباعة')
-                    ->badge()
-                    ->color('secondary')
-                    ->formatStateUsing(fn (?int $state): string => $state ? "{$state}" : 'غير محدد')
-                    ->toggleable(),
-                TextColumn::make('volumes_count')
-                    ->label('المجلدات')
-                    ->badge()
-                    ->color('success')
-                    ->toggleable(),
-                TextColumn::make('pages_count')
-                    ->label('الصفحات')
-                    ->badge()
-                    ->color('warning')
-                    ->toggleable(),
-                TextColumn::make('source_url')
-                    ->label('رابط المصدر')
-                    ->limit(50)
-                    ->url(fn ($record) => $record->source_url)
-                    ->openUrlInNewTab()
-                    ->badge()
-                    ->color('info')
-                    ->formatStateUsing(fn (?string $state): string => $state ? 'متوفر' : 'غير متوفر')
-                    ->toggleable(isToggledHiddenByDefault: true),
-                TextColumn::make('description')
-                    ->label('الوصف')
-                    ->limit(100)
-                    ->tooltip(function (TextColumn $column): ?string {
-                        $state = $column->getState();
-                        if (strlen($state) <= 100) {
-                            return null;
-                        }
-                        return $state;
-                    })
-                    ->searchable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-                TextColumn::make('slug')
-                    ->label('الرابط الثابت')
-                    ->searchable()
-                    ->badge()
-                    ->color('gray')
-                    ->toggleable(isToggledHiddenByDefault: true),
+                
                 TextColumn::make('status')
                     ->label('الحالة')
                     ->badge()
@@ -676,6 +613,46 @@ class BookResource extends Resource
                         'archived' => 'مؤرشف',
                         default => $state,
                     }),
+                
+                // الأعمدة القابلة للإخفاء/الإظهار
+                TextColumn::make('publisher.name')
+                    ->label('الناشر')
+                    ->searchable()
+                    ->sortable()
+                    ->badge()
+                    ->color('gray')
+                    ->toggleable(),
+                
+                TextColumn::make('edition')
+                    ->label('الطبعة')
+                    ->sortable()
+                    ->badge()
+                    ->color('primary')
+                    ->formatStateUsing(fn (?int $state): string => $state ? "الطبعة {$state}" : 'غير محدد')
+                    ->toggleable(),
+                
+                TextColumn::make('edition_DATA')
+                    ->label('سنة الطباعة')
+                    ->sortable()
+                    ->badge()
+                    ->color('secondary')
+                    ->formatStateUsing(fn (?int $state): string => $state ? "{$state}" : 'غير محدد')
+                    ->toggleable(),
+                
+                TextColumn::make('volumes_count')
+                    ->label('المجلدات')
+                    ->badge()
+                    ->color('success')
+                    ->getStateUsing(fn ($record) => $record->volumes_count ?? 0)
+                    ->toggleable(),
+                
+                TextColumn::make('pages_count')
+                    ->label('الصفحات')
+                    ->badge()
+                    ->color('warning')
+                    ->getStateUsing(fn ($record) => $record->pages_count ?? 0)
+                    ->toggleable(),
+                
                 TextColumn::make('visibility')
                     ->label('الرؤية')
                     ->badge()
@@ -690,78 +667,37 @@ class BookResource extends Resource
                         default => $state,
                     })
                     ->toggleable(),
-                TextColumn::make('authorBooks.role')
-                    ->label('أدوار المؤلفين')
-                    ->formatStateUsing(function ($record) {
-                        $roles = $record->authorBooks->pluck('role')->unique()->map(function ($role) {
-                            return match ($role) {
-                                'author' => 'مؤلف',
-                                'co_author' => 'مؤلف مشارك',
-                                'editor' => 'محرر',
-                                'translator' => 'مترجم',
-                                'reviewer' => 'مراجع',
-                                'commentator' => 'معلق',
-                                default => $role,
-                            };
-                        })->implode(', ');
-                        return $roles ?: 'غير محدد';
-                    })
+                
+                // الأعمدة الإضافية المخفية افتراضياً
+                TextColumn::make('source_url')
+                    ->label('رابط المصدر')
+                    ->formatStateUsing(fn (?string $state): string => $state ? 'متوفر' : 'غير متوفر')
                     ->badge()
-                    ->color('primary')
+                    ->color(fn (?string $state): string => $state ? 'success' : 'danger')
+                    ->url(fn ($record) => $record->source_url)
+                    ->openUrlInNewTab()
                     ->toggleable(isToggledHiddenByDefault: true),
-                TextColumn::make('all_authors')
-                    ->label('جميع المؤلفين')
-                    ->formatStateUsing(function ($record) {
-                        $authors = $record->authorBooks->map(function ($authorBook) {
-                            $role = match ($authorBook->role) {
-                                'author' => 'مؤلف',
-                                'co_author' => 'مؤلف مشارك',
-                                'editor' => 'محرر',
-                                'translator' => 'مترجم',
-                                'reviewer' => 'مراجع',
-                                'commentator' => 'معلق',
-                                default => $authorBook->role,
-                            };
-                            return $authorBook->author?->full_name . " ({$role})";
-                        })->implode(' | ');
-                        return $authors ?: 'غير محدد';
-                    })
+                
+                TextColumn::make('description')
+                    ->label('الوصف')
                     ->limit(100)
                     ->tooltip(function (TextColumn $column): ?string {
                         $state = $column->getState();
-                        if (strlen($state) <= 100) {
+                        if (!$state || strlen($state) <= 100) {
                             return null;
                         }
                         return $state;
                     })
+                    ->searchable()
                     ->toggleable(isToggledHiddenByDefault: true),
-                TextColumn::make('volumes.title')
-                    ->label('عناوين المجلدات')
-                    ->formatStateUsing(function ($record) {
-                        $volumes = $record->volumes->map(function ($volume) {
-                            return "مجلد {$volume->number}" . ($volume->title ? ": {$volume->title}" : '');
-                        })->implode(' | ');
-                        return $volumes ?: 'لا توجد مجلدات';
-                    })
-                    ->limit(150)
-                    ->tooltip(function (TextColumn $column): ?string {
-                        $state = $column->getState();
-                        if (strlen($state) <= 150) {
-                            return null;
-                        }
-                        return $state;
-                    })
+                
+                TextColumn::make('slug')
+                    ->label('الرابط الثابت')
+                    ->searchable()
+                    ->badge()
+                    ->color('gray')
                     ->toggleable(isToggledHiddenByDefault: true),
-                TextColumn::make('created_at')
-                    ->label('تاريخ الإنشاء')
-                    ->dateTime('d/m/Y H:i')
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-                TextColumn::make('updated_at')
-                    ->label('آخر تحديث')
-                    ->dateTime('d/m/Y H:i')
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
+                
                 TextColumn::make('id')
                     ->label('المعرف')
                     ->searchable()
@@ -769,39 +705,35 @@ class BookResource extends Resource
                     ->badge()
                     ->color('gray')
                     ->toggleable(isToggledHiddenByDefault: true),
+                
                 TextColumn::make('has_cover')
                     ->label('صورة الغلاف')
-                    ->formatStateUsing(fn ($record) => $record->cover_image ? 'متوفرة' : 'غير متوفرة')
+                    ->getStateUsing(fn ($record) => $record->cover_image ? 'متوفرة' : 'غير متوفرة')
                     ->badge()
                     ->color(fn ($record) => $record->cover_image ? 'success' : 'danger')
                     ->toggleable(isToggledHiddenByDefault: true),
-                TextColumn::make('has_description')
-                    ->label('وجود وصف')
-                    ->formatStateUsing(fn ($record) => $record->description ? 'متوفر' : 'غير متوفر')
-                    ->badge()
-                    ->color(fn ($record) => $record->description ? 'success' : 'danger')
-                    ->toggleable(isToggledHiddenByDefault: true),
+                
                 TextColumn::make('authors_count')
                     ->label('عدد المؤلفين')
                     ->getStateUsing(fn ($record) => $record->authorBooks->count())
                     ->badge()
                     ->color('info')
                     ->toggleable(isToggledHiddenByDefault: true),
-                TextColumn::make('main_author_status')
-                    ->label('المؤلف الرئيسي')
-                    ->formatStateUsing(function ($record) {
-                        $hasMainAuthor = $record->authorBooks->where('is_main', true)->isNotEmpty();
-                        return $hasMainAuthor ? 'محدد' : 'غير محدد';
-                    })
-                    ->badge()
-                    ->color(function ($record) {
-                        $hasMainAuthor = $record->authorBooks->where('is_main', true)->isNotEmpty();
-                        return $hasMainAuthor ? 'success' : 'warning';
-                    })
+                
+                TextColumn::make('created_at')
+                    ->label('تاريخ الإنشاء')
+                    ->dateTime('d/m/Y H:i')
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
+                
+                TextColumn::make('updated_at')
+                    ->label('آخر تحديث')
+                    ->dateTime('d/m/Y H:i')
+                    ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
-                // 1. مرشحات أساسية
+                // مرشحات شاملة
                 SelectFilter::make('book_section_id')
                     ->label('قسم الكتاب')
                     ->relationship('bookSection', 'name')
@@ -837,7 +769,6 @@ class BookResource extends Resource
                     ->preload()
                     ->indicator('المؤلف'),
 
-                // 2. مرشحات الحالة والرؤية
                 SelectFilter::make('status')
                     ->label('الحالة')
                     ->options([
@@ -856,7 +787,6 @@ class BookResource extends Resource
                     ])
                     ->indicator('الرؤية'),
 
-                // 3. مرشحات دور المؤلف
                 SelectFilter::make('author_role')
                     ->label('دور المؤلف')
                     ->query(function (Builder $query, array $data): Builder {
@@ -878,7 +808,6 @@ class BookResource extends Resource
                     ])
                     ->indicator('دور المؤلف'),
 
-                // 4. مرشحات رقمية للطبعة والسنة
                 Filter::make('edition_range')
                     ->form([
                         Grid::make(2)->schema([
@@ -910,101 +839,6 @@ class BookResource extends Resource
                         return null;
                     }),
 
-                Filter::make('edition_year_range')
-                    ->form([
-                        Grid::make(2)->schema([
-                            TextInput::make('year_from')
-                                ->label('سنة الطباعة من')
-                                ->numeric()
-                                ->placeholder('1400'),
-                            TextInput::make('year_to')
-                                ->label('إلى')
-                                ->numeric()
-                                ->placeholder('2025'),
-                        ]),
-                    ])
-                    ->query(function (Builder $query, array $data): Builder {
-                        return $query
-                            ->when(
-                                $data['year_from'],
-                                fn (Builder $query, $value): Builder => $query->where('edition_DATA', '>=', $value)
-                            )
-                            ->when(
-                                $data['year_to'],
-                                fn (Builder $query, $value): Builder => $query->where('edition_DATA', '<=', $value)
-                            );
-                    })
-                    ->indicateUsing(function (array $data): ?string {
-                        if ($data['year_from'] || $data['year_to']) {
-                            return 'نطاق السنة: ' . ($data['year_from'] ?? '∞') . ' - ' . ($data['year_to'] ?? '∞');
-                        }
-                        return null;
-                    }),
-
-                // 5. مرشحات عدد المجلدات والصفحات
-                Filter::make('volumes_range')
-                    ->form([
-                        Grid::make(2)->schema([
-                            TextInput::make('volumes_from')
-                                ->label('عدد المجلدات من')
-                                ->numeric()
-                                ->placeholder('1'),
-                            TextInput::make('volumes_to')
-                                ->label('إلى')
-                                ->numeric()
-                                ->placeholder('20'),
-                        ]),
-                    ])
-                    ->query(function (Builder $query, array $data): Builder {
-                        return $query
-                            ->when(
-                                $data['volumes_from'],
-                                fn (Builder $query, $value): Builder => $query->has('volumes', '>=', $value)
-                            )
-                            ->when(
-                                $data['volumes_to'],
-                                fn (Builder $query, $value): Builder => $query->has('volumes', '<=', $value)
-                            );
-                    })
-                    ->indicateUsing(function (array $data): ?string {
-                        if ($data['volumes_from'] || $data['volumes_to']) {
-                            return 'عدد المجلدات: ' . ($data['volumes_from'] ?? '∞') . ' - ' . ($data['volumes_to'] ?? '∞');
-                        }
-                        return null;
-                    }),
-
-                Filter::make('pages_range')
-                    ->form([
-                        Grid::make(2)->schema([
-                            TextInput::make('pages_from')
-                                ->label('عدد الصفحات من')
-                                ->numeric()
-                                ->placeholder('100'),
-                            TextInput::make('pages_to')
-                                ->label('إلى')
-                                ->numeric()
-                                ->placeholder('1000'),
-                        ]),
-                    ])
-                    ->query(function (Builder $query, array $data): Builder {
-                        return $query
-                            ->when(
-                                $data['pages_from'],
-                                fn (Builder $query, $value): Builder => $query->has('pages', '>=', $value)
-                            )
-                            ->when(
-                                $data['pages_to'],
-                                fn (Builder $query, $value): Builder => $query->has('pages', '<=', $value)
-                            );
-                    })
-                    ->indicateUsing(function (array $data): ?string {
-                        if ($data['pages_from'] || $data['pages_to']) {
-                            return 'عدد الصفحات: ' . ($data['pages_from'] ?? '∞') . ' - ' . ($data['pages_to'] ?? '∞');
-                        }
-                        return null;
-                    }),
-
-                // 6. مرشحات وجود البيانات
                 TernaryFilter::make('has_cover_image')
                     ->label('صورة الغلاف')
                     ->nullable()
@@ -1031,34 +865,6 @@ class BookResource extends Resource
                     )
                     ->indicator('رابط المصدر'),
 
-                TernaryFilter::make('has_description')
-                    ->label('وصف الكتاب')
-                    ->nullable()
-                    ->trueLabel('مع وصف')
-                    ->falseLabel('بدون وصف')
-                    ->queries(
-                        true: fn (Builder $query) => $query->whereNotNull('description')->where('description', '!=', ''),
-                        false: fn (Builder $query) => $query->where(function ($query) {
-                            $query->whereNull('description')->orWhere('description', '');
-                        }),
-                        blank: fn (Builder $query) => $query,
-                    )
-                    ->indicator('الوصف'),
-
-                // 7. مرشح المؤلف الرئيسي
-                TernaryFilter::make('has_main_author')
-                    ->label('المؤلف الرئيسي')
-                    ->nullable()
-                    ->trueLabel('مع مؤلف رئيسي')
-                    ->falseLabel('بدون مؤلف رئيسي')
-                    ->queries(
-                        true: fn (Builder $query) => $query->whereHas('authorBooks', fn ($q) => $q->where('is_main', true)),
-                        false: fn (Builder $query) => $query->whereDoesntHave('authorBooks', fn ($q) => $q->where('is_main', true)),
-                        blank: fn (Builder $query) => $query,
-                    )
-                    ->indicator('المؤلف الرئيسي'),
-
-                // 8. مرشحات تاريخية
                 Filter::make('created_date_range')
                     ->form([
                         Grid::make(2)->schema([
@@ -1089,61 +895,6 @@ class BookResource extends Resource
                                 ($data['created_from'] ? Carbon::parse($data['created_from'])->format('d/m/Y') : '∞') . 
                                 ' - ' . 
                                 ($data['created_until'] ? Carbon::parse($data['created_until'])->format('d/m/Y') : '∞');
-                        }
-                        return null;
-                    }),
-
-                Filter::make('updated_date_range')
-                    ->form([
-                        Grid::make(2)->schema([
-                            DatePicker::make('updated_from')
-                                ->label('تاريخ التحديث من')
-                                ->native(false)
-                                ->displayFormat('d/m/Y'),
-                            DatePicker::make('updated_until')
-                                ->label('إلى')
-                                ->native(false)
-                                ->displayFormat('d/m/Y'),
-                        ]),
-                    ])
-                    ->query(function (Builder $query, array $data): Builder {
-                        return $query
-                            ->when(
-                                $data['updated_from'],
-                                fn (Builder $query, $date): Builder => $query->whereDate('updated_at', '>=', $date)
-                            )
-                            ->when(
-                                $data['updated_until'],
-                                fn (Builder $query, $date): Builder => $query->whereDate('updated_at', '<=', $date)
-                            );
-                    })
-                    ->indicateUsing(function (array $data): ?string {
-                        if ($data['updated_from'] || $data['updated_until']) {
-                            return 'تاريخ التحديث: ' . 
-                                ($data['updated_from'] ? Carbon::parse($data['updated_from'])->format('d/m/Y') : '∞') . 
-                                ' - ' . 
-                                ($data['updated_until'] ? Carbon::parse($data['updated_until'])->format('d/m/Y') : '∞');
-                        }
-                        return null;
-                    }),
-
-                // 9. مرشح نصي متقدم للبحث في الوصف
-                Filter::make('description_search')
-                    ->form([
-                        TextInput::make('description_text')
-                            ->label('البحث في الوصف')
-                            ->placeholder('ابحث في وصف الكتاب...')
-                            ->maxLength(255),
-                    ])
-                    ->query(function (Builder $query, array $data): Builder {
-                        return $query->when(
-                            $data['description_text'],
-                            fn (Builder $query, $text): Builder => $query->where('description', 'like', "%{$text}%")
-                        );
-                    })
-                    ->indicateUsing(function (array $data): ?string {
-                        if ($data['description_text']) {
-                            return 'البحث في الوصف: ' . $data['description_text'];
                         }
                         return null;
                     }),
@@ -1198,9 +949,9 @@ class BookResource extends Resource
             ])
             ->defaultSort('created_at', 'desc')
             ->striped()
-            ->paginated([10, 25, 50, 100]) // تقليل خيارات الصفحات لتحسين الأداء
-            ->poll('60s') // تحديث كل دقيقة بدلاً من 30 ثانية
-            ->deferLoading() // تأجيل التحميل لتحسين الأداء
+            ->paginated([10, 25, 50, 100])
+            ->poll('60s')
+            ->deferLoading()
             ->toggleColumnsTriggerAction(
                 fn (\Filament\Tables\Actions\Action $action) => $action
                     ->button()
@@ -1214,7 +965,7 @@ class BookResource extends Resource
     public static function getRelations(): array
     {
         return [
-            BookResource\RelationManagers\PagesRelationManager::class, // فقط RelationManager الصفحات المحسن
+            BookResource\RelationManagers\PagesRelationManager::class,
         ];
     }
 
@@ -1240,7 +991,6 @@ class BookResource extends Resource
 
     public static function getGlobalSearchResultDetails($record): array
     {
-        // استخدام البيانات المحملة مسبقاً
         $mainAuthor = $record->authorBooks->where('is_main', true)->first()
             ?? $record->authorBooks->first();
         
