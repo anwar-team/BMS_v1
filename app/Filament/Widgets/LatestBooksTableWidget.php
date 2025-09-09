@@ -7,19 +7,23 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Filament\Widgets\TableWidget as BaseWidget;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\Cache;
 
 class LatestBooksTableWidget extends BaseWidget
 {
     protected static ?string $heading = 'أحدث الكتب المضافة';
     protected static ?int $sort = 6;
     protected int | string | array $columnSpan = 'full';
+    
+    // تعطيل التحديث التلقائي
+    protected static ?string $pollingInterval = null;
 
     public function table(Table $table): Table
     {
         return $table
             ->query(
                 Book::query()
-                    ->with(['authors', 'bookSection'])
+                    ->with(['authorBooks.author', 'bookSection'])
                     ->latest()
                     ->limit(10)
             )
@@ -30,10 +34,16 @@ class LatestBooksTableWidget extends BaseWidget
                     ->sortable()
                     ->limit(30),
 
-                Tables\Columns\TextColumn::make('authors.name')
+                Tables\Columns\TextColumn::make('main_author')
                     ->label('المؤلف')
+                    ->getStateUsing(function ($record) {
+                        $mainAuthor = $record->authorBooks
+                            ->where('is_main', true)
+                            ->first();
+                        return $mainAuthor?->author?->full_name ?? 
+                               $record->authorBooks->first()?->author?->full_name ?? 'غير محدد';
+                    })
                     ->badge()
-                    ->separator(', ')
                     ->limit(20),
 
                 Tables\Columns\TextColumn::make('bookSection.name')

@@ -13,6 +13,9 @@ class LatestBlogPostsTableWidget extends BaseWidget
     protected static ?string $heading = 'أحدث مقالات المدونة';
     protected static ?int $sort = 9;
     protected int | string | array $columnSpan = 'full';
+    
+    // تعطيل التحديث التلقائي
+    protected static ?string $pollingInterval = null;
 
     public function table(Table $table): Table
     {
