@@ -604,6 +604,13 @@ class BookResource extends Resource
                     ->sortable()
                     ->badge()
                     ->color('info'),
+                TextColumn::make('publisher.name')
+                    ->label('الناشر')
+                    ->searchable()
+                    ->sortable()
+                    ->badge()
+                    ->color('gray')
+                    ->toggleable(),
                 TextColumn::make('edition')
                     ->label('الطبعة')
                     ->sortable()
@@ -612,10 +619,10 @@ class BookResource extends Resource
                     ->formatStateUsing(fn (?int $state): string => $state ? "الطبعة {$state}" : 'غير محدد')
                     ->toggleable(),
                 TextColumn::make('edition_DATA')
-                    ->label('بيانات الطبعة')
+                    ->label('سنة الطباعة')
                     ->badge()
                     ->color('secondary')
-                    ->formatStateUsing(fn (?int $state): string => $state ? "رقم {$state}" : 'غير محدد')
+                    ->formatStateUsing(fn (?int $state): string => $state ? "{$state}" : 'غير محدد')
                     ->toggleable(),
                 TextColumn::make('volumes_count')
                     ->label('المجلدات')
@@ -627,6 +634,33 @@ class BookResource extends Resource
                     ->badge()
                     ->color('warning')
                     ->toggleable(),
+                TextColumn::make('source_url')
+                    ->label('رابط المصدر')
+                    ->limit(50)
+                    ->url(fn ($record) => $record->source_url)
+                    ->openUrlInNewTab()
+                    ->badge()
+                    ->color('info')
+                    ->formatStateUsing(fn (?string $state): string => $state ? 'متوفر' : 'غير متوفر')
+                    ->toggleable(isToggledHiddenByDefault: true),
+                TextColumn::make('description')
+                    ->label('الوصف')
+                    ->limit(100)
+                    ->tooltip(function (TextColumn $column): ?string {
+                        $state = $column->getState();
+                        if (strlen($state) <= 100) {
+                            return null;
+                        }
+                        return $state;
+                    })
+                    ->searchable()
+                    ->toggleable(isToggledHiddenByDefault: true),
+                TextColumn::make('slug')
+                    ->label('الرابط الثابت')
+                    ->searchable()
+                    ->badge()
+                    ->color('gray')
+                    ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('status')
                     ->label('الحالة')
                     ->badge()
@@ -656,6 +690,68 @@ class BookResource extends Resource
                         default => $state,
                     })
                     ->toggleable(),
+                TextColumn::make('authorBooks.role')
+                    ->label('أدوار المؤلفين')
+                    ->formatStateUsing(function ($record) {
+                        $roles = $record->authorBooks->pluck('role')->unique()->map(function ($role) {
+                            return match ($role) {
+                                'author' => 'مؤلف',
+                                'co_author' => 'مؤلف مشارك',
+                                'editor' => 'محرر',
+                                'translator' => 'مترجم',
+                                'reviewer' => 'مراجع',
+                                'commentator' => 'معلق',
+                                default => $role,
+                            };
+                        })->implode(', ');
+                        return $roles ?: 'غير محدد';
+                    })
+                    ->badge()
+                    ->color('primary')
+                    ->toggleable(isToggledHiddenByDefault: true),
+                TextColumn::make('all_authors')
+                    ->label('جميع المؤلفين')
+                    ->formatStateUsing(function ($record) {
+                        $authors = $record->authorBooks->map(function ($authorBook) {
+                            $role = match ($authorBook->role) {
+                                'author' => 'مؤلف',
+                                'co_author' => 'مؤلف مشارك',
+                                'editor' => 'محرر',
+                                'translator' => 'مترجم',
+                                'reviewer' => 'مراجع',
+                                'commentator' => 'معلق',
+                                default => $authorBook->role,
+                            };
+                            return $authorBook->author?->full_name . " ({$role})";
+                        })->implode(' | ');
+                        return $authors ?: 'غير محدد';
+                    })
+                    ->limit(100)
+                    ->tooltip(function (TextColumn $column): ?string {
+                        $state = $column->getState();
+                        if (strlen($state) <= 100) {
+                            return null;
+                        }
+                        return $state;
+                    })
+                    ->toggleable(isToggledHiddenByDefault: true),
+                TextColumn::make('volumes.title')
+                    ->label('عناوين المجلدات')
+                    ->formatStateUsing(function ($record) {
+                        $volumes = $record->volumes->map(function ($volume) {
+                            return "مجلد {$volume->number}" . ($volume->title ? ": {$volume->title}" : '');
+                        })->implode(' | ');
+                        return $volumes ?: 'لا توجد مجلدات';
+                    })
+                    ->limit(150)
+                    ->tooltip(function (TextColumn $column): ?string {
+                        $state = $column->getState();
+                        if (strlen($state) <= 150) {
+                            return null;
+                        }
+                        return $state;
+                    })
+                    ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('created_at')
                     ->label('تاريخ الإنشاء')
                     ->dateTime('d/m/Y H:i')
@@ -665,6 +761,43 @@ class BookResource extends Resource
                     ->label('آخر تحديث')
                     ->dateTime('d/m/Y H:i')
                     ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
+                TextColumn::make('id')
+                    ->label('المعرف')
+                    ->searchable()
+                    ->sortable()
+                    ->badge()
+                    ->color('gray')
+                    ->toggleable(isToggledHiddenByDefault: true),
+                TextColumn::make('has_cover')
+                    ->label('صورة الغلاف')
+                    ->formatStateUsing(fn ($record) => $record->cover_image ? 'متوفرة' : 'غير متوفرة')
+                    ->badge()
+                    ->color(fn ($record) => $record->cover_image ? 'success' : 'danger')
+                    ->toggleable(isToggledHiddenByDefault: true),
+                TextColumn::make('has_description')
+                    ->label('وجود وصف')
+                    ->formatStateUsing(fn ($record) => $record->description ? 'متوفر' : 'غير متوفر')
+                    ->badge()
+                    ->color(fn ($record) => $record->description ? 'success' : 'danger')
+                    ->toggleable(isToggledHiddenByDefault: true),
+                TextColumn::make('authors_count')
+                    ->label('عدد المؤلفين')
+                    ->getStateUsing(fn ($record) => $record->authorBooks->count())
+                    ->badge()
+                    ->color('info')
+                    ->toggleable(isToggledHiddenByDefault: true),
+                TextColumn::make('main_author_status')
+                    ->label('المؤلف الرئيسي')
+                    ->formatStateUsing(function ($record) {
+                        $hasMainAuthor = $record->authorBooks->where('is_main', true)->isNotEmpty();
+                        return $hasMainAuthor ? 'محدد' : 'غير محدد';
+                    })
+                    ->badge()
+                    ->color(function ($record) {
+                        $hasMainAuthor = $record->authorBooks->where('is_main', true)->isNotEmpty();
+                        return $hasMainAuthor ? 'success' : 'warning';
+                    })
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
@@ -1065,9 +1198,17 @@ class BookResource extends Resource
             ])
             ->defaultSort('created_at', 'desc')
             ->striped()
-            ->paginated([10, 25, 50]) // تقليل خيارات الصفحات لتحسين الأداء
+            ->paginated([10, 25, 50, 100]) // تقليل خيارات الصفحات لتحسين الأداء
             ->poll('60s') // تحديث كل دقيقة بدلاً من 30 ثانية
-            ->deferLoading(); // تأجيل التحميل لتحسين الأداء
+            ->deferLoading() // تأجيل التحميل لتحسين الأداء
+            ->toggleColumnsTriggerAction(
+                fn (\Filament\Tables\Actions\Action $action) => $action
+                    ->button()
+                    ->label('إدارة الأعمدة')
+                    ->icon('heroicon-o-view-columns')
+                    ->color('gray')
+                    ->tooltip('إظهار/إخفاء الأعمدة')
+            );
     }
 
     public static function getRelations(): array
