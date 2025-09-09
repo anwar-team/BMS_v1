@@ -695,7 +695,7 @@ class BookResource extends Resource
                         );
                     })
                     ->options(function (): array {
-                        return Author::whereHas('authorBooks')
+                        return Author::whereHas('books')
                             ->orderBy('full_name')
                             ->pluck('full_name', 'id')
                             ->toArray();
