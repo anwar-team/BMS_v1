@@ -6,10 +6,18 @@ use App\Models\Author;
 use App\Models\Publisher;
 use Filament\Widgets\StatsOverviewWidget as BaseWidget;
 use Filament\Widgets\StatsOverviewWidget\Stat;
+use Illuminate\Support\Facades\Cache;
 
 class AuthorsStatsWidget extends BaseWidget
 {
     protected static ?int $sort = 2;
+    
+    // تعطيل التحديث التلقائي
+    protected static ?string $pollingInterval = null;
+    
+    // Cache للبيانات لمدة 15 دقيقة
+    protected static string $cacheKey = 'authors_stats_widget_data';
+    protected static int $cacheDuration = 900; // 15 دقيقة
 
     protected function getStats(): array
     {

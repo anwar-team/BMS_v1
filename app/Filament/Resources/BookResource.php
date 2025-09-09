@@ -51,6 +51,22 @@ class BookResource extends Resource
     protected static ?string $pluralModelLabel = 'الكتب';
     protected static ?int $navigationSort = 1;
 
+    /**
+     * تحسين الاستعلامات لتجنب N+1 Query Problem
+     */
+    public static function getEloquentQuery(): Builder
+    {
+        return parent::getEloquentQuery()
+            ->withCount(['volumes', 'pages'])
+            ->with([
+                'bookSection',
+                'publisher',
+                'authorBooks' => function ($query) {
+                    $query->with('author')->orderBy('display_order');
+                }
+            ]);
+    }
+
     public static function form(Form $form): Form
     {
         return $form->schema([
@@ -558,16 +574,18 @@ class BookResource extends Resource
                 TextColumn::make('mainAuthors')
                     ->label('المؤلف الرئيسي')
                     ->getStateUsing(function ($record) {
-                        $mainAuthors = $record->authorBooks()
+                        // استخدام البيانات المحملة مسبقاً من getEloquentQuery()
+                        $mainAuthor = $record->authorBooks
                             ->where('is_main', true)
-                            ->with('author')
-                            ->get()
-                            ->pluck('author.full_name')
-                            ->filter()
-                            ->join('، ');
-                        return $mainAuthors ?: $record->authorBooks()
-                            ->with('author')
-                            ->first()?->author?->full_name ?? 'غير محدد';
+                            ->first();
+                        
+                        if ($mainAuthor && $mainAuthor->author) {
+                            return $mainAuthor->author->full_name;
+                        }
+                        
+                        // في حالة عدم وجود مؤلف رئيسي، أخذ أول مؤلف
+                        $firstAuthor = $record->authorBooks->first();
+                        return $firstAuthor?->author?->full_name ?? 'غير محدد';
                     })
                     ->searchable(query: function (Builder $query, string $search): Builder {
                         return $query->whereHas('authorBooks.author', function (Builder $query) use ($search) {
@@ -596,13 +614,11 @@ class BookResource extends Resource
                     ->toggleable(),
                 TextColumn::make('volumes_count')
                     ->label('المجلدات')
-                    ->getStateUsing(fn ($record) => $record->volumes()->count())
                     ->badge()
                     ->color('success')
                     ->toggleable(),
                 TextColumn::make('pages_count')
                     ->label('الصفحات')
-                    ->getStateUsing(fn ($record) => $record->pages()->count())
                     ->badge()
                     ->color('warning')
                     ->toggleable(),
@@ -750,8 +766,12 @@ class BookResource extends Resource
 
     public static function getGlobalSearchResultDetails($record): array
     {
+        // استخدام البيانات المحملة مسبقاً
+        $mainAuthor = $record->authorBooks->where('is_main', true)->first()
+            ?? $record->authorBooks->first();
+        
         return [
-            'المؤلف' => $record->authorBooks()->with('author')->first()?->author?->full_name ?? 'غير محدد',
+            'المؤلف' => $mainAuthor?->author?->full_name ?? 'غير محدد',
             'القسم' => $record->bookSection?->name ?? 'غير محدد',
             'الناشر' => $record->publisher?->name ?? 'غير محدد',
         ];
