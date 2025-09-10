@@ -14,7 +14,6 @@ use Filament\Tables\Table;
 use Filament\Tables\Filters\SelectFilter;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
-use AlperenErsoy\FilamentExport\Actions\FilamentExportBulkAction;
 
 class PublisherResource extends Resource
 {
@@ -162,8 +161,6 @@ class PublisherResource extends Resource
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
-                    FilamentExportBulkAction::make('export')
-                        ->label('تصدير'),
                 ]),
             ]);
     }

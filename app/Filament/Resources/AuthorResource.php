@@ -19,7 +19,6 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
-use AlperenErsoy\FilamentExport\Actions\FilamentExportBulkAction;
 
 class AuthorResource extends Resource
 {
@@ -243,8 +242,6 @@ class AuthorResource extends Resource
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
-                    FilamentExportBulkAction::make('export')
-                        ->label('تصدير')
                 ]),
             ]);
     }
