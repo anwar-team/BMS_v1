@@ -80,6 +80,21 @@
                                             </span>
                                         </div>
                                     </div>
+                                    
+                                    @if($author->biography)
+                                        <!-- Biography Section -->
+                                        <div class="mt-6 pt-6 border-t border-gray-200">
+                                            <div class="flex items-center gap-2 mb-3">
+                                                <svg class="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+                                                </svg>
+                                                <h4 class="text-lg font-semibold text-gray-800">السيرة الذاتية</h4>
+                                            </div>
+                                            <div class="text-gray-700 leading-relaxed whitespace-pre-line bg-gray-50 p-4 rounded-lg">
+                                                {{ $author->biography }}
+                                            </div>
+                                        </div>
+                                    @endif
                                 </div>
                             </div>
                         </div>
