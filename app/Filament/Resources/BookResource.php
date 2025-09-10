@@ -43,7 +43,6 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 use Filament\Forms\Components\Hidden;
-use AlperenErsoy\FilamentExport\Actions\FilamentExportBulkAction;
 
 class BookResource extends Resource
 {
@@ -942,9 +941,6 @@ class BookResource extends Resource
                             });
                         })
                         ->deselectRecordsAfterCompletion(),
-                    
-                    FilamentExportBulkAction::make('export')
-                        ->label('تصدير'),
                 ]),
             ])
             ->defaultSort('created_at', 'desc')

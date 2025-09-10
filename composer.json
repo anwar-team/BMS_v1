@@ -31,7 +31,6 @@
     "license": "MIT",
     "require": {
         "php": "^8.2",
-        "alperenersoy/filament-export": "^3.0",
         "aymanalhattami/filament-page-with-sidebar": "^2.6",
         "aymanalhattami/filament-slim-scrollbar": "^2.1",
         "bezhansalleh/filament-exceptions": "^2.1",
