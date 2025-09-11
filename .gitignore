@@ -19,3 +19,4 @@ yarn-error.log
 /docs
 setup.php.disabled
 .vercel/project.json
+search-elk-test/node_modules

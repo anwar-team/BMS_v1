@@ -4,12 +4,12 @@
     "src": "public/images/main-pattern.svg"
   },
   "resources/css/app.css": {
-    "file": "assets/app--z6Qhw0l.css",
+    "file": "assets/app-DtM_8xD3.css",
     "src": "resources/css/app.css",
     "isEntry": true
   },
   "resources/css/filament/admin/theme.css": {
-    "file": "assets/theme-DzF1WNzw.css",
+    "file": "assets/theme-EQuQkZZQ.css",
     "src": "resources/css/filament/admin/theme.css",
     "isEntry": true
   },
