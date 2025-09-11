@@ -1,6 +1,7 @@
 <?php
 
 return [
+    // Navigation Groups
     'nav_group.access' => 'وصول',
     'nav_group.activities' => 'أنشطة',
     'nav_group.content_management' => 'إدارة المحتوى',
@@ -10,5 +11,60 @@ return [
     'nav_group.sites' => 'المواقع',
     'nav_group.settings' => 'إعدادات',
     'nav_group.systems' => 'الأنظمة',
-    'nav_group.item.log_viewer' => 'عارض السجل'
-    ];
+    
+    // Navigation Items
+    'nav_group.item.log_viewer' => 'عارض السجل',
+    'nav_group.item.dashboard' => 'لوحة التحكم',
+    'nav_group.item.users' => 'المستخدمون',
+    'nav_group.item.roles' => 'الأدوار',
+    'nav_group.item.permissions' => 'الصلاحيات',
+    'nav_group.item.books' => 'الكتب',
+    'nav_group.item.authors' => 'المؤلفون',
+    'nav_group.item.categories' => 'الفئات',
+    'nav_group.item.tags' => 'العلامات',
+    'nav_group.item.banners' => 'اللافتات',
+    'nav_group.item.blog_posts' => 'مقالات المدونة',
+    'nav_group.item.comments' => 'التعليقات',
+    'nav_group.item.media' => 'الوسائط',
+    'nav_group.item.menus' => 'القوائم',
+    'nav_group.item.pages' => 'الصفحات',
+    'nav_group.item.general_settings' => 'الإعدادات العامة',
+    'nav_group.item.theme_settings' => 'إعدادات المظهر',
+    'nav_group.item.email_settings' => 'إعدادات البريد الإلكتروني',
+    'nav_group.item.social_settings' => 'إعدادات وسائل التواصل',
+    'nav_group.item.backup' => 'النسخ الاحتياطي',
+    'nav_group.item.imports' => 'الاستيراد',
+    'nav_group.item.exports' => 'التصدير',
+    'nav_group.item.notifications' => 'الإشعارات',
+    'nav_group.item.activity_log' => 'سجل النشاط',
+    'nav_group.item.analytics' => 'التحليلات',
+    'nav_group.item.reports' => 'التقارير',
+    
+    // User Menu
+    'user_menu.profile' => 'الملف الشخصي',
+    'user_menu.settings' => 'الإعدادات',
+    'user_menu.logout' => 'تسجيل الخروج',
+    
+    // Actions
+    'actions.create' => 'إنشاء',
+    'actions.edit' => 'تحرير',
+    'actions.delete' => 'حذف',
+    'actions.view' => 'عرض',
+    'actions.save' => 'حفظ',
+    'actions.cancel' => 'إلغاء',
+    'actions.back' => 'رجوع',
+    'actions.refresh' => 'تحديث',
+    'actions.search' => 'بحث',
+    'actions.filter' => 'تصفية',
+    'actions.export' => 'تصدير',
+    'actions.import' => 'استيراد',
+    
+    // Status
+    'status.active' => 'نشط',
+    'status.inactive' => 'غير نشط',
+    'status.published' => 'منشور',
+    'status.draft' => 'مسودة',
+    'status.pending' => 'قيد الانتظار',
+    'status.approved' => 'معتمد',
+    'status.rejected' => 'مرفوض',
+];

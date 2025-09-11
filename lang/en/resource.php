@@ -1,27 +1,111 @@
 <?php
 
 return [
-    /*
-    |--------------------------------------------------------------------------
-    | General
-    |--------------------------------------------------------------------------
-    */
+    // General terms
     'general.created_at' => 'Created at',
     'general.updated_at' => 'Last modified at',
     'general.email_verified_at' => 'Email verified at',
-
-    /*
-    |--------------------------------------------------------------------------
-    | Banner
-    |--------------------------------------------------------------------------
-    */
+    'general.actions' => 'Actions',
+    'general.save' => 'Save',
+    'general.cancel' => 'Cancel',
+    'general.delete' => 'Delete',
+    'general.edit' => 'Edit',
+    'general.view' => 'View',
+    'general.create' => 'Create',
+    'general.search' => 'Search',
+    'general.filter' => 'Filter',
+    'general.export' => 'Export',
+    'general.import' => 'Import',
+    'general.refresh' => 'Refresh',
+    'general.back' => 'Back',
+    'general.next' => 'Next',
+    'general.previous' => 'Previous',
+    'general.submit' => 'Submit',
+    'general.reset' => 'Reset',
+    'general.close' => 'Close',
+    'general.confirm' => 'Confirm',
+    'general.status' => 'Status',
+    'general.active' => 'Active',
+    'general.inactive' => 'Inactive',
+    'general.enabled' => 'Enabled',
+    'general.disabled' => 'Disabled',
+    'general.yes' => 'Yes',
+    'general.no' => 'No',
+    'general.loading' => 'Loading...',
+    'general.no_results' => 'No results',
+    'general.select_option' => 'Select option',
+    'general.all' => 'All',
+    'general.none' => 'None',
+    'general.total' => 'Total',
+    'general.count' => 'Count',
+    
+    // Dashboard
+    'dashboard.title' => 'Dashboard',
+    'dashboard.welcome' => 'Welcome',
+    'dashboard.overview' => 'Overview',
+    'dashboard.statistics' => 'Statistics',
+    'dashboard.recent_activity' => 'Recent Activity',
+    
+    // Navigation
+    'nav.dashboard' => 'Dashboard',
+    'nav.profile' => 'Profile',
+    'nav.settings' => 'Settings',
+    'nav.logout' => 'Logout',
+    'nav.login' => 'Login',
+    
+    // Forms
+    'form.name' => 'Name',
+    'form.title' => 'Title',
+    'form.description' => 'Description',
+    'form.content' => 'Content',
+    'form.category' => 'Category',
+    'form.tag' => 'Tag',
+    'form.tags' => 'Tags',
+    'form.image' => 'Image',
+    'form.date' => 'Date',
+    'form.time' => 'Time',
+    'form.publish_date' => 'Publish Date',
+    'form.author' => 'Author',
+    'form.slug' => 'Slug',
+    'form.meta_title' => 'Meta Title',
+    'form.meta_description' => 'Meta Description',
+    'form.featured' => 'Featured',
+    'form.published' => 'Published',
+    'form.draft' => 'Draft',
+    'form.priority' => 'Priority',
+    'form.order' => 'Order',
+    'form.language' => 'Language',
+    'form.locale' => 'Locale',
+    
+    // Books
+    'book.title' => 'Book Title',
+    'book.books' => 'Books',
+    'book.book' => 'Book',
+    'book.author' => 'Author',
+    'book.authors' => 'Authors',
+    'book.isbn' => 'ISBN',
+    'book.pages' => 'Pages',
+    'book.publisher' => 'Publisher',
+    'book.publication_date' => 'Publication Date',
+    'book.genre' => 'Genre',
+    'book.price' => 'Price',
+    'book.availability' => 'Availability',
+    'book.rating' => 'Rating',
+    'book.reviews' => 'Reviews',
+    'book.summary' => 'Summary',
+    'book.cover' => 'Book Cover',
+    
+    // Banner
     'banner.subheading' => 'Manage banner content',
-
-    /*
-    |--------------------------------------------------------------------------
-    | User
-    |--------------------------------------------------------------------------
-    */
+    'banner.title' => 'Banner Title',
+    'banner.content' => 'Banner Content',
+    'banner.link' => 'Banner Link',
+    'banner.image' => 'Banner Image',
+    'banner.position' => 'Banner Position',
+    'banner.start_date' => 'Start Date',
+    'banner.end_date' => 'End Date',
+    
+    // Users
     'user.username' => 'Username',
     'user.email' => 'Email',
     'user.firstname' => 'First Name',
@@ -54,4 +138,32 @@ return [
         'title' => "Can't sent email verification!",
         'description' => "Please check your Mail Configuration or try again later."
     ],
+    
+    // Notifications
+    'notification.success' => 'Success',
+    'notification.error' => 'Error',
+    'notification.warning' => 'Warning',
+    'notification.info' => 'Info',
+    'notification.saved' => 'Saved successfully',
+    'notification.deleted' => 'Deleted successfully',
+    'notification.updated' => 'Updated successfully',
+    'notification.created' => 'Created successfully',
+    
+    // Pagination
+    'pagination.previous' => 'Previous',
+    'pagination.next' => 'Next',
+    'pagination.page' => 'Page',
+    'pagination.of' => 'of',
+    'pagination.results' => 'results',
+    'pagination.showing' => 'Showing',
+    'pagination.to' => 'to',
+    'pagination.total' => 'Total',
+    
+    // Validation
+    'validation.required' => 'This field is required',
+    'validation.email' => 'Must be a valid email address',
+    'validation.min' => 'Must be at least :min characters',
+    'validation.max' => 'Must not exceed :max characters',
+    'validation.unique' => 'This value is already taken',
+    'validation.confirmed' => 'Password confirmation does not match',
 ];

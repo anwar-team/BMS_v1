@@ -17,6 +17,7 @@ use App\Filament\Widgets\LatestBooksTableWidget;
 use App\Filament\Widgets\LatestUsersTableWidget;
 use App\Filament\Widgets\UsersAndBlogStatsWidget;
 use App\Http\Middleware\FilamentRobotsMiddleware;
+use App\Http\Middleware\SetLocale;
 use App\Livewire\MyProfileExtended;
 use App\Settings\GeneralSettings;
 use Filament\Http\Middleware\Authenticate;
@@ -115,7 +116,8 @@ class AdminPanelProvider extends PanelProvider
                 SubstituteBindings::class,
                 DisableBladeIconComponents::class,
                 DispatchServingFilamentEvent::class,
-                FilamentRobotsMiddleware::class
+                FilamentRobotsMiddleware::class,
+                SetLocale::class
             ])
             ->authMiddleware([
                 Authenticate::class,

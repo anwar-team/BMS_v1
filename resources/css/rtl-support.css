@@ -1,0 +1,222 @@
+/* RTL Support for Arabic Language */
+[dir="rtl"] {
+    direction: rtl;
+    text-align: right;
+}
+
+[dir="rtl"] .fi-topbar {
+    direction: rtl;
+}
+
+[dir="rtl"] .fi-sidebar {
+    direction: rtl;
+}
+
+[dir="rtl"] .fi-main-sidebar {
+    right: 0;
+    left: auto;
+}
+
+[dir="rtl"] .fi-sidebar-nav {
+    direction: rtl;
+}
+
+[dir="rtl"] .fi-sidebar-nav-item {
+    direction: rtl;
+}
+
+[dir="rtl"] .fi-sidebar-nav-item-icon {
+    margin-left: 0.75rem;
+    margin-right: 0;
+}
+
+[dir="rtl"] .fi-sidebar-nav-item-label {
+    text-align: right;
+}
+
+[dir="rtl"] .fi-page {
+    direction: rtl;
+}
+
+[dir="rtl"] .fi-page-header {
+    direction: rtl;
+}
+
+[dir="rtl"] .fi-page-content {
+    direction: rtl;
+}
+
+[dir="rtl"] .fi-form {
+    direction: rtl;
+}
+
+[dir="rtl"] .fi-form-field {
+    direction: rtl;
+}
+
+[dir="rtl"] .fi-table {
+    direction: rtl;
+}
+
+[dir="rtl"] .fi-table-header-cell {
+    text-align: right;
+}
+
+[dir="rtl"] .fi-table-cell {
+    text-align: right;
+}
+
+[dir="rtl"] .fi-dropdown {
+    direction: rtl;
+}
+
+[dir="rtl"] .fi-modal {
+    direction: rtl;
+}
+
+/* Language Switcher Styles */
+.language-switcher {
+    margin-left: 1rem;
+}
+
+[dir="rtl"] .language-switcher {
+    margin-left: 0;
+    margin-right: 1rem;
+}
+
+/* Custom styles for better Arabic font rendering */
+[dir="rtl"] * {
+    font-family: 'Segoe UI', 'Tahoma', 'Arial', sans-serif;
+}
+
+[dir="rtl"] .fi-sidebar-nav-item-label,
+[dir="rtl"] .fi-page-header-heading,
+[dir="rtl"] .fi-form-field-label,
+[dir="rtl"] .fi-table-header-cell-label {
+    font-weight: 500;
+}
+
+/* Filament specific RTL adjustments */
+[dir="rtl"] .fi-logo {
+    direction: ltr;
+}
+
+[dir="rtl"] .fi-brand {
+    direction: ltr;
+}
+
+[dir="rtl"] .fi-avatar {
+    direction: ltr;
+}
+
+/* Navigation adjustments */
+[dir="rtl"] .fi-sidebar-nav-item-badge {
+    margin-left: 0;
+    margin-right: auto;
+}
+
+[dir="rtl"] .fi-sidebar-nav-group-label {
+    text-align: right;
+}
+
+/* Form improvements */
+[dir="rtl"] .fi-input-wrapper {
+    direction: rtl;
+}
+
+[dir="rtl"] .fi-select-wrapper {
+    direction: rtl;
+}
+
+[dir="rtl"] .fi-textarea-wrapper {
+    direction: rtl;
+}
+
+/* Button adjustments */
+[dir="rtl"] .fi-btn-group {
+    direction: rtl;
+}
+
+[dir="rtl"] .fi-btn-group > .fi-btn:not(:last-child) {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    border-top-left-radius: 0.375rem;
+    border-bottom-left-radius: 0.375rem;
+}
+
+[dir="rtl"] .fi-btn-group > .fi-btn:not(:first-child) {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+    border-top-right-radius: 0.375rem;
+    border-bottom-right-radius: 0.375rem;
+}
+
+/* Notification adjustments */
+[dir="rtl"] .fi-notification {
+    direction: rtl;
+}
+
+[dir="rtl"] .fi-notification-icon {
+    margin-left: 0.75rem;
+    margin-right: 0;
+}
+
+/* Search improvements */
+[dir="rtl"] .fi-global-search {
+    direction: rtl;
+}
+
+[dir="rtl"] .fi-global-search-field {
+    direction: rtl;
+    text-align: right;
+}
+
+/* Breadcrumb adjustments */
+[dir="rtl"] .fi-breadcrumbs {
+    direction: rtl;
+}
+
+[dir="rtl"] .fi-breadcrumbs-item::after {
+    transform: rotate(180deg);
+}
+
+/* Stats widgets */
+[dir="rtl"] .fi-stats-overview-widget {
+    direction: rtl;
+}
+
+[dir="rtl"] .fi-stats-overview-widget-icon {
+    margin-left: 1rem;
+    margin-right: 0;
+}
+
+/* Table actions */
+[dir="rtl"] .fi-table-actions {
+    direction: rtl;
+}
+
+[dir="rtl"] .fi-table-action {
+    margin-left: 0.25rem;
+    margin-right: 0;
+}
+
+[dir="rtl"] .fi-table-action:first-child {
+    margin-left: 0;
+}
+
+[dir="rtl"] .fi-table-action:last-child {
+    margin-right: 0.25rem;
+}
+
+/* Pagination */
+[dir="rtl"] .fi-pagination {
+    direction: rtl;
+}
+
+[dir="rtl"] .fi-pagination-btn-prev {
+    order: 2;
+}
+
+[dir="rtl"] .fi-pagination-btn-next {
+    order: 0;
+}
