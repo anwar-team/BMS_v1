@@ -23,7 +23,17 @@ class HomeController extends Controller
     public function index()
     {
         /**
-         * 1. جلب أقسام الكتب للعرض الرئيسي
+         * 1. حساب الإحصائيات العامة للموقع
+         */
+        $stats = [
+            'total_books' => Book::where('status', 'published')->where('visibility', 'public')->count(),
+            'total_authors' => Author::count(),
+            'total_pages' => \DB::table('pages')->count(),
+            'total_sections' => BookSection::where('is_active', true)->count(),
+        ];
+        
+        /**
+         * 2. جلب أقسام الكتب للعرض الرئيسي
          * - استخدام scope مخصص في Model للحصول على 6 أقسام فقط
          * - تحسين الأداء بعدم جلب جميع الأقسام
          */
@@ -94,9 +104,9 @@ class HomeController extends Controller
         /**
          * 4. إرجاع البيانات إلى الـ View
          * - العرض: components.superduper.pages.home
-         * - البيانات المرسلة: $sections, $books, $authors
+         * - البيانات المرسلة: $sections, $books, $authors, $stats
          * - كل متغير يحتوي على collection مع pagination للكتب والمؤلفين
          */
-        return view('components.superduper.pages.home', compact('sections', 'books', 'authors'));
+        return view('components.superduper.pages.home', compact('sections', 'books', 'authors', 'stats'));
     }
 }
