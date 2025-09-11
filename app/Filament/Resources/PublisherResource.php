@@ -23,11 +23,24 @@ class PublisherResource extends Resource
     protected static ?string $navigationIcon = 'heroicon-o-building-office';
     protected static ?string $navigationGroup = 'إدارة المحتوى';
     
-    protected static ?string $navigationLabel = 'دور النشر';
-    
-    protected static ?string $modelLabel = 'ناشر';
-    
-    protected static ?string $pluralModelLabel = 'الناشرين';
+    protected static ?string $navigationLabel = null;
+    protected static ?string $modelLabel = null;
+    protected static ?string $pluralModelLabel = null;
+
+    public static function getNavigationLabel(): string
+    {
+        return __('resource.publisher.publishers');
+    }
+
+    public static function getModelLabel(): string
+    {
+        return __('resource.publisher.publisher');
+    }
+
+    public static function getPluralModelLabel(): string
+    {
+        return __('resource.publisher.publishers');
+    }
 
     public static function form(Form $form): Form
     {

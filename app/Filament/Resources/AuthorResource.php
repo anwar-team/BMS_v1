@@ -29,11 +29,24 @@ class AuthorResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-user-group';
     
-    protected static ?string $navigationLabel = 'المؤلفين';
-    
-    protected static ?string $modelLabel = 'مؤلف';
-    
-    protected static ?string $pluralModelLabel = 'المؤلفين';
+    protected static ?string $navigationLabel = null;
+    protected static ?string $modelLabel = null;
+    protected static ?string $pluralModelLabel = null;
+
+    public static function getNavigationLabel(): string
+    {
+        return __('resource.author.authors');
+    }
+
+    public static function getModelLabel(): string
+    {
+        return __('resource.author.author');
+    }
+
+    public static function getPluralModelLabel(): string
+    {
+        return __('resource.author.authors');
+    }
 
     public static function form(Form $form): Form
     {

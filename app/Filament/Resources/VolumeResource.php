@@ -25,11 +25,24 @@ class VolumeResource extends Resource
     protected static ?string $navigationIcon = 'heroicon-o-book-open';
     protected static ?string $navigationGroup = 'Book Management';
     
-    protected static ?string $navigationLabel = 'المجلدات';
-    
-    protected static ?string $modelLabel = 'مجلد';
-    
-    protected static ?string $pluralModelLabel = 'المجلدات';
+    protected static ?string $navigationLabel = null;
+    protected static ?string $modelLabel = null;
+    protected static ?string $pluralModelLabel = null;
+
+    public static function getNavigationLabel(): string
+    {
+        return __('resource.volume.volumes');
+    }
+
+    public static function getModelLabel(): string
+    {
+        return __('resource.volume.volume');
+    }
+
+    public static function getPluralModelLabel(): string
+    {
+        return __('resource.volume.volumes');
+    }
 
     public static function form(Form $form): Form
     {

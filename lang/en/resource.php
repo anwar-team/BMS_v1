@@ -94,6 +94,98 @@ return [
     'book.reviews' => 'Reviews',
     'book.summary' => 'Summary',
     'book.cover' => 'Book Cover',
+    'book.description' => 'Book Description',
+    'book.slug' => 'Slug',
+    'book.edition_number' => 'Edition Number',
+    'book.print_year' => 'Print Year',
+    'book.source_link' => 'Source Link',
+    'book.visibility' => 'Visibility',
+    'book.status' => 'Status',
+    'book.section' => 'Book Section',
+    'book.add_publisher' => 'Add New Publisher',
+    'book.add_section' => 'Add New Section',
+    'book.total_books' => 'Total Books',
+    'book.published_books' => 'Published Books',
+    'book.new_books' => 'New Books',
+    'book.book_sections' => 'Book Sections',
+    'book.total_system_books' => 'Total books in the system',
+    'book.available_books_for_readers' => 'Books available for readers',
+    'book.available_sections' => 'Available sections',
+    'book.books_last_30_days' => 'In the last 30 days',
+    
+    // Authors
+    'author.authors' => 'Authors',
+    'author.author' => 'Author',
+    'author.name' => 'Author Name',
+    'author.biography' => 'Biography',
+    'author.birth_date' => 'Birth Date',
+    'author.death_date' => 'Death Date',
+    'author.nationality' => 'Nationality',
+    'author.photo' => 'Author Photo',
+    'author.total_authors' => 'Total Authors',
+    'author.active_authors' => 'Active Authors',
+    'author.new_authors' => 'New Authors',
+    'author.verified_authors' => 'Verified Authors',
+    'author.total_system_authors' => 'Total authors in the system',
+    'author.authors_with_published_books' => 'Authors with published books',
+    'author.new_authors_last_30_days' => 'New authors in the last 30 days',
+    'author.verified_system_authors' => 'Verified authors in the system',
+    
+    // Publishers
+    'publisher.publishers' => 'Publishers',
+    'publisher.publisher' => 'Publisher',
+    'publisher.name' => 'Publisher Name',
+    'publisher.address' => 'Address',
+    'publisher.website' => 'Website',
+    'publisher.email' => 'Email',
+    'publisher.phone' => 'Phone',
+    'publisher.registered_publishers' => 'Registered publishers',
+    
+    // Sections
+    'section.sections' => 'Sections',
+    'section.section' => 'Section',
+    'section.name' => 'Section Name',
+    'section.description' => 'Description',
+    
+    // Chapters
+    'chapter.chapters' => 'Chapters',
+    'chapter.chapter' => 'Chapter',
+    'chapter.title' => 'Chapter Title',
+    'chapter.content' => 'Content',
+    'chapter.order' => 'Order',
+    
+    // Volumes
+    'volume.volumes' => 'Volumes',
+    'volume.volume' => 'Volume',
+    'volume.title' => 'Volume Title',
+    'volume.number' => 'Volume Number',
+    
+    // Pages
+    'page.pages' => 'Pages',
+    'page.page' => 'Page',
+    'page.title' => 'Page Title',
+    'page.content' => 'Page Content',
+    
+    // Import
+    'import.book_import' => 'Book Import',
+    'import.import_books' => 'Import Books',
+    
+    // Contact Us
+    'contact.contact_us' => 'Contact Us',
+    'contact.message' => 'Message',
+    'contact.subject' => 'Subject',
+    
+    // Users & Blog Stats
+    'stats.users_blog_stats' => 'Users & Blog Statistics',
+    'stats.total_users' => 'Total Users',
+    'stats.active_users' => 'Active Users',
+    'stats.new_users' => 'New Users',
+    'stats.blog_posts' => 'Blog Posts',
+    'stats.published_posts' => 'Published Posts',
+    'stats.draft_posts' => 'Draft Posts',
+    'stats.total_comments' => 'Total Comments',
+    'stats.pending_comments' => 'Pending Comments',
+    'stats.visitor_messages' => 'Visitor messages',
     
     // Banner
     'banner.subheading' => 'Manage banner content',

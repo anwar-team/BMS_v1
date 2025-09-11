@@ -25,11 +25,24 @@ class BokImportResource extends Resource
     
     protected static ?string $navigationGroup = 'إدارة المحتوى';
     
-    protected static ?string $navigationLabel = 'استيراد الكتب';
-    
-    protected static ?string $modelLabel = 'استيراد كتاب';
-    
-    protected static ?string $pluralModelLabel = 'استيراد الكتب';
+    protected static ?string $navigationLabel = null;
+    protected static ?string $modelLabel = null;
+    protected static ?string $pluralModelLabel = null;
+
+    public static function getNavigationLabel(): string
+    {
+        return __('resource.import.import_books');
+    }
+
+    public static function getModelLabel(): string
+    {
+        return __('resource.import.book_import');
+    }
+
+    public static function getPluralModelLabel(): string
+    {
+        return __('resource.import.import_books');
+    }
 
     public static function form(Form $form): Form
     {

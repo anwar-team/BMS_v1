@@ -33,23 +33,23 @@ class AuthorsStatsWidget extends BaseWidget
             $totalPublishers = Publisher::count();
 
             return [
-                Stat::make('إجمالي المؤلفين', $authorStats->total_authors)
-                    ->description('العدد الكلي للمؤلفين')
+                Stat::make(__('resource.author.total_authors'), $authorStats->total_authors)
+                    ->description(__('resource.author.total_system_authors'))
                     ->descriptionIcon('heroicon-m-user-group')
                     ->color('primary'),
 
-                Stat::make('المؤلفون النشطون', $activeAuthors)
-                    ->description('المؤلفون الذين لديهم كتب')
+                Stat::make(__('resource.author.active_authors'), $activeAuthors)
+                    ->description(__('resource.author.authors_with_published_books'))
                     ->descriptionIcon('heroicon-m-pencil-square')
                     ->color('success'),
 
-                Stat::make('دور النشر', $totalPublishers)
-                    ->description('عدد دور النشر المسجلة')
+                Stat::make(__('resource.publisher.publishers'), $totalPublishers)
+                    ->description(__('resource.publisher.registered_publishers'))
                     ->descriptionIcon('heroicon-m-building-office')
                     ->color('info'),
 
-                Stat::make('مؤلفون جدد', $authorStats->recent_authors)
-                    ->description('خلال آخر 30 يوم')
+                Stat::make(__('resource.author.new_authors'), $authorStats->recent_authors)
+                    ->description(__('resource.author.new_authors_last_30_days'))
                     ->descriptionIcon('heroicon-m-user-plus')
                     ->color('warning'),
             ];

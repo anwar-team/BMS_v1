@@ -94,6 +94,98 @@ return [
     'book.reviews' => 'المراجعات',
     'book.summary' => 'الملخص',
     'book.cover' => 'غلاف الكتاب',
+    'book.description' => 'وصف الكتاب',
+    'book.slug' => 'الرابط الثابت',
+    'book.edition_number' => 'رقم الطبعة',
+    'book.print_year' => 'سنة الطباعة',
+    'book.source_link' => 'رابط المصدر',
+    'book.visibility' => 'الرؤية',
+    'book.status' => 'الحالة',
+    'book.section' => 'قسم الكتاب',
+    'book.add_publisher' => 'إضافة ناشر جديد',
+    'book.add_section' => 'إضافة قسم جديد',
+    'book.total_books' => 'إجمالي الكتب',
+    'book.published_books' => 'الكتب المنشورة',
+    'book.new_books' => 'كتب جديدة',
+    'book.book_sections' => 'أقسام الكتب',
+    'book.total_system_books' => 'العدد الكلي للكتب في النظام',
+    'book.available_books_for_readers' => 'الكتب المتاحة للقراء',
+    'book.available_sections' => 'عدد الأقسام المتاحة',
+    'book.books_last_30_days' => 'خلال آخر 30 يوم',
+    
+    // Authors
+    'author.authors' => 'المؤلفين',
+    'author.author' => 'مؤلف',
+    'author.name' => 'اسم المؤلف',
+    'author.biography' => 'السيرة الذاتية',
+    'author.birth_date' => 'تاريخ الميلاد',
+    'author.death_date' => 'تاريخ الوفاة',
+    'author.nationality' => 'الجنسية',
+    'author.photo' => 'صورة المؤلف',
+    'author.total_authors' => 'إجمالي المؤلفين',
+    'author.active_authors' => 'المؤلفين النشطين',
+    'author.new_authors' => 'مؤلفين جدد',
+    'author.verified_authors' => 'المؤلفين المتحققين',
+    'author.total_system_authors' => 'إجمالي المؤلفين في النظام',
+    'author.authors_with_published_books' => 'المؤلفين الذين لديهم كتب منشورة',
+    'author.new_authors_last_30_days' => 'مؤلفين جدد في آخر 30 يوم',
+    'author.verified_system_authors' => 'المؤلفين المتحققين في النظام',
+    
+    // Publishers
+    'publisher.publishers' => 'دور النشر',
+    'publisher.publisher' => 'ناشر',
+    'publisher.name' => 'اسم الناشر',
+    'publisher.address' => 'العنوان',
+    'publisher.website' => 'الموقع الإلكتروني',
+    'publisher.email' => 'البريد الإلكتروني',
+    'publisher.phone' => 'الهاتف',
+    'publisher.registered_publishers' => 'عدد دور النشر المسجلة',
+    
+    // Sections
+    'section.sections' => 'الأقسام',
+    'section.section' => 'قسم',
+    'section.name' => 'اسم القسم',
+    'section.description' => 'الوصف',
+    
+    // Chapters
+    'chapter.chapters' => 'الفصول',
+    'chapter.chapter' => 'فصل',
+    'chapter.title' => 'عنوان الفصل',
+    'chapter.content' => 'المحتوى',
+    'chapter.order' => 'الترتيب',
+    
+    // Volumes
+    'volume.volumes' => 'المجلدات',
+    'volume.volume' => 'مجلد',
+    'volume.title' => 'عنوان المجلد',
+    'volume.number' => 'رقم المجلد',
+    
+    // Pages
+    'page.pages' => 'الصفحات',
+    'page.page' => 'صفحة',
+    'page.title' => 'عنوان الصفحة',
+    'page.content' => 'محتوى الصفحة',
+    
+    // Import
+    'import.book_import' => 'استيراد الكتب',
+    'import.import_books' => 'استيراد الكتب',
+    
+    // Contact Us
+    'contact.contact_us' => 'اتصل بنا',
+    'contact.message' => 'الرسالة',
+    'contact.subject' => 'الموضوع',
+    
+    // Users & Blog Stats
+    'stats.users_blog_stats' => 'إحصائيات المستخدمين والمدونة',
+    'stats.total_users' => 'إجمالي المستخدمين',
+    'stats.active_users' => 'المستخدمين النشطين',
+    'stats.new_users' => 'مستخدمين جدد',
+    'stats.blog_posts' => 'مقالات المدونة',
+    'stats.published_posts' => 'المقالات المنشورة',
+    'stats.draft_posts' => 'المقالات المسودة',
+    'stats.total_comments' => 'إجمالي التعليقات',
+    'stats.pending_comments' => 'التعليقات المعلقة',
+    'stats.visitor_messages' => 'رسائل من الزوار',
     
     // Banner
     'banner.subheading' => 'إدارة محتوى اللافتة',

@@ -49,9 +49,24 @@ class BookResource extends Resource
     protected static ?string $model = Book::class;
     protected static ?string $cluster = BookManagement::class;
     protected static ?string $navigationIcon = 'heroicon-o-book-open';
-    protected static ?string $navigationLabel = 'الكتب';
-    protected static ?string $modelLabel = 'كتاب';
-    protected static ?string $pluralModelLabel = 'الكتب';
+    protected static ?string $navigationLabel = null;
+    protected static ?string $modelLabel = null;
+    protected static ?string $pluralModelLabel = null;
+
+    public static function getNavigationLabel(): string
+    {
+        return __('resource.book.books');
+    }
+
+    public static function getModelLabel(): string
+    {
+        return __('resource.book.book');
+    }
+
+    public static function getPluralModelLabel(): string
+    {
+        return __('resource.book.books');
+    }
     protected static ?int $navigationSort = 1;
 
     /**
@@ -112,7 +127,7 @@ class BookResource extends Resource
             ->schema([
                 Grid::make(2)->schema([
                     TextInput::make('title')
-                        ->label('عنوان الكتاب')
+                        ->label(__('resource.book.title'))
                         ->required()
                         ->maxLength(255)
                         ->live(onBlur: true)
@@ -125,14 +140,14 @@ class BookResource extends Resource
                 ]),
                 
                 Textarea::make('description')
-                    ->label('وصف الكتاب')
+                    ->label(__('resource.book.description'))
                     ->rows(4)
                     ->maxLength(1000)
                     ->columnSpanFull(),
 
                 Grid::make(3)->schema([
                     TextInput::make('slug')
-                        ->label('الرابط الثابت')
+                        ->label(__('resource.book.slug'))
                         ->required()
                         ->maxLength(255)
                         ->unique(Book::class, 'slug', ignoreRecord: true)

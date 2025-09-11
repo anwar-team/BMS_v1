@@ -33,23 +33,23 @@ class BooksStatsWidget extends BaseWidget
             $totalSections = BookSection::count();
 
             return [
-                Stat::make('إجمالي الكتب', $stats->total_books)
-                    ->description('العدد الكلي للكتب في النظام')
+                Stat::make(__('resource.book.total_books'), $stats->total_books)
+                    ->description(__('resource.book.total_system_books'))
                     ->descriptionIcon('heroicon-m-book-open')
                     ->color('primary'),
 
-                Stat::make('الكتب المنشورة', $stats->published_books)
-                    ->description('الكتب المتاحة للقراء')
+                Stat::make(__('resource.book.published_books'), $stats->published_books)
+                    ->description(__('resource.book.available_books_for_readers'))
                     ->descriptionIcon('heroicon-m-check-circle')
                     ->color('success'),
 
-                Stat::make('أقسام الكتب', $totalSections)
-                    ->description('عدد الأقسام المتاحة')
+                Stat::make(__('resource.book.book_sections'), $totalSections)
+                    ->description(__('resource.book.available_sections'))
                     ->descriptionIcon('heroicon-m-folder')
                     ->color('info'),
 
-                Stat::make('كتب جديدة', $stats->recent_books)
-                    ->description('خلال آخر 30 يوم')
+                Stat::make(__('resource.book.new_books'), $stats->recent_books)
+                    ->description(__('resource.book.books_last_30_days'))
                     ->descriptionIcon('heroicon-m-sparkles')
                     ->color('warning'),
             ];

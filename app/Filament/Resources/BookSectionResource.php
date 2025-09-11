@@ -22,14 +22,24 @@ class BookSectionResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-folder';
     
-    //protected static ?string $navigationGroup = 'إدارة المحتوى';
-    
-    
-    protected static ?string $navigationLabel = 'أقسام الكتب';
-    
-    protected static ?string $modelLabel = 'قسم كتب';
-    
-    protected static ?string $pluralModelLabel = 'أقسام الكتب';
+    protected static ?string $navigationLabel = null;
+    protected static ?string $modelLabel = null;
+    protected static ?string $pluralModelLabel = null;
+
+    public static function getNavigationLabel(): string
+    {
+        return __('resource.section.sections');
+    }
+
+    public static function getModelLabel(): string
+    {
+        return __('resource.section.section');
+    }
+
+    public static function getPluralModelLabel(): string
+    {
+        return __('resource.section.sections');
+    }
 
     public static function form(Form $form): Form
     {

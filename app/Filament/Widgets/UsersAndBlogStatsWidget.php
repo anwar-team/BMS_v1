@@ -34,23 +34,23 @@ class UsersAndBlogStatsWidget extends BaseWidget
             $totalContacts = ContactUs::count();
 
             return [
-                Stat::make('إجمالي المستخدمين', $userStats->total_users)
-                    ->description('العدد الكلي للمستخدمين')
+                Stat::make(__('resource.stats.total_users'), $userStats->total_users)
+                    ->description(__('resource.stats.total_users'))
                     ->descriptionIcon('heroicon-m-users')
                     ->color('primary'),
 
-                Stat::make('مقالات المدونة', $postStats->total_posts)
-                    ->description('إجمالي المقالات')
+                Stat::make(__('resource.stats.blog_posts'), $postStats->total_posts)
+                    ->description(__('resource.stats.blog_posts'))
                     ->descriptionIcon('heroicon-m-document-text')
                     ->color('success'),
 
-                Stat::make('المقالات المنشورة', $postStats->published_posts)
-                    ->description('المقالات المتاحة للقراء')
+                Stat::make(__('resource.stats.published_posts'), $postStats->published_posts)
+                    ->description(__('resource.stats.published_posts'))
                     ->descriptionIcon('heroicon-m-eye')
                     ->color('info'),
 
-                Stat::make('رسائل التواصل', $totalContacts)
-                    ->description('رسائل من الزوار')
+                Stat::make(__('resource.contact.contact_us'), $totalContacts)
+                    ->description(__('resource.stats.visitor_messages'))
                     ->descriptionIcon('heroicon-m-envelope')
                     ->color('warning'),
             ];

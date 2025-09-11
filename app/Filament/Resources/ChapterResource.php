@@ -24,11 +24,24 @@ class ChapterResource extends Resource
     protected static ?string $navigationIcon = 'heroicon-o-document-text';
     protected static ?string $navigationGroup = 'Book Management';
     
-    protected static ?string $navigationLabel = 'الفصول';
-    
-    protected static ?string $modelLabel = 'فصل';
-    
-    protected static ?string $pluralModelLabel = 'الفصول';
+    protected static ?string $navigationLabel = null;
+    protected static ?string $modelLabel = null;
+    protected static ?string $pluralModelLabel = null;
+
+    public static function getNavigationLabel(): string
+    {
+        return __('resource.chapter.chapters');
+    }
+
+    public static function getModelLabel(): string
+    {
+        return __('resource.chapter.chapter');
+    }
+
+    public static function getPluralModelLabel(): string
+    {
+        return __('resource.chapter.chapters');
+    }
 
     public static function form(Form $form): Form
     {
