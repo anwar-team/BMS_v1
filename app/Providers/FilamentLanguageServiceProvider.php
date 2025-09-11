@@ -2,13 +2,11 @@
 
 namespace App\Providers;
 
-use App\Livewire\LanguageSwitcher;
 use Filament\Support\Facades\FilamentView;
 use Filament\View\PanelsRenderHook;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
-use Livewire\Livewire;
 
 class FilamentLanguageServiceProvider extends ServiceProvider
 {
@@ -19,13 +17,10 @@ class FilamentLanguageServiceProvider extends ServiceProvider
 
     public function boot(): void
     {
-        // Register the Livewire component
-        Livewire::component('language-switcher', LanguageSwitcher::class);
-
-        // Add language switcher to the topbar
+        // Add language switcher to the topbar using a regular Blade component
         FilamentView::registerRenderHook(
             PanelsRenderHook::TOPBAR_END,
-            fn (): string => Blade::render('@livewire(\'language-switcher\')')
+            fn (): string => Blade::render('<x-language-switcher />')
         );
 
         // Set HTML attributes based on current locale

@@ -10,6 +10,7 @@ use App\Http\Controllers\BookReadController;
 use App\Http\Controllers\AuthorController;
 use App\Http\Controllers\BookController;
 use App\Http\Controllers\PublisherController;
+use App\Http\Controllers\LanguageController;
 use App\Livewire\Reader\BookReader;
 use Illuminate\Support\Facades\Route;
 use Lab404\Impersonate\Services\ImpersonateManager;
@@ -24,6 +25,9 @@ use Lab404\Impersonate\Services\ImpersonateManager;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
+
+// Language switching route
+Route::get('/language/{language}', [LanguageController::class, 'switch'])->name('language.switch');
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 
