@@ -844,7 +844,12 @@ class BookResource extends Resource
                         }),
                         blank: fn (Builder $query) => $query,
                     ),
-            ], layout: Tables\Enums\FiltersLayout::AboveContentCollapsible)
+            ])
+            ->filtersFormColumns(3)
+            ->filtersFormCollapsed()
+            ->filtersFormSchema([
+                // Schema will be automatically applied from filters above
+            ])
             ->actions([
                 ViewAction::make()
                     ->label('عرض')
