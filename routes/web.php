@@ -117,6 +117,11 @@ Route::get('/direct-search-test', function(Request $request) {
     }
 });
 
+// Performance comparison page
+Route::get('/search/performance', function() {
+    return view('search.performance');
+})->name('search.performance');
+
 // Test search route
 Route::get('/test-search', [App\Http\Controllers\TestSearchController::class, 'test']);
 

@@ -49,6 +49,43 @@
                                 </div>
                             </div>
                             
+                            <!-- إعدادات البحث المتقدمة -->
+                            <div class="bg-gray-50 rounded-lg p-4 mb-6">
+                                <h3 class="text-lg font-semibold text-gray-800 mb-4">⚙️ إعدادات البحث المتقدمة</h3>
+                                
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                    <!-- نوع البحث -->
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-2">نوع البحث</label>
+                                        <select id="searchMode" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+                                            <option value="flexible">مرن (افتراضي) - أفضل النتائج</option>
+                                            <option value="exact_phrase">مطابقة العبارة تماماً</option>
+                                            <option value="phrase_proximity">عبارة مع تباعد مسموح</option>
+                                            <option value="all_words">جميع الكلمات مطلوبة</option>
+                                            <option value="any_word">أي كلمة من الكلمات</option>
+                                        </select>
+                                        <div class="text-xs text-gray-500 mt-1">يحدد كيفية البحث في النصوص</div>
+                                    </div>
+                                    
+                                    <!-- تباعد الكلمات -->
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-2">تباعد الكلمات</label>
+                                        <select id="proximityMode" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+                                            <option value="any_order">أي ترتيب (افتراضي)</option>
+                                            <option value="consecutive">متتالية (ورا بعض)</option>
+                                            <option value="same_paragraph">نفس الفقرة</option>
+                                        </select>
+                                        <div class="text-xs text-gray-500 mt-1">يحدد المسافة المسموحة بين الكلمات</div>
+                                    </div>
+                                </div>
+                                
+                                <!-- شرح مبسط للخيارات -->
+                                <div id="searchModeHelp" class="mt-4 p-3 bg-blue-50 border-l-4 border-blue-400 text-sm text-blue-800">
+                                    <div class="font-medium mb-1">البحث المرن (المختار حالياً):</div>
+                                    <div>يبحث بأفضل النتائج مع مراعاة المعنى والسياق</div>
+                                </div>
+                            </div>
+                            
                             <!-- فلاتر سريعة -->
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 <div>
@@ -144,6 +181,9 @@
                 this.noResults = document.getElementById('noResults');
                 this.searchError = document.getElementById('searchError');
                 this.perPageSelect = document.getElementById('perPageSelect');
+                this.searchMode = document.getElementById('searchMode');
+                this.proximityMode = document.getElementById('proximityMode');
+                this.searchModeHelp = document.getElementById('searchModeHelp');
                 
                 this.searchTimeout = null;
                 this.currentPage = 1;
@@ -176,6 +216,57 @@
                         this.performSearch(query);
                     }
                 });
+                
+                // تغيير نوع البحث
+                this.searchMode.addEventListener('change', () => {
+                    this.updateSearchModeHelp();
+                    const query = this.searchInput.value.trim();
+                    if (query.length >= 1) {
+                        this.performSearch(query);
+                    }
+                });
+                
+                // تغيير تباعد الكلمات
+                this.proximityMode.addEventListener('change', () => {
+                    const query = this.searchInput.value.trim();
+                    if (query.length >= 1) {
+                        this.performSearch(query);
+                    }
+                });
+                
+                this.updateSearchModeHelp();
+            }
+            
+            updateSearchModeHelp() {
+                const mode = this.searchMode.value;
+                const helpTexts = {
+                    'flexible': {
+                        title: 'البحث المرن (المختار حالياً):',
+                        desc: 'يبحث بأفضل النتائج مع مراعاة المعنى والسياق'
+                    },
+                    'exact_phrase': {
+                        title: 'مطابقة العبارة تماماً:',
+                        desc: 'يبحث عن العبارة كما هي بنفس الترتيب والتتابع'
+                    },
+                    'phrase_proximity': {
+                        title: 'عبارة مع تباعد مسموح:',
+                        desc: 'يبحث عن الكلمات قريبة من بعض حسب إعداد التباعد'
+                    },
+                    'all_words': {
+                        title: 'جميع الكلمات مطلوبة:',
+                        desc: 'يجب أن تكون جميع الكلمات موجودة في النص'
+                    },
+                    'any_word': {
+                        title: 'أي كلمة من الكلمات:',
+                        desc: 'يكفي وجود كلمة واحدة من كلمات البحث'
+                    }
+                };
+                
+                const help = helpTexts[mode];
+                this.searchModeHelp.innerHTML = `
+                    <div class="font-medium mb-1">${help.title}</div>
+                    <div>${help.desc}</div>
+                `;
             }
             
             showWelcome() {
@@ -200,10 +291,20 @@
                 this.showLoading();
                 
                 const perPage = this.perPageSelect.value;
+                const searchMode = this.searchMode.value;
+                const proximityMode = this.proximityMode.value;
                 const startTime = performance.now();
                 
                 try {
-                    const response = await fetch(`/api/ultra-search?q=${encodeURIComponent(query)}&per_page=${perPage}&page=${this.currentPage}`);
+                    const params = new URLSearchParams({
+                        q: query,
+                        per_page: perPage,
+                        page: this.currentPage,
+                        search_mode: searchMode,
+                        proximity: proximityMode
+                    });
+                    
+                    const response = await fetch(`/api/ultra-search?${params}`);
                     const data = await response.json();
                     
                     const searchTime = Math.round(performance.now() - startTime);
@@ -211,7 +312,7 @@
                     this.hideLoading();
                     
                     if (data.success && data.data && data.data.length > 0) {
-                        this.displayResults(data.data, data.pagination, searchTime);
+                        this.displayResults(data.data, data.pagination, searchTime, searchMode);
                     } else {
                         this.showNoResults();
                     }
@@ -223,7 +324,7 @@
                 }
             }
             
-            displayResults(results, pagination, searchTime) {
+            displayResults(results, pagination, searchTime, searchMode) {
                 this.welcomeMessage.classList.add('hidden');
                 this.noResults.classList.add('hidden');
                 this.searchError.classList.add('hidden');
@@ -254,25 +355,39 @@
                             </div>
                         </div>
                         
-                        <div class="text-gray-700 leading-relaxed text-right" dir="rtl">
+                        <div class="text-gray-700 leading-relaxed text-right mb-4" dir="rtl">
                             ${result.content || 'لا يوجد محتوى للعرض'}
                         </div>
                         
-                        <div class="mt-4 flex justify-between items-center">
+                        <div class="flex justify-between items-center">
                             <div class="flex gap-2">
-                                <button class="px-3 py-1 bg-blue-100 text-blue-700 rounded text-sm hover:bg-blue-200 transition-colors">
-                                    عرض الصفحة
+                                <button onclick="goToPage(${result.book_id}, ${result.page_number})" 
+                                        class="px-3 py-1 bg-blue-100 text-blue-700 rounded text-sm hover:bg-blue-200 transition-colors">
+                                    📖 انتقال للصفحة
                                 </button>
-                                <button class="px-3 py-1 bg-green-100 text-green-700 rounded text-sm hover:bg-green-200 transition-colors">
-                                    عرض الكتاب
+                                <button onclick="goToBook(${result.book_id})" 
+                                        class="px-3 py-1 bg-green-100 text-green-700 rounded text-sm hover:bg-green-200 transition-colors">
+                                    📚 عرض الكتاب
                                 </button>
                             </div>
                             <div class="text-xs text-gray-400">
-                                Score: ${result.score ? result.score.toFixed(2) : 'N/A'}
+                                <span class="bg-gray-200 px-2 py-1 rounded">${this.getSearchModeLabel(searchMode)}</span>
+                                • Score: ${result.score ? result.score.toFixed(2) : 'N/A'}
                             </div>
                         </div>
                     </div>
                 `).join('');
+            }
+            
+            getSearchModeLabel(mode) {
+                const labels = {
+                    'flexible': 'مرن',
+                    'exact_phrase': 'مطابق تماماً',
+                    'phrase_proximity': 'مع تباعد',
+                    'all_words': 'جميع الكلمات',
+                    'any_word': 'أي كلمة'
+                };
+                return labels[mode] || 'مرن';
             }
             
             showNoResults() {
@@ -289,6 +404,23 @@
                 this.noResults.classList.add('hidden');
                 this.searchError.classList.remove('hidden');
                 this.searchInfo.classList.add('hidden');
+            }
+        }
+        
+        // وظائف الانتقال للصفحات والكتب
+        function goToPage(bookId, pageNumber) {
+            if (bookId && pageNumber) {
+                window.location.href = `/book/${bookId}/${pageNumber}`;
+            } else {
+                alert('معلومات الصفحة غير متاحة');
+            }
+        }
+        
+        function goToBook(bookId) {
+            if (bookId) {
+                window.location.href = `/books/${bookId}/details`;
+            } else {
+                alert('معلومات الكتاب غير متاحة');
             }
         }
         

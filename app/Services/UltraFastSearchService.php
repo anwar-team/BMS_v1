@@ -77,7 +77,7 @@ class UltraFastSearchService
     }
 
     /**
-     * Build optimized query for Arabic text
+     * Build optimized query for Arabic text with advanced search options
      */
     protected function buildOptimizedQuery(string $query, array $filters): array
     {
@@ -89,25 +89,87 @@ class UltraFastSearchService
         ];
 
         if (!empty($query)) {
-            $boolQuery['bool']['must'][] = [
-                'multi_match' => [
-                    'query' => $query,
-                    'fields' => [
-                        'content^3',
-                        'book_title^2',
-                        'author_names^1.5',
-                    ],
-                    'type' => 'best_fields',
-                    'fuzziness' => 'AUTO',
-                    'operator' => 'or',
-                    'minimum_should_match' => '70%',
-                ]
-            ];
+            // Get search mode from filters
+            $searchMode = $filters['search_mode'] ?? 'flexible';
+            $proximity = $filters['proximity'] ?? 'any_order';
+            
+            switch ($searchMode) {
+                case 'exact_phrase':
+                    // مطابقة العبارة تماماً
+                    $boolQuery['bool']['must'][] = [
+                        'match_phrase' => [
+                            'content' => [
+                                'query' => $query,
+                                'slop' => 0
+                            ]
+                        ]
+                    ];
+                    break;
+                    
+                case 'phrase_proximity':
+                    // مطابقة العبارة مع تباعد مسموح
+                    $slop = ($proximity === 'same_paragraph') ? 50 : 
+                           (($proximity === 'consecutive') ? 2 : 10);
+                    
+                    $boolQuery['bool']['must'][] = [
+                        'match_phrase' => [
+                            'content' => [
+                                'query' => $query,
+                                'slop' => $slop
+                            ]
+                        ]
+                    ];
+                    break;
+                    
+                case 'all_words':
+                    // جميع الكلمات يجب أن تكون موجودة
+                    $boolQuery['bool']['must'][] = [
+                        'match' => [
+                            'content' => [
+                                'query' => $query,
+                                'operator' => 'and',
+                                'fuzziness' => 'AUTO'
+                            ]
+                        ]
+                    ];
+                    break;
+                    
+                case 'any_word':
+                    // أي كلمة من الكلمات
+                    $boolQuery['bool']['must'][] = [
+                        'match' => [
+                            'content' => [
+                                'query' => $query,
+                                'operator' => 'or',
+                                'fuzziness' => 'AUTO'
+                            ]
+                        ]
+                    ];
+                    break;
+                    
+                default: // flexible
+                    // البحث المرن (الافتراضي)
+                    $boolQuery['bool']['must'][] = [
+                        'multi_match' => [
+                            'query' => $query,
+                            'fields' => [
+                                'content^3',
+                                'book_title^2',
+                                'author_names^1.5',
+                            ],
+                            'type' => 'best_fields',
+                            'fuzziness' => 'AUTO',
+                            'operator' => 'or',
+                            'minimum_should_match' => '70%',
+                        ]
+                    ];
+                    break;
+            }
         } else {
             $boolQuery['bool']['must'][] = ['match_all' => new \stdClass()];
         }
 
-        // Add filters
+        // Add existing filters
         if (!empty($filters['author_id'])) {
             $boolQuery['bool']['filter'][] = [
                 'term' => ['author_ids' => $filters['author_id']]
