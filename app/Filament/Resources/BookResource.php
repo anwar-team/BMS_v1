@@ -747,21 +747,21 @@ class BookResource extends Resource
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
-                // مرشحات شاملة
+                // فلاتر مرئية فوق الجدول
                 SelectFilter::make('book_section_id')
                     ->label('قسم الكتاب')
                     ->relationship('bookSection', 'name')
                     ->searchable()
                     ->preload()
-                    ->indicator('القسم'),
-                
+                    ->placeholder('جميع الأقسام'),
+
                 SelectFilter::make('publisher_id')
                     ->label('الناشر')
                     ->relationship('publisher', 'name')
                     ->searchable()
                     ->preload()
-                    ->indicator('الناشر'),
-                
+                    ->placeholder('جميع الناشرين'),
+
                 SelectFilter::make('author')
                     ->label('المؤلف')
                     ->query(function (Builder $query, array $data): Builder {
@@ -781,7 +781,7 @@ class BookResource extends Resource
                     })
                     ->searchable()
                     ->preload()
-                    ->indicator('المؤلف'),
+                    ->placeholder('جميع المؤلفين'),
 
                 SelectFilter::make('status')
                     ->label('الحالة')
@@ -790,16 +790,15 @@ class BookResource extends Resource
                         'published' => 'منشور',
                         'archived' => 'مؤرشف',
                     ])
-                    ->multiple()
-                    ->indicator('الحالة'),
-                
+                    ->placeholder('جميع الحالات'),
+
                 SelectFilter::make('visibility')
                     ->label('الرؤية')
                     ->options([
                         'public' => 'عام',
                         'private' => 'خاص',
                     ])
-                    ->indicator('الرؤية'),
+                    ->placeholder('جميع أنواع الرؤية'),
 
                 SelectFilter::make('author_role')
                     ->label('دور المؤلف')
@@ -820,54 +819,22 @@ class BookResource extends Resource
                         'reviewer' => 'مراجع',
                         'commentator' => 'معلق',
                     ])
-                    ->indicator('دور المؤلف'),
-
-                Filter::make('edition_range')
-                    ->form([
-                        Grid::make(2)->schema([
-                            TextInput::make('edition_from')
-                                ->label('الطبعة من')
-                                ->numeric()
-                                ->placeholder('1'),
-                            TextInput::make('edition_to')
-                                ->label('إلى')
-                                ->numeric()
-                                ->placeholder('10'),
-                        ]),
-                    ])
-                    ->query(function (Builder $query, array $data): Builder {
-                        return $query
-                            ->when(
-                                $data['edition_from'],
-                                fn (Builder $query, $value): Builder => $query->where('edition', '>=', $value)
-                            )
-                            ->when(
-                                $data['edition_to'],
-                                fn (Builder $query, $value): Builder => $query->where('edition', '<=', $value)
-                            );
-                    })
-                    ->indicateUsing(function (array $data): ?string {
-                        if ($data['edition_from'] || $data['edition_to']) {
-                            return 'نطاق الطبعة: ' . ($data['edition_from'] ?? '∞') . ' - ' . ($data['edition_to'] ?? '∞');
-                        }
-                        return null;
-                    }),
+                    ->placeholder('جميع الأدوار'),
 
                 TernaryFilter::make('has_cover_image')
                     ->label('صورة الغلاف')
-                    ->nullable()
+                    ->placeholder('الكل')
                     ->trueLabel('مع صورة غلاف')
                     ->falseLabel('بدون صورة غلاف')
                     ->queries(
                         true: fn (Builder $query) => $query->whereNotNull('cover_image'),
                         false: fn (Builder $query) => $query->whereNull('cover_image'),
                         blank: fn (Builder $query) => $query,
-                    )
-                    ->indicator('صورة الغلاف'),
+                    ),
 
                 TernaryFilter::make('has_source_url')
                     ->label('رابط المصدر')
-                    ->nullable()
+                    ->placeholder('الكل')
                     ->trueLabel('مع رابط مصدر')
                     ->falseLabel('بدون رابط مصدر')
                     ->queries(
@@ -876,43 +843,8 @@ class BookResource extends Resource
                             $query->whereNull('source_url')->orWhere('source_url', '');
                         }),
                         blank: fn (Builder $query) => $query,
-                    )
-                    ->indicator('رابط المصدر'),
-
-                Filter::make('created_date_range')
-                    ->form([
-                        Grid::make(2)->schema([
-                            DatePicker::make('created_from')
-                                ->label('تاريخ الإنشاء من')
-                                ->native(false)
-                                ->displayFormat('d/m/Y'),
-                            DatePicker::make('created_until')
-                                ->label('إلى')
-                                ->native(false)
-                                ->displayFormat('d/m/Y'),
-                        ]),
-                    ])
-                    ->query(function (Builder $query, array $data): Builder {
-                        return $query
-                            ->when(
-                                $data['created_from'],
-                                fn (Builder $query, $date): Builder => $query->whereDate('created_at', '>=', $date)
-                            )
-                            ->when(
-                                $data['created_until'],
-                                fn (Builder $query, $date): Builder => $query->whereDate('created_at', '<=', $date)
-                            );
-                    })
-                    ->indicateUsing(function (array $data): ?string {
-                        if ($data['created_from'] || $data['created_until']) {
-                            return 'تاريخ الإنشاء: ' . 
-                                ($data['created_from'] ? Carbon::parse($data['created_from'])->format('d/m/Y') : '∞') . 
-                                ' - ' . 
-                                ($data['created_until'] ? Carbon::parse($data['created_until'])->format('d/m/Y') : '∞');
-                        }
-                        return null;
-                    }),
-            ])
+                    ),
+            ], layout: Tables\Enums\FiltersLayout::AboveContent)
             ->actions([
                 ViewAction::make()
                     ->label('عرض')
