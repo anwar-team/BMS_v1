@@ -52,6 +52,7 @@
         "laravel/tinker": "^2.8",
         "league/commonmark": "^2.4",
         "opcodesio/log-viewer": "^3.11",
+        "pxlrbt/filament-spotlight": "^2.0",
         "riodwanto/filament-ace-editor": "^1.0",
         "stichoza/google-translate-php": "^5.2",
         "tomatophp/filament-media-manager": "^1.1",

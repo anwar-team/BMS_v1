@@ -36,6 +36,7 @@ use Illuminate\Session\Middleware\AuthenticateSession;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
+use pxlrbt\FilamentSpotlight\SpotlightPlugin;
 
 class AdminPanelProvider extends PanelProvider
 {
@@ -172,7 +173,8 @@ class AdminPanelProvider extends PanelProvider
                             ->collapsed(true)
                             ->collapsible(true)
                             ->paginate(perPage: 5, condition: true)
-                    ])
+                    ]),
+                SpotlightPlugin::make(),
             ]);
     }
 }
