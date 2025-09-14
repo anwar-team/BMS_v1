@@ -976,6 +976,11 @@ class BookResource extends Resource
                     ->icon('heroicon-o-view-columns')
                     ->color('gray')
                     ->tooltip('إظهار/إخفاء الأعمدة')
+                    ->modalHeading('إدارة أعمدة الجدول')
+                    ->modalDescription('اختر الأعمدة التي تريد إظهارها أو إخفاؤها')
+                    ->modalSubmitActionLabel('تطبيق')
+                    ->modalCancelActionLabel('إلغاء')
+                    ->slideOver()
             );
     }
 
