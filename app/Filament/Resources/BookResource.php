@@ -972,10 +972,11 @@ class BookResource extends Resource
             ->toggleColumnsTriggerAction(
                 fn (\Filament\Tables\Actions\Action $action) => $action
                     ->button()
-                    //->label('إدارة الأعمدة')
+                    ->label('إدارة الأعمدة')
                     ->icon('heroicon-o-view-columns')
                     ->color('gray')
-                    //->tooltip('إظهار/إخفاء الأعمدة')
+                    ->tooltip('إظهار/إخفاء الأعمدة')
+                    ->modalColumns(3) // هذا يجعل الخيارات تظهر 3 في كل صف
             );
     }
 
