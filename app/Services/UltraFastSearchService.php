@@ -61,6 +61,7 @@ class UltraFastSearchService
                     'from' => ($page - 1) * $perPage,
                     'size' => $perPage,
                     'sort' => ['_score'],
+                    'track_total_hits' => true, // إصلاح مشكلة الـ 10,000
                 ],
                 'timeout' => '5s',
                 'preference' => '_local',

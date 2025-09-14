@@ -14,6 +14,7 @@ use App\Http\Controllers\LanguageController;
 use App\Http\Controllers\SearchController;
 use App\Livewire\Reader\BookReader;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Http\Request;
 use Lab404\Impersonate\Services\ImpersonateManager;
 
 /*
@@ -140,6 +141,63 @@ Route::get('/ultra-search', function() {
 
 // Ultra-fast search API routes (optimized with Context7 MCP best practices)
 Route::get('/api/ultra-search', [SearchController::class, 'apiSearch'])->name('api.ultra-search');
+
+// Get full page content
+Route::get('/api/page/{pageId}/full-content', function($pageId) {
+    try {
+        $page = \App\Models\Page::with(['book', 'book.authors'])->find($pageId);
+        
+        if (!$page) {
+            return response()->json(['error' => 'الصفحة غير موجودة'], 404);
+        }
+        
+        return response()->json([
+            'success' => true,
+            'page' => [
+                'id' => $page->id,
+                'full_content' => $page->content,
+                'page_number' => $page->page_number,
+                'book_id' => $page->book_id,
+                'book_title' => $page->book->title ?? 'غير محدد',
+                'author_names' => $page->book?->authors?->pluck('name')->implode(', ') ?? 'غير محدد',
+                'book_section_id' => $page->book_section_id,
+            ]
+        ]);
+    } catch (\Exception $e) {
+        return response()->json(['error' => 'خطأ في جلب الصفحة'], 500);
+    }
+})->name('api.page.full-content');
+
+// Get related pages from same book
+Route::get('/api/book/{bookId}/pages', function($bookId, Request $request) {
+    try {
+        $currentPage = (int) $request->get('current_page', 1);
+        $perPage = min((int) $request->get('per_page', 10), 20);
+        
+        $pages = \App\Models\Page::where('book_id', $bookId)
+            ->orderBy('page_number')
+            ->paginate($perPage, ['*'], 'page', $currentPage);
+        
+        return response()->json([
+            'success' => true,
+            'pages' => $pages->map(function($page) {
+                return [
+                    'id' => $page->id,
+                    'page_number' => $page->page_number,
+                    'content_preview' => mb_substr(strip_tags($page->content), 0, 200) . '...',
+                ];
+            }),
+            'pagination' => [
+                'current_page' => $pages->currentPage(),
+                'last_page' => $pages->lastPage(),
+                'total' => $pages->total(),
+                'per_page' => $pages->perPage(),
+            ]
+        ]);
+    } catch (\Exception $e) {
+        return response()->json(['error' => 'خطأ في جلب صفحات الكتاب'], 500);
+    }
+})->name('api.book.pages');
 
 // Fast search API routes
 Route::get('/api/fast-search', [App\Http\Controllers\Api\FastSearchController::class, 'search'])->name('api.fast-search');
