@@ -133,22 +133,22 @@ class Page extends Model
     }
 
     /**
-     * Get the indexable data array for the model.
+     * Get the indexable data array for the model - OPTIMIZED.
      *
      * @return array
      */
     public function toSearchableArray(): array
     {
-        // Load relationships if not already loaded
+        // Load relationships efficiently
         $this->loadMissing(['book.authors', 'book.bookSection']);
 
-        // Get author names
+        // Get author names optimized
         $authorNames = $this->book->authors->pluck('full_name')->implode(' ');
         $authorIds = $this->book->authors->pluck('id')->toArray();
 
         return [
             'id' => $this->id,
-            'content' => strip_tags($this->content),
+            'content' => $this->prepareContentForSearch($this->content),
             'page_number' => $this->page_number,
             'book_id' => $this->book_id,
             'book_title' => $this->book->title ?? '',
@@ -158,16 +158,58 @@ class Page extends Model
             'published_year' => $this->book->published_year ?? null,
             'volume_id' => $this->volume_id,
             'chapter_id' => $this->chapter_id,
+            'word_count' => $this->getWordCountAttribute(),
+            'created_at' => $this->created_at?->timestamp,
+            'updated_at' => $this->updated_at?->timestamp,
         ];
     }
 
     /**
-     * Get the index name for the model.
+     * Prepare content for search indexing.
+     */
+    protected function prepareContentForSearch(?string $content): string
+    {
+        if (!$content) {
+            return '';
+        }
+
+        // إزالة HTML tags
+        $content = strip_tags($content);
+        
+        // تنظيف النص العربي
+        $content = preg_replace('/\s+/', ' ', $content); // إزالة المسافات الزائدة
+        $content = trim($content);
+        
+        return $content;
+    }
+
+    /**
+     * Get the index name for the model - OPTIMIZED.
      *
      * @return string
      */
     public function searchableAs(): string
     {
-        return 'pages';
+        return config('scout.prefix') . 'pages_optimized';
+    }
+
+    /**
+     * Get Scout metadata for enhanced search.
+     */
+    public function scoutMetadata(): array
+    {
+        return [
+            'indexed_at' => now()->timestamp,
+            'model_type' => 'page',
+        ];
+    }
+
+    /**
+     * Should this model be searchable?
+     */
+    public function shouldBeSearchable(): bool
+    {
+        // فقط الصفحات التي تحتوي على محتوى
+        return !empty($this->content) && !empty(trim(strip_tags($this->content)));
     }
 }

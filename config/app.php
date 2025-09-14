@@ -172,6 +172,7 @@ return [
         App\Providers\FilamentLanguageServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
         App\Providers\SettingsServiceProvider::class,
+        App\Providers\OptimizedSearchServiceProvider::class, // محرك البحث المحسن
     ])->toArray(),
 
     /*

@@ -18,11 +18,10 @@ class OptimizedSearchService
      */
     public function search(string $query, array $filters = [], int $page = 1, int $perPage = 15): array
     {
-        // استخدام البحث المباشر في Elasticsearch للحصول على أقصى سرعة
-        $builder = Page::search($query)
-            ->take($perPage * $page); // جلب البيانات دفعة واحدة للسرعة
+        // استخدام البحث المحسن في Elasticsearch مع pagination سريع
+        $builder = Page::search($query);
         
-        // Apply filters
+        // Apply filters if provided
         if (!empty($filters['author_id'])) {
             $builder->where('author_ids', $filters['author_id']);
         }
@@ -31,16 +30,11 @@ class OptimizedSearchService
             $builder->where('book_section_id', $filters['section_id']);
         }
         
-        // الحصول على النتائج مباشرة
-        $allResults = $builder->get();
-        $total = $allResults->count();
+        // Get paginated results efficiently
+        $results = $builder->paginate($perPage, 'page', $page);
         
-        // حساب الصفحات يدوياً للسرعة
-        $offset = ($page - 1) * $perPage;
-        $pageResults = $allResults->slice($offset, $perPage);
-        
-        // تحويل النتائج بأسرع طريقة ممكنة
-        $transformedResults = $pageResults->map(function ($page) use ($query) {
+        // Transform results quickly
+        $transformedResults = collect($results->items())->map(function ($page) use ($query) {
             return [
                 'id' => $page->id,
                 'page_number' => $page->page_number,
@@ -54,12 +48,12 @@ class OptimizedSearchService
         
         return [
             'results' => $transformedResults,
-            'total' => $total,
-            'current_page' => $page,
-            'per_page' => $perPage,
-            'last_page' => ceil($total / $perPage),
-            'from' => $offset + 1,
-            'to' => min($offset + $perPage, $total)
+            'total' => $results->total(),
+            'current_page' => $results->currentPage(),
+            'per_page' => $results->perPage(),
+            'last_page' => $results->lastPage(),
+            'from' => $results->firstItem(),
+            'to' => $results->lastItem()
         ];
     }
     

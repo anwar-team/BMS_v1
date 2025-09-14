@@ -5,9 +5,10 @@ namespace App\Http\Controllers;
 use App\Models\Page;
 use App\Models\Author;
 use App\Models\BookSection;
-use App\Services\OptimizedSearchService;
+use App\Services\UltraFastSearchService;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Facades\Log;
 
 class SearchController extends Controller
 {
@@ -76,7 +77,7 @@ class SearchController extends Controller
                 $totalResults = $results->total();
                 
                 // Log the error for debugging
-                \Log::warning('Elasticsearch search failed, using database fallback', [
+                Log::warning('Elasticsearch search failed, using database fallback', [
                     'error' => $e->getMessage(),
                     'query' => $query,
                     'author_id' => $authorId,
@@ -113,14 +114,13 @@ class SearchController extends Controller
         return view('search.index', compact('authors', 'bookSections'));
     }
     
-    /**
-     * API endpoint for search (returns JSON) - Optimized version
-     *
-     * @param Request $request
-     * @param OptimizedSearchService $searchService
+        /**
+     * API endpoint for search (returns JSON) - Ultra Fast version
+     * 
+     * @param UltraFastSearchService $searchService
      * @return \Illuminate\Http\JsonResponse
      */
-    public function apiSearch(Request $request, OptimizedSearchService $searchService)
+    public function apiSearch(Request $request, UltraFastSearchService $searchService)
     {
         $startTime = microtime(true);
         
@@ -153,12 +153,12 @@ class SearchController extends Controller
                 'success' => true,
                 'data' => $results['results'],
                 'pagination' => [
-                    'current_page' => $results['current_page'],
-                    'last_page' => $results['last_page'],
-                    'per_page' => $results['per_page'],
-                    'total' => $results['total'],
-                    'from' => $results['from'],
-                    'to' => $results['to']
+                    'current_page' => $results['current_page'] ?? $page,
+                    'last_page' => $results['last_page'] ?? 1,
+                    'per_page' => $results['per_page'] ?? $perPage,
+                    'total' => $results['total'] ?? 0,
+                    'from' => (($page - 1) * $perPage) + 1,
+                    'to' => min($page * $perPage, $results['total'] ?? 0)
                 ],
                 'search_time' => $searchTime . 'ms'
             ]);
@@ -166,7 +166,7 @@ class SearchController extends Controller
         } catch (\Exception $e) {
             $searchTime = round((microtime(true) - $startTime) * 1000, 2);
             
-            \Log::error('Optimized search failed', [
+            Log::error('Optimized search failed', [
                 'error' => $e->getMessage(),
                 'query' => $query,
                 'filters' => $filters ?? [],

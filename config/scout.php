@@ -33,16 +33,16 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Queue Data Syncing
+    | Queue Data Syncing - OPTIMIZED for Performance
     |--------------------------------------------------------------------------
     |
     | This option allows you to control if the operations that sync your data
-    | with your search engines are queued. When this is set to "true" then
-    | all automatic data syncing will get queued for better performance.
+    | with your search engines are queued. When this is set to "false" then
+    | data syncing will be immediate for better search responsiveness.
     |
     */
 
-    'queue' => env('SCOUT_QUEUE', false),
+    'queue' => env('SCOUT_QUEUE', false), // FALSE for immediate indexing
 
     /*
     |--------------------------------------------------------------------------
