@@ -1,0 +1,61 @@
+## JVM configuration
+
+################################################################
+## IMPORTANT: JVM heap size
+################################################################
+##
+## The heap size is automatically configured by Logstash
+## based on the available memory in your system and the roles
+## each node will fulfill. If you find the automatically-
+## configured heap size is not appropriate for your use case
+## you can override it by uncommenting the settings below.
+##
+## Xms represents the initial size of total heap space
+## Xmx represents the maximum size of total heap space
+
+-Xms3g
+-Xmx3g
+
+################################################################
+## Expert settings
+################################################################
+##
+## All settings below are considered
+## expert settings. Don't tamper with them unless
+## you understand what you are doing
+##
+
+## GC configuration (استخدام G1GC فقط)
+-XX:+UseG1GC
+-XX:MaxGCPauseMillis=200
+
+## Unlock experimental options first
+-XX:+UnlockExperimentalVMOptions
+
+## G1 Young Generation settings (بعد فتح الخيارات التجريبية)
+-XX:G1HeapRegionSize=16m
+-XX:G1NewSizePercent=30
+-XX:G1MaxNewSizePercent=40
+
+## Locale
+-Dfile.encoding=UTF-8
+
+## UTF-8 support for Arabic text
+-Djava.awt.headless=true
+
+## JMX Settings
+-Dcom.sun.management.jmxremote
+-Dcom.sun.management.jmxremote.port=1099
+-Dcom.sun.management.jmxremote.local.only=false
+-Dcom.sun.management.jmxremote.authenticate=false
+-Dcom.sun.management.jmxremote.ssl=false
+
+## Disable assertions
+-da
+
+## Enable assertions for Elasticsearch classes
+-ea:org.elasticsearch...
+
+## مراقبة وتحسين الذاكرة للنصوص العربية
+-XX:+AlwaysPreTouch
+-XX:+UseStringDeduplication

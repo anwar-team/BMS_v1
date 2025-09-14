@@ -1,0 +1,11 @@
+{
+    "size": 0,
+    "aggs": {
+        "sections": {
+            "terms": {
+                "field": "book_section_id",
+                "size": 10
+            }
+        }
+    }
+}

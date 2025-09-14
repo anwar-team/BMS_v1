@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>اختبار البحث الفوري - نظام المكتبة</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .highlight {
+            background-color: #fef3c7;
+            padding: 1px 2px;
+            border-radius: 2px;
+            font-weight: 600;
+        }
+        
+        .search-result-item {
+            transition: all 0.2s ease;
+        }
+        
+        .search-result-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+    </style>
+</head>
+<body class="bg-gray-100" dir="rtl">
+    <div class="container mx-auto px-4 py-8 max-w-6xl">
+        <div class="bg-white rounded-lg shadow-lg p-6">
+            <h1 class="text-3xl font-bold text-gray-800 mb-6 text-center">اختبار البحث الفوري</h1>
+            
+            <!-- Search Form -->
+            <div class="space-y-4 mb-6">
+                <div class="relative">
+                    <input type="text" 
+                           id="searchInput" 
+                           placeholder="ابحث في المكتبة... (البحث الفوري)"
+                           class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-right text-lg"
+                           autocomplete="off">
+                    <div id="searchLoading" class="absolute left-3 top-1/2 transform -translate-y-1/2 hidden">
+                        <div class="animate-spin rounded-full h-5 w-5 border-b-2 border-blue-600"></div>
+                    </div>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <input type="text" 
+                           id="authorFilter" 
+                           placeholder="فلترة حسب المؤلف..."
+                           class="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                           disabled>
+                    
+                    <input type="text" 
+                           id="bookFilter" 
+                           placeholder="فلترة حسب عنوان الكتاب..."
+                           class="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                           disabled>
+                </div>
+            </div>
+            
+            <!-- Search Status -->
+            <div id="searchStatus" class="mb-4 text-center text-gray-600 hidden">
+                اكتب كلمتين على الأقل للبحث...
+            </div>
+            
+            <!-- Search Time -->
+            <div id="searchTime" class="mb-4 text-center text-blue-600 text-sm hidden"></div>
+            
+            <!-- Results Count -->
+            <div id="resultCount" class="mb-4 text-gray-700 hidden"></div>
+            
+            <!-- Search Results -->
+            <div id="searchResults" class="space-y-4 max-h-96 overflow-y-auto hidden">
+                <!-- سيتم إدراج النتائج هنا -->
+            </div>
+            
+            <!-- Load More Button -->
+            <div class="text-center mt-4">
+                <button id="loadMoreBtn" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg transition-colors hidden">
+                    تحميل المزيد من النتائج
+                </button>
+            </div>
+            
+            <!-- No Results -->
+            <div id="noResults" class="text-center py-8 text-gray-500 hidden">
+                <div class="text-6xl mb-4">🔍</div>
+                <h3 class="text-xl font-semibold mb-2">لم يتم العثور على نتائج</h3>
+                <p>جرب استخدام كلمات مختلفة أو تحقق من الإملاء</p>
+            </div>
+            
+            <!-- Error Message -->
+            <div id="errorMessage" class="text-center py-8 text-red-500 hidden">
+                <div class="text-6xl mb-4">⚠️</div>
+                <h3 class="text-xl font-semibold mb-2">حدث خطأ في البحث</h3>
+                <p>يرجى المحاولة مرة أخرى</p>
+            </div>
+        </div>
+        
+        <!-- Search Tips -->
+        <div class="bg-white rounded-lg shadow-lg p-6 mt-6">
+            <h3 class="text-lg font-semibold text-gray-800 mb-3">نصائح للبحث:</h3>
+            <ul class="text-sm text-gray-600 space-y-2">
+                <li>• البحث يبدأ تلقائياً بعد كتابة حرفين على الأقل</li>
+                <li>• يمكنك البحث بالنصوص العربية مع دعم التشكيل والحركات</li>
+                <li>• استخدم المرشحات لتضييق نطاق البحث</li>
+                <li>• النتائج تظهر فورياً أثناء الكتابة</li>
+                <li>• يمكنك تحميل المزيد من النتائج باستخدام زر "تحميل المزيد"</li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const searchInput = document.getElementById('searchInput');
+            const authorFilter = document.getElementById('authorFilter');
+            const bookFilter = document.getElementById('bookFilter');
+            const searchResults = document.getElementById('searchResults');
+            const resultCount = document.getElementById('resultCount');
+            const searchLoading = document.getElementById('searchLoading');
+            const loadMoreBtn = document.getElementById('loadMoreBtn');
+            const noResults = document.getElementById('noResults');
+            const searchTime = document.getElementById('searchTime');
+            const searchStatus = document.getElementById('searchStatus');
+            
+            let searchTimeout;
+            let currentPage = 1;
+            let isLoading = false;
+            let lastQuery = '';
+            
+            // Show initial status
+            searchStatus.classList.remove('hidden');
+            
+            // Real-time search
+            searchInput.addEventListener('input', function() {
+                clearTimeout(searchTimeout);
+                const query = this.value.trim();
+                
+                if (query.length >= 2) {
+                    searchTimeout = setTimeout(() => {
+                        performSearch(query, 1, true);
+                    }, 300); // Faster response
+                } else {
+                    hideAllStates();
+                    searchStatus.classList.remove('hidden');
+                    searchStatus.textContent = query.length === 0 ? 
+                        'اكتب كلمتين على الأقل للبحث...' : 
+                        `اكتب ${2 - query.length} حرف إضافي للبحث...`;
+                }
+            });
+            
+            // Load more results
+            loadMoreBtn.addEventListener('click', function() {
+                const query = searchInput.value.trim();
+                if (query.length >= 2) {
+                    performSearch(query, currentPage + 1, false);
+                }
+            });
+            
+            function performSearch(query, page = 1, resetResults = true) {
+                if (isLoading) return;
+                
+                isLoading = true;
+                searchLoading.classList.remove('hidden');
+                
+                if (resetResults) {
+                    hideAllStates();
+                    currentPage = 1;
+                    lastQuery = query;
+                }
+                
+                const params = new URLSearchParams({
+                    q: query,
+                    page: page,
+                    per_page: 15
+                });
+                
+                console.log('Searching for:', query, 'Page:', page);
+                
+                fetch(`/api/search?${params.toString()}`)
+                    .then(response => {
+                        console.log('Response status:', response.status);
+                        return response.json();
+                    })
+                    .then(data => {
+                        console.log('Search results:', data);
+                        isLoading = false;
+                        searchLoading.classList.add('hidden');
+                        
+                        if (data.success && data.data && data.data.length > 0) {
+                            displayResults(data, resetResults);
+                            
+                            // Show search time
+                            if (data.search_time) {
+                                searchTime.textContent = `⚡ تم البحث في ${data.search_time}`;
+                                searchTime.classList.remove('hidden');
+                            }
+                        } else {
+                            if (resetResults) {
+                                showNoResults();
+                            }
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Search error:', error);
+                        isLoading = false;
+                        searchLoading.classList.add('hidden');
+                        if (resetResults) {
+                            showError();
+                        }
+                    });
+            }
+            
+            function displayResults(data, resetResults) {
+                const results = data.data;
+                const pagination = data.pagination;
+                
+                if (resetResults) {
+                    searchResults.innerHTML = '';
+                    resultCount.textContent = `تم العثور على ${pagination.total} نتيجة`;
+                    resultCount.classList.remove('hidden');
+                }
+                
+                results.forEach(page => {
+                    const resultItem = createResultItem(page);
+                    searchResults.appendChild(resultItem);
+                });
+                
+                searchResults.classList.remove('hidden');
+                currentPage = pagination.current_page;
+                
+                if (currentPage < pagination.last_page) {
+                    loadMoreBtn.classList.remove('hidden');
+                    loadMoreBtn.textContent = `تحميل المزيد (صفحة ${currentPage + 1} من ${pagination.last_page})`;
+                } else {
+                    loadMoreBtn.classList.add('hidden');
+                }
+            }
+            
+            function createResultItem(page) {
+                const div = document.createElement('div');
+                div.className = 'search-result-item bg-gray-50 rounded-lg p-4 border border-gray-200 hover:bg-white';
+                
+                const bookTitle = page.book_title || 'كتاب غير محدد';
+                const authorName = page.author_name || 'مؤلف غير محدد';
+                const content = page.content || '';
+                const pageNumber = page.page_number || 1;
+                
+                // Highlight search terms
+                const query = searchInput.value.trim();
+                const highlightedContent = highlightText(content, query);
+                const highlightedTitle = highlightText(bookTitle, query);
+                const highlightedAuthor = highlightText(authorName, query);
+                
+                div.innerHTML = `
+                    <div class="flex justify-between items-start mb-2">
+                        <h4 class="text-lg font-semibold text-gray-800 hover:text-blue-600 cursor-pointer">
+                            ${highlightedTitle}
+                        </h4>
+                        <span class="text-sm text-gray-500 flex-shrink-0 mr-4">صفحة ${pageNumber}</span>
+                    </div>
+                    <p class="text-sm text-gray-600 mb-3">المؤلف: ${highlightedAuthor}</p>
+                    <div class="text-gray-700 leading-relaxed">
+                        ${highlightedContent}...
+                    </div>
+                `;
+                
+                return div;
+            }
+            
+            function highlightText(text, query) {
+                if (!query || !text) return text;
+                
+                try {
+                    const regex = new RegExp(`(${escapeRegExp(query)})`, 'gi');
+                    return text.replace(regex, '<span class="highlight">$1</span>');
+                } catch (e) {
+                    return text;
+                }
+            }
+            
+            function escapeRegExp(string) {
+                return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+            }
+            
+            function hideAllStates() {
+                searchResults.classList.add('hidden');
+                resultCount.classList.add('hidden');
+                searchTime.classList.add('hidden');
+                noResults.classList.add('hidden');
+                errorMessage.classList.add('hidden');
+                searchStatus.classList.add('hidden');
+                loadMoreBtn.classList.add('hidden');
+            }
+            
+            function showNoResults() {
+                hideAllStates();
+                noResults.classList.remove('hidden');
+            }
+            
+            function showError() {
+                hideAllStates();
+                errorMessage.classList.remove('hidden');
+            }
+            
+            // Focus on search input
+            searchInput.focus();
+            
+            console.log('Instant search initialized successfully');
+        });
+    </script>
+</body>
+</html>

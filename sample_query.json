@@ -1,0 +1,4 @@
+{
+    "size": 1,
+    "_source": ["book_section_id", "book_title", "author_names"]
+}

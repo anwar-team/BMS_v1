@@ -26,6 +26,12 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        // إعدادات للأجهزة البطيئة
+        ini_set('max_execution_time', 300); // 5 دقائق
+        ini_set('max_input_time', 300);
+        ini_set('memory_limit', '512M');
+        ini_set('default_socket_timeout', 120);
+        
         Post::observe(PostObserver::class);
 
         Table::configureUsing(function (Table $table): void {

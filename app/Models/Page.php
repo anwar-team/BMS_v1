@@ -6,10 +6,11 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Laravel\Scout\Searchable;
 
 class Page extends Model
 {
-    use HasFactory;
+    use HasFactory, Searchable;
 
     protected $fillable = [
         'book_id',
@@ -129,5 +130,44 @@ class Page extends Model
     public function getCharacterCountAttribute(): int
     {
         return mb_strlen(strip_tags($this->content));
+    }
+
+    /**
+     * Get the indexable data array for the model.
+     *
+     * @return array
+     */
+    public function toSearchableArray(): array
+    {
+        // Load relationships if not already loaded
+        $this->loadMissing(['book.authors', 'book.bookSection']);
+
+        // Get author names
+        $authorNames = $this->book->authors->pluck('full_name')->implode(' ');
+        $authorIds = $this->book->authors->pluck('id')->toArray();
+
+        return [
+            'id' => $this->id,
+            'content' => strip_tags($this->content),
+            'page_number' => $this->page_number,
+            'book_id' => $this->book_id,
+            'book_title' => $this->book->title ?? '',
+            'author_names' => $authorNames,
+            'author_ids' => $authorIds,
+            'book_section_id' => $this->book->book_section_id ?? null,
+            'published_year' => $this->book->published_year ?? null,
+            'volume_id' => $this->volume_id,
+            'chapter_id' => $this->chapter_id,
+        ];
+    }
+
+    /**
+     * Get the index name for the model.
+     *
+     * @return string
+     */
+    public function searchableAs(): string
+    {
+        return 'pages';
     }
 }

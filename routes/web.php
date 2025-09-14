@@ -11,6 +11,7 @@ use App\Http\Controllers\AuthorController;
 use App\Http\Controllers\BookController;
 use App\Http\Controllers\PublisherController;
 use App\Http\Controllers\LanguageController;
+use App\Http\Controllers\SearchController;
 use App\Livewire\Reader\BookReader;
 use Illuminate\Support\Facades\Route;
 use Lab404\Impersonate\Services\ImpersonateManager;
@@ -57,6 +58,16 @@ Route::get('/authors/{id}/details', [AuthorController::class, 'details'])->name(
 Route::get('/publishers', [PublisherController::class, 'index'])->name('publishers.index');
 Route::get('/publishers/{id}', [PublisherController::class, 'show'])->name('publishers.show')->where('id', '[0-9]+');
 Route::get('/publishers/{id}/details', [PublisherController::class, 'details'])->name('publishers.details')->where('id', '[0-9]+');
+
+// Search routes
+Route::get('/search', [SearchController::class, 'index'])->name('search.index');
+Route::get('/search/results', [SearchController::class, 'search'])->name('search.results');
+Route::get('/api/search', [SearchController::class, 'apiSearch'])->name('api.search');
+
+// Fast search API routes
+Route::get('/api/fast-search', [App\Http\Controllers\Api\FastSearchController::class, 'search'])->name('api.fast-search');
+Route::get('/api/search/suggestions', [App\Http\Controllers\Api\FastSearchController::class, 'suggestions'])->name('api.search.suggestions');
+Route::get('/api/search/health', [App\Http\Controllers\Api\FastSearchController::class, 'health'])->name('api.search.health');
 
 Route::get('/privacy-policy', function () {
     return view('components.superduper.pages.coming-soon', ['page_type' => 'privacy']);

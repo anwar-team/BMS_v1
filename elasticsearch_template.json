@@ -1,0 +1,81 @@
+{
+  "index_patterns": ["pages*"],
+  "template": {
+    "settings": {
+      "number_of_shards": 1,
+      "number_of_replicas": 0,
+      "refresh_interval": "1s",
+      "analysis": {
+        "filter": {
+          "arabic_stop": {
+            "type": "stop",
+            "stopwords": "_arabic_"
+          },
+          "arabic_stemmer": {
+            "type": "stemmer",
+            "language": "arabic"
+          }
+        },
+        "analyzer": {
+          "arabic_analyzer": {
+            "tokenizer": "standard",
+            "filter": [
+              "lowercase",
+              "decimal_digit",
+              "arabic_stop",
+              "arabic_normalization",
+              "arabic_stemmer"
+            ]
+          }
+        }
+      }
+    },
+    "mappings": {
+      "properties": {
+        "content": {
+          "type": "text",
+          "analyzer": "arabic_analyzer",
+          "search_analyzer": "arabic_analyzer"
+        },
+        "book_title": {
+          "type": "text",
+          "analyzer": "arabic_analyzer",
+          "search_analyzer": "arabic_analyzer"
+        },
+        "author_names": {
+          "type": "text",
+          "analyzer": "arabic_analyzer",
+          "search_analyzer": "arabic_analyzer"
+        },
+        "page_number": { "type": "integer" },
+        "book_id": { "type": "integer" },
+        "author_ids": { "type": "integer" },
+        "book_section_id": { "type": "integer" },
+        "book_slug": { "type": "keyword" },
+        "author_slugs": { "type": "keyword" },
+        "book_section": { 
+          "type": "text",
+          "analyzer": "arabic_analyzer",
+          "search_analyzer": "arabic_analyzer"
+        },
+        "volume_title": {
+          "type": "text",
+          "analyzer": "arabic_analyzer",
+          "search_analyzer": "arabic_analyzer"
+        },
+        "chapter_title": {
+          "type": "text", 
+          "analyzer": "arabic_analyzer",
+          "search_analyzer": "arabic_analyzer"
+        },
+        "volume_id": { "type": "integer" },
+        "chapter_id": { "type": "integer" },
+        "last_modified": { "type": "date" },
+        "created_date": { "type": "date" },
+        "indexed_at": { "type": "date" },
+        "document_type": { "type": "keyword" },
+        "document_id": { "type": "keyword" }
+      }
+    }
+  }
+}
