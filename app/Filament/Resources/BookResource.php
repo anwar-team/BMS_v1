@@ -902,6 +902,17 @@ class BookResource extends Resource
                         }
                         return null;
                     }),
+
+                TernaryFilter::make('has_pages')
+                    ->label('وجود صفحات')
+                    ->placeholder('الكل')
+                    ->trueLabel('لديه صفحات')
+                    ->falseLabel('بدون صفحات')
+                    ->queries(
+                        true: fn (Builder $query) => $query->whereHas('pages'),
+                        false: fn (Builder $query) => $query->whereDoesntHave('pages'),
+                        blank: fn (Builder $query) => $query,
+                    ),
             ])
             ->filtersFormColumns(3)
             ->actions([
