@@ -912,7 +912,7 @@ class BookResource extends Resource
                         false: fn (Builder $query) => $query->whereDoesntHave('pages'),
                         blank: fn (Builder $query) => $query,
                     ),
-            ])
+            ], layout: Tables\Enums\FiltersLayout::AboveContentCollapsible)
             ->filtersFormColumns(3)
             ->actions([
                 ViewAction::make()
