@@ -4,7 +4,7 @@
         <div class="relative max-w-md mx-auto mb-8">
             <input type="text" 
                    wire:model.live.debounce.300ms="search"
-                   placeholder="ابحث في المؤلفين..."
+                   placeholder=" ابحث في المؤلفين أو سيرهم..."
                    class="w-full px-4 py-3 pr-12 text-right border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent">
             <div class="absolute right-3 top-1/2 transform -translate-y-1/2">
                 <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -59,23 +59,27 @@
                                 {{ $loop->iteration + ($authors->currentPage() - 1) * $authors->perPage() }}
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap">
-                                <div class="text-sm font-medium">
-                                    <a href="{{ route('authors.details', $author->id) }}" 
-                                       class="text-green-700 hover:text-green-900 hover:underline transition-colors duration-200">
-                                        {{ $author->full_name }}
-                                    </a>
-                                </div>
-                                @if($author->biography)
-                                    <div class="text-sm text-gray-500 truncate max-w-xs">{{ Str::limit($author->biography, 60) }}</div>
-                                @endif
-                            </td>
+                                    <div class="text-sm font-medium text-gray-900">
+                                        <a href="{{ route('authors.details', $author->id) }}" 
+                                           class="text-green-700 hover:text-green-900 hover:underline transition-colors duration-200">
+                                            {!! $this->highlightText($author->full_name, $search) !!}
+                                        </a>
+                                    </div>
+                                    @if($author->biography)
+                                        <div class="text-sm text-gray-500 truncate max-w-xs">{!! $this->highlightText(Str::limit($author->biography, 50), $search) !!}</div>
+                                    @endif
+                                </td>
                             <td class="px-6 py-4 whitespace-nowrap">
                                 <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
                                     {{ $author->books_count }} كتاب
                                 </span>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                                {{ $author->madhhab ?: 'غير محدد' }}
+                                @if($author->madhhab)
+                                    {!! $this->highlightText($author->madhhab, $search) !!}
+                                @else
+                                    <span class="text-gray-400">غير محدد</span>
+                                @endif
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
                                 {{ $author->birth_date ? $author->birth_date->format('Y/m/d') : 'غير محدد' }}

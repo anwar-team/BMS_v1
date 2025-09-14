@@ -63,6 +63,18 @@ class AuthorsTable extends Component
                     ->paginate($this->perPage);
     }
 
+    public function highlightText($text, $search)
+    {
+        if (empty($search) || empty($text)) {
+            return $text;
+        }
+        
+        return preg_replace('/(' . preg_quote($search, '/') . ')/iu', 
+            '<mark class="bg-yellow-200 text-yellow-900 px-1 rounded font-medium">$1</mark>', 
+            $text
+        );
+    }
+
     public function render()
     {
         return view('livewire.authors-table', [

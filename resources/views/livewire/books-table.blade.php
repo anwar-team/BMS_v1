@@ -4,7 +4,7 @@
         <div class="relative max-w-md mx-auto mb-8">
             <input type="text" 
                    wire:model.live.debounce.300ms="search"
-                   placeholder="ابحث في الكتب..."
+                   placeholder=" ابحث في عناوين الكتب أو المؤلفين أو اسماء الأقسام..."
                    class="w-full px-4 py-3 pr-12 text-right border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent">
             <div class="absolute right-3 top-1/2 transform -translate-y-1/2">
                 <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -80,15 +80,24 @@
                                 <div class="text-sm font-medium">
                                     <a href="{{ route('book.read', ['bookId' => $book->id]) }}" 
                                        class="text-green-700 hover:text-green-900 hover:underline transition-colors duration-200">
-                                        {{ $book->title }}
+                                        {!! $this->highlightText($book->title, $search) !!}
                                     </a>
                                 </div>
                                 @if($book->description)
-                                    <div class="text-sm text-gray-500 truncate max-w-xs">{{ Str::limit($book->description, 50) }}</div>
+                                    <div class="text-sm text-gray-500 truncate max-w-xs">{!! $this->highlightText(Str::limit($book->description, 50), $search) !!}</div>
                                 @endif
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                                {{ $book->authors->pluck('full_name')->implode(', ') ?: 'غير محدد' }}
+                                @if($book->authors->count() > 0)
+                                    @foreach($book->authors as $author)
+                                        <a href="{{ route('authors.details', $author->id) }}" 
+                                           class="text-green-600 hover:text-green-800 hover:underline">
+                                            {!! $this->highlightText($author->full_name, $search) !!}
+                                        </a>@if(!$loop->last), @endif
+                                    @endforeach
+                                @else
+                                    <span class="text-gray-400">غير محدد</span>
+                                @endif
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
                                 @if($book->bookSection)
