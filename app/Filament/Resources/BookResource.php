@@ -568,7 +568,8 @@ class BookResource extends Resource
                     ->label('الغلاف')
                     ->circular()
                     ->size(60)
-                    ->defaultImageUrl(url('/images/default-book-cover.png')),
+                    ->defaultImageUrl(url('/images/default-book-cover.png'))
+                    ->toggleable(),
                 
                 TextColumn::make('title')
                     ->label('عنوان الكتاب')
@@ -581,7 +582,8 @@ class BookResource extends Resource
                             return null;
                         }
                         return $state;
-                    }),
+                    })
+                    ->toggleable(),
                 
                 TextColumn::make('mainAuthors')
                     ->label('المؤلف الرئيسي')
@@ -602,13 +604,15 @@ class BookResource extends Resource
                             $query->where('full_name', 'like', "%{$search}%");
                         });
                     })
-                    ->limit(30),
+                    ->limit(30)
+                    ->toggleable(),
                 
                 TextColumn::make('bookSection.name')
                     ->label('القسم')
                     ->searchable()
                     ->sortable()
                     ->badge()
+                    ->toggleable()
                     ->color('info'),
                 
                 TextColumn::make('status')
@@ -625,7 +629,8 @@ class BookResource extends Resource
                         'published' => 'منشور',
                         'archived' => 'مؤرشف',
                         default => $state,
-                    }),
+                    })
+                    ->toggleable(),
                 
                 // الأعمدة القابلة للإخفاء/الإظهار
                 TextColumn::make('publisher.name')
@@ -912,7 +917,7 @@ class BookResource extends Resource
                         false: fn (Builder $query) => $query->whereDoesntHave('pages'),
                         blank: fn (Builder $query) => $query,
                     ),
-            ])
+            ], layout: Tables\Enums\FiltersLayout::AboveContentCollapsible)
             ->filtersFormColumns(3)
             ->actions([
                 ViewAction::make()
