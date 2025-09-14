@@ -846,10 +846,6 @@ class BookResource extends Resource
                     ),
             ])
             ->filtersFormColumns(3)
-            ->filtersFormCollapsed()
-            ->filtersFormSchema([
-                // Schema will be automatically applied from filters above
-            ])
             ->actions([
                 ViewAction::make()
                     ->label('عرض')
