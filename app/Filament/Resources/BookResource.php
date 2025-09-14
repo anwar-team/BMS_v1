@@ -747,21 +747,21 @@ class BookResource extends Resource
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
-                // مرشحات شاملة
+                // فلاتر مرئية فوق الجدول
                 SelectFilter::make('book_section_id')
                     ->label('قسم الكتاب')
                     ->relationship('bookSection', 'name')
                     ->searchable()
                     ->preload()
-                    ->indicator('القسم'),
-                
+                    ->placeholder('جميع الأقسام'),
+
                 SelectFilter::make('publisher_id')
                     ->label('الناشر')
                     ->relationship('publisher', 'name')
                     ->searchable()
                     ->preload()
-                    ->indicator('الناشر'),
-                
+                    ->placeholder('جميع الناشرين'),
+
                 SelectFilter::make('author')
                     ->label('المؤلف')
                     ->query(function (Builder $query, array $data): Builder {
@@ -781,7 +781,7 @@ class BookResource extends Resource
                     })
                     ->searchable()
                     ->preload()
-                    ->indicator('المؤلف'),
+                    ->placeholder('جميع المؤلفين'),
 
                 SelectFilter::make('status')
                     ->label('الحالة')
@@ -790,16 +790,15 @@ class BookResource extends Resource
                         'published' => 'منشور',
                         'archived' => 'مؤرشف',
                     ])
-                    ->multiple()
-                    ->indicator('الحالة'),
-                
+                    ->placeholder('جميع الحالات'),
+
                 SelectFilter::make('visibility')
                     ->label('الرؤية')
                     ->options([
                         'public' => 'عام',
                         'private' => 'خاص',
                     ])
-                    ->indicator('الرؤية'),
+                    ->placeholder('جميع أنواع الرؤية'),
 
                 SelectFilter::make('author_role')
                     ->label('دور المؤلف')
@@ -820,54 +819,22 @@ class BookResource extends Resource
                         'reviewer' => 'مراجع',
                         'commentator' => 'معلق',
                     ])
-                    ->indicator('دور المؤلف'),
-
-                Filter::make('edition_range')
-                    ->form([
-                        Grid::make(2)->schema([
-                            TextInput::make('edition_from')
-                                ->label('الطبعة من')
-                                ->numeric()
-                                ->placeholder('1'),
-                            TextInput::make('edition_to')
-                                ->label('إلى')
-                                ->numeric()
-                                ->placeholder('10'),
-                        ]),
-                    ])
-                    ->query(function (Builder $query, array $data): Builder {
-                        return $query
-                            ->when(
-                                $data['edition_from'],
-                                fn (Builder $query, $value): Builder => $query->where('edition', '>=', $value)
-                            )
-                            ->when(
-                                $data['edition_to'],
-                                fn (Builder $query, $value): Builder => $query->where('edition', '<=', $value)
-                            );
-                    })
-                    ->indicateUsing(function (array $data): ?string {
-                        if ($data['edition_from'] || $data['edition_to']) {
-                            return 'نطاق الطبعة: ' . ($data['edition_from'] ?? '∞') . ' - ' . ($data['edition_to'] ?? '∞');
-                        }
-                        return null;
-                    }),
+                    ->placeholder('جميع الأدوار'),
 
                 TernaryFilter::make('has_cover_image')
                     ->label('صورة الغلاف')
-                    ->nullable()
+                    ->placeholder('الكل')
                     ->trueLabel('مع صورة غلاف')
                     ->falseLabel('بدون صورة غلاف')
                     ->queries(
                         true: fn (Builder $query) => $query->whereNotNull('cover_image'),
                         false: fn (Builder $query) => $query->whereNull('cover_image'),
                         blank: fn (Builder $query) => $query,
-                    )
-                    ->indicator('صورة الغلاف'),
+                    ),
 
                 TernaryFilter::make('has_source_url')
                     ->label('رابط المصدر')
-                    ->nullable()
+                    ->placeholder('الكل')
                     ->trueLabel('مع رابط مصدر')
                     ->falseLabel('بدون رابط مصدر')
                     ->queries(
@@ -876,43 +843,78 @@ class BookResource extends Resource
                             $query->whereNull('source_url')->orWhere('source_url', '');
                         }),
                         blank: fn (Builder $query) => $query,
-                    )
-                    ->indicator('رابط المصدر'),
+                    ),
 
-                Filter::make('created_date_range')
+                Filter::make('pages_count_range')
                     ->form([
                         Grid::make(2)->schema([
-                            DatePicker::make('created_from')
-                                ->label('تاريخ الإنشاء من')
-                                ->native(false)
-                                ->displayFormat('d/m/Y'),
-                            DatePicker::make('created_until')
+                            TextInput::make('pages_from')
+                                ->label('عدد الصفحات من')
+                                ->numeric()
+                                ->placeholder('10'),
+                            TextInput::make('pages_to')
                                 ->label('إلى')
-                                ->native(false)
-                                ->displayFormat('d/m/Y'),
+                                ->numeric()
+                                ->placeholder('1000'),
                         ]),
                     ])
                     ->query(function (Builder $query, array $data): Builder {
                         return $query
                             ->when(
-                                $data['created_from'],
-                                fn (Builder $query, $date): Builder => $query->whereDate('created_at', '>=', $date)
+                                $data['pages_from'],
+                                fn (Builder $query, $value): Builder => $query->whereHas('pages', function ($query) use ($value) {
+                                    $query->havingRaw('COUNT(*) >= ?', [$value]);
+                                })
                             )
                             ->when(
-                                $data['created_until'],
-                                fn (Builder $query, $date): Builder => $query->whereDate('created_at', '<=', $date)
+                                $data['pages_to'],
+                                fn (Builder $query, $value): Builder => $query->whereHas('pages', function ($query) use ($value) {
+                                    $query->havingRaw('COUNT(*) <= ?', [$value]);
+                                })
                             );
                     })
                     ->indicateUsing(function (array $data): ?string {
-                        if ($data['created_from'] || $data['created_until']) {
-                            return 'تاريخ الإنشاء: ' . 
-                                ($data['created_from'] ? Carbon::parse($data['created_from'])->format('d/m/Y') : '∞') . 
-                                ' - ' . 
-                                ($data['created_until'] ? Carbon::parse($data['created_until'])->format('d/m/Y') : '∞');
+                        if ($data['pages_from'] || $data['pages_to']) {
+                            return 'عدد الصفحات: ' . ($data['pages_from'] ?? '∞') . ' - ' . ($data['pages_to'] ?? '∞');
                         }
                         return null;
                     }),
+
+                Filter::make('pages_count_exact')
+                    ->form([
+                        TextInput::make('exact_pages')
+                            ->label('عدد الصفحات المحدد')
+                            ->numeric()
+                            ->placeholder('أدخل عدد الصفحات')
+                            ->helperText('مثال: 100'),
+                    ])
+                    ->query(function (Builder $query, array $data): Builder {
+                        return $query->when(
+                            $data['exact_pages'],
+                            fn (Builder $query, $value): Builder => $query->whereHas('pages', function ($query) use ($value) {
+                                $query->havingRaw('COUNT(*) = ?', [$value]);
+                            })
+                        );
+                    })
+                    ->indicateUsing(function (array $data): ?string {
+                        if ($data['exact_pages']) {
+                            return 'عدد الصفحات المحدد: ' . $data['exact_pages'];
+                        }
+                        return null;
+                    }),
+
+                TernaryFilter::make('has_pages')
+                    ->label('وجود صفحات')
+                    ->placeholder('الكل')
+                    ->trueLabel('لديه صفحات')
+                    ->falseLabel('بدون صفحات')
+                    ->queries(
+                        true: fn (Builder $query) => $query->whereHas('pages'),
+                        false: fn (Builder $query) => $query->whereDoesntHave('pages'),
+                        blank: fn (Builder $query) => $query,
+                    ),
             ])
+            ->filtersFormColumns(3)
             ->actions([
                 ViewAction::make()
                     ->label('عرض')
