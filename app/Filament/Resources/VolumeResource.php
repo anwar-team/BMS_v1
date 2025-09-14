@@ -2,8 +2,6 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Clusters\BookManagement;
-
 use App\Filament\Resources\VolumeResource\Pages;
 use App\Filament\Resources\VolumeResource\RelationManagers;
 use App\Models\Volume;
@@ -19,11 +17,10 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 class VolumeResource extends Resource
 {
     protected static ?string $model = Volume::class;
-    protected static ?string $cluster = BookManagement::class;
+    protected static ?string $navigationGroup = 'إدارة محتوى الكتب';
     protected static ?int $navigationSort = 2;
 
     protected static ?string $navigationIcon = 'heroicon-o-book-open';
-    protected static ?string $navigationGroup = 'Book Management';
     
     protected static ?string $navigationLabel = null;
     protected static ?string $modelLabel = null;

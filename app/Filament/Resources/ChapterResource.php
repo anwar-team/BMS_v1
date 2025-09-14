@@ -2,8 +2,6 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Clusters\BookManagement;
-
 use App\Filament\Resources\ChapterResource\Pages;
 use App\Filament\Resources\ChapterResource\RelationManagers;
 use App\Models\Chapter;
@@ -18,11 +16,10 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 class ChapterResource extends Resource
 {
     protected static ?string $model = Chapter::class;
-    protected static ?string $cluster = BookManagement::class;
+    protected static ?string $navigationGroup = 'إدارة محتوى الكتب';
     protected static ?int $navigationSort = 3;
 
     protected static ?string $navigationIcon = 'heroicon-o-document-text';
-    protected static ?string $navigationGroup = 'Book Management';
     
     protected static ?string $navigationLabel = null;
     protected static ?string $modelLabel = null;

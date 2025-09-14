@@ -2,7 +2,6 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Clusters\BookManagement;
 use App\Filament\Resources\BookResource\Pages;
 use App\Models\Book;
 use App\Models\Author;
@@ -47,7 +46,7 @@ use Filament\Forms\Components\Hidden;
 class BookResource extends Resource
 {
     protected static ?string $model = Book::class;
-    protected static ?string $cluster = BookManagement::class;
+    protected static ?string $navigationGroup = 'إدارة محتوى الكتب';
     protected static ?string $navigationIcon = 'heroicon-o-book-open';
     protected static ?string $navigationLabel = null;
     protected static ?string $modelLabel = null;
