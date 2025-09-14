@@ -42,10 +42,8 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 use Filament\Forms\Components\Hidden;
-use pxlrbt\FilamentExcel\Actions\Tables\ExportBulkAction;
-use pxlrbt\FilamentExcel\Actions\Tables\ExportAction;
-use pxlrbt\FilamentExcel\Exports\ExcelExport;
-use pxlrbt\FilamentExcel\Columns\Column;
+use AlperenErsoy\FilamentExport\Actions\FilamentExportBulkAction;
+use AlperenErsoy\FilamentExport\Actions\FilamentExportHeaderAction;
 
 class BookResource extends Resource
 {
@@ -924,69 +922,20 @@ class BookResource extends Resource
             ], layout: Tables\Enums\FiltersLayout::AboveContentCollapsible)
             ->filtersFormColumns(3)
             ->headerActions([
-                ExportAction::make()
-                    ->label('تصدير Excel')
+                FilamentExportHeaderAction::make('export')
+                    ->label('تصدير البيانات')
                     ->color('success')
-                    ->exports([
-                        ExcelExport::make('table')
-                            ->fromTable()
-                            ->withFilename(fn () => 'books-export-' . date('Y-m-d-H-i-s'))
-                            ->withWriterType(\Maatwebsite\Excel\Excel::XLSX),
-                        
-                        ExcelExport::make('detailed')
-                            ->label('تصدير مفصل')
-                            ->withColumns([
-                                Column::make('id')->heading('المعرف'),
-                                Column::make('title')->heading('عنوان الكتاب'),
-                                Column::make('slug')->heading('الرابط المختصر'),
-                                Column::make('description')->heading('الوصف'),
-                                Column::make('edition')->heading('رقم الطبعة'),
-                                Column::make('edition_DATA')->heading('سنة الطباعة'),
-                                Column::make('status')->heading('الحالة'),
-                                Column::make('visibility')->heading('الرؤية'),
-                                Column::make('source_url')->heading('رابط المصدر'),
-                                Column::make('bookSection.name')->heading('قسم الكتاب'),
-                                Column::make('publisher.name')->heading('الناشر'),
-                                Column::make('volumes_count')->heading('عدد المجلدات'),
-                                Column::make('pages_count')->heading('عدد الصفحات'),
-                                Column::make('created_at')->heading('تاريخ الإنشاء')->formatStateUsing(fn ($state) => $state?->format('Y-m-d H:i:s')),
-                                Column::make('updated_at')->heading('تاريخ التحديث')->formatStateUsing(fn ($state) => $state?->format('Y-m-d H:i:s')),
-                            ])
-                            ->withFilename(fn () => 'books-detailed-export-' . date('Y-m-d-H-i-s'))
-                            ->withWriterType(\Maatwebsite\Excel\Excel::XLSX),
-                        
-                        ExcelExport::make('authors')
-                            ->label('تصدير مع المؤلفين')
-                            ->withColumns([
-                                Column::make('id')->heading('المعرف'),
-                                Column::make('title')->heading('عنوان الكتاب'),
-                                Column::make('mainAuthors')->heading('المؤلف الرئيسي')
-                                    ->formatStateUsing(function ($record) {
-                                        $mainAuthor = $record->authorBooks->where('is_main', true)->first();
-                                        return $mainAuthor?->author?->full_name ?? 'غير محدد';
-                                    }),
-                                Column::make('allAuthors')->heading('جميع المؤلفين')
-                                    ->formatStateUsing(function ($record) {
-                                        return $record->authorBooks->map(function ($authorBook) {
-                                            $role = match($authorBook->role) {
-                                                'author' => 'مؤلف',
-                                                'co_author' => 'مؤلف مشارك',
-                                                'editor' => 'محرر',
-                                                'translator' => 'مترجم',
-                                                'reviewer' => 'مراجع',
-                                                'commentator' => 'معلق',
-                                                default => $authorBook->role
-                                            };
-                                            return $authorBook->author->full_name . ' (' . $role . ')';
-                                        })->join(', ');
-                                    }),
-                                Column::make('bookSection.name')->heading('قسم الكتاب'),
-                                Column::make('status')->heading('الحالة'),
-                                Column::make('created_at')->heading('تاريخ الإنشاء')->formatStateUsing(fn ($state) => $state?->format('Y-m-d H:i:s')),
-                            ])
-                            ->withFilename(fn () => 'books-with-authors-export-' . date('Y-m-d-H-i-s'))
-                            ->withWriterType(\Maatwebsite\Excel\Excel::XLSX),
-                    ]),
+                    ->fileName('books-export')
+                    ->defaultFormat('xlsx')
+                    ->defaultPageOrientation('landscape')
+                    ->fileNameFieldLabel('اسم الملف')
+                    ->formatFieldLabel('التنسيق')
+                    ->pageOrientationFieldLabel('اتجاه الصفحة')
+                    ->filterColumnsFieldLabel('تصفية الأعمدة')
+                    ->additionalColumnsFieldLabel('أعمدة إضافية')
+                    ->additionalColumnsTitleFieldLabel('العنوان')
+                    ->additionalColumnsDefaultValueFieldLabel('القيمة الافتراضية')
+                    ->additionalColumnsAddButtonLabel('إضافة عمود'),
             ])
             ->actions([
                 ViewAction::make()
@@ -1005,89 +954,24 @@ class BookResource extends Resource
                     ->url(fn (Book $record): string => 'https://home.anwaralolmaa.com/book?id=' . $record->id)
                     ->openUrlInNewTab(),
                 
-                Tables\Actions\Action::make('export_single')
-                    ->label('تصدير Excel')
-                    ->icon('heroicon-o-document-arrow-down')
-                    ->color('info')
-                    ->action(function (Book $record) {
-                        return ExcelExport::make('single_book')
-                            ->withColumns([
-                                Column::make('id')->heading('المعرف'),
-                                Column::make('title')->heading('عنوان الكتاب'),
-                                Column::make('slug')->heading('الرابط المختصر'),
-                                Column::make('description')->heading('الوصف'),
-                                Column::make('edition')->heading('رقم الطبعة'),
-                                Column::make('edition_DATA')->heading('سنة الطباعة'),
-                                Column::make('status')->heading('الحالة'),
-                                Column::make('visibility')->heading('الرؤية'),
-                                Column::make('source_url')->heading('رابط المصدر'),
-                                Column::make('bookSection.name')->heading('قسم الكتاب'),
-                                Column::make('publisher.name')->heading('الناشر'),
-                                Column::make('volumes_count')->heading('عدد المجلدات'),
-                                Column::make('pages_count')->heading('عدد الصفحات'),
-                                Column::make('authors')->heading('المؤلفون')
-                                    ->formatStateUsing(function () use ($record) {
-                                        return $record->authorBooks->map(function ($authorBook) {
-                                            $role = match($authorBook->role) {
-                                                'author' => 'مؤلف',
-                                                'co_author' => 'مؤلف مشارك',
-                                                'editor' => 'محرر',
-                                                'translator' => 'مترجم',
-                                                'reviewer' => 'مراجع',
-                                                'commentator' => 'معلق',
-                                                default => $authorBook->role
-                                            };
-                                            return $authorBook->author->full_name . ' (' . $role . ')';
-                                        })->join(', ');
-                                    }),
-                                Column::make('created_at')->heading('تاريخ الإنشاء')->formatStateUsing(fn ($state) => $state?->format('Y-m-d H:i:s')),
-                                Column::make('updated_at')->heading('تاريخ التحديث')->formatStateUsing(fn ($state) => $state?->format('Y-m-d H:i:s')),
-                            ])
-                            ->withFilename('book-' . $record->id . '-' . date('Y-m-d-H-i-s'))
-                            ->withWriterType(\Maatwebsite\Excel\Excel::XLSX)
-                            ->download(collect([$record]));
-                    }),
+
             ])
             ->bulkActions([
                 BulkActionGroup::make([
-                    ExportBulkAction::make()
+                    FilamentExportBulkAction::make('export')
                         ->label('تصدير المحدد')
                         ->color('success')
-                        ->exports([
-                            ExcelExport::make('selected')
-                                ->label('تصدير السجلات المحددة')
-                                ->fromTable()
-                                ->withFilename(fn () => 'selected-books-export-' . date('Y-m-d-H-i-s'))
-                                ->withWriterType(\Maatwebsite\Excel\Excel::XLSX),
-                            
-                            ExcelExport::make('selected_detailed')
-                                ->label('تصدير مفصل للمحدد')
-                                ->withColumns([
-                                    Column::make('id')->heading('المعرف'),
-                                    Column::make('title')->heading('عنوان الكتاب'),
-                                    Column::make('slug')->heading('الرابط المختصر'),
-                                    Column::make('description')->heading('الوصف'),
-                                    Column::make('edition')->heading('رقم الطبعة'),
-                                    Column::make('edition_DATA')->heading('سنة الطباعة'),
-                                    Column::make('status')->heading('الحالة'),
-                                    Column::make('visibility')->heading('الرؤية'),
-                                    Column::make('source_url')->heading('رابط المصدر'),
-                                    Column::make('bookSection.name')->heading('قسم الكتاب'),
-                                    Column::make('publisher.name')->heading('الناشر'),
-                                    Column::make('volumes_count')->heading('عدد المجلدات'),
-                                    Column::make('pages_count')->heading('عدد الصفحات'),
-                                    Column::make('created_at')->heading('تاريخ الإنشاء')->formatStateUsing(fn ($state) => $state?->format('Y-m-d H:i:s')),
-                                    Column::make('updated_at')->heading('تاريخ التحديث')->formatStateUsing(fn ($state) => $state?->format('Y-m-d H:i:s')),
-                                ])
-                                ->withFilename(fn () => 'selected-books-detailed-export-' . date('Y-m-d-H-i-s'))
-                                ->withWriterType(\Maatwebsite\Excel\Excel::XLSX),
-                            
-                            ExcelExport::make('selected_csv')
-                                ->label('تصدير CSV للمحدد')
-                                ->fromTable()
-                                ->withFilename(fn () => 'selected-books-export-' . date('Y-m-d-H-i-s'))
-                                ->withWriterType(\Maatwebsite\Excel\Excel::CSV),
-                        ]),
+                        ->fileName('selected-books-export')
+                        ->defaultFormat('xlsx')
+                        ->defaultPageOrientation('landscape')
+                        ->fileNameFieldLabel('اسم الملف')
+                        ->formatFieldLabel('التنسيق')
+                        ->pageOrientationFieldLabel('اتجاه الصفحة')
+                        ->filterColumnsFieldLabel('تصفية الأعمدة')
+                        ->additionalColumnsFieldLabel('أعمدة إضافية')
+                        ->additionalColumnsTitleFieldLabel('العنوان')
+                        ->additionalColumnsDefaultValueFieldLabel('القيمة الافتراضية')
+                        ->additionalColumnsAddButtonLabel('إضافة عمود'),
                     DeleteBulkAction::make()
                         ->label('حذف المحدد'),
                     
