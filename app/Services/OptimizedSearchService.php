@@ -18,9 +18,11 @@ class OptimizedSearchService
      */
     public function search(string $query, array $filters = [], int $page = 1, int $perPage = 15): array
     {
-        $builder = Page::search($query);
+        // استخدام البحث المباشر في Elasticsearch للحصول على أقصى سرعة
+        $builder = Page::search($query)
+            ->take($perPage * $page); // جلب البيانات دفعة واحدة للسرعة
         
-        // Apply filters using Scout's where method
+        // Apply filters
         if (!empty($filters['author_id'])) {
             $builder->where('author_ids', $filters['author_id']);
         }
@@ -29,17 +31,22 @@ class OptimizedSearchService
             $builder->where('book_section_id', $filters['section_id']);
         }
         
-        // Get results with pagination - Scout handles this efficiently
-        $results = $builder->paginate($perPage, 'page', $page);
+        // الحصول على النتائج مباشرة
+        $allResults = $builder->get();
+        $total = $allResults->count();
         
-        // Transform results directly without extra DB queries
-        $transformedResults = collect($results->items())->map(function ($page) use ($query) {
+        // حساب الصفحات يدوياً للسرعة
+        $offset = ($page - 1) * $perPage;
+        $pageResults = $allResults->slice($offset, $perPage);
+        
+        // تحويل النتائج بأسرع طريقة ممكنة
+        $transformedResults = $pageResults->map(function ($page) use ($query) {
             return [
                 'id' => $page->id,
                 'page_number' => $page->page_number,
                 'content' => $this->formatContent($page->content ?? '', $query),
-                'book_title' => 'كتاب غير محدد', // Placeholder for speed - will be enhanced later
-                'author_name' => 'مؤلف غير محدد', // Placeholder for speed
+                'book_title' => $page->book_title ?? 'غير محدد',
+                'author_name' => $page->author_name ?? 'غير محدد',
                 'book_id' => $page->book_id,
                 'book_section_id' => $page->book_section_id ?? null,
             ];
@@ -47,12 +54,12 @@ class OptimizedSearchService
         
         return [
             'results' => $transformedResults,
-            'total' => $results->total(),
-            'current_page' => $results->currentPage(),
-            'per_page' => $results->perPage(),
-            'last_page' => $results->lastPage(),
-            'from' => $results->firstItem(),
-            'to' => $results->lastItem()
+            'total' => $total,
+            'current_page' => $page,
+            'per_page' => $perPage,
+            'last_page' => ceil($total / $perPage),
+            'from' => $offset + 1,
+            'to' => min($offset + $perPage, $total)
         ];
     }
     
@@ -65,28 +72,30 @@ class OptimizedSearchService
      */
     protected function formatContent(string $content, string $query): string
     {
+        // تنظيف سريع للمحتوى
         $content = strip_tags($content);
         
         if (!empty($query)) {
-            // Find the search term position
+            // البحث عن النص بطريقة سريعة
             $position = mb_stripos($content, $query);
             if ($position !== false) {
-                // Extract excerpt around the search term
-                $start = max(0, $position - 100);
-                $excerpt = mb_substr($content, $start, 200);
+                // استخراج مقطع حول النص المطلوب
+                $start = max(0, $position - 80);
+                $excerpt = mb_substr($content, $start, 160);
                 
-                // Highlight the search term
-                $excerpt = preg_replace(
-                    '/(' . preg_quote($query, '/') . ')/ui',
-                    '<mark class="highlight">$1</mark>',
+                // تمييز النص بطريقة محسنة
+                $highlighted = str_ireplace(
+                    $query,
+                    '<mark class="highlight">' . $query . '</mark>',
                     $excerpt
                 );
                 
-                return $excerpt . '...';
+                return $highlighted . '...';
             }
         }
         
-        return mb_substr($content, 0, 200) . '...';
+        // عرض أول 150 حرف إذا لم يجد النص
+        return mb_substr($content, 0, 150) . '...';
     }
     
     /**

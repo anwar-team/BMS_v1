@@ -24,7 +24,7 @@
                                            id="q" 
                                            name="q" 
                                            value="{{ old('q') }}"
-                                           placeholder="ادخل كلمات البحث... (البحث الفوري)"
+                                           placeholder="ابدأ الكتابة للبحث الفوري... (من أول حرف)"
                                            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-right"
                                            dir="rtl"
                                            autocomplete="off">
@@ -132,19 +132,37 @@
             }
             
             .highlight {
-                background-color: #fef3c7;
-                padding: 1px 3px;
-                border-radius: 3px;
-                font-weight: 600;
+                background: linear-gradient(120deg, #fef3c7 0%, #fcd34d 100%);
+                padding: 2px 4px;
+                border-radius: 4px;
+                font-weight: 700;
                 color: #92400e;
+                box-shadow: 0 1px 3px rgba(252, 211, 77, 0.3);
             }
             
             #searchTime {
                 transition: all 0.3s ease;
+                animation: fadeIn 0.5s ease;
+            }
+            
+            @keyframes fadeIn {
+                from { opacity: 0; transform: translateY(-10px); }
+                to { opacity: 1; transform: translateY(0); }
             }
             
             .loading-pulse {
-                animation: pulse 1.5s ease-in-out infinite;
+                animation: pulse 1s ease-in-out infinite;
+            }
+            
+            .search-result-item {
+                transition: all 0.15s ease;
+                border-left: 3px solid transparent;
+            }
+            
+            .search-result-item:hover {
+                transform: translateX(-5px);
+                box-shadow: 0 8px 25px rgba(0,0,0,0.12);
+                border-left-color: #3b82f6;
             }
             
             @keyframes pulse {
@@ -170,17 +188,20 @@
                 let currentPage = 1;
                 let isLoading = false;
                 
-                // البحث الفوري عند الكتابة
+                                // البحث الفوري مع تحسين السرعة
                 searchInput.addEventListener('input', function() {
                     clearTimeout(searchTimeout);
                     const query = this.value.trim();
                     
-                    if (query.length >= 1) { // تقليل الحد الأدنى للبحث
-                        searchTimeout = setTimeout(() => {
-                            performInstantSearch(query, 1, true);
-                        }, 200); // تقليل إلى 200ms للاستجابة السريعة
-                    } else {
+                    if (query.length === 0) {
                         hideResults();
+                        return;
+                    }
+                    
+                    if (query.length >= 1) { // البحث من أول حرف
+                        searchTimeout = setTimeout(() => {
+                            performInstantSearch(query);
+                        }, 100); // سرعة فائقة - 100ms فقط
                     }
                 });
                 
