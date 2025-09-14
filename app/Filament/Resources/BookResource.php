@@ -844,7 +844,7 @@ class BookResource extends Resource
                         }),
                         blank: fn (Builder $query) => $query,
                     ),
-            ], layout: Tables\Enums\FiltersLayout::AboveContent)
+            ], layout: Tables\Enums\FiltersLayout::AboveContentCollapsible)
             ->actions([
                 ViewAction::make()
                     ->label('عرض')
