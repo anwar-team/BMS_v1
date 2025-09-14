@@ -81,20 +81,7 @@
                                         </div>
                                     </div>
                                     
-                                    @if($author->biography)
-                                        <!-- Biography Section -->
-                                        <div class="mt-6 pt-6 border-t border-gray-200">
-                                            <div class="flex items-center gap-2 mb-3">
-                                                <svg class="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
-                                                </svg>
-                                                <h4 class="text-lg font-semibold text-gray-800">السيرة الذاتية</h4>
-                                            </div>
-                                            <div class="text-gray-700 leading-relaxed whitespace-pre-line bg-gray-50 p-4 rounded-lg">
-                                                {{ $author->biography }}
-                                            </div>
-                                        </div>
-                                    @endif
+
                                 </div>
                             </div>
                         </div>
@@ -140,217 +127,17 @@
                             @endif
                         </div>
                         
-                        @if($books->count() > 0)
-                            <!-- Table View -->
-                            <div id="tableView" class="overflow-x-auto">
-                                <table class="min-w-full divide-y divide-gray-200">
-                                    <thead class="bg-green-50">
-                                        <tr>
-                                            <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                                #
-                                            </th>
-                                            <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                                عنوان الكتاب
-                                            </th>
-                                            <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                                القسم
-                                            </th>
-                                            <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                                تاريخ الإضافة
-                                            </th>
-                                            <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                                الإجراءات
-                                            </th>
-                                        </tr>
-                                    </thead>
-                                    <tbody class="divide-y divide-gray-200">
-                                        @foreach ($books as $book)
-                                            <tr class="hover:bg-gray-50 transition-colors duration-150">
-                                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 font-medium">
-                                                    {{ $loop->iteration + ($books->currentPage() - 1) * $books->perPage() }}
-                                                </td>
-                                                <td class="px-6 py-4 whitespace-nowrap">
-                                                    <div class="text-sm font-medium text-gray-900">{{ $book->title }}</div>
-                                                    @if($book->description)
-                                                        <div class="text-sm text-gray-500 truncate max-w-xs">{{ Str::limit($book->description, 50) }}</div>
-                                                    @endif
-                                                </td>
-                                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                                                    @if($book->bookSection)
-                                                        <a href="{{ route('show-all', ['type' => 'books', 'section' => $book->bookSection->slug]) }}" 
-                                                           class="text-green-600 hover:text-green-800 hover:underline">
-                                                            {{ $book->bookSection->name }}
-                                                        </a>
-                                                    @else
-                                                        <span class="text-gray-400">غير محدد</span>
-                                                    @endif
-                                                </td>
-                                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                                                    {{ $book->created_at->format('Y-m-d') }}
-                                                </td>
-                                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                                                    <a href="{{ route('books.details', $book->id) }}" 
-                                                       class="text-green-600 hover:text-green-900 ml-3">
-                                                        التفاصيل
-                                                    </a>
-                                                    @if($book->pages()->count() > 0)
-                                                        <a href="{{ route('book.read', $book->id) }}" 
-                                                           class="text-blue-600 hover:text-blue-900">
-                                                            قراءة
-                                                        </a>
-                                                    @endif
-                                                </td>
-                                            </tr>
-                                        @endforeach
-                                    </tbody>
-                                </table>
-                            </div>
-
-                            {{-- Pagination for Books --}}
-                            <div class="px-6 py-4 flex items-center justify-between border-t border-gray-200 bg-gray-50 mt-4">
-                                <div class="flex items-center gap-2">
-                                    @if($books->hasPages())
-                                        @if($books->onFirstPage())
-                                            <button disabled class="p-2 rounded-full bg-gray-100 text-gray-400 cursor-not-allowed">
-                                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
-                                                </svg>
-                                            </button>
-                                        @else
-                                            <a href="{{ $books->previousPageUrl() }}" class="p-2 rounded-full hover:bg-gray-200 text-gray-600 hover:text-gray-800 transition-colors">
-                                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
-                                                </svg>
-                                            </a>
-                                        @endif
-
-                                        @if($books->hasMorePages())
-                                            <a href="{{ $books->nextPageUrl() }}" class="p-2 rounded-full hover:bg-gray-200 text-gray-600 hover:text-gray-800 transition-colors">
-                                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
-                                                </svg>
-                                            </a>
-                                        @else
-                                            <button disabled class="p-2 rounded-full bg-gray-100 text-gray-400 cursor-not-allowed">
-                                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
-                                                </svg>
-                                            </button>
-                                        @endif
-                                    @endif
-                                    
-                                    <span class="text-sm text-gray-600 mx-2">
-                                        {{ $books->firstItem() ?: 0 }}-{{ $books->lastItem() ?: 0 }} من {{ $books->total() }}
-                                    </span>
-                                </div>
-
-                                <div class="flex items-center gap-2">
-                                    <span class="text-sm text-gray-600">10 كتب في الصفحة</span>
-                                </div>
-                            </div>
-                            
-                            <!-- Card View -->
-                            <div id="cardView" class="hidden grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-                                @foreach($books as $book)
-                                    <div class="bg-white rounded-lg shadow-md overflow-hidden border border-gray-200 hover:shadow-lg transition-shadow duration-300">
-                                        <!-- Book Cover -->
-                                        <div class="aspect-[3/4] bg-gray-100">
-                                            @if($book->cover_image)
-                                                <img src="{{ asset('storage/' . $book->cover_image) }}" 
-                                                     alt="{{ $book->title }}" 
-                                                     class="w-full h-full object-cover">
-                                            @else
-                                                <div class="w-full h-full flex items-center justify-center text-gray-400">
-                                                    <svg class="w-16 h-16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253z"></path>
-                                                    </svg>
-                                                </div>
-                                            @endif
-                                        </div>
-
-                                        <!-- Book Info -->
-                                        <div class="p-4">
-                                            <!-- Card Title with Icon -->
-                                            <div class="flex items-center gap-2 mb-3 pb-2 border-b border-gray-100">
-                                                <img src="{{ asset('images/group0.svg') }}" alt="Icon" class="w-5 h-5">
-                                                <h4 class="text-sm font-semibold text-green-800">معلومات الكتاب</h4>
-                                            </div>
-
-                                            <!-- Book Title -->
-                                            <h3 class="text-lg font-bold text-gray-900 mb-2 line-clamp-2 hover:text-green-700">
-                                                <a href="{{ route('books.details', $book->id) }}" class="cursor-pointer">
-                                                    {{ $book->title }}
-                                                </a>
-                                            </h3>
-
-                                            <!-- Publisher -->
-                                            @if($book->publisher)
-                                                <div class="flex items-center gap-2 mb-2">
-                                                    <span class="text-xs font-medium text-gray-500">الناشر:</span>
-                                                    <span class="text-sm text-gray-700">{{ $book->publisher->name }}</span>
-                                                </div>
-                                            @endif
-
-                                            <!-- Book Stats Grid -->
-                                            <div class="grid grid-cols-2 gap-2 mb-3">
-                                                @if($book->pages()->count() > 0)
-                                                    <div class="text-center bg-gray-50 rounded-md py-2">
-                                                        <div class="text-sm font-medium text-green-700">عدد الصفحات:</div>
-                                                        <div class="text-xs text-gray-600">{{ $book->pages()->count() }} صفحة</div>
-                                                    </div>
-                                                @endif
-                                                
-                                                @if($book->volumes_count)
-                                                    <div class="text-center bg-gray-50 rounded-md py-2">
-                                                        <div class="text-sm font-medium text-green-700">عدد المجلدات:</div>
-                                                        <div class="text-xs text-gray-600">{{ $book->volumes_count }} مجلد</div>
-                                                    </div>
-                                                @endif
-                                            </div>
-
-                                            <!-- Status -->
-                                            <div class="flex items-center gap-2 mb-3">
-                                                <span class="text-xs font-medium text-gray-500">حالة الكتاب:</span>
-                                                <span class="px-2 py-1 rounded text-xs
-                                                    @if($book->status === 'published') bg-green-100 text-green-800
-                                                    @elseif($book->status === 'review') bg-yellow-100 text-yellow-800
-                                                    @elseif($book->status === 'draft') bg-gray-100 text-gray-800
-                                                    @else bg-red-100 text-red-800
-                                                    @endif
-                                                ">
-                                                    @if($book->status === 'published') منشور
-                                                    @elseif($book->status === 'review') قيد المراجعة
-                                                    @elseif($book->status === 'draft') مسودة
-                                                    @else مؤرشف
-                                                    @endif
-                                                </span>
-                                            </div>
-
-                                            <!-- Description Preview -->
-                                            @if($book->description)
-                                                <p class="text-xs text-gray-600 line-clamp-2 mb-3 border-t border-gray-100 pt-2">
-                                                    {{ Str::limit($book->description, 80) }}
-                                                </p>
-                                            @endif
-
-                                            <!-- Action Buttons -->
-                                            <div class="flex gap-2 mt-4">
-                                                <a href="{{ route('books.details', $book->id) }}" 
-                                                   class="flex-1 bg-green-600 hover:bg-green-700 text-white text-xs font-medium py-2 px-3 rounded-md text-center transition-colors duration-200">
-                                                    التفاصيل
-                                                </a>
-                                                
-                                                @if($book->pages()->count() > 0)
-                                                    <a href="{{ route('book.read', $book->id) }}" 
-                                                       class="flex-1 bg-blue-600 hover:bg-blue-700 text-white text-xs font-medium py-2 px-3 rounded-md text-center transition-colors duration-200">
-                                                        قراءة
-                                                    </a>
-                                                @endif
-                                            </div>
-                                        </div>
-                                    </div>
-                                @endforeach
-                            </div>
+                        {{-- استخدام Livewire Component للكتب --}}
+                        @if($author->books()->count() > 0)
+                            @livewire('books-table', [
+                                'author_id' => $author->id,
+                                'showSearch' => false,
+                                'showFilters' => false,
+                                'title' => 'كتب المؤلف',
+                                'perPage' => 10,
+                                'showPagination' => true,
+                                'showPerPageSelector' => true
+                            ])
                         @else
                             <div class="text-center py-8">
                                 <div class="text-gray-400 mb-2">
