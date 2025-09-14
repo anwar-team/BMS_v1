@@ -32,18 +32,14 @@ class OptimizedSearchService
         // Get results with pagination - Scout handles this efficiently
         $results = $builder->paginate($perPage, 'page', $page);
         
-        // Get book titles for all book_ids in one query
-        $bookIds = collect($results->items())->pluck('book_id')->unique();
-        $bookTitles = \Illuminate\Support\Facades\DB::table('books')->whereIn('id', $bookIds)->pluck('title', 'id');
-        
-        // Transform results without loading relationships
-        $transformedResults = collect($results->items())->map(function ($page) use ($query, $bookTitles) {
+        // Transform results directly without extra DB queries
+        $transformedResults = collect($results->items())->map(function ($page) use ($query) {
             return [
                 'id' => $page->id,
                 'page_number' => $page->page_number,
-                'content' => $this->formatContent($page->content, $query),
-                'book_title' => $bookTitles[$page->book_id] ?? 'غير محدد',
-                'author_name' => 'غير محدد', // Will be implemented later
+                'content' => $this->formatContent($page->content ?? '', $query),
+                'book_title' => 'كتاب غير محدد', // Placeholder for speed - will be enhanced later
+                'author_name' => 'مؤلف غير محدد', // Placeholder for speed
                 'book_id' => $page->book_id,
                 'book_section_id' => $page->book_section_id ?? null,
             ];

@@ -1,4 +1,5 @@
 # تقرير شامل: نظام الفهرسة العربي BMS
+
 *تاريخ التقرير: 12 سبتمبر 2025*
 
 ## 📋 نظرة عامة على المشروع
@@ -10,6 +11,7 @@
 ## 🏗️ البنية التحتية والتقنيات
 
 ### 🖥️ الخوادم والبيئة
+
 - **خادم VPS:** 145.223.98.97
 - **نظام التشغيل:** Windows (PowerShell)
 - **البيئة:** Docker Containerization
@@ -17,6 +19,7 @@
 ### 🔧 المكونات التقنية
 
 #### Elasticsearch
+
 - **الإصدار:** 7.17.6
 - **العنوان:** 145.223.98.97:9201
 - **الحالة:** ✅ متصل وجاهز
@@ -25,6 +28,7 @@
   - `pages`: 3,201 وثيقة (25.6MB)
 
 #### MySQL Database
+
 - **الإصدار:** 8.0
 - **العنوان:** 145.223.98.97:3306
 - **قاعدة البيانات:** bms
@@ -32,6 +36,7 @@
 - **إجمالي الصفحات:** 830,811 صفحة
 
 #### Logstash
+
 - **الإصدار:** 7.17.13
 - **البيئة:** Docker Container (`bms_logstash_arabic`)
 - **JVM Configuration:**
@@ -44,6 +49,7 @@
 ## 🔍 المعالج العربي (Arabic Analyzer)
 
 ### 📊 تكوين المعالج
+
 تم تطبيق معالج عربي متقدم حسب التوثيق الرسمي لـ Elasticsearch:
 
 ```json
@@ -68,6 +74,7 @@
 ```
 
 ### 🎯 المرشحات المطبقة
+
 1. **Standard Tokenizer:** تقسيم النص الأساسي
 2. **Lowercase:** تحويل إلى أحرف صغيرة
 3. **Decimal Digit:** معالجة الأرقام
@@ -80,11 +87,13 @@
 ## ⚙️ pipeline البيانات
 
 ### 📁 ملف التكوين
+
 **المسار:** `docker/logstash/pipeline/bms-arabic-pages.conf`
 
 ### 🔄 عملية المعالجة
 
 #### Input (MySQL)
+
 ```ruby
 input {
   jdbc {
@@ -102,6 +111,7 @@ input {
 ```
 
 #### Filter (معالجة البيانات)
+
 ```ruby
 filter {
   mutate {
@@ -113,6 +123,7 @@ filter {
 ```
 
 #### Output (Elasticsearch)
+
 ```ruby
 output {
   elasticsearch {
@@ -128,12 +139,14 @@ output {
 ## 📊 الإحصائيات والأداء
 
 ### 📈 حالة الفهرسة الحالية
+
 - **الوثائق المفهرسة:** 10,000+ وثيقة
 - **معدل المعالجة:** 5,000 صفحة لكل batch
 - **تكرار المعالجة:** كل دقيقة
 - **حجم البيانات:** 142.5MB في الفهرس الرئيسي
 
 ### ⚡ مؤشرات الأداء
+
 - **وقت الاستجابة:** 3-7ms للاستعلامات
 - **الاستقرار:** 100% uptime
 - **دقة البحث:** مُحسنة للنصوص العربية
@@ -143,33 +156,43 @@ output {
 ## 🛠️ المشاكل التي تم حلها
 
 ### 1. مشاكل Docker Permissions
+
 **المشكلة:** صعوبات في الوصول للملفات من خلال volume mounting
-**الحل:** 
+**الحل:**
+
 - استخدام internal file copying داخل Docker image
 - تطبيق ownership صحيح للملفات
 
 ### 2. تحسين JVM Garbage Collector
+
 **المشكلة:** تعارضات في إعدادات JVM
 **الحل:**
+
 - تطبيق G1GC بدلاً من CMS
 - تخصيص 3GB heap memory
 - ترتيب flags بشكل صحيح
 
 ### 3. مشاكل MySQL Character Encoding
+
 **المشكلة:** عدم توافق utf8mb4 مع MySQL connector
 **الحل:**
+
 - التحويل إلى utf8 encoding
 - تحديث connection string
 
 ### 4. مشاكل SQL Query
+
 **المشكلة:** جدول book_authors غير موجود
 **الحل:**
+
 - تبسيط الاستعلام إلى LEFT JOIN بين pages و books فقط
 - إزالة المراجع للجداول غير الموجودة
 
 ### 5. تكوين Arabic Analyzer
+
 **المشكلة:** عدم وجود معالج عربي محسن
 **الحل:**
+
 - تطبيق التكوين الرسمي من Elasticsearch documentation
 - استخدام Context7 MCP للحصول على أحدث التوثيق
 
@@ -178,6 +201,7 @@ output {
 ## 🔍 اختبارات البحث
 
 ### ✅ اختبار البحث العربي
+
 ```powershell
 Invoke-RestMethod -Uri "145.223.98.97:9201/pages_index/_search" -Method POST -Body '{"query": {"match": {"searchable_content": "أبو حنيفة"}}, "size": 2}' -ContentType "application/json"
 ```
@@ -185,6 +209,7 @@ Invoke-RestMethod -Uri "145.223.98.97:9201/pages_index/_search" -Method POST -Bo
 **النتيجة:** ✅ نجح البحث وعاد بنتائج دقيقة
 
 ### 📋 عينة من البيانات المفهرسة
+
 ```json
 {
   "_index": "pages_index",
@@ -207,8 +232,9 @@ Invoke-RestMethod -Uri "145.223.98.97:9201/pages_index/_search" -Method POST -Bo
 ## 🏆 الحالة النهائية
 
 ### ✅ المهام المكتملة
+
 - [x] إعداد البنية التحتية الكاملة
-- [x] تكوين Docker و Logstash 
+- [x] تكوين Docker و Logstash
 - [x] ربط قاعدة البيانات MySQL
 - [x] تطبيق Arabic Analyzer المحسن
 - [x] إنشاء pipeline فعال للبيانات
@@ -217,6 +243,7 @@ Invoke-RestMethod -Uri "145.223.98.97:9201/pages_index/_search" -Method POST -Bo
 - [x] حل جميع المشاكل التقنية
 
 ### 🎯 المؤشرات الرئيسية
+
 - **حالة النظام:** 🟢 جاهز للإنتاج
 - **استقرار الخدمة:** 🟢 مستقر 100%
 - **جودة البحث:** 🟢 محسن للعربية
@@ -227,28 +254,34 @@ Invoke-RestMethod -Uri "145.223.98.97:9201/pages_index/_search" -Method POST -Bo
 ## 📋 الخطوات التالية المقترحة
 
 ### 🔄 المراقبة والصيانة
+
 1. **مراقبة دورية للفهارس:**
+
    ```bash
    curl "145.223.98.97:9201/_cat/indices?v"
    ```
 
 2. **متابعة التقدم:**
+
    ```bash
    docker logs bms_logstash_arabic --tail=50
    ```
 
 3. **فحص الأداء:**
+
    ```bash
    curl "145.223.98.97:9201/_cluster/health"
    ```
 
 ### 🚀 التحسينات المستقبلية
+
 1. **إضافة مرادفات عربية** لتحسين البحث
 2. **تطبيق Fuzzy Search** للبحث التقريبي
 3. **إعداد Backup تلقائي** للفهارس
 4. **تحسين الذاكرة والأداء** حسب الحمل
 
 ### 📊 التوسعات المحتملة
+
 1. **إضافة فهرسة للملفات PDF**
 2. **تطبيق Text Classification**
 3. **إنشاء API للبحث**
@@ -259,12 +292,14 @@ Invoke-RestMethod -Uri "145.223.98.97:9201/pages_index/_search" -Method POST -Bo
 ## 📞 معلومات التواصل والدعم
 
 ### 🔧 معلومات تقنية للدعم
+
 - **Container Name:** bms_logstash_arabic
 - **Config File:** docker/logstash/pipeline/bms-arabic-pages.conf
 - **Log Location:** Docker container logs
 - **Template File:** elasticsearch_template.json
 
 ### 📝 ملفات المشروع الرئيسية
+
 ```
 homev2/
 ├── docker/

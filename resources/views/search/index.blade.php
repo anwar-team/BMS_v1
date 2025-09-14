@@ -81,7 +81,8 @@
                         <div id="instantResults" class="hidden mt-6">
                             <div class="bg-gray-50 rounded-lg p-4 mb-4">
                                 <h3 class="text-lg font-semibold text-gray-800 mb-2">النتائج الفورية:</h3>
-                                <div id="resultCount" class="text-sm text-gray-600 mb-3"></div>
+                                <div id="resultCount" class="text-sm text-gray-600 mb-2"></div>
+                                <div id="searchTime" class="text-xs text-blue-600 font-medium hidden"></div>
                             </div>
                             
                             <div id="searchResults" class="space-y-4 max-h-96 overflow-y-auto">
@@ -132,9 +133,24 @@
             
             .highlight {
                 background-color: #fef3c7;
-                padding: 1px 2px;
-                border-radius: 2px;
+                padding: 1px 3px;
+                border-radius: 3px;
                 font-weight: 600;
+                color: #92400e;
+            }
+            
+            #searchTime {
+                transition: all 0.3s ease;
+            }
+            
+            .loading-pulse {
+                animation: pulse 1.5s ease-in-out infinite;
+            }
+            
+            @keyframes pulse {
+                0% { opacity: 1; }
+                50% { opacity: 0.5; }
+                100% { opacity: 1; }
             }
         </style>
         
@@ -146,6 +162,7 @@
                 const instantResults = document.getElementById('instantResults');
                 const searchResults = document.getElementById('searchResults');
                 const resultCount = document.getElementById('resultCount');
+                const searchTime = document.getElementById('searchTime');
                 const searchLoading = document.getElementById('searchLoading');
                 const showMoreButton = document.getElementById('showMoreResults');
                 
@@ -158,10 +175,10 @@
                     clearTimeout(searchTimeout);
                     const query = this.value.trim();
                     
-                    if (query.length >= 2) {
+                    if (query.length >= 1) { // تقليل الحد الأدنى للبحث
                         searchTimeout = setTimeout(() => {
                             performInstantSearch(query, 1, true);
-                        }, 500);
+                        }, 200); // تقليل إلى 200ms للاستجابة السريعة
                     } else {
                         hideResults();
                     }
@@ -170,14 +187,14 @@
                 // البحث عند تغيير المرشحات
                 authorSelect.addEventListener('change', function() {
                     const query = searchInput.value.trim();
-                    if (query.length >= 2) {
+                    if (query.length >= 1) { // تحديث الحد الأدنى هنا أيضاً
                         performInstantSearch(query, 1, true);
                     }
                 });
                 
                 sectionSelect.addEventListener('change', function() {
                     const query = searchInput.value.trim();
-                    if (query.length >= 2) {
+                    if (query.length >= 1) { // تحديث الحد الأدنى هنا أيضاً
                         performInstantSearch(query, 1, true);
                     }
                 });
@@ -185,7 +202,7 @@
                 // عرض المزيد من النتائج
                 showMoreButton.addEventListener('click', function() {
                     const query = searchInput.value.trim();
-                    if (query.length >= 2) {
+                    if (query.length >= 1) { // تحديث الحد الأدنى هنا أيضاً
                         performInstantSearch(query, currentPage + 1, false);
                     }
                 });
@@ -200,6 +217,9 @@
                         currentPage = 1;
                         searchResults.innerHTML = '';
                         showMoreButton.classList.add('hidden');
+                        searchTime.classList.add('hidden');
+                        // Add loading indicator
+                        searchResults.innerHTML = '<div class="text-center py-4 text-gray-500 loading-pulse">🔍 جاري البحث...</div>';
                     }
                     
                     const params = new URLSearchParams({
@@ -215,14 +235,24 @@
                     if (sectionId) params.append('section_id', sectionId);
                     
                     fetch(`/api/search?${params.toString()}`)
-                        .then(response => response.json())
+                        .then(response => {
+                            console.log('Response status:', response.status);
+                            return response.json();
+                        })
                         .then(data => {
+                            console.log('Search results:', data);
                             isLoading = false;
                             searchLoading.classList.add('hidden');
                             
-                            if (data.success && data.data) {
+                            if (data.success && data.data && data.data.length > 0) {
                                 displayResults(data, resetResults);
                                 instantResults.classList.remove('hidden');
+                                
+                                // Show search time
+                                if (data.search_time) {
+                                    searchTime.textContent = `⚡ تم البحث في ${data.search_time}`;
+                                    searchTime.classList.remove('hidden');
+                                }
                             } else {
                                 if (resetResults) {
                                     showNoResults();
@@ -241,11 +271,12 @@
                 
                 function displayResults(data, resetResults) {
                     const results = data.data;
-                    const pagination = data.pagination;
+                    const pagination = data; // البيانات موجودة في المستوى الرئيسي
                     
                     if (resetResults) {
                         resultCount.textContent = `تم العثور على ${pagination.total} نتيجة`;
                         searchResults.innerHTML = '';
+                        searchTime.classList.add('hidden'); // إخفاء وقت البحث السابق
                     }
                     
                     results.forEach(page => {
@@ -294,8 +325,16 @@
                 function highlightText(text, query) {
                     if (!query) return text;
                     
-                    const regex = new RegExp(`(${escapeRegExp(query)})`, 'gi');
-                    return text.replace(regex, '<span class="highlight">$1</span>');
+                    // Split query into words for better Arabic support
+                    const queryWords = query.split(/\s+/).filter(word => word.length > 0);
+                    let highlightedText = text;
+                    
+                    queryWords.forEach(word => {
+                        const regex = new RegExp(`(${escapeRegExp(word)})`, 'gi');
+                        highlightedText = highlightedText.replace(regex, '<span class="highlight">$1</span>');
+                    });
+                    
+                    return highlightedText;
                 }
                 
                 function escapeRegExp(string) {
@@ -329,6 +368,7 @@
                 function hideResults() {
                     instantResults.classList.add('hidden');
                     searchResults.innerHTML = '';
+                    searchTime.classList.add('hidden');
                 }
             });
         </script>
