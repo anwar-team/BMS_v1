@@ -37,6 +37,8 @@
         "bezhansalleh/filament-shield": "^3.2",
         "codeat3/blade-fluentui-system-icons": "^1.32",
         "datlechin/filament-menu-builder": "0.6.6",
+        "defstudio/filament-column-length-limiter": "*",
+        "defstudio/filament-searchable-input": "^1.0",
         "filament/filament": "*",
         "filament/spatie-laravel-media-library-plugin": "^3.2",
         "filament/spatie-laravel-settings-plugin": "^3.2",

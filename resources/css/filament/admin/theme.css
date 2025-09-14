@@ -2,6 +2,9 @@
 @import '../../rtl-support.css';
 @config 'tailwind.config.js';
 
+/* DEF Studio Searchable Input Plugin */
+@source '../../../../vendor/defstudio/filament-searchable-input/resources/**/*.blade.php';
+
 /* GLOBAL STYLES */
 :root {
   /* عرض الشريط وانتقالات */

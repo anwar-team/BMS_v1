@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "14c3db7632cab31e550b4baabc9bea60",
+    "content-hash": "8deaa654512c450771a5013f4c6cdc36",
     "packages": [
         {
             "name": "anourvalar/eloquent-serialize",
@@ -1126,6 +1126,158 @@
                 }
             ],
             "time": "2025-04-23T01:37:18+00:00"
+        },
+        {
+            "name": "defstudio/filament-column-length-limiter",
+            "version": "v1.1.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/defstudio/filament-column-length-limiter.git",
+                "reference": "a10f99834a789db6422ebb57f0f41043d90a4319"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/defstudio/filament-column-length-limiter/zipball/a10f99834a789db6422ebb57f0f41043d90a4319",
+                "reference": "a10f99834a789db6422ebb57f0f41043d90a4319",
+                "shasum": ""
+            },
+            "require": {
+                "filament/support": "^3.0",
+                "filament/tables": "^3.0",
+                "php": "^8.1",
+                "spatie/laravel-package-tools": "^1.15.0"
+            },
+            "require-dev": {
+                "laravel/pint": "^1.0",
+                "nunomaduro/collision": "^7.9"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "DefStudio\\FilamentColumnLengthLimiter\\FilamentColumnLengthLimiterServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "DefStudio\\FilamentColumnLengthLimiter\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Fabio Ivona",
+                    "email": "fabio.ivona@defstudio.it",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Limit Filament columns length showing a tooltip when text exceeds",
+            "homepage": "https://github.com/defstudio/filament-column-length-limiter",
+            "keywords": [
+                "defstudio",
+                "filament-column-length-limiter",
+                "laravel"
+            ],
+            "support": {
+                "issues": "https://github.com/defstudio/filament-column-length-limiter/issues",
+                "source": "https://github.com/defstudio/filament-column-length-limiter"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/defstudio",
+                    "type": "github"
+                }
+            ],
+            "time": "2025-08-11T16:07:32+00:00"
+        },
+        {
+            "name": "defstudio/filament-searchable-input",
+            "version": "v1.0.16",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/defstudio/filament-searchable-input.git",
+                "reference": "73bc37a2d8009d4e75b471692609b7db9bb09784"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/defstudio/filament-searchable-input/zipball/73bc37a2d8009d4e75b471692609b7db9bb09784",
+                "reference": "73bc37a2d8009d4e75b471692609b7db9bb09784",
+                "shasum": ""
+            },
+            "require": {
+                "filament/filament": "^3.0",
+                "filament/forms": "^3.0",
+                "php": "^8.1",
+                "spatie/laravel-package-tools": "^1.15.0"
+            },
+            "require-dev": {
+                "laravel/pint": "^1.0",
+                "nunomaduro/collision": "^7.9",
+                "nunomaduro/larastan": "^2.0.1",
+                "orchestra/testbench": "^v8.34|^v9.12|^v10.1",
+                "pestphp/pest": "^2.1",
+                "pestphp/pest-plugin-arch": "^2.0",
+                "pestphp/pest-plugin-laravel": "^2.0",
+                "phpstan/extension-installer": "^1.1",
+                "phpstan/phpstan-deprecation-rules": "^1.0",
+                "phpstan/phpstan-phpunit": "^1.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "DefStudio\\SearchableInput\\SearchableInputServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "DefStudio\\SearchableInput\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Fabio Ivona",
+                    "email": "fabio.ivona@defstudio.it",
+                    "role": "Developer"
+                }
+            ],
+            "description": "A searchable autocomplete input for Filament forms",
+            "homepage": "https://github.com/defstudio/filament-searchable-input",
+            "keywords": [
+                "Forms",
+                "defstudio",
+                "filament",
+                "input",
+                "laravel"
+            ],
+            "support": {
+                "issues": "https://github.com/defstudio/filament-searchable-input/issues",
+                "source": "https://github.com/defstudio/filament-searchable-input"
+            },
+            "funding": [
+                {
+                    "url": "https://paypal.me/defstudiosrl",
+                    "type": "custom"
+                },
+                {
+                    "url": "https://github.com/defstudio",
+                    "type": "github"
+                },
+                {
+                    "url": "https://github.com/fabio-ivona",
+                    "type": "github"
+                }
+            ],
+            "time": "2025-08-13T21:35:46+00:00"
         },
         {
             "name": "dflydev/dot-access-data",
