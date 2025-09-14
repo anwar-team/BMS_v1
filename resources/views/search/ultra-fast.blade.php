@@ -14,7 +14,12 @@
                     </div>
 
                     <div class="bg-white rounded-lg shadow-lg p-6">
-                        <h1 class="text-3xl font-bold text-gray-800 mb-6 text-center">البحث الفوري في 769,521 صفحة</h1>
+                        <div class="flex justify-between items-center mb-6">
+                            <h1 class="text-3xl font-bold text-gray-800">البحث الفوري في 769,521 صفحة</h1>
+                            <button onclick="showHelpModal()" class="bg-gray-100 hover:bg-gray-200 text-gray-700 px-4 py-2 rounded-lg text-sm transition-colors">
+                                ❓ شرح الخصائص
+                            </button>
+                        </div>
                         
                         <!-- صندوق البحث الفوري -->
                         <div class="space-y-6">
@@ -146,18 +151,17 @@
 
     <style>
         .highlight {
-            background-color: #fef08a;
-            padding: 0 2px;
-            border-radius: 2px;
-            font-weight: 600;
+            background-color: #fff3cd;
+            padding: 2px 4px;
+            border-radius: 3px;
+            font-weight: 500;
         }
         
         .result-card {
-            transition: all 0.2s ease;
+            transition: box-shadow 0.2s ease;
         }
         
         .result-card:hover {
-            transform: translateY(-2px);
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
         }
         
@@ -165,40 +169,29 @@
             box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
         }
 
-        .loading-spinner {
-            border: 3px solid #f3f3f3;
-            border-top: 3px solid #3498db;
-            border-radius: 50%;
-            width: 20px;
-            height: 20px;
-            animation: spin 1s linear infinite;
-            display: inline-block;
-            margin-right: 8px;
+        .modal-overlay {
+            backdrop-filter: blur(3px);
+            animation: fadeIn 0.3s ease-out;
         }
 
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
         }
 
-        .search-mode-indicator {
-            animation: pulse 2s infinite;
+        .modal-content {
+            animation: slideIn 0.3s ease-out;
         }
 
-        @keyframes pulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.7; }
-        }
-
-        .result-item {
-            transition: all 0.3s ease;
-            border-left: 4px solid transparent;
-        }
-
-        .result-item:hover {
-            border-left-color: #3b82f6;
-            transform: translateX(-2px);
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         .more-options-menu {
@@ -217,10 +210,10 @@
         }
 
         .toast {
-            animation: slideIn 0.3s ease-out;
+            animation: slideInRight 0.3s ease-out;
         }
 
-        @keyframes slideIn {
+        @keyframes slideInRight {
             from {
                 opacity: 0;
                 transform: translateX(100%);
@@ -231,147 +224,15 @@
             }
         }
 
-        .full-content-container {
-            transition: all 0.3s ease;
-        }
-
-        .toggle-btn {
-            transition: all 0.2s ease;
-        }
-
-        .toggle-btn:hover {
-            transform: scale(1.05);
-        }
-
-        .search-stats {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        }
-
-        .modal-overlay {
-            backdrop-filter: blur(5px);
-            animation: fadeIn 0.3s ease-out;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-
-        .modal-content {
-            animation: scaleIn 0.3s ease-out;
-        }
-
-        @keyframes scaleIn {
+        @keyframes slideOut {
             from {
-                opacity: 0;
-                transform: scale(0.9);
+                opacity: 1;
+                transform: translateX(0);
             }
             to {
-                opacity: 1;
-                transform: scale(1);
-            }
-        }
-
-        .action-btn {
-            transition: all 0.2s ease;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .action-btn::before {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 0;
-            height: 0;
-            background: rgba(255, 255, 255, 0.2);
-            border-radius: 50%;
-            transition: all 0.3s ease;
-            transform: translate(-50%, -50%);
-        }
-
-        .action-btn:hover::before {
-            width: 100%;
-            height: 100%;
-        }
-
-        /* تحسينات الاستجابة للأجهزة المحمولة */
-        @media (max-width: 768px) {
-            .result-card {
-                padding: 1rem;
-            }
-            
-            .action-buttons {
-                flex-direction: column;
-                gap: 0.5rem;
-            }
-            
-            .more-options-menu {
-                position: fixed;
-                bottom: 0;
-                left: 0;
-                right: 0;
-                top: auto;
-                transform: none;
-                border-radius: 1rem 1rem 0 0;
-                max-height: 50vh;
-                overflow-y: auto;
-            }
-        }
-
-        .fade-in {
-            animation: fadeInUp 0.5s ease-out;
-        }
-
-        @keyframes fadeInUp {
-            from {
                 opacity: 0;
-                transform: translateY(20px);
+                transform: translateX(100%);
             }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .result-enter {
-            animation: resultEnter 0.6s ease-out;
-        }
-
-        @keyframes resultEnter {
-            from {
-                opacity: 0;
-                transform: translateY(30px) scale(0.95);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0) scale(1);
-            }
-        }
-
-        /* تحسينات إضافية للواجهة */
-        .search-performance {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-        }
-
-        .content-preview {
-            background: linear-gradient(135deg, #89f7fe 0%, #66a6ff 100%);
-        }
-
-        .book-info {
-            background: linear-gradient(135deg, #d299c2 0%, #fef9d7 100%);
-        }
-
-        .search-type-badge {
-            background: linear-gradient(135deg, #84fab0 0%, #8fd3f4 100%);
-            animation: glow 2s ease-in-out infinite alternate;
-        }
-
-        @keyframes glow {
-            from { box-shadow: 0 0 5px rgba(132, 250, 176, 0.5); }
-            to { box-shadow: 0 0 15px rgba(132, 250, 176, 0.8); }
         }
     </style>
 
@@ -546,7 +407,7 @@
                 
                 // عرض النتائج
                 this.resultsContainer.innerHTML = results.map((result, index) => `
-                    <div class="result-card result-enter bg-white rounded-xl p-6 border border-gray-200 hover:border-blue-300 shadow-sm hover:shadow-lg transition-all duration-300" style="animation-delay: ${index * 50}ms">
+                    <div class="result-card bg-white rounded-lg p-6 border border-gray-200 hover:border-blue-300 mb-4">
                         <div class="flex justify-between items-start mb-4">
                             <div class="flex-1">
                                 <div class="book-info text-white rounded-lg px-3 py-2 mb-3 shadow-sm">
@@ -754,24 +615,24 @@
                     
                     const modal = `
                         <div id="pages-modal" class="modal-overlay fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
-                            <div class="modal-content bg-white rounded-xl max-w-4xl w-full max-h-96 overflow-hidden shadow-2xl">
-                                <div class="bg-gradient-to-r from-blue-500 to-purple-600 text-white p-6">
+                            <div class="modal-content bg-white rounded-lg max-w-2xl w-full max-h-96 overflow-hidden shadow-lg">
+                                <div class="bg-blue-600 text-white p-6">
                                     <div class="flex justify-between items-center">
-                                        <h3 class="text-xl font-bold">📚 صفحات من نفس الكتاب</h3>
-                                        <button onclick="closeModal('pages-modal')" class="text-white hover:text-gray-200 text-2xl font-bold transition-colors">✕</button>
+                                        <h3 class="text-lg font-bold">📚 صفحات من نفس الكتاب</h3>
+                                        <button onclick="closeModal('pages-modal')" class="text-white hover:text-gray-200 text-xl font-bold">✕</button>
                                     </div>
-                                    <p class="text-blue-100 mt-2">اختر صفحة للانتقال إليها مباشرة</p>
+                                    <p class="text-blue-100 mt-2">اختر صفحة للانتقال إليها</p>
                                 </div>
                                 <div class="p-6 overflow-y-auto max-h-80">
-                                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    <div class="space-y-3">
                                         ${data.pages.map(page => `
-                                            <div class="border border-gray-200 rounded-lg p-4 hover:border-blue-300 hover:shadow-md transition-all duration-200 page-link">
+                                            <div class="border border-gray-200 rounded-lg p-3 hover:border-blue-300 hover:bg-gray-50 transition-colors">
                                                 <button onclick="goToPage(${bookId}, ${page.page_number})" 
                                                         class="w-full text-right">
-                                                    <div class="font-semibold text-blue-600 hover:text-blue-800 mb-2">
+                                                    <div class="font-medium text-blue-600 mb-1">
                                                         📄 صفحة ${page.page_number}
                                                     </div>
-                                                    <div class="text-sm text-gray-600 leading-relaxed">
+                                                    <div class="text-sm text-gray-600">
                                                         ${page.content_preview || 'لا يوجد معاينة متاحة'}
                                                     </div>
                                                 </button>
@@ -779,11 +640,9 @@
                                         `).join('')}
                                     </div>
                                 </div>
-                                <div class="bg-gray-50 px-6 py-4 border-t">
-                                    <div class="text-sm text-gray-600 text-center flex items-center justify-center gap-2">
-                                        <span class="bg-blue-100 text-blue-800 px-3 py-1 rounded-full font-medium">
-                                            إجمالي ${data.pagination.total} صفحة في هذا الكتاب
-                                        </span>
+                                <div class="bg-gray-50 px-6 py-3 border-t">
+                                    <div class="text-sm text-gray-600 text-center">
+                                        إجمالي ${data.pagination.total} صفحة في هذا الكتاب
                                     </div>
                                 </div>
                             </div>
@@ -874,16 +733,11 @@
         // عرض رسائل التأكيد
         function showToast(message) {
             const toast = document.createElement('div');
-            toast.className = 'toast fixed top-4 right-4 bg-gradient-to-r from-green-500 to-green-600 text-white px-6 py-4 rounded-xl shadow-lg z-50 flex items-center gap-3';
-            toast.innerHTML = `
-                <div class="flex items-center gap-3">
-                    <div class="text-lg">✅</div>
-                    <div class="font-medium">${message}</div>
-                </div>
-            `;
+            toast.className = 'toast fixed top-4 right-4 bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg z-50';
+            toast.textContent = message;
             document.body.appendChild(toast);
             
-            // إزالة الرسالة بعد 3 ثواني مع رسوم متحركة
+            // إزالة الرسالة بعد 3 ثواني
             setTimeout(() => {
                 toast.style.animation = 'slideOut 0.3s ease-out forwards';
                 setTimeout(() => {
@@ -909,6 +763,96 @@
             }
         `;
         document.head.appendChild(style);
+        
+        // إظهار نافذة الشرح
+        function showHelpModal() {
+            const helpModal = `
+                <div id="help-modal" class="modal-overlay fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
+                    <div class="modal-content bg-white rounded-lg max-w-4xl w-full max-h-96 overflow-hidden shadow-lg">
+                        <div class="bg-blue-600 text-white p-6">
+                            <div class="flex justify-between items-center">
+                                <h3 class="text-xl font-bold">📚 شرح خصائص البحث الفوري</h3>
+                                <button onclick="closeModal('help-modal')" class="text-white hover:text-gray-200 text-2xl font-bold">✕</button>
+                            </div>
+                            <p class="text-blue-100 mt-2">دليل شامل لاستخدام نظام البحث المتقدم</p>
+                        </div>
+                        <div class="p-6 overflow-y-auto max-h-80">
+                            <div class="space-y-6">
+                                <div class="border-b border-gray-200 pb-4">
+                                    <h4 class="text-lg font-semibold text-gray-800 mb-3">🔍 أنواع البحث المتاحة</h4>
+                                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                        <div class="bg-gray-50 p-4 rounded-lg">
+                                            <h5 class="font-medium text-blue-600 mb-2">البحث المرن (افتراضي)</h5>
+                                            <p class="text-sm text-gray-600">يبحث بأفضل النتائج مع مراعاة المعنى والسياق</p>
+                                        </div>
+                                        <div class="bg-gray-50 p-4 rounded-lg">
+                                            <h5 class="font-medium text-green-600 mb-2">مطابقة العبارة تماماً</h5>
+                                            <p class="text-sm text-gray-600">يبحث عن العبارة كما هي بنفس الترتيب</p>
+                                        </div>
+                                        <div class="bg-gray-50 p-4 rounded-lg">
+                                            <h5 class="font-medium text-purple-600 mb-2">عبارة مع تباعد</h5>
+                                            <p class="text-sm text-gray-600">يبحث عن الكلمات قريبة من بعض</p>
+                                        </div>
+                                        <div class="bg-gray-50 p-4 rounded-lg">
+                                            <h5 class="font-medium text-orange-600 mb-2">جميع الكلمات</h5>
+                                            <p class="text-sm text-gray-600">يجب وجود جميع الكلمات في النص</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="border-b border-gray-200 pb-4">
+                                    <h4 class="text-lg font-semibold text-gray-800 mb-3">⚙️ إعدادات التباعد</h4>
+                                    <div class="space-y-3">
+                                        <div class="flex items-start gap-3">
+                                            <span class="bg-blue-100 text-blue-800 px-2 py-1 rounded text-xs font-medium">أي ترتيب</span>
+                                            <p class="text-sm text-gray-600">الكلمات يمكن أن تكون في أي مكان من النص</p>
+                                        </div>
+                                        <div class="flex items-start gap-3">
+                                            <span class="bg-green-100 text-green-800 px-2 py-1 rounded text-xs font-medium">متتالية</span>
+                                            <p class="text-sm text-gray-600">الكلمات يجب أن تكون متتالية (ورا بعض)</p>
+                                        </div>
+                                        <div class="flex items-start gap-3">
+                                            <span class="bg-purple-100 text-purple-800 px-2 py-1 rounded text-xs font-medium">نفس الفقرة</span>
+                                            <p class="text-sm text-gray-600">الكلمات في نفس الفقرة</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div>
+                                    <h4 class="text-lg font-semibold text-gray-800 mb-3">✨ خصائص متقدمة</h4>
+                                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                        <div class="space-y-2">
+                                            <h5 class="font-medium text-gray-700">🔍 البحث الفوري</h5>
+                                            <p class="text-sm text-gray-600">النتائج تظهر أثناء الكتابة من أول حرف</p>
+                                        </div>
+                                        <div class="space-y-2">
+                                            <h5 class="font-medium text-gray-700">📄 عرض المحتوى الكامل</h5>
+                                            <p class="text-sm text-gray-600">إمكانية عرض النص الكامل للصفحة</p>
+                                        </div>
+                                        <div class="space-y-2">
+                                            <h5 class="font-medium text-gray-700">🔗 المزيد من الخيارات</h5>
+                                            <p class="text-sm text-gray-600">نسخ، مشاركة، طباعة، وصفحات مشابهة</p>
+                                        </div>
+                                        <div class="space-y-2">
+                                            <h5 class="font-medium text-gray-700">⚡ سرعة عالية</h5>
+                                            <p class="text-sm text-gray-600">البحث في أكثر من 769,521 صفحة بسرعة فائقة</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="bg-gray-50 px-6 py-4 border-t">
+                            <div class="text-sm text-gray-600 text-center">
+                                <span class="bg-blue-100 text-blue-800 px-3 py-1 rounded-full font-medium">
+                                    نظام بحث متطور مع تقنية Elasticsearch
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            document.body.insertAdjacentHTML('beforeend', helpModal);
+        }
         
         // إخفاء القوائم عند النقر خارجها
         document.addEventListener('click', function(event) {
