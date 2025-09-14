@@ -208,7 +208,7 @@
                 'showSearch' => false,
                 'showFilters' => true,
                 'title' => 'الكتب',
-                'perPage' => 5,
+                'perPage' => 10,
                 'showPagination' => true,
                 'showPerPageSelector' => false
             ])
@@ -231,7 +231,7 @@
                 'showSearch' => false,
                 'showFilters' => true,
                 'title' => 'المؤلفين',
-                'perPage' => 5,
+                'perPage' => 10,
                 'showPagination' => true,
                 'showPerPageSelector' => false
             ])

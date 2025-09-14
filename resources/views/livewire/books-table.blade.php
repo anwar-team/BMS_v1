@@ -20,32 +20,13 @@
             <button wire:click="$set('section', null)" class="bg-white text-green-800 border border-green-800 px-5 py-2 rounded-full transition-colors duration-300 hover:bg-green-800 hover:text-white {{ !$section ? 'bg-green-800 text-white' : '' }}">
                 جميع الكتب
             </button>
-            <button wire:click="$set('section', 'aqeedah')" class="bg-white text-green-800 border border-green-800 px-5 py-2 rounded-full transition-colors duration-300 hover:bg-green-800 hover:text-white {{ $section === 'aqeedah' ? 'bg-green-800 text-white' : '' }}">
-                العقيدة
-            </button>
-            <button wire:click="$set('section', 'fiqh')" class="bg-white text-green-800 border border-green-800 px-5 py-2 rounded-full transition-colors duration-300 hover:bg-green-800 hover:text-white {{ $section === 'fiqh' ? 'bg-green-800 text-white' : '' }}">
-                الفقه
-            </button>
-            <button wire:click="$set('section', 'hadith')" class="bg-white text-green-800 border border-green-800 px-5 py-2 rounded-full transition-colors duration-300 hover:bg-green-800 hover:text-white {{ $section === 'hadith' ? 'bg-green-800 text-white' : '' }}">
-                الحديث
-            </button>
-            <button wire:click="$set('section', 'tafseer')" class="bg-white text-green-800 border border-green-800 px-5 py-2 rounded-full transition-colors duration-300 hover:bg-green-800 hover:text-white {{ $section === 'tafseer' ? 'bg-green-800 text-white' : '' }}">
-                التفسير
-            </button>
             <a href="{{ route('show-all', ['type' => 'books']) }}" class="bg-white text-green-800 border border-green-800 px-5 py-2 rounded-full transition-colors duration-300 hover:bg-green-800 hover:text-white">
                 عرض الكل
             </a>
         </div>
     @endif
 
-    {{-- Current Section Display --}}
-    @if($currentSection)
-        <div class="mb-4">
-            <span class="bg-green-100 text-green-800 px-5 py-2 rounded-full">
-                قسم: {{ $currentSection->name }}
-            </span>
-        </div>
-    @endif
+
 
     {{-- Books Table --}}
     <div class="bg-white rounded-lg shadow overflow-hidden" wire:loading.class="opacity-50" wire:target="search,perPage,section,previousPage,nextPage">
