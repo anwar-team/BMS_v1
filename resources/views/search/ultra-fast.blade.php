@@ -488,6 +488,26 @@
                         </div>
                     </div>
                 `).join('');
+                
+                // إضافة زر "تحميل المزيد" إذا كان هناك المزيد من النتائج
+                if (pagination.current_page < pagination.last_page) {
+                    this.resultsContainer.innerHTML += `
+                        <div class="text-center mt-6 mb-4">
+                            <button onclick="loadMoreResults()" 
+                                    id="loadMoreBtn"
+                                    class="px-6 py-3 bg-blue-500 hover:bg-blue-600 text-white rounded-lg text-sm font-medium transition-colors shadow-sm hover:shadow-md">
+                                📄 تحميل المزيد من النتائج (الصفحة ${pagination.current_page + 1} من ${pagination.last_page})
+                            </button>
+                            <div class="text-xs text-gray-500 mt-2">
+                                عرض ${pagination.from}-${pagination.to} من ${pagination.total} نتيجة
+                            </div>
+                        </div>
+                    `;
+                }
+                
+                // حفظ بيانات الصفحة الحالية
+                this.currentPage = pagination.current_page;
+                this.totalPages = pagination.last_page;
             }
             
             getSearchModeLabel(mode) {
@@ -783,59 +803,93 @@
                                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                                         <div class="bg-gray-50 p-4 rounded-lg">
                                             <h5 class="font-medium text-blue-600 mb-2">البحث المرن (افتراضي)</h5>
-                                            <p class="text-sm text-gray-600">يبحث بأفضل النتائج مع مراعاة المعنى والسياق</p>
+                                            <p class="text-sm text-gray-600">يبحث بأفضل النتائج مع مراعاة المعنى والسياق. يفهم المترادفات والمعاني المختلفة للكلمات.</p>
                                         </div>
                                         <div class="bg-gray-50 p-4 rounded-lg">
                                             <h5 class="font-medium text-green-600 mb-2">مطابقة العبارة تماماً</h5>
-                                            <p class="text-sm text-gray-600">يبحث عن العبارة كما هي بنفس الترتيب</p>
+                                            <p class="text-sm text-gray-600">يبحث عن العبارة كما هي بنفس الترتيب والتتابع. مفيد للبحث عن نصوص محددة أو اقتباسات.</p>
                                         </div>
                                         <div class="bg-gray-50 p-4 rounded-lg">
-                                            <h5 class="font-medium text-purple-600 mb-2">عبارة مع تباعد</h5>
-                                            <p class="text-sm text-gray-600">يبحث عن الكلمات قريبة من بعض</p>
+                                            <h5 class="font-medium text-purple-600 mb-2">عبارة مع تباعد مسموح</h5>
+                                            <p class="text-sm text-gray-600">يبحث عن الكلمات قريبة من بعض مع السماح بكلمات أخرى بينها حسب إعداد التباعد.</p>
                                         </div>
                                         <div class="bg-gray-50 p-4 rounded-lg">
-                                            <h5 class="font-medium text-orange-600 mb-2">جميع الكلمات</h5>
-                                            <p class="text-sm text-gray-600">يجب وجود جميع الكلمات في النص</p>
+                                            <h5 class="font-medium text-orange-600 mb-2">جميع الكلمات مطلوبة</h5>
+                                            <p class="text-sm text-gray-600">يجب وجود جميع الكلمات في النص، لكن يمكن أن تكون في أي ترتيب أو مكان.</p>
+                                        </div>
+                                        <div class="bg-gray-50 p-4 rounded-lg">
+                                            <h5 class="font-medium text-red-600 mb-2">أي كلمة من الكلمات</h5>
+                                            <p class="text-sm text-gray-600">يكفي وجود كلمة واحدة من كلمات البحث. مفيد للبحث الواسع والاستكشافي.</p>
                                         </div>
                                     </div>
                                 </div>
                                 
                                 <div class="border-b border-gray-200 pb-4">
-                                    <h4 class="text-lg font-semibold text-gray-800 mb-3">⚙️ إعدادات التباعد</h4>
+                                    <h4 class="text-lg font-semibold text-gray-800 mb-3">⚙️ إعدادات التباعد والمسافة</h4>
                                     <div class="space-y-3">
                                         <div class="flex items-start gap-3">
                                             <span class="bg-blue-100 text-blue-800 px-2 py-1 rounded text-xs font-medium">أي ترتيب</span>
-                                            <p class="text-sm text-gray-600">الكلمات يمكن أن تكون في أي مكان من النص</p>
+                                            <p class="text-sm text-gray-600">الكلمات يمكن أن تكون في أي مكان من النص، بأي ترتيب وبأي مسافة بينها.</p>
                                         </div>
                                         <div class="flex items-start gap-3">
-                                            <span class="bg-green-100 text-green-800 px-2 py-1 rounded text-xs font-medium">متتالية</span>
-                                            <p class="text-sm text-gray-600">الكلمات يجب أن تكون متتالية (ورا بعض)</p>
+                                            <span class="bg-green-100 text-green-800 px-2 py-1 rounded text-xs font-medium">متتالية (ورا بعض)</span>
+                                            <p class="text-sm text-gray-600">الكلمات يجب أن تكون متتالية بلا فواصل أو كلمات أخرى بينها.</p>
                                         </div>
                                         <div class="flex items-start gap-3">
                                             <span class="bg-purple-100 text-purple-800 px-2 py-1 rounded text-xs font-medium">نفس الفقرة</span>
-                                            <p class="text-sm text-gray-600">الكلمات في نفس الفقرة</p>
+                                            <p class="text-sm text-gray-600">الكلمات يجب أن تكون في نفس الفقرة من النص، مما يحافظ على السياق.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="border-b border-gray-200 pb-4">
+                                    <h4 class="text-lg font-semibold text-gray-800 mb-3">🔗 خيارات المزيد لكل نتيجة</h4>
+                                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                        <div class="space-y-2">
+                                            <h5 class="font-medium text-gray-700">📄 صفحات مشابهة</h5>
+                                            <p class="text-sm text-gray-600">عرض صفحات أخرى من نفس الكتاب للانتقال المباشر إليها وتصفح المحتوى المرتبط.</p>
+                                        </div>
+                                        <div class="space-y-2">
+                                            <h5 class="font-medium text-gray-700">📋 نسخ النص</h5>
+                                            <p class="text-sm text-gray-600">نسخ محتوى النتيجة إلى الحافظة للاستخدام في تطبيقات أخرى.</p>
+                                        </div>
+                                        <div class="space-y-2">
+                                            <h5 class="font-medium text-gray-700">🔗 مشاركة النتيجة</h5>
+                                            <p class="text-sm text-gray-600">مشاركة النتيجة مع الآخرين عبر وسائل التواصل أو التطبيقات المختلفة.</p>
+                                        </div>
+                                        <div class="space-y-2">
+                                            <h5 class="font-medium text-gray-700">🖨️ طباعة المحتوى</h5>
+                                            <p class="text-sm text-gray-600">طباعة النتيجة بتنسيق مناسب للقراءة والمراجعة الورقية.</p>
                                         </div>
                                     </div>
                                 </div>
                                 
                                 <div>
-                                    <h4 class="text-lg font-semibold text-gray-800 mb-3">✨ خصائص متقدمة</h4>
+                                    <h4 class="text-lg font-semibold text-gray-800 mb-3">✨ الخصائص والميزات المتقدمة</h4>
                                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                                         <div class="space-y-2">
                                             <h5 class="font-medium text-gray-700">🔍 البحث الفوري</h5>
-                                            <p class="text-sm text-gray-600">النتائج تظهر أثناء الكتابة من أول حرف</p>
+                                            <p class="text-sm text-gray-600">النتائج تظهر فوراً أثناء الكتابة من أول حرف مع تحديث مستمر للنتائج.</p>
                                         </div>
                                         <div class="space-y-2">
                                             <h5 class="font-medium text-gray-700">📄 عرض المحتوى الكامل</h5>
-                                            <p class="text-sm text-gray-600">إمكانية عرض النص الكامل للصفحة</p>
+                                            <p class="text-sm text-gray-600">إمكانية عرض النص الكامل للصفحة بدلاً من المقطع المختصر.</p>
                                         </div>
                                         <div class="space-y-2">
-                                            <h5 class="font-medium text-gray-700">🔗 المزيد من الخيارات</h5>
-                                            <p class="text-sm text-gray-600">نسخ، مشاركة، طباعة، وصفحات مشابهة</p>
+                                            <h5 class="font-medium text-gray-700">📚 تحميل المزيد</h5>
+                                            <p class="text-sm text-gray-600">زر "تحميل المزيد" في نهاية النتائج لعرض صفحات إضافية من النتائج.</p>
                                         </div>
                                         <div class="space-y-2">
-                                            <h5 class="font-medium text-gray-700">⚡ سرعة عالية</h5>
-                                            <p class="text-sm text-gray-600">البحث في أكثر من 769,521 صفحة بسرعة فائقة</p>
+                                            <h5 class="font-medium text-gray-700">⚡ سرعة فائقة</h5>
+                                            <p class="text-sm text-gray-600">البحث في أكثر من 769,521 صفحة بسرعة تقل عن 350 مللي ثانية.</p>
+                                        </div>
+                                        <div class="space-y-2">
+                                            <h5 class="font-medium text-gray-700">🎯 دقة عالية</h5>
+                                            <p class="text-sm text-gray-600">نظام تسجيل النقاط المتقدم لترتيب النتائج حسب الصلة والأهمية.</p>
+                                        </div>
+                                        <div class="space-y-2">
+                                            <h5 class="font-medium text-gray-700">📱 متوافق مع الأجهزة</h5>
+                                            <p class="text-sm text-gray-600">يعمل بكفاءة على الحاسوب والجوال والتابلت مع واجهة متجاوبة.</p>
                                         </div>
                                     </div>
                                 </div>
@@ -844,7 +898,7 @@
                         <div class="bg-gray-50 px-6 py-4 border-t">
                             <div class="text-sm text-gray-600 text-center">
                                 <span class="bg-blue-100 text-blue-800 px-3 py-1 rounded-full font-medium">
-                                    نظام بحث متطور مع تقنية Elasticsearch
+                                    نظام بحث متطور مع تقنية Elasticsearch • أكثر من 769,521 صفحة
                                 </span>
                             </div>
                         </div>
@@ -852,6 +906,162 @@
                 </div>
             `;
             document.body.insertAdjacentHTML('beforeend', helpModal);
+        }
+        
+        // تحميل المزيد من النتائج
+        async function loadMoreResults() {
+            const loadMoreBtn = document.getElementById('loadMoreBtn');
+            const query = document.getElementById('instantSearch').value.trim();
+            
+            if (!query) return;
+            
+            // تحديث زر التحميل
+            loadMoreBtn.innerHTML = '<span class="inline-block animate-spin mr-2">⏳</span> جاري تحميل المزيد...';
+            loadMoreBtn.disabled = true;
+            
+            // الحصول على الصفحة التالية من زر التحميل
+            const currentPageMatch = loadMoreBtn.textContent.match(/الصفحة (\d+)/);
+            const nextPage = currentPageMatch ? parseInt(currentPageMatch[1]) : 2;
+            
+            const perPage = document.getElementById('perPageSelect').value;
+            const searchMode = document.getElementById('searchMode').value;
+            const proximityMode = document.getElementById('proximityMode').value;
+            
+            try {
+                const params = new URLSearchParams({
+                    q: query,
+                    per_page: perPage,
+                    page: nextPage,
+                    search_mode: searchMode,
+                    proximity: proximityMode
+                });
+                
+                const response = await fetch(`/api/ultra-search?${params}`);
+                const data = await response.json();
+                
+                if (data.success && data.data && data.data.length > 0) {
+                    // إزالة زر "تحميل المزيد" الحالي
+                    loadMoreBtn.parentElement.remove();
+                    
+                    // إضافة النتائج الجديدة
+                    const newResults = data.data.map((result, index) => `
+                        <div class="result-card bg-white rounded-lg p-6 border border-gray-200 hover:border-blue-300 mb-4">
+                            <div class="flex justify-between items-start mb-3">
+                                <div class="flex-1">
+                                    <h3 class="text-lg font-semibold text-gray-800 mb-2">
+                                        📚 ${result.book_title || 'كتاب غير محدد'}
+                                    </h3>
+                                    <div class="text-sm text-gray-600 mb-2">
+                                        <span class="inline-flex items-center gap-1 bg-gray-100 px-2 py-1 rounded text-xs">
+                                            📄 صفحة ${result.page_number || 'غير محدد'}
+                                        </span>
+                                        ${result.author_name ? `<span class="inline-flex items-center gap-1 bg-gray-100 px-2 py-1 rounded text-xs ml-2">✍️ ${result.author_name}</span>` : ''}
+                                    </div>
+                                </div>
+                                <div class="text-xs text-gray-500 bg-gray-50 px-2 py-1 rounded">
+                                    النتيجة ${((nextPage - 1) * perPage) + index + 1}
+                                </div>
+                            </div>
+                            
+                            <div class="bg-gray-50 rounded-lg p-4 mb-4">
+                                <div class="text-gray-700 leading-relaxed text-right" dir="rtl">
+                                    <div class="result-content-${result.id}">
+                                        ${result.content || 'لا يوجد محتوى للعرض'}
+                                    </div>
+                                    <div class="full-content-${result.id} hidden">
+                                        <!-- المحتوى الكامل سيتم تحميله هنا -->
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="flex justify-between items-center">
+                                <div class="flex gap-2 flex-wrap">
+                                    <button onclick="goToPage(${result.book_id}, ${result.page_number})" 
+                                            class="px-3 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded text-sm transition-colors">
+                                        📖 انتقال للصفحة
+                                    </button>
+                                    <button onclick="goToBook(${result.book_id})" 
+                                            class="px-3 py-2 bg-green-500 hover:bg-green-600 text-white rounded text-sm transition-colors">
+                                        📚 عرض الكتاب
+                                    </button>
+                                    <button onclick="toggleFullContent(${result.id})" 
+                                            class="toggle-btn-${result.id} px-3 py-2 bg-gray-500 hover:bg-gray-600 text-white rounded text-sm transition-colors">
+                                        🔍 عرض كامل
+                                    </button>
+                                    <div class="relative inline-block">
+                                        <button onclick="toggleMoreOptions(${result.id})" 
+                                                class="px-3 py-2 bg-gray-400 hover:bg-gray-500 text-white rounded text-sm transition-colors">
+                                            ⋯ المزيد
+                                        </button>
+                                        <div id="more-options-${result.id}" class="hidden more-options-menu absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg z-20 border border-gray-200">
+                                            <div class="py-1">
+                                                <button onclick="showRelatedPages(${result.book_id}, ${result.page_number})" class="block w-full text-right px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                                                    📄 صفحات مشابهة
+                                                </button>
+                                                <button onclick="copyContent(${result.id})" class="block w-full text-right px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                                                    📋 نسخ النص
+                                                </button>
+                                                <button onclick="shareResult(${result.id})" class="block w-full text-right px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                                                    🔗 مشاركة
+                                                </button>
+                                                <button onclick="printContent(${result.id})" class="block w-full text-right px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                                                    🖨️ طباعة
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="text-xs text-gray-500">
+                                    <span class="bg-gray-100 px-2 py-1 rounded">${getSearchModeLabel(searchMode)}</span>
+                                    • Score: ${result.score ? result.score.toFixed(2) : 'N/A'}
+                                </div>
+                            </div>
+                        </div>
+                    `).join('');
+                    
+                    // إضافة النتائج الجديدة للصفحة
+                    document.getElementById('searchResults').insertAdjacentHTML('beforeend', newResults);
+                    
+                    // إضافة زر "تحميل المزيد" الجديد إذا كان هناك المزيد
+                    if (data.pagination.current_page < data.pagination.last_page) {
+                        document.getElementById('searchResults').insertAdjacentHTML('beforeend', `
+                            <div class="text-center mt-6 mb-4">
+                                <button onclick="loadMoreResults()" 
+                                        id="loadMoreBtn"
+                                        class="px-6 py-3 bg-blue-500 hover:bg-blue-600 text-white rounded-lg text-sm font-medium transition-colors shadow-sm hover:shadow-md">
+                                    📄 تحميل المزيد من النتائج (الصفحة ${data.pagination.current_page + 1} من ${data.pagination.last_page})
+                                </button>
+                                <div class="text-xs text-gray-500 mt-2">
+                                    عرض ${data.pagination.from}-${data.pagination.to} من ${data.pagination.total} نتيجة
+                                </div>
+                            </div>
+                        `);
+                    }
+                    
+                    showToast(`تم تحميل ${data.data.length} نتيجة إضافية! 📄`);
+                } else {
+                    loadMoreBtn.disabled = false;
+                    loadMoreBtn.innerHTML = '📄 لا توجد نتائج إضافية';
+                    showToast('لا توجد نتائج إضافية للعرض');
+                }
+            } catch (error) {
+                console.error('Error loading more results:', error);
+                showToast('خطأ في تحميل المزيد من النتائج');
+                loadMoreBtn.disabled = false;
+                loadMoreBtn.innerHTML = '📄 تحميل المزيد من النتائج';
+            }
+        }
+        
+        // وظيفة مساعدة لتسميات أنواع البحث
+        function getSearchModeLabel(mode) {
+            const labels = {
+                'flexible': 'مرن',
+                'exact_phrase': 'مطابق تماماً',
+                'phrase_proximity': 'مع تباعد',
+                'all_words': 'جميع الكلمات',
+                'any_word': 'أي كلمة'
+            };
+            return labels[mode] || 'مرن';
         }
         
         // إخفاء القوائم عند النقر خارجها
