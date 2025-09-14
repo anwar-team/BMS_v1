@@ -53,7 +53,6 @@ class AuthorsTable extends Component
         if ($this->search) {
             $query->where(function (Builder $q) {
                 $q->where('full_name', 'like', '%' . $this->search . '%')
-                  ->orWhere('name', 'like', '%' . $this->search . '%')
                   ->orWhere('biography', 'like', '%' . $this->search . '%')
                   ->orWhere('madhhab', 'like', '%' . $this->search . '%');
             });
