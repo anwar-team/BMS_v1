@@ -844,6 +844,64 @@ class BookResource extends Resource
                         }),
                         blank: fn (Builder $query) => $query,
                     ),
+
+                Filter::make('pages_count_range')
+                    ->form([
+                        Grid::make(2)->schema([
+                            TextInput::make('pages_from')
+                                ->label('عدد الصفحات من')
+                                ->numeric()
+                                ->placeholder('10'),
+                            TextInput::make('pages_to')
+                                ->label('إلى')
+                                ->numeric()
+                                ->placeholder('1000'),
+                        ]),
+                    ])
+                    ->query(function (Builder $query, array $data): Builder {
+                        return $query
+                            ->when(
+                                $data['pages_from'],
+                                fn (Builder $query, $value): Builder => $query->whereHas('pages', function ($query) use ($value) {
+                                    $query->havingRaw('COUNT(*) >= ?', [$value]);
+                                })
+                            )
+                            ->when(
+                                $data['pages_to'],
+                                fn (Builder $query, $value): Builder => $query->whereHas('pages', function ($query) use ($value) {
+                                    $query->havingRaw('COUNT(*) <= ?', [$value]);
+                                })
+                            );
+                    })
+                    ->indicateUsing(function (array $data): ?string {
+                        if ($data['pages_from'] || $data['pages_to']) {
+                            return 'عدد الصفحات: ' . ($data['pages_from'] ?? '∞') . ' - ' . ($data['pages_to'] ?? '∞');
+                        }
+                        return null;
+                    }),
+
+                Filter::make('pages_count_exact')
+                    ->form([
+                        TextInput::make('exact_pages')
+                            ->label('عدد الصفحات المحدد')
+                            ->numeric()
+                            ->placeholder('أدخل عدد الصفحات')
+                            ->helperText('مثال: 100'),
+                    ])
+                    ->query(function (Builder $query, array $data): Builder {
+                        return $query->when(
+                            $data['exact_pages'],
+                            fn (Builder $query, $value): Builder => $query->whereHas('pages', function ($query) use ($value) {
+                                $query->havingRaw('COUNT(*) = ?', [$value]);
+                            })
+                        );
+                    })
+                    ->indicateUsing(function (array $data): ?string {
+                        if ($data['exact_pages']) {
+                            return 'عدد الصفحات المحدد: ' . $data['exact_pages'];
+                        }
+                        return null;
+                    }),
             ])
             ->filtersFormColumns(3)
             ->actions([
