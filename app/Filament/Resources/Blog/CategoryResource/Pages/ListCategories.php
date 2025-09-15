@@ -6,9 +6,11 @@ use App\Filament\Resources\Blog\CategoryResource;
 use App\Filament\Resources\Blog\CategoryResource\Widgets\CategoryDistributionWidget;
 use Filament\Actions;
 use Filament\Resources\Pages\ListRecords;
+use Asmit\ResizedColumn\HasResizableColumn;
 
 class ListCategories extends ListRecords
 {
+    use HasResizableColumn;
     protected static string $resource = CategoryResource::class;
 
     protected function getHeaderActions(): array

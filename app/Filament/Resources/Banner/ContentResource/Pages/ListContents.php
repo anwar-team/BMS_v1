@@ -6,9 +6,11 @@ use App\Filament\Resources\Banner\ContentResource;
 use App\Filament\Resources\Banner\ContentResource\Widgets\BannerStatsOverview;
 use Filament\Actions;
 use Filament\Resources\Pages\ListRecords;
+use Asmit\ResizedColumn\HasResizableColumn;
 
 class ListContents extends ListRecords
 {
+    use HasResizableColumn;
     protected static string $resource = ContentResource::class;
 
     protected function getHeaderActions(): array

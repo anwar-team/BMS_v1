@@ -37,6 +37,7 @@ use Illuminate\Session\Middleware\StartSession;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
 use pxlrbt\FilamentSpotlight\SpotlightPlugin;
+use Asmit\ResizedColumn\ResizedColumnPlugin;
 
 class AdminPanelProvider extends PanelProvider
 {
@@ -175,6 +176,8 @@ class AdminPanelProvider extends PanelProvider
                             ->paginate(perPage: 5, condition: true)
                     ]),
                 SpotlightPlugin::make(),
+                ResizedColumnPlugin::make()
+                    ->preserveOnDB(true), // Enable database storage for persistent column widths
             ]);
     }
 }

@@ -6,9 +6,11 @@ use App\Filament\Resources\BokImportResource;
 use App\Filament\Resources\BokImportResource\Widgets\BokImportStatsWidget;
 use Filament\Actions;
 use Filament\Resources\Pages\ListRecords;
+use Asmit\ResizedColumn\HasResizableColumn;
 
 class ListBokImports extends ListRecords
 {
+    use HasResizableColumn;
     protected static string $resource = BokImportResource::class;
 
     protected function getHeaderActions(): array

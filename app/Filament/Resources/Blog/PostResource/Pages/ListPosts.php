@@ -6,9 +6,11 @@ use App\Filament\Resources\Blog\PostResource;
 use App\Filament\Resources\Blog\PostResource\Widgets\BlogPostStatsWidget;
 use Filament\Actions;
 use Filament\Resources\Pages\ListRecords;
+use Asmit\ResizedColumn\HasResizableColumn;
 
 class ListPosts extends ListRecords
 {
+    use HasResizableColumn;
     protected static string $resource = PostResource::class;
 
     protected function getHeaderActions(): array
