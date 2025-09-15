@@ -8,12 +8,10 @@ use Filament\Actions;
 use Filament\Pages\Concerns\ExposesTableToWidgets;
 use Filament\Resources\Components\Tab;
 use Filament\Resources\Pages\ListRecords;
-use Asmit\ResizedColumn\HasResizableColumn;
 use Illuminate\Database\Eloquent\Builder;
 
 class ListUsers extends ListRecords
 {
-    use HasResizableColumn;
     use ExposesTableToWidgets;
     protected static string $resource = UserResource::class;
 

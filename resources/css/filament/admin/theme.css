@@ -5,9 +5,6 @@
 /* DEF Studio Searchable Input Plugin */
 @source '../../../../vendor/defstudio/filament-searchable-input/resources/**/*.blade.php';
 
-/* Spotlight Plugin */
-@source '../../../../vendor/pxlrbt/filament-spotlight/resources/**/*.blade.php';
-
 /* GLOBAL STYLES */
 :root {
   /* عرض الشريط وانتقالات */

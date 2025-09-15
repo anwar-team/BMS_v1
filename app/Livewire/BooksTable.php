@@ -7,11 +7,10 @@ use Livewire\WithPagination;
 use App\Models\Book;
 use App\Models\BookSection;
 use Illuminate\Database\Eloquent\Builder;
-use App\Traits\HasResizableColumn;
 
 class BooksTable extends Component
 {
-    use WithPagination, HasResizableColumn;
+    use WithPagination;
 
     public $search = '';
     public $perPage = 10;

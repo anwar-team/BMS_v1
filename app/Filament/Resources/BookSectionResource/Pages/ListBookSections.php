@@ -6,11 +6,9 @@ use App\Filament\Resources\BookSectionResource;
 use App\Filament\Resources\BookSectionResource\Widgets\BookSectionStatsWidget;
 use Filament\Actions;
 use Filament\Resources\Pages\ListRecords;
-use Asmit\ResizedColumn\HasResizableColumn;
 
 class ListBookSections extends ListRecords
 {
-    use HasResizableColumn;
     protected static string $resource = BookSectionResource::class;
 
     protected function getHeaderActions(): array

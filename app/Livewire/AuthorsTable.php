@@ -6,11 +6,10 @@ use Livewire\Component;
 use Livewire\WithPagination;
 use App\Models\Author;
 use Illuminate\Database\Eloquent\Builder;
-use App\Traits\HasResizableColumn;
 
 class AuthorsTable extends Component
 {
-    use WithPagination, HasResizableColumn;
+    use WithPagination;
 
     public $search = '';
     public $perPage = 10;

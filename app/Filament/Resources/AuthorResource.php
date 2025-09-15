@@ -182,11 +182,6 @@ class AuthorResource extends Resource
                     ->formatStateUsing(fn ($record) => !$record->is_living && $record->death_year ? $record->death_year . ' (' . ($record->death_year_type === 'hijri' ? 'هـ' : 'م') . ')' : ($record->is_living ? 'على قيد الحياة' : '-'))
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('biography')
-                    ->label('السيرة الذاتية')
-                    ->limitWithTooltip(50)
-                    ->searchable()
-                    ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('created_at')
                     ->label('تاريخ الإنشاء')
                     ->dateTime()

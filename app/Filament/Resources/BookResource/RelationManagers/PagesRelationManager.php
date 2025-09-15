@@ -9,11 +9,9 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
-use Asmit\ResizedColumn\HasResizableColumn;
 
 class PagesRelationManager extends RelationManager
 {
-    use HasResizableColumn;
     protected static string $relationship = 'pages';
 
     public function form(Form $form): Form
