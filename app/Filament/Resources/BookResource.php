@@ -44,6 +44,8 @@ use Illuminate\Support\Str;
 use Filament\Forms\Components\Hidden;
 use AlperenErsoy\FilamentExport\Actions\FilamentExportBulkAction;
 use AlperenErsoy\FilamentExport\Actions\FilamentExportHeaderAction;
+use AlperenErsoy\FilamentExport\Actions\FilamentExportAction;
+use Filament\Notifications\Notification;
 
 class BookResource extends Resource
 {
@@ -954,48 +956,48 @@ class BookResource extends Resource
                     ->url(fn (Book $record): string => 'https://home.anwaralolmaa.com/book?id=' . $record->id)
                     ->openUrlInNewTab(),
                 
-                Tables\Actions\Action::make('export_single')
+                FilamentExportAction::make('export_single')
                     ->label('تصدير Excel')
                     ->icon('heroicon-o-document-arrow-down')
                     ->color('info')
-                    ->action(function (Book $record) {
-                        return ExcelExport::make('single_book')
-                            ->withColumns([
-                                Column::make('id')->heading('المعرف'),
-                                Column::make('title')->heading('عنوان الكتاب'),
-                                Column::make('slug')->heading('الرابط المختصر'),
-                                Column::make('description')->heading('الوصف'),
-                                Column::make('edition')->heading('رقم الطبعة'),
-                                Column::make('edition_DATA')->heading('سنة الطباعة'),
-                                Column::make('status')->heading('الحالة'),
-                                Column::make('visibility')->heading('الرؤية'),
-                                Column::make('source_url')->heading('رابط المصدر'),
-                                Column::make('bookSection.name')->heading('قسم الكتاب'),
-                                Column::make('publisher.name')->heading('الناشر'),
-                                Column::make('volumes_count')->heading('عدد المجلدات'),
-                                Column::make('pages_count')->heading('عدد الصفحات'),
-                                Column::make('authors')->heading('المؤلفون')
-                                    ->formatStateUsing(function () use ($record) {
-                                        return $record->authorBooks->map(function ($authorBook) {
-                                            $role = match($authorBook->role) {
-                                                'author' => 'مؤلف',
-                                                'co_author' => 'مؤلف مشارك',
-                                                'editor' => 'محرر',
-                                                'translator' => 'مترجم',
-                                                'reviewer' => 'مراجع',
-                                                'commentator' => 'معلق',
-                                                default => $authorBook->role
-                                            };
-                                            return $authorBook->author->full_name . ' (' . $role . ')';
-                                        })->join(', ');
-                                    }),
-                                Column::make('created_at')->heading('تاريخ الإنشاء')->formatStateUsing(fn ($state) => $state?->format('Y-m-d H:i:s')),
-                                Column::make('updated_at')->heading('تاريخ التحديث')->formatStateUsing(fn ($state) => $state?->format('Y-m-d H:i:s')),
-                            ])
-                            ->withFilename('book-' . $record->id . '-' . date('Y-m-d-H-i-s'))
-                            ->withWriterType(\Maatwebsite\Excel\Excel::XLSX)
-                            ->download(collect([$record]));
-                    }),
+                    ->fileName(fn (Book $record) => 'book-' . $record->id . '-' . date('Y-m-d-H-i-s'))
+                    ->defaultFormat('xlsx')
+                    ->directDownload()
+                    ->withColumns([
+                        TextColumn::make('id')->label('المعرف'),
+                        TextColumn::make('title')->label('عنوان الكتاب'),
+                        TextColumn::make('slug')->label('الرابط المختصر'),
+                        TextColumn::make('description')->label('الوصف'),
+                        TextColumn::make('edition')->label('رقم الطبعة'),
+                        TextColumn::make('edition_DATA')->label('سنة الطباعة'),
+                        TextColumn::make('status')->label('الحالة'),
+                        TextColumn::make('visibility')->label('الرؤية'),
+                        TextColumn::make('source_url')->label('رابط المصدر'),
+                        TextColumn::make('bookSection.name')->label('قسم الكتاب'),
+                        TextColumn::make('publisher.name')->label('الناشر'),
+                        TextColumn::make('volumes_count')->label('عدد المجلدات'),
+                        TextColumn::make('pages_count')->label('عدد الصفحات'),
+                        TextColumn::make('authors')->label('المؤلفون')
+                            ->formatStateUsing(function ($state, Book $record) {
+                                return $record->authorBooks->map(function ($authorBook) {
+                                    $role = match($authorBook->role) {
+                                        'author' => 'مؤلف',
+                                        'co_author' => 'مؤلف مشارك',
+                                        'editor' => 'محرر',
+                                        'translator' => 'مترجم',
+                                        'reviewer' => 'مراجع',
+                                        'commentator' => 'معلق',
+                                        default => $authorBook->role
+                                    };
+                                    return $authorBook->author->full_name . ' (' . $role . ')';
+                                })->join(', ');
+                            }),
+                        TextColumn::make('created_at')->label('تاريخ الإنشاء')
+                            ->formatStateUsing(fn ($state) => $state?->format('Y-m-d H:i:s')),
+                        TextColumn::make('updated_at')->label('تاريخ التحديث')
+                            ->formatStateUsing(fn ($state) => $state?->format('Y-m-d H:i:s')),
+                    ])
+                    ->records(fn (Book $record) => collect([$record]))
             ])
             ->bulkActions([
                 BulkActionGroup::make([
@@ -1037,7 +1039,39 @@ class BookResource extends Resource
                             });
                         })
                         ->deselectRecordsAfterCompletion(),
-                ]),
+                    
+                    BulkAction::make('assign_to_section')
+                        ->label('تعيين إلى قسم')
+                        ->icon('heroicon-o-folder')
+                        ->color('info')
+                        ->form([
+                            Forms\Components\Select::make('book_section_id')
+                                ->label('اختر القسم الجديد')
+                                ->relationship('bookSection', 'name')
+                                ->searchable()
+                                ->preload()
+                                ->required()
+                                ->placeholder('اختر القسم المطلوب')
+                                ->helperText('سيتم تعيين جميع الكتب المحددة إلى هذا القسم'),
+                        ])
+                        ->action(function (Collection $records, array $data) {
+                            $records->each(function ($record) use ($data) {
+                                $record->update(['book_section_id' => $data['book_section_id']]);
+                            });
+                            
+                            Notification::make()
+                                ->title('تم تعيين الكتب بنجاح')
+                                ->body('تم تعيين ' . $records->count() . ' كتاب إلى القسم الجديد')
+                                ->success()
+                                ->send();
+                        })
+                        ->deselectRecordsAfterCompletion()
+                        ->requiresConfirmation()
+                        ->modalHeading('تعيين الكتب إلى قسم جديد')
+                        ->modalDescription('هل أنت متأكد من تعيين الكتب المحددة إلى القسم الجديد؟')
+                        ->modalSubmitActionLabel('تعيين الكتب')
+                        ->modalCancelActionLabel('إلغاء'),
+                ])
             ])
             ->defaultSort('created_at', 'desc')
             ->striped()
@@ -1050,7 +1084,6 @@ class BookResource extends Resource
                     ->label('إدارة الأعمدة')
                     ->icon('heroicon-o-view-columns')
                     ->color('gray')
-
             );
     }
 
