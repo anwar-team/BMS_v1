@@ -956,48 +956,7 @@ class BookResource extends Resource
                     ->url(fn (Book $record): string => 'https://home.anwaralolmaa.com/book?id=' . $record->id)
                     ->openUrlInNewTab(),
                 
-                FilamentExportAction::make('export_single')
-                    ->label('تصدير Excel')
-                    ->icon('heroicon-o-document-arrow-down')
-                    ->color('info')
-                    ->fileName(fn (Book $record) => 'book-' . $record->id . '-' . date('Y-m-d-H-i-s'))
-                    ->defaultFormat('xlsx')
-                    ->directDownload()
-                    ->withColumns([
-                        TextColumn::make('id')->label('المعرف'),
-                        TextColumn::make('title')->label('عنوان الكتاب'),
-                        TextColumn::make('slug')->label('الرابط المختصر'),
-                        TextColumn::make('description')->label('الوصف'),
-                        TextColumn::make('edition')->label('رقم الطبعة'),
-                        TextColumn::make('edition_DATA')->label('سنة الطباعة'),
-                        TextColumn::make('status')->label('الحالة'),
-                        TextColumn::make('visibility')->label('الرؤية'),
-                        TextColumn::make('source_url')->label('رابط المصدر'),
-                        TextColumn::make('bookSection.name')->label('قسم الكتاب'),
-                        TextColumn::make('publisher.name')->label('الناشر'),
-                        TextColumn::make('volumes_count')->label('عدد المجلدات'),
-                        TextColumn::make('pages_count')->label('عدد الصفحات'),
-                        TextColumn::make('authors')->label('المؤلفون')
-                            ->formatStateUsing(function ($state, Book $record) {
-                                return $record->authorBooks->map(function ($authorBook) {
-                                    $role = match($authorBook->role) {
-                                        'author' => 'مؤلف',
-                                        'co_author' => 'مؤلف مشارك',
-                                        'editor' => 'محرر',
-                                        'translator' => 'مترجم',
-                                        'reviewer' => 'مراجع',
-                                        'commentator' => 'معلق',
-                                        default => $authorBook->role
-                                    };
-                                    return $authorBook->author->full_name . ' (' . $role . ')';
-                                })->join(', ');
-                            }),
-                        TextColumn::make('created_at')->label('تاريخ الإنشاء')
-                            ->formatStateUsing(fn ($state) => $state?->format('Y-m-d H:i:s')),
-                        TextColumn::make('updated_at')->label('تاريخ التحديث')
-                            ->formatStateUsing(fn ($state) => $state?->format('Y-m-d H:i:s')),
-                    ])
-                    ->records(fn (Book $record) => collect([$record]))
+                
             ])
             ->bulkActions([
                 BulkActionGroup::make([
