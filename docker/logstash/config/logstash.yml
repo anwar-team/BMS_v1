@@ -4,9 +4,9 @@ path.data: /usr/share/logstash/data
 path.logs: /usr/share/logstash/logs
 
 # إعدادات الأداء للنصوص العربية (محسنة للسرعة)
-pipeline.workers: 6
-pipeline.batch.size: 500
-pipeline.batch.delay: 25
+# pipeline.workers: تم تعطيله لتجنب تعارض مع plugins
+pipeline.batch.size: 1000
+pipeline.batch.delay: 50
 pipeline.unsafe_shutdown: false
 
 # إعدادات المراقبة
