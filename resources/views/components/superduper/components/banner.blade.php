@@ -40,20 +40,20 @@ $query->where('slug', 'home-banner');
 
                                     <!-- Buttons -->
                                     <div class="flex flex-col sm:flex-row gap-4 mb-10 justify-center">
-                                        <button class="bg-white text-green-800 border border-green-800 transition-colors duration-300 hover:bg-green-800 hover:text-white px-8 py-3 rounded-3xl font-bold shadow-md">
+                                        <a href="{{ route('search.ultra-fast') }}?search_type=authors" class="bg-white text-green-800 border border-green-800 transition-colors duration-300 hover:bg-green-800 hover:text-white px-8 py-3 rounded-3xl font-bold shadow-md text-center">
                                             المؤلفين
-                                        </button>
-                                        <button class="bg-white text-green-800 border border-green-800 transition-colors duration-300 hover:bg-green-800 hover:text-white px-8 py-3 rounded-3xl font-bold shadow-md">
+                                        </a>
+                                        <a href="{{ route('search.ultra-fast') }}" class="bg-green-700 text-white border border-green-700 transition-colors duration-300 hover:bg-green-800 px-8 py-3 rounded-3xl font-bold shadow-md text-center relative">
+                                            <span class="absolute inset-0 border-2 border-green-900 rounded-3xl"></span>
                                             محتوى الكتب
-                                        </button>
-                                        <button class="bg-white text-green-800 border border-green-800 transition-colors duration-300 hover:bg-green-800 hover:text-white px-8 py-3 rounded-3xl font-bold shadow-md">
+                                        </a>
+                                        <a href="{{ route('search.ultra-fast') }}?search_type=books" class="bg-white text-green-800 border border-green-800 transition-colors duration-300 hover:bg-green-800 hover:text-white px-8 py-3 rounded-3xl font-bold shadow-md text-center">
                                             عناوين الكتب
-                                        </button>
+                                        </a>
                                     </div>
 
                                     <!-- Search Bar -->
-                                    {{-- action="{{ route('search') }}" method="GET" --}}
-                                    <form class="max-w-xl mx-auto">
+                                    <form action="{{ route('search.ultra-fast') }}" method="GET" class="max-w-xl mx-auto">
                                         <div class="relative bg-white rounded-full px-6 py-3 flex items-center gap-3">
                                             <img src="{{ asset('images/iconly-light-search0.svg') }}" alt="Search" class="w-6 h-6">
                                             <input

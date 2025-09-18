@@ -48,6 +48,52 @@ Route::get('/books/{id}/details', [BookController::class, 'details'])->name('boo
 Route::get('/books/{id}/read', [BookController::class, 'read'])->name('books.read')->where('id', '[0-9]+');
 Route::get('/books/{id}/download', [BookController::class, 'download'])->name('books.download')->where('id', '[0-9]+');
 
+// Ultra-fast search routes
+Route::get('/search', function() {
+    return view('ultra-fast-search.views.ultra-fast');
+})->name('search.ultra-fast');
+
+Route::get('/api/ultra-search', [\App\Http\Controllers\SearchController::class, 'apiSearch'])->name('api.ultra-search');
+
+Route::get('/api/page/{pageId}/full-content', function($pageId) {
+    $page = \App\Models\Page::with(['book', 'book.authors'])->find($pageId);
+    if (!$page) {
+        return response()->json(['error' => 'الصفحة غير موجودة'], 404);
+    }
+    return response()->json([
+        'success' => true,
+        'page' => [
+            'id' => $page->id,
+            'full_content' => $page->content,
+            'page_number' => $page->page_number,
+            'book_id' => $page->book_id,
+            'book_title' => $page->book->title ?? '',
+        ]
+    ]);
+});
+
+Route::get('/api/book/{bookId}/pages', function($bookId) {
+    $pages = \App\Models\Page::where('book_id', $bookId)
+        ->select(['id', 'page_number', 'content'])
+        ->limit(10)
+        ->get()
+        ->map(function($page) {
+            return [
+                'id' => $page->id,
+                'page_number' => $page->page_number,
+                'content_preview' => mb_substr($page->content, 0, 100) . '...'
+            ];
+        });
+        
+    return response()->json([
+        'success' => true,
+        'pages' => $pages,
+        'pagination' => [
+            'total' => $pages->count()
+        ]
+    ]);
+});
+
 // Author routes
 Route::get('/authors', [AuthorController::class, 'index'])->name('authors.index');
 Route::get('/authors/{id}', [AuthorController::class, 'show'])->name('authors.show')->where('id', '[0-9]+');

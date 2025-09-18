@@ -31,4 +31,9 @@ return [
         'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
     ],
 
+    'elasticsearch' => [
+        'host' => env('ELASTICSEARCH_HOST', 'http://145.223.98.97:9201'),
+        'index' => env('ELASTICSEARCH_INDEX', 'pages'),
+    ],
+
 ];

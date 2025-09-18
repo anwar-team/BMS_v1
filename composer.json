@@ -35,6 +35,7 @@
         "asmit/resized-column": "^1.1",
         "aymanalhattami/filament-page-with-sidebar": "^2.6",
         "aymanalhattami/filament-slim-scrollbar": "^2.1",
+        "babenkoivan/elastic-scout-driver": "^2.0",
         "bezhansalleh/filament-exceptions": "^2.1",
         "bezhansalleh/filament-shield": "^3.2",
         "codeat3/blade-fluentui-system-icons": "^1.32",

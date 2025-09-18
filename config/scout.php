@@ -49,10 +49,29 @@ return [
     |
     */
 
+    'elastic' => [
+        'client' => [
+            'hosts' => [
+                env('ELASTICSEARCH_HOST', 'http://145.223.98.97:9201'),
+            ],
+            'retries' => 1,
+            'timeout' => 30,
+            'connection_params' => [
+                'client' => [
+                    'timeout' => 30,
+                    'connect_timeout' => 10,
+                ],
+            ],
+        ],
+        'update_mapping' => env('SCOUT_ELASTIC_UPDATE_MAPPING', true),
+        'indexer' => env('SCOUT_ELASTIC_INDEXER', 'single'),
+        'document_refresh' => env('SCOUT_ELASTIC_DOCUMENT_REFRESH', 'wait_for'),
+    ],
+
     'elasticsearch' => [
         'index' => env('ELASTICSEARCH_INDEX', 'pages'),
         'hosts' => [
-            env('ELASTICSEARCH_HOST', 'http://localhost:9200'),
+            env('ELASTICSEARCH_HOST', 'http://145.223.98.97:9201'),
         ],
     ],
 ];
