@@ -144,11 +144,12 @@
 
                 <!-- Dropdown Results -->
                 <div id="search-dropdown" 
-                     class="absolute top-full left-0 right-0 bg-white border border-gray-200 rounded-2xl shadow-2xl mt-2 max-h-96 overflow-y-auto z-[9999] hidden backdrop-blur-sm">
-                    <div id="search-results" class="p-4">
+                     class="absolute top-full left-0 right-0 bg-white border border-gray-200 rounded-2xl shadow-2xl mt-2 max-h-80 md:max-h-96 overflow-y-auto z-[99999] hidden backdrop-blur-sm"
+                     style="box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25), 0 0 0 1px rgba(0, 0, 0, 0.05);">
+                    <div id="search-results" class="p-2 md:p-4">
                         <!-- Results will be populated here -->
                     </div>
-                    <div id="search-loading" class="p-8 text-center text-gray-500 hidden">
+                    <div id="search-loading" class="p-6 md:p-8 text-center text-gray-500 hidden">
                         <div class="inline-flex items-center">
                             <svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-green-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                                 <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
@@ -157,12 +158,12 @@
                             جاري البحث...
                         </div>
                     </div>
-                    <div id="search-no-results" class="p-8 text-center text-gray-500 hidden">
-                        <svg class="mx-auto h-12 w-12 text-gray-400 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <div id="search-no-results" class="p-6 md:p-8 text-center text-gray-500 hidden">
+                        <svg class="mx-auto h-10 w-10 md:h-12 md:w-12 text-gray-400 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M9.172 16.172a4 4 0 015.656 0M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
                         </svg>
-                        <p class="text-lg font-medium text-gray-900 mb-2">لا توجد نتائج</p>
-                        <p class="text-gray-500">جرب كلمات بحث مختلفة</p>
+                        <p class="text-base md:text-lg font-medium text-gray-900 mb-2">لا توجد نتائج</p>
+                        <p class="text-gray-500 text-sm md:text-base">جرب كلمات بحث مختلفة</p>
                     </div>
                 </div>
             </div>
@@ -171,6 +172,9 @@
             <div class="mt-8 text-sm text-gray-500">
                 <p id="search-tips">💡 نصائح للبحث: استخدم كلمات مفتاحية واضحة، أو ابحث بعناوين الكتب</p>
             </div>
+            
+            <!-- Extra spacing to prevent dropdown overlap -->
+            <div class="h-32"></div>
         </div>
     </div>
 </section>
@@ -258,6 +262,18 @@ document.addEventListener('DOMContentLoaded', function() {
     // إخفاء القائمة عند النقر خارجها
     document.addEventListener('click', function(e) {
         if (!e.target.closest('.max-w-xl')) {
+            hideDropdown();
+        }
+    });
+    
+    // إخفاء القائمة عند التمرير
+    window.addEventListener('scroll', function() {
+        hideDropdown();
+    });
+    
+    // إخفاء القائمة عند الضغط على Escape
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
             hideDropdown();
         }
     });
@@ -372,20 +388,20 @@ document.addEventListener('DOMContentLoaded', function() {
     // إنشاء عنصر نتيجة
     function createResultElement(result) {
         const div = document.createElement('div');
-        div.className = 'p-3 hover:bg-gray-50 border-b border-gray-100 last:border-b-0 cursor-pointer transition-colors duration-200';
+        div.className = 'p-2 md:p-3 hover:bg-gray-50 border-b border-gray-100 last:border-b-0 cursor-pointer transition-colors duration-200';
         
         if (result.type === 'author') {
             div.innerHTML = `
                 <div class="flex items-center space-x-3 space-x-reverse">
                     <div class="flex-shrink-0">
-                        <div class="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center">
-                            <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <div class="w-8 h-8 md:w-10 md:h-10 bg-blue-100 rounded-full flex items-center justify-center">
+                            <svg class="w-4 h-4 md:w-5 md:h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
                             </svg>
                         </div>
                     </div>
                     <div class="flex-1 min-w-0">
-                        <h3 class="text-sm font-medium text-gray-900 truncate">${result.name}</h3>
+                        <h3 class="text-xs md:text-sm font-medium text-gray-900 truncate">${result.name}</h3>
                         ${result.years ? `<p class="text-xs text-gray-500">${result.years}</p>` : ''}
                         ${result.madhhab ? `<p class="text-xs text-blue-600">${result.madhhab}</p>` : ''}
                         <p class="text-xs text-gray-400">${result.books_count} كتاب</p>
@@ -400,14 +416,14 @@ document.addEventListener('DOMContentLoaded', function() {
             div.innerHTML = `
                 <div class="flex items-center space-x-3 space-x-reverse">
                     <div class="flex-shrink-0">
-                        <div class="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center">
-                            <svg class="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <div class="w-8 h-8 md:w-10 md:h-10 bg-green-100 rounded-full flex items-center justify-center">
+                            <svg class="w-4 h-4 md:w-5 md:h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253z"></path>
                             </svg>
                         </div>
                     </div>
                     <div class="flex-1 min-w-0">
-                        <h3 class="text-sm font-medium text-gray-900 truncate">${result.title}</h3>
+                        <h3 class="text-xs md:text-sm font-medium text-gray-900 truncate">${result.title}</h3>
                         ${result.authors_text ? `<p class="text-xs text-gray-500">بقلم: ${result.authors_text}</p>` : ''}
                         <p class="text-xs text-blue-600">${result.section.name}</p>
                         <div class="flex items-center space-x-2 space-x-reverse text-xs text-gray-400 mt-1">
