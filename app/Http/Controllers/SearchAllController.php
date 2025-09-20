@@ -28,20 +28,33 @@ class SearchAllController extends Controller
             ]);
         }
 
-        $authors = Author::query()
+        // استعلام محسن مع left join لحساب عدد الكتب
+        $authors = DB::table('authors')
             ->select([
-                'id',
-                'full_name',
-                'biography',
-                'birth_year',
-                'death_year',
-                'is_living',
-                'madhhab'
+                'authors.id',
+                'authors.full_name',
+                'authors.biography',
+                'authors.birth_date',
+                'authors.death_date',
+                'authors.madhhab',
+                DB::raw('COUNT(CASE WHEN books.status = "published" AND books.visibility = "public" THEN books.id END) as books_count')
             ])
-            ->where('full_name', 'LIKE', "%{$query}%")
-            ->withCount(['books as books_count'])
-            ->orderByDesc('books_count')
-            ->orderBy('full_name')
+            ->leftJoin('author_book', 'authors.id', '=', 'author_book.author_id')
+            ->leftJoin('books', function($join) {
+                $join->on('author_book.book_id', '=', 'books.id')
+                     ->where('books.status', '=', 'published')
+                     ->where('books.visibility', '=', 'public');
+            })
+            ->where('authors.full_name', 'LIKE', "%{$query}%")
+            ->groupBy([
+                'authors.id',
+                'authors.full_name',
+                'authors.biography',
+                'authors.birth_date',
+                'authors.death_date',
+                'authors.madhhab'
+            ])
+            ->orderBy('authors.full_name')
             ->limit($limit)
             ->get()
             ->map(function ($author) {
@@ -53,7 +66,7 @@ class SearchAllController extends Controller
                         (strlen($author->biography) > 100 ? 
                             mb_substr($author->biography, 0, 100) . '...' : 
                             $author->biography) : null,
-                    'years' => $this->formatAuthorYears($author),
+                    'years' => $this->formatAuthorDates($author->birth_date, $author->death_date),
                     'madhhab' => $author->madhhab,
                     'books_count' => $author->books_count,
                     'type' => 'author'
@@ -314,16 +327,43 @@ class SearchAllController extends Controller
     }
 
     /**
-     * تنسيق سنوات المؤلف
+     * تنسيق تواريخ المؤلف
+     */
+    private function formatAuthorDates($birthDate, $deathDate): ?string
+    {
+        if (!$birthDate && !$deathDate) {
+            return null;
+        }
+
+        $birth = $birthDate ? date('Y', strtotime($birthDate)) . 'م' : '?';
+        $death = $deathDate ? date('Y', strtotime($deathDate)) . 'م' : 'معاصر';
+
+        if ($birth === '?' && $death === 'معاصر') {
+            return 'معاصر';
+        }
+
+        if ($death === 'معاصر') {
+            return "ولد {$birth}";
+        }
+
+        return "({$birth} - {$death})";
+    }
+
+    /**
+     * تنسيق سنوات المؤلف (للتوافق مع الكود القديم)
      */
     private function formatAuthorYears($author): ?string
     {
-        if ($author->is_living) {
-            return $author->birth_year ? "ولد {$author->birth_year}هـ" : 'معاصر';
+        if (isset($author->birth_date) && isset($author->death_date)) {
+            return $this->formatAuthorDates($author->birth_date, $author->death_date);
         }
 
-        $birth = $author->birth_year ? "{$author->birth_year}هـ" : '?';
-        $death = $author->death_year ? "{$author->death_year}هـ" : '?';
+        if (isset($author->is_living) && $author->is_living) {
+            return isset($author->birth_year) ? "ولد {$author->birth_year}هـ" : 'معاصر';
+        }
+
+        $birth = isset($author->birth_year) ? "{$author->birth_year}هـ" : '?';
+        $death = isset($author->death_year) ? "{$author->death_year}هـ" : '?';
 
         if ($birth === '?' && $death === '?') {
             return null;

@@ -126,7 +126,7 @@
             </div>
 
             <!-- Search Bar -->
-            <div class="max-w-xl mx-auto relative">
+            <div class="max-w-xl mx-auto relative z-[100]">
                 <div class="relative bg-white rounded-full px-6 py-4 flex items-center gap-3 shadow-xl border border-gray-200 hover:shadow-2xl transition-shadow duration-300">
                     <img src="{{ asset('images/iconly-light-search0.svg') }}" alt="Search" class="w-6 h-6 text-gray-400">
                     <input
@@ -144,7 +144,7 @@
 
                 <!-- Dropdown Results -->
                 <div id="search-dropdown" 
-                     class="absolute top-full left-0 right-0 bg-white border border-gray-200 rounded-2xl shadow-2xl mt-2 max-h-96 overflow-y-auto z-50 hidden">
+                     class="absolute top-full left-0 right-0 bg-white border border-gray-200 rounded-2xl shadow-2xl mt-2 max-h-96 overflow-y-auto z-[9999] hidden backdrop-blur-sm">
                     <div id="search-results" class="p-4">
                         <!-- Results will be populated here -->
                     </div>
