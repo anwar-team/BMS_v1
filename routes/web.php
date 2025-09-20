@@ -11,6 +11,7 @@ use App\Http\Controllers\AuthorController;
 use App\Http\Controllers\BookController;
 use App\Http\Controllers\PublisherController;
 use App\Http\Controllers\LanguageController;
+use App\Http\Controllers\SearchAllController;
 use App\Livewire\Reader\BookReader;
 use Illuminate\Support\Facades\Route;
 use Lab404\Impersonate\Services\ImpersonateManager;
@@ -54,6 +55,16 @@ Route::get('/search', function() {
 })->name('search.ultra-fast');
 
 Route::get('/api/ultra-search', [\App\Http\Controllers\SearchController::class, 'apiSearch'])->name('api.ultra-search');
+
+// Search All API Routes - Advanced Search
+Route::prefix('api/search-all')->group(function () {
+    Route::get('/authors', [SearchAllController::class, 'searchAuthors'])->name('api.search.authors');
+    Route::get('/books', [SearchAllController::class, 'searchBookTitles'])->name('api.search.books');
+    Route::get('/sections', [SearchAllController::class, 'getBookSections'])->name('api.search.sections');
+    Route::get('/unified', [SearchAllController::class, 'searchUnified'])->name('api.search.unified');
+    Route::get('/suggestions', [SearchAllController::class, 'searchSuggestions'])->name('api.search.suggestions');
+    Route::get('/stats', [SearchAllController::class, 'getSearchStats'])->name('api.search.stats');
+});
 
 Route::get('/api/page/{pageId}/full-content', function($pageId) {
     $page = \App\Models\Page::with(['book', 'book.authors'])->find($pageId);
