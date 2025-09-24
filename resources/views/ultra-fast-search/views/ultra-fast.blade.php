@@ -78,18 +78,19 @@
             <div class="relative">
                 <div class="pattern-top top-24"></div>
                 
-                <!-- Search Header -->
+                <!-- Search Header (updated to requested design) -->
                 <div class="bg-white shadow-sm border-b border-gray-200">
-                    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+                    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6" style="padding-top: 7.5rem;">
                         <div class="text-center mb-6">
-                            <div class="flex items-center justify-center gap-3 mb-4">
+                            <div class="flex items-center gap-3 mb-8 justify-center">
                                 <img src="{{ asset('images/group0.svg') }}" alt="البحث" class="w-16 h-16">
-                                <div>
-                                    <h1 class="text-3xl font-bold text-gray-900 mb-1">البحث الفوري المُحسَّن</h1>
-                                    <span class="bg-blue-100 text-blue-800 text-sm font-medium px-2.5 py-0.5 rounded">Ultra-Fast</span>
+                                <h2 class="text-4xl text-green-800 font-bold">البحث المتقدم</h2>
+                                <div class="hidden sm:block">
+                                    <button onclick="showHelpModal()" class="bg-gray-100 hover:bg-gray-200 text-gray-700 px-4 py-2 rounded-lg text-sm transition-colors">
+                                        ❓ شرح الخصائص
+                                    </button>
                                 </div>
                             </div>
-                            <p class="text-gray-600">ابحث في المكتبة</p>
                         </div>
                     </div>
                 </div>
@@ -102,12 +103,6 @@
                     
                     <!-- Search Box -->
                     <div class="bg-white rounded-lg shadow-md p-6 mb-6">
-                        <div class="flex justify-between items-center mb-6">
-                            <h2 class="text-2xl font-bold text-gray-800">البحث الفوري</h2>
-                            <button onclick="showHelpModal()" class="bg-gray-100 hover:bg-gray-200 text-gray-700 px-4 py-2 rounded-lg text-sm transition-colors">
-                                ❓ شرح الخصائص
-                            </button>
-                        </div>
                         
                         <div class="space-y-4">
                             <!-- Main Search Input -->
@@ -683,9 +678,13 @@
                     const response = await fetch(`/api/page/${pageId}/full-content`);
                     const data = await response.json();
 
-                    if (data && data.success) {
+
+                        if (data && data.success) {
                         const currentQuery = document.getElementById('instantSearch').value || '';
-                        const highlighted = currentQuery ? highlightTerms(data.page.full_content || '', currentQuery) : (data.page.full_content || 'لا يوجد محتوى متاح');
+                        // preserve original text and spacing, escape HTML to be safe
+                        const raw = data.page.full_content || 'لا يوجد محتوى متاح';
+                        const escaped = escapeHtml(raw);
+                        const highlighted = currentQuery ? highlightTerms(escaped, currentQuery) : escaped;
 
                         fullContentDiv.innerHTML = `
                             <div class="bg-blue-50 p-4 rounded-lg mb-3">
@@ -698,7 +697,7 @@
                                 </div>
                             </div>
                             <div class="text-gray-700 leading-relaxed" dir="rtl">
-                                ${highlighted}
+                                <div style="white-space: pre-wrap; word-wrap: break-word;">${highlighted}</div>
                             </div>
                         `;
 
@@ -722,20 +721,32 @@
             }
         }
 
-        // تضع علامة <mark> على مصطلحات البحث داخل النص (حفظ التظليل عند عرض كامل الصفحة)
-        function highlightTerms(text, query) {
-            if (!text || !query) return text || '';
-            try {
-                // تقسيم الكلمات وتجاهل الفراغات الصغيرة
-                const terms = query.split(/\s+/).filter(t => t.length > 1);
-                if (terms.length === 0) return text;
+        // escape HTML to display raw page content safely
+        function escapeHtml(unsafe) {
+            if (unsafe === null || unsafe === undefined) return '';
+            return String(unsafe)
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#039;');
+        }
 
-                // بناء نمط regex آمن
+        // تضع علامة <mark> على مصطلحات البحث داخل النص (المحتوى مفترض أنه مُهَرب بالفعل)
+        function highlightTerms(escapedText, query) {
+            if (!escapedText || !query) return escapedText || '';
+            try {
+                const terms = query.split(/\s+/).filter(t => t.length > 0);
+                if (terms.length === 0) return escapedText;
+
+                // escape terms for regex
                 const escaped = terms.map(t => t.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'));
                 const pattern = new RegExp('(' + escaped.join('|') + ')', 'gi');
-                return text.replace(pattern, '<mark>$1</mark>');
+
+                // Replace matches while preserving existing HTML entities
+                return escapedText.replace(pattern, '<mark>$1</mark>');
             } catch (e) {
-                return text;
+                return escapedText;
             }
         }
         
