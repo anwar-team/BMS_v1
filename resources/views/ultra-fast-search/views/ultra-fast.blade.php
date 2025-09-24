@@ -1,148 +1,237 @@
 <x-superduper.main>
-    <div class="page-wrapper relative z-[1]" dir="rtl">
-        <main class="relative overflow-hidden main-wrapper">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="csrf-token" content="{{ csrf_token() }}">
+        <title>البحث الفوري المُحسَّن - {{ config('app.name') }}</title>
+        <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700&display=swap" rel="stylesheet">
+        <style>
+            .font-tajawal {
+                font-family: 'Tajawal', sans-serif;
+            }
+            
+            /* RTL Search Enhancements */
+            .search-container {
+                direction: rtl;
+                text-align: right;
+            }
+            
+            .search-input {
+                text-align: right;
+                direction: rtl;
+            }
+            
+            /* Loading spinner */
+            .spinner {
+                border: 3px solid #f3f3f3;
+                border-top: 3px solid #10b981;
+                border-radius: 50%;
+                width: 20px;
+                height: 20px;
+                animation: spin 1s linear infinite;
+            }
+            
+            @keyframes spin {
+                0% { transform: rotate(0deg); }
+                100% { transform: rotate(360deg); }
+            }
+            
+            /* Search result highlights */
+            mark {
+                background-color: #fef3c7;
+                padding: 0 2px;
+                border-radius: 2px;
+                font-weight: 600;
+            }
+            
+            /* Search filters */
+            .filter-select {
+                background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 9 4 4 4-4'/%3e%3c/svg%3e");
+                background-position: left 0.5rem center;
+                background-repeat: no-repeat;
+                background-size: 1.5em 1.5em;
+                padding-left: 2.5rem;
+            }
+            
+            /* Result item hover effects */
+            .result-item:hover {
+                background-color: #f9fafb;
+                border-color: #10b981;
+            }
+            
+            /* Responsive design for mobile */
+            @media (max-width: 768px) {
+                .search-filters {
+                    flex-direction: column;
+                    gap: 0.5rem;
+                }
+                
+                .search-input {
+                    font-size: 16px; /* Prevent zoom on iOS */
+                }
+            }
+        </style>
+    </head>
+
+    <div class="page-wrapper relative z-[1] search-container font-tajawal" dir="rtl">
+        <main class="relative overflow-hidden main-wrapper bg-[#f8f5f0]">
             <div class="relative">
                 <div class="pattern-top top-24"></div>
-                <!-- محتوى البحث المُحسَّن -->
-                <section class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 pt-32">
-                    <div class="mb-12 z-10">
-                        <div class="flex items-center gap-3 mb-8">
-                            <img src="{{ asset('images/group0.svg') }}" alt="البحث" class="w-16 h-16">
-                            <h2 class="text-4xl text-green-800 font-bold">البحث الفوري المُحسَّن</h2>
-                            <span class="bg-blue-100 text-blue-800 text-sm font-medium px-2.5 py-0.5 rounded">Ultra-Fast</span>
+                
+                <!-- Search Header -->
+                <div class="bg-white shadow-sm border-b border-gray-200">
+                    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+                        <div class="text-center mb-6">
+                            <div class="flex items-center justify-center gap-3 mb-4">
+                                <img src="{{ asset('images/group0.svg') }}" alt="البحث" class="w-16 h-16">
+                                <div>
+                                    <h1 class="text-3xl font-bold text-gray-900 mb-1">البحث الفوري المُحسَّن</h1>
+                                    <span class="bg-blue-100 text-blue-800 text-sm font-medium px-2.5 py-0.5 rounded">Ultra-Fast</span>
+                                </div>
+                            </div>
+                            <p class="text-gray-600">ابحث في المكتبة</p>
                         </div>
                     </div>
+                </div>
 
-                    <div class="bg-white rounded-lg shadow-lg p-6">
+                <!-- Search Interface -->
+                <section class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+
+                <!-- Search Interface -->
+                <section class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+                    
+                    <!-- Search Box -->
+                    <div class="bg-white rounded-lg shadow-md p-6 mb-6">
                         <div class="flex justify-between items-center mb-6">
-                            <h1 class="text-3xl font-bold text-gray-800">البحث الفوري في 769,521 صفحة</h1>
+                            <h2 class="text-2xl font-bold text-gray-800">البحث الفوري</h2>
                             <button onclick="showHelpModal()" class="bg-gray-100 hover:bg-gray-200 text-gray-700 px-4 py-2 rounded-lg text-sm transition-colors">
                                 ❓ شرح الخصائص
                             </button>
                         </div>
                         
-                        <!-- صندوق البحث الفوري -->
-                        <div class="space-y-6">
-                            <div>
-                                <label for="instantSearch" class="block text-sm font-medium text-gray-700 mb-2">
-                                    البحث الفوري (النتائج تظهر أثناء الكتابة)
-                                </label>
-                                <div class="relative">
-                                    <input type="text" 
-                                           id="instantSearch" 
-                                           placeholder="ابحث في المكتبة الكاملة... (من أول حرف)"
-                                           value="{{ request('q', '') }}"
-                                           class="w-full px-4 py-4 text-lg border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-right transition-all"
-                                           dir="rtl"
-                                           autocomplete="off">
-                                    
+                        <div class="space-y-4">
+                            <!-- Main Search Input -->
+                            <div class="relative">
+                                <input 
+                                    type="text"
+                                    id="instantSearch" 
+                                    placeholder="ابحث في المكتبة الكاملة... (من أول حرف)"
+                                    value="{{ request('q', '') }}"
+                                    class="search-input w-full px-4 py-3 text-lg border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-colors"
+                                    dir="rtl"
+                                    autocomplete="off"
+                                />
+                                
+                                <div class="absolute left-3 top-1/2 transform -translate-y-1/2">
                                     <!-- مؤشر التحميل -->
-                                    <div id="searchSpinner" class="absolute left-4 top-1/2 transform -translate-y-1/2 hidden">
-                                        <div class="animate-spin rounded-full h-6 w-6 border-b-2 border-blue-600"></div>
-                                    </div>
-                                    
+                                    <div id="searchSpinner" class="spinner hidden"></div>
                                     <!-- أيقونة البحث -->
-                                    <div id="searchIcon" class="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400">
-                                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m21 21-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
-                                        </svg>
-                                    </div>
-                                </div>
-                                
-                                <!-- معلومات البحث -->
-                                <div id="searchInfo" class="mt-2 text-sm text-gray-600 hidden">
-                                    <span id="searchTime"></span> • <span id="resultCount"></span>
+                                    <svg id="searchIcon" class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m21 21-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                                    </svg>
                                 </div>
                             </div>
-                            
-                            <!-- إعدادات البحث المتقدمة -->
-                            <div class="bg-gray-50 rounded-lg p-4 mb-6">
-                                <h3 class="text-lg font-semibold text-gray-800 mb-4">⚙️ إعدادات البحث المتقدمة</h3>
-                                
-                                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                    <!-- نوع البحث -->
-                                    <div>
-                                        <label class="block text-sm font-medium text-gray-700 mb-2">نوع البحث</label>
-                                        <select id="searchMode" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
-                                            <option value="flexible">مرن (افتراضي) - أفضل النتائج</option>
-                                            <option value="exact_phrase">مطابقة العبارة تماماً</option>
-                                            <option value="phrase_proximity">عبارة مع تباعد مسموح</option>
-                                            <option value="all_words">جميع الكلمات مطلوبة</option>
-                                            <option value="any_word">أي كلمة من الكلمات</option>
-                                        </select>
-                                        <div class="text-xs text-gray-500 mt-1">يحدد كيفية البحث في النصوص</div>
-                                    </div>
-                                    
-                                    <!-- تباعد الكلمات -->
-                                    <div>
-                                        <label class="block text-sm font-medium text-gray-700 mb-2">تباعد الكلمات</label>
-                                        <select id="proximityMode" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
-                                            <option value="any_order">أي ترتيب (افتراضي)</option>
-                                            <option value="consecutive">متتالية (ورا بعض)</option>
-                                            <option value="same_paragraph">نفس الفقرة</option>
-                                        </select>
-                                        <div class="text-xs text-gray-500 mt-1">يحدد المسافة المسموحة بين الكلمات</div>
-                                    </div>
+
+                            <!-- Search Filters -->
+                            <div class="search-filters flex flex-wrap gap-4">
+                                <!-- نوع البحث -->
+                                <div class="flex-1 min-w-[200px]">
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">نوع البحث</label>
+                                    <select id="searchMode" class="filter-select w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-emerald-500 focus:border-emerald-500">
+                                        <option value="flexible">مرن (افتراضي) - أفضل النتائج</option>
+                                        <option value="exact_phrase">مطابقة العبارة تماماً</option>
+                                        <option value="phrase_proximity">عبارة مع تباعد مسموح</option>
+                                        <option value="all_words">جميع الكلمات مطلوبة</option>
+                                        <option value="any_word">أي كلمة من الكلمات</option>
+                                    </select>
                                 </div>
-                                
-                                <!-- شرح مبسط للخيارات -->
-                                <div id="searchModeHelp" class="mt-4 p-3 bg-blue-50 border-l-4 border-blue-400 text-sm text-blue-800">
-                                    <div class="font-medium mb-1">البحث المرن (المختار حالياً):</div>
-                                    <div>يبحث بأفضل النتائج مع مراعاة المعنى والسياق</div>
+
+                                <!-- تباعد الكلمات -->
+                                <div class="flex-1 min-w-[200px]">
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">تباعد الكلمات</label>
+                                    <select id="proximityMode" class="filter-select w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-emerald-500 focus:border-emerald-500">
+                                        <option value="any_order">أي ترتيب (افتراضي)</option>
+                                        <option value="consecutive">متتالية (ورا بعض)</option>
+                                        <option value="same_paragraph">نفس الفقرة</option>
+                                    </select>
                                 </div>
-                            </div>
-                            
-                            <!-- فلاتر سريعة -->
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                <div>
-                                    <label class="block text-sm font-medium text-gray-700 mb-2">عدد النتائج لكل صفحة</label>
-                                    <select id="perPageSelect" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+
+                                <!-- عدد النتائج -->
+                                <div class="flex-1 min-w-[150px]">
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">عدد النتائج لكل صفحة</label>
+                                    <select id="perPageSelect" class="filter-select w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-emerald-500 focus:border-emerald-500">
                                         <option value="10">10 نتائج</option>
                                         <option value="15" selected>15 نتيجة</option>
                                         <option value="25">25 نتيجة</option>
                                         <option value="50">50 نتيجة</option>
                                     </select>
                                 </div>
-                                
-                                <div>
-                                    <label class="block text-sm font-medium text-gray-700 mb-2">الحالة</label>
-                                    <div id="connectionStatus" class="px-3 py-2 rounded-lg bg-green-100 text-green-800 text-sm">
-                                        🟢 متصل بالبحث المُحسَّن
+
+                                <!-- الحالة (مُحذوف المحتوى) -->
+                                <div class="flex-1 min-w-[120px]"></div>
+                            </div>
+
+                            <!-- شرح مبسط للخيارات -->
+                            <div id="searchModeHelp" class="p-3 bg-blue-50 border-l-4 border-blue-400 text-sm text-blue-800 rounded">
+                                <div class="font-medium mb-1">البحث المرن (المختار حالياً):</div>
+                                <div>يبحث بأفضل النتائج مع مراعاة المعنى والسياق</div>
+                            </div>
+
+                            <!-- Search Stats -->
+                            <div id="searchInfo" class="text-sm text-gray-600 hidden">
+                                <div class="flex justify-between items-center">
+                                    <div>
+                                        <span id="resultCount"></span>
+                                        <span id="searchTime">(خلال <span></span> ميلي ثانية)</span>
                                     </div>
                                 </div>
                             </div>
                         </div>
+                    </div>
 
-                        <!-- منطقة النتائج -->
-                        <div id="resultsContainer" class="mt-8">
-                            <!-- رسالة البداية -->
-                            <div id="welcomeMessage" class="text-center py-12">
-                                <div class="text-6xl mb-4">🔍</div>
-                                <h3 class="text-xl font-semibold text-gray-700 mb-2">البحث الفوري جاهز</h3>
-                                <p class="text-gray-500">ابدأ الكتابة لرؤية النتائج فوراً من 769,521 صفحة</p>
-                                <div class="mt-4 text-sm text-gray-400">
-                                    مدعوم بـ Elasticsearch 7.17.6 + Context7 MCP Best Practices
-                                </div>
-                            </div>
-                            
-                            <!-- النتائج -->
-                            <div id="searchResults" class="hidden space-y-4">
-                                <!-- النتائج ستظهر هنا -->
-                            </div>
-                            
-                            <!-- رسالة "لا توجد نتائج" -->
-                            <div id="noResults" class="hidden text-center py-8">
-                                <div class="text-4xl mb-3">😔</div>
-                                <h3 class="text-lg font-semibold text-gray-700 mb-2">لا توجد نتائج</h3>
-                                <p class="text-gray-500">جرب كلمات بحث أخرى</p>
-                            </div>
-                            
-                            <!-- رسالة خطأ -->
-                            <div id="searchError" class="hidden text-center py-8">
-                                <div class="text-4xl mb-3">⚠️</div>
-                                <h3 class="text-lg font-semibold text-red-700 mb-2">خطأ في البحث</h3>
-                                <p class="text-red-500">حدث خطأ أثناء البحث، يرجى المحاولة مرة أخرى</p>
-                            </div>
+                    <!-- Search Results -->
+                    <div class="space-y-4">
+                        <!-- Loading State -->
+                        <div id="searchLoading" class="text-center py-8 hidden">
+                            <div class="spinner mx-auto mb-4"></div>
+                            <p class="text-gray-600">جاري البحث...</p>
+                        </div>
+
+                        <!-- Welcome State -->
+                        <div id="welcomeMessage" class="text-center py-12 bg-white rounded-lg shadow-sm border border-gray-200">
+                            <svg class="mx-auto h-12 w-12 text-gray-400 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                            </svg>
+                            <h3 class="text-xl font-semibold text-gray-700 mb-2">ابدأ البحث الآن</h3>
+                            <p class="text-gray-500 mb-4">ابدأ الكتابة لرؤية النتائج فوراً</p>
+                        </div>
+
+                        <!-- No Results -->
+                        <div id="noResults" class="text-center py-12 bg-white rounded-lg shadow-sm border border-gray-200 hidden">
+                            <svg class="mx-auto h-12 w-12 text-gray-400 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.172 16.172a4 4 0 015.656 0M9 12h6m-6-4h6m2 5.291A7.962 7.962 0 0112 15c-2.34 0-4.467-.881-6.08-2.33"/>
+                            </svg>
+                            <h3 class="text-lg font-medium text-gray-900 mb-2">لا توجد نتائج</h3>
+                            <p class="text-gray-600">جرب استخدام كلمات مختلفة أو قم بتعديل المرشحات</p>
+                        </div>
+
+                        <!-- Error State -->
+                        <div id="searchError" class="text-center py-12 bg-white rounded-lg shadow-sm border border-red-200 hidden">
+                            <svg class="mx-auto h-12 w-12 text-red-400 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z"/>
+                            </svg>
+                            <h3 class="text-lg font-medium text-red-700 mb-2">خطأ في البحث</h3>
+                            <p class="text-red-500">حدث خطأ أثناء البحث، يرجى المحاولة مرة أخرى</p>
+                        </div>
+
+                        <!-- Results List -->
+                        <div id="searchResults" class="space-y-4 hidden">
+                            <!-- Results will be inserted here -->
+                        </div>
+
+                        <!-- Pagination -->
+                        <div id="paginationContainer" class="bg-white rounded-lg shadow-sm border border-gray-200 p-4 hidden">
+                            <!-- Pagination will be inserted here -->
                         </div>
                     </div>
                 </section>
@@ -156,6 +245,12 @@
             padding: 2px 4px;
             border-radius: 3px;
             font-weight: 500;
+        }
+
+        /* Selected result (keyboard navigation) */
+        .result-selected {
+            outline: 3px solid rgba(16,185,129,0.15);
+            box-shadow: 0 0 0 3px rgba(16,185,129,0.08);
         }
         
         .result-card {
@@ -359,6 +454,7 @@
             }
             
             async performSearch(query) {
+                console.debug('UltraFastSearch.performSearch start', { query: query, page: this.currentPage });
                 this.showLoading();
                 
                 const perPage = this.perPageSelect.value;
@@ -377,12 +473,14 @@
                     
                     const response = await fetch(`/api/ultra-search?${params}`);
                     const data = await response.json();
+                    console.debug('UltraFastSearch.performSearch response', data);
                     
                     const searchTime = Math.round(performance.now() - startTime);
                     
                     this.hideLoading();
                     
                     if (data.success && data.data && data.data.length > 0) {
+                        console.debug('UltraFastSearch.performSearch will display results', data.data.length);
                         this.displayResults(data.data, data.pagination, searchTime, searchMode);
                     } else {
                         this.showNoResults();
@@ -396,111 +494,96 @@
             }
             
             displayResults(results, pagination, searchTime, searchMode) {
+                console.debug('UltraFastSearch.displayResults', { resultsCount: results.length, pagination: pagination });
                 this.welcomeMessage.classList.add('hidden');
                 this.noResults.classList.add('hidden');
                 this.searchError.classList.add('hidden');
                 this.resultsContainer.classList.remove('hidden');
                 this.searchInfo.classList.remove('hidden');
-                
                 // تحديث معلومات البحث
-                this.searchTime.textContent = `${searchTime}ms`;
-                this.resultCount.textContent = `${pagination.total} نتيجة`;
-                
-                // عرض النتائج
+                if (this.searchTime) this.searchTime.textContent = `${searchTime}ms`;
+                if (this.resultCount) this.resultCount.textContent = `${pagination.total} نتيجة`;
+                // عرض النتائج (تصميم متوافق RTL)
+                // globalIndex helps maintain unique index across pages
+                let globalStart = ((pagination.current_page - 1) * pagination.per_page) || 0;
                 this.resultsContainer.innerHTML = results.map((result, index) => `
-                    <div class="result-card bg-white rounded-lg p-6 border border-gray-200 hover:border-blue-300 mb-4">
-                        <div class="flex justify-between items-start mb-4">
+                    <div id="result-${globalStart + index}" data-page-id="${result.id}" tabindex="0" data-result-index="${globalStart + index}" class="result-item result-card bg-white rounded-lg shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow">
+                        <div class="flex justify-between items-start mb-3">
                             <div class="flex-1">
-                                <div class="book-info text-white rounded-lg px-3 py-2 mb-3 shadow-sm">
-                                    <h3 class="text-lg font-bold text-gray-800 mb-1">
-                                        📚 ${result.book_title || 'كتاب غير محدد'}
-                                    </h3>
-                                    <div class="text-sm text-gray-600 flex items-center gap-2">
-                                        <span class="inline-flex items-center gap-1 bg-blue-100 text-blue-800 px-2 py-1 rounded-full text-xs">
-                                            � صفحة ${result.page_number || 'غير محدد'}
+                                    <h3 class="text-lg font-semibold text-gray-900 mb-1">
+                                    <a href="${result.url ? result.url : ('/book/' + result.book_id + '/' + result.page_number)}" class="hover:text-emerald-600 transition-colors">${result.book_title || 'كتاب غير محدد'}</a>
+                                </h3>
+                                ${result.section ? `<div class="mt-2"><span class="inline-block bg-gray-100 text-gray-700 px-2 py-1 rounded text-xs">${result.section}</span></div>` : ''}
+                                <div class="text-sm text-gray-600 space-y-1">
+                                    ${result.author_name ? `<div><span class="font-medium">المؤلف:</span> ${result.author_name}</div>` : ''}
+                                    <div class="flex flex-wrap gap-4 items-center">
+                                        ${result.section ? `<span><span class="font-medium">القسم:</span> ${result.section}</span>` : ''}
+                                        ${result.chapter_title ? `<span><span class="font-medium">الفصل:</span> ${result.chapter_title}</span>` : ''}
+                                        ${result.volume_title ? `<span><span class="font-medium">المجلد:</span> ${result.volume_title}</span>` : ''}
+                                        <span class="flex items-center gap-2">
+                                            <span class="font-medium">الصفحة:</span>
+                                            <span class="text-gray-700">${result.page_number || ''}</span>
                                         </span>
-                                        ${result.author_name ? `<span class="inline-flex items-center gap-1 bg-green-100 text-green-800 px-2 py-1 rounded-full text-xs">✍️ ${result.author_name}</span>` : ''}
                                     </div>
                                 </div>
                             </div>
-                            <div class="flex flex-col items-end gap-2">
-                                <div class="search-type-badge text-xs text-gray-700 px-3 py-1 rounded-full font-medium">
-                                    ${this.getSearchModeLabel(searchMode)}
+                            <div class="text-right">
+                                <div class="text-sm text-gray-500" >
+                                    ${result.score ? `الصلة: ${Math.round(result.score * 100)}%` : ''}
                                 </div>
-                                <div class="text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded-full">
-                                    النتيجة ${index + 1}
-                                </div>
+                                <div class="text-xs text-gray-500 mt-2">النتيجة ${index + 1}</div>
                             </div>
                         </div>
-                        
-                        <div class="content-preview text-white rounded-lg p-4 mb-4 shadow-sm">
-                            <div class="text-gray-800 leading-relaxed text-right" dir="rtl">
-                                <div class="result-content-${result.id} text-gray-700">
-                                    ${result.content || 'لا يوجد محتوى للعرض'}
-                                </div>
-                                <div class="full-content-${result.id} hidden full-content-container">
-                                    <!-- المحتوى الكامل سيتم تحميله هنا -->
-                                </div>
+
+                        <div class="text-gray-700 leading-relaxed mb-3">
+                            <div class="result-content-${result.id}">
+                                <p class="mb-3">${result.highlight || result.content || result.content_preview || 'لا يوجد محتوى للعرض'}</p>
                             </div>
                         </div>
-                        
-                        <div class="flex justify-between items-center">
-                            <div class="flex gap-2 flex-wrap">
-                                <button onclick="goToPage(${result.book_id}, ${result.page_number})" 
-                                        class="action-btn px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg text-sm font-medium transition-all duration-200 shadow-sm hover:shadow-md">
-                                    📖 انتقال للصفحة
-                                </button>
-                                <button onclick="goToBook(${result.book_id})" 
-                                        class="action-btn px-4 py-2 bg-green-500 hover:bg-green-600 text-white rounded-lg text-sm font-medium transition-all duration-200 shadow-sm hover:shadow-md">
-                                    📚 عرض الكتاب
-                                </button>
-                                <button onclick="toggleFullContent(${result.id})" 
-                                        class="toggle-btn toggle-btn-${result.id} action-btn px-4 py-2 bg-purple-500 hover:bg-purple-600 text-white rounded-lg text-sm font-medium transition-all duration-200 shadow-sm hover:shadow-md">
-                                    🔍 عرض الصفحة كاملة
-                                </button>
+
+                        <div class="flex items-center justify-between gap-3 pt-3 border-t border-gray-100">
+                            <div class="flex items-center gap-3 flex-row-reverse">
+                                <button onclick="toggleFullContent(${result.id})" class="toggle-btn toggle-btn-${result.id} px-3 py-2 bg-gray-100 hover:bg-gray-200 rounded text-sm">🔍 عرض الصفحة كاملة</button>
+                                <button onclick="copyContent(${result.id})" class="px-3 py-2 bg-gray-100 hover:bg-gray-200 rounded text-sm">نسخ</button>
+                                <button onclick="shareResult(${result.id})" class="px-3 py-2 bg-gray-100 hover:bg-gray-200 rounded text-sm">مشاركة</button>
+                                <button onclick="printContent(${result.id})" class="px-3 py-2 bg-gray-100 hover:bg-gray-200 rounded text-sm">طباعة</button>
                                 <div class="relative inline-block">
-                                    <button onclick="toggleMoreOptions(${result.id})" 
-                                            class="action-btn px-4 py-2 bg-gray-500 hover:bg-gray-600 text-white rounded-lg text-sm font-medium transition-all duration-200 shadow-sm hover:shadow-md">
-                                        ⋯ المزيد
-                                    </button>
-                                    <div id="more-options-${result.id}" class="hidden more-options-menu absolute right-0 mt-2 w-56 bg-white rounded-lg shadow-xl z-20 border border-gray-200 overflow-hidden">
-                                        <div class="py-2">
-                                            <button onclick="showRelatedPages(${result.book_id}, ${result.page_number})" class="action-btn block w-full text-right px-4 py-3 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-700 transition-all duration-200">
-                                                📄 صفحات مشابهة
-                                            </button>
-                                            <button onclick="copyContent(${result.id})" class="action-btn block w-full text-right px-4 py-3 text-sm text-gray-700 hover:bg-green-50 hover:text-green-700 transition-all duration-200">
-                                                📋 نسخ النص
-                                            </button>
-                                            <button onclick="shareResult(${result.id})" class="action-btn block w-full text-right px-4 py-3 text-sm text-gray-700 hover:bg-yellow-50 hover:text-yellow-700 transition-all duration-200">
-                                                🔗 مشاركة النتيجة
-                                            </button>
-                                            <button onclick="printContent(${result.id})" class="action-btn block w-full text-right px-4 py-3 text-sm text-gray-700 hover:bg-purple-50 hover:text-purple-700 transition-all duration-200">
-                                                🖨️ طباعة
-                                            </button>
+                                    <button onclick="toggleMoreOptions(${result.id})" class="px-3 py-2 bg-gray-100 hover:bg-gray-200 rounded text-sm">⋯</button>
+                                    <div id="more-options-${result.id}" class="hidden more-options-menu absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg z-20 border border-gray-200">
+                                        <div class="py-1">
+                                            <button onclick="showRelatedPages(${result.book_id}, ${result.page_number})" class="block w-full text-right px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">📄 صفحات مشابهة</button>
+                                            <button onclick="copyContent(${result.id})" class="block w-full text-right px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">📋 نسخ النص</button>
+                                            <button onclick="shareResult(${result.id})" class="block w-full text-right px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">🔗 مشاركة</button>
+                                            <button onclick="printContent(${result.id})" class="block w-full text-right px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">🖨️ طباعة</button>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            <div class="text-xs text-gray-500 bg-gray-50 px-3 py-2 rounded-lg">
-                                <div class="search-performance px-2 py-1 rounded text-white text-center">
-                                    Score: ${result.score ? result.score.toFixed(2) : 'N/A'}
-                                </div>
-                            </div>
+                            <div class="text-xs text-gray-500 text-left">ID: ${result.id}</div>
+                        </div>
+
+                        <div class="full-content-${result.id} hidden mt-4">
+                            <!-- full content will load here -->
                         </div>
                     </div>
                 `).join('');
+
+                // re-init keyboard navigation
+                initKeyboardNav();
                 
                 // إضافة زر "تحميل المزيد" إذا كان هناك المزيد من النتائج
-                if (pagination.current_page < pagination.last_page) {
+                if (pagination.last_page && pagination.last_page > 1) {
+                    // replace with requested pagination design (non-Alpine bindings)
                     this.resultsContainer.innerHTML += `
-                        <div class="text-center mt-6 mb-4">
-                            <button onclick="loadMoreResults()" 
-                                    id="loadMoreBtn"
-                                    class="px-6 py-3 bg-blue-500 hover:bg-blue-600 text-white rounded-lg text-sm font-medium transition-colors shadow-sm hover:shadow-md">
-                                📄 تحميل المزيد من النتائج (الصفحة ${pagination.current_page + 1} من ${pagination.last_page})
-                            </button>
-                            <div class="text-xs text-gray-500 mt-2">
-                                عرض ${pagination.from}-${pagination.to} من ${pagination.total} نتيجة
+                        <div id="paginationBar" class="bg-white rounded-lg shadow-sm border border-gray-200 p-4 mt-6">
+                            <div class="flex justify-between items-center">
+                                <div class="text-sm text-gray-600">
+                                    صفحة <span class="font-medium">${pagination.current_page}</span> من <span class="font-medium">${pagination.last_page}</span>
+                                </div>
+                                <div class="flex space-x-2 space-x-reverse">
+                                    <button onclick="window.searchInstance.goToPage(${Math.max(1, pagination.current_page - 1)})" ${pagination.current_page === 1 ? 'disabled' : ''} class="px-3 py-2 rounded-md text-sm font-medium transition-colors ${pagination.current_page === 1 ? 'bg-gray-300 text-gray-500 cursor-not-allowed' : 'bg-emerald-600 text-white hover:bg-emerald-700'}">السابق</button>
+                                    <button onclick="window.searchInstance.goToPage(${Math.min(pagination.last_page, pagination.current_page + 1)})" ${pagination.current_page === pagination.last_page ? 'disabled' : ''} class="px-3 py-2 rounded-md text-sm font-medium transition-colors ${pagination.current_page === pagination.last_page ? 'bg-gray-300 text-gray-500 cursor-not-allowed' : 'bg-emerald-600 text-white hover:bg-emerald-700'}">التالي</button>
+                                </div>
                             </div>
                         </div>
                     `;
@@ -509,6 +592,15 @@
                 // حفظ بيانات الصفحة الحالية
                 this.currentPage = pagination.current_page;
                 this.totalPages = pagination.last_page;
+            }
+
+            goToPage(page) {
+                if (!page || page < 1) return;
+                this.currentPage = page;
+                const query = this.searchInput.value.trim();
+                if (query.length >= 1) {
+                    this.performSearch(query);
+                }
             }
             
             getSearchModeLabel(mode) {
@@ -558,31 +650,59 @@
         
         // توسيع المحتوى للصفحة كاملة
         async function toggleFullContent(pageId) {
-            const toggleBtn = document.querySelector(`.toggle-btn-${pageId}`);
-            const shortContent = document.querySelector(`.result-content-${pageId}`);
-            const fullContentDiv = document.querySelector(`.full-content-${pageId}`);
-            
-            if (fullContentDiv.classList.contains('hidden')) {
-                // عرض المحتوى الكامل
+            // locate elements more robustly: by data-page-id wrapper, or by direct classes
+            const wrapper = document.querySelector(`[data-page-id='${pageId}']`) || document.getElementById(`result-${pageId}`) || document.querySelector(`#result-${pageId}`);
+            const toggleBtn = wrapper ? wrapper.querySelector(`.toggle-btn-${pageId}`) : document.querySelector(`.toggle-btn-${pageId}`);
+            let shortContent = wrapper ? wrapper.querySelector(`.result-content-${pageId}`) : document.querySelector(`.result-content-${pageId}`);
+            let fullContentDiv = wrapper ? wrapper.querySelector(`.full-content-${pageId}`) : document.querySelector(`.full-content-${pageId}`);
+
+            // if fullContentDiv doesn't exist, create it at the end of wrapper
+            if (!fullContentDiv && wrapper) {
+                fullContentDiv = document.createElement('div');
+                fullContentDiv.className = `full-content-${pageId} hidden mt-4`;
+                wrapper.appendChild(fullContentDiv);
+            }
+
+            // if shortContent missing, try to find any child with 'result-content-' prefix
+            if (!shortContent && wrapper) {
+                shortContent = Array.from(wrapper.querySelectorAll('[class*="result-content-"]'))[0] || null;
+            }
+
+            if (!toggleBtn) {
+                console.warn('toggleFullContent: button not found for pageId', pageId);
+                return;
+            }
+
+            const isHidden = fullContentDiv ? fullContentDiv.classList.contains('hidden') : true;
+
+            if (isHidden) {
                 toggleBtn.textContent = '⏳ جاري التحميل...';
                 toggleBtn.disabled = true;
-                
+
                 try {
                     const response = await fetch(`/api/page/${pageId}/full-content`);
                     const data = await response.json();
-                    
-                    if (data.success) {
+
+                    if (data && data.success) {
+                        const currentQuery = document.getElementById('instantSearch').value || '';
+                        const highlighted = currentQuery ? highlightTerms(data.page.full_content || '', currentQuery) : (data.page.full_content || 'لا يوجد محتوى متاح');
+
                         fullContentDiv.innerHTML = `
                             <div class="bg-blue-50 p-4 rounded-lg mb-3">
                                 <h4 class="font-semibold text-blue-800 mb-2">📄 المحتوى الكامل للصفحة ${data.page.page_number}</h4>
                                 <div class="text-sm text-blue-600 mb-2">من كتاب: ${data.page.book_title}</div>
+                                <div class="text-sm text-gray-700 mt-1">
+                                    ${data.page.section ? `<span class="inline-block bg-gray-100 px-2 py-1 rounded mr-2">${data.page.section}</span>` : ''}
+                                    ${data.page.chapter_title ? `<span class="inline-block bg-gray-100 px-2 py-1 rounded mr-2">${data.page.chapter_title}</span>` : ''}
+                                    ${data.page.volume_title ? `<span class="inline-block bg-gray-100 px-2 py-1 rounded mr-2">${data.page.volume_title}</span>` : ''}
+                                </div>
                             </div>
                             <div class="text-gray-700 leading-relaxed" dir="rtl">
-                                ${data.page.full_content || 'لا يوجد محتوى متاح'}
+                                ${highlighted}
                             </div>
                         `;
-                        
-                        shortContent.classList.add('hidden');
+
+                        if (shortContent) shortContent.classList.add('hidden');
                         fullContentDiv.classList.remove('hidden');
                         toggleBtn.textContent = '📝 عرض مختصر';
                     } else {
@@ -592,13 +712,30 @@
                     alert('خطأ في تحميل المحتوى');
                     console.error(error);
                 }
-                
+
                 toggleBtn.disabled = false;
             } else {
                 // العودة للعرض المختصر
-                shortContent.classList.remove('hidden');
-                fullContentDiv.classList.add('hidden');
+                if (shortContent) shortContent.classList.remove('hidden');
+                if (fullContentDiv) fullContentDiv.classList.add('hidden');
                 toggleBtn.textContent = '🔍 عرض الصفحة كاملة';
+            }
+        }
+
+        // تضع علامة <mark> على مصطلحات البحث داخل النص (حفظ التظليل عند عرض كامل الصفحة)
+        function highlightTerms(text, query) {
+            if (!text || !query) return text || '';
+            try {
+                // تقسيم الكلمات وتجاهل الفراغات الصغيرة
+                const terms = query.split(/\s+/).filter(t => t.length > 1);
+                if (terms.length === 0) return text;
+
+                // بناء نمط regex آمن
+                const escaped = terms.map(t => t.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'));
+                const pattern = new RegExp('(' + escaped.join('|') + ')', 'gi');
+                return text.replace(pattern, '<mark>$1</mark>');
+            } catch (e) {
+                return text;
             }
         }
         
@@ -882,7 +1019,7 @@
                                         </div>
                                         <div class="space-y-2">
                                             <h5 class="font-medium text-gray-700">⚡ سرعة فائقة</h5>
-                                            <p class="text-sm text-gray-600">البحث في أكثر من 769,521 صفحة بسرعة تقل عن 350 مللي ثانية.</p>
+                                            <p class="text-sm text-gray-600">تم تصميم النظام للحصول على استجابات سريعة ضمن مئات المللي ثواني.</p>
                                         </div>
                                         <div class="space-y-2">
                                             <h5 class="font-medium text-gray-700">🎯 دقة عالية</h5>
@@ -899,7 +1036,7 @@
                         <div class="bg-gray-50 px-6 py-4 border-t">
                             <div class="text-sm text-gray-600 text-center">
                                 <span class="bg-blue-100 text-blue-800 px-3 py-1 rounded-full font-medium">
-                                    نظام بحث متطور مع تقنية Elasticsearch • أكثر من 769,521 صفحة
+                                    نظام بحث متطور مع تقنية Elasticsearch
                                 </span>
                             </div>
                         </div>
@@ -945,96 +1082,72 @@
                     loadMoreBtn.parentElement.remove();
                     
                     // إضافة النتائج الجديدة
+                    // compute starting index for newly appended results
+                    const existingCount = document.querySelectorAll('#searchResults .result-item').length;
                     const newResults = data.data.map((result, index) => `
-                        <div class="result-card bg-white rounded-lg p-6 border border-gray-200 hover:border-blue-300 mb-4">
+                        <div id="result-${existingCount + index}" data-page-id="${result.id}" tabindex="0" data-result-index="${existingCount + index}" class="result-item result-card bg-white rounded-lg shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow mb-4">
                             <div class="flex justify-between items-start mb-3">
                                 <div class="flex-1">
-                                    <h3 class="text-lg font-semibold text-gray-800 mb-2">
-                                        📚 ${result.book_title || 'كتاب غير محدد'}
+                                    <div class="text-xs text-gray-500 mb-2 text-left">ID: ${result.id}</div>
+                                    <h3 class="text-lg font-semibold text-gray-900 mb-1">
+                                        <a href="${result.url ? result.url : ('/book/' + result.book_id + '/' + result.page_number)}" class="hover:text-emerald-600 transition-colors">${result.book_title || 'كتاب غير محدد'}</a>
                                     </h3>
-                                    <div class="text-sm text-gray-600 mb-2">
-                                        <span class="inline-flex items-center gap-1 bg-gray-100 px-2 py-1 rounded text-xs">
-                                            📄 صفحة ${result.page_number || 'غير محدد'}
-                                        </span>
-                                        ${result.author_name ? `<span class="inline-flex items-center gap-1 bg-gray-100 px-2 py-1 rounded text-xs ml-2">✍️ ${result.author_name}</span>` : ''}
+                                    ${result.section ? `<div class="mt-2"><span class="inline-block bg-gray-100 text-gray-700 px-2 py-1 rounded text-xs">${result.section}</span></div>` : ''}
+                                        <div class="text-sm text-gray-600 flex items-center gap-3">
+                                        <span class="inline-flex items-center gap-1 bg-gray-100 px-2 py-1 rounded text-xs">الصفحة ${result.page_number || ''}</span>
+                                        ${result.author_name ? `<span class="inline-flex items-center gap-1 bg-gray-100 px-2 py-1 rounded text-xs">✍️ ${result.author_name}</span>` : ''}
+                                        ${result.section ? `<span class="inline-flex items-center gap-1 bg-gray-100 px-2 py-1 rounded text-xs">${result.section}</span>` : ''}
+                                        ${result.chapter_title ? `<span class="inline-flex items-center gap-1 bg-gray-100 px-2 py-1 rounded text-xs">${result.chapter_title}</span>` : ''}
+                                        ${result.volume_title ? `<span class="inline-flex items-center gap-1 bg-gray-100 px-2 py-1 rounded text-xs">${result.volume_title}</span>` : ''}
                                     </div>
                                 </div>
                                 <div class="text-xs text-gray-500 bg-gray-50 px-2 py-1 rounded">
                                     النتيجة ${((nextPage - 1) * perPage) + index + 1}
                                 </div>
                             </div>
-                            
-                            <div class="bg-gray-50 rounded-lg p-4 mb-4">
-                                <div class="text-gray-700 leading-relaxed text-right" dir="rtl">
-                                    <div class="result-content-${result.id}">
-                                        ${result.content || 'لا يوجد محتوى للعرض'}
-                                    </div>
-                                    <div class="full-content-${result.id} hidden">
-                                        <!-- المحتوى الكامل سيتم تحميله هنا -->
-                                    </div>
-                                </div>
+
+                            <div class="text-gray-700 leading-relaxed mb-3">
+                                <div class="result-content-${result.id}"><p>${result.highlight || result.content || 'لا يوجد محتوى للعرض'}</p></div>
                             </div>
-                            
-                            <div class="flex justify-between items-center">
-                                <div class="flex gap-2 flex-wrap">
-                                    <button onclick="goToPage(${result.book_id}, ${result.page_number})" 
-                                            class="px-3 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded text-sm transition-colors">
-                                        📖 انتقال للصفحة
-                                    </button>
-                                    <button onclick="goToBook(${result.book_id})" 
-                                            class="px-3 py-2 bg-green-500 hover:bg-green-600 text-white rounded text-sm transition-colors">
-                                        📚 عرض الكتاب
-                                    </button>
-                                    <button onclick="toggleFullContent(${result.id})" 
-                                            class="toggle-btn-${result.id} px-3 py-2 bg-gray-500 hover:bg-gray-600 text-white rounded text-sm transition-colors">
-                                        🔍 عرض كامل
-                                    </button>
+
+                            <div class="flex items-center justify-between gap-3 pt-3 border-t border-gray-100">
+                                <div class="flex items-center gap-3 flex-row-reverse">
+                                    <button onclick="toggleFullContent(${result.id})" class="toggle-btn toggle-btn-${result.id} px-3 py-2 bg-gray-100 hover:bg-gray-200 rounded text-sm">🔍 عرض الصفحة كاملة</button>
+                                    <button onclick="copyContent(${result.id})" class="px-3 py-2 bg-gray-100 hover:bg-gray-200 rounded text-sm">نسخ</button>
+                                    <button onclick="shareResult(${result.id})" class="px-3 py-2 bg-gray-100 hover:bg-gray-200 rounded text-sm">مشاركة</button>
+                                    <button onclick="printContent(${result.id})" class="px-3 py-2 bg-gray-100 hover:bg-gray-200 rounded text-sm">طباعة</button>
                                     <div class="relative inline-block">
-                                        <button onclick="toggleMoreOptions(${result.id})" 
-                                                class="px-3 py-2 bg-gray-400 hover:bg-gray-500 text-white rounded text-sm transition-colors">
-                                            ⋯ المزيد
-                                        </button>
+                                        <button onclick="toggleMoreOptions(${result.id})" class="px-3 py-2 bg-gray-100 hover:bg-gray-200 rounded text-sm">⋯</button>
                                         <div id="more-options-${result.id}" class="hidden more-options-menu absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg z-20 border border-gray-200">
                                             <div class="py-1">
-                                                <button onclick="showRelatedPages(${result.book_id}, ${result.page_number})" class="block w-full text-right px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                                                    📄 صفحات مشابهة
-                                                </button>
-                                                <button onclick="copyContent(${result.id})" class="block w-full text-right px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                                                    📋 نسخ النص
-                                                </button>
-                                                <button onclick="shareResult(${result.id})" class="block w-full text-right px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                                                    🔗 مشاركة
-                                                </button>
-                                                <button onclick="printContent(${result.id})" class="block w-full text-right px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                                                    🖨️ طباعة
-                                                </button>
+                                                <button onclick="showRelatedPages(${result.book_id}, ${result.page_number})" class="block w-full text-right px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">📄 صفحات مشابهة</button>
+                                                <button onclick="copyContent(${result.id})" class="block w-full text-right px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">📋 نسخ النص</button>
+                                                <button onclick="shareResult(${result.id})" class="block w-full text-right px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">🔗 مشاركة</button>
+                                                <button onclick="printContent(${result.id})" class="block w-full text-right px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">🖨️ طباعة</button>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="text-xs text-gray-500">
-                                    <span class="bg-gray-100 px-2 py-1 rounded">${getSearchModeLabel(searchMode)}</span>
-                                    • Score: ${result.score ? result.score.toFixed(2) : 'N/A'}
-                                </div>
+                                <div class="text-xs text-gray-500">ID: ${result.id}</div>
                             </div>
+
+                            <div class="full-content-${result.id} hidden mt-4"><!-- will be inserted when requested --></div>
                         </div>
                     `).join('');
                     
                     // إضافة النتائج الجديدة للصفحة
                     document.getElementById('searchResults').insertAdjacentHTML('beforeend', newResults);
+
+                    // re-init keyboard navigation for appended items
+                    initKeyboardNav();
                     
-                    // إضافة زر "تحميل المزيد" الجديد إذا كان هناك المزيد
-                    if (data.pagination.current_page < data.pagination.last_page) {
+                    // إضافة شريط الترقيم السابق/التالي بدلًا من زر "تحميل المزيد"
+                    if (data.pagination && data.pagination.last_page && data.pagination.last_page > 1) {
                         document.getElementById('searchResults').insertAdjacentHTML('beforeend', `
-                            <div class="text-center mt-6 mb-4">
-                                <button onclick="loadMoreResults()" 
-                                        id="loadMoreBtn"
-                                        class="px-6 py-3 bg-blue-500 hover:bg-blue-600 text-white rounded-lg text-sm font-medium transition-colors shadow-sm hover:shadow-md">
-                                    📄 تحميل المزيد من النتائج (الصفحة ${data.pagination.current_page + 1} من ${data.pagination.last_page})
-                                </button>
-                                <div class="text-xs text-gray-500 mt-2">
-                                    عرض ${data.pagination.from}-${data.pagination.to} من ${data.pagination.total} نتيجة
-                                </div>
+                            <div id="paginationBar" class="flex items-center justify-center gap-4 mt-6">
+                                <button onclick="window.searchInstance.goToPage(${Math.max(1, data.pagination.current_page - 1)})" class="px-4 py-2 bg-gray-100 hover:bg-gray-200 rounded text-sm" ${data.pagination.current_page === 1 ? 'disabled' : ''}>السابق</button>
+                                <div class="text-sm text-gray-700">الصفحة ${data.pagination.current_page} من ${data.pagination.last_page} • إجمالي ${data.pagination.total} نتيجة</div>
+                                <button onclick="window.searchInstance.goToPage(${Math.min(data.pagination.last_page, data.pagination.current_page + 1)})" class="px-4 py-2 bg-gray-100 hover:bg-gray-200 rounded text-sm" ${data.pagination.current_page === data.pagination.last_page ? 'disabled' : ''}>التالي</button>
                             </div>
                         `);
                     }
@@ -1073,10 +1186,77 @@
                 });
             }
         });
+
+        // ---- Keyboard navigation between results ----
+        let keyboardNav = {
+            focusedIndex: -1,
+        };
+
+        function initKeyboardNav() {
+            const items = Array.from(document.querySelectorAll('#searchResults .result-item'));
+            items.forEach((el, idx) => {
+                el.setAttribute('data-result-index', idx);
+                el.tabIndex = 0;
+
+                // click/focus handlers to keep track
+                el.addEventListener('focus', () => {
+                    setFocusedIndex(idx);
+                });
+            });
+
+            // if none focused, set first as focused when items exist
+            if (items.length && keyboardNav.focusedIndex === -1) {
+                setFocusedIndex(0);
+            }
+        }
+
+        function setFocusedIndex(idx) {
+            const items = Array.from(document.querySelectorAll('#searchResults .result-item'));
+            if (!items.length) return;
+            if (idx < 0) idx = 0;
+            if (idx >= items.length) idx = items.length - 1;
+
+            // remove previous
+            items.forEach(i => i.classList.remove('result-selected'));
+            const el = items[idx];
+            el.classList.add('result-selected');
+                    el.focus({ preventScroll: true });
+                    el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            keyboardNav.focusedIndex = idx;
+        }
+
+        document.addEventListener('keydown', function(e) {
+            const items = Array.from(document.querySelectorAll('#searchResults .result-item'));
+            if (!items.length) return;
+
+            if (e.key === 'ArrowDown' || e.key === 'ArrowRight') {
+                e.preventDefault();
+                setFocusedIndex((keyboardNav.focusedIndex === -1 ? 0 : keyboardNav.focusedIndex + 1));
+            } else if (e.key === 'ArrowUp' || e.key === 'ArrowLeft') {
+                e.preventDefault();
+                setFocusedIndex((keyboardNav.focusedIndex === -1 ? 0 : keyboardNav.focusedIndex - 1));
+            } else if (e.key === 'Enter') {
+                // trigger full page view for focused item
+                const idx = keyboardNav.focusedIndex;
+                if (idx >= 0 && items[idx]) {
+                    // find the result id from the element's inner toggle button class
+                    const el = items[idx];
+                    const toggleBtn = el.querySelector('[class*="toggle-btn-"]');
+                    if (toggleBtn) {
+                        // extract id from class name
+                        const cls = Array.from(toggleBtn.classList).find(c => c.startsWith('toggle-btn-'));
+                        if (cls) {
+                            const id = cls.replace('toggle-btn-','');
+                            toggleFullContent(id);
+                        }
+                    }
+                }
+            }
+        });
         
         // تهيئة البحث عند تحميل الصفحة
         document.addEventListener('DOMContentLoaded', function() {
-            const searchInstance = new UltraFastSearch();
+            window.searchInstance = new UltraFastSearch();
             
             // إذا جاء المستخدم من صفحة الـ home مع نص بحث، قم بالبحث تلقائياً
             const urlParams = new URLSearchParams(window.location.search);
@@ -1087,19 +1267,22 @@
                 // إذا كان هناك نوع بحث محدد، قم بتحديث الإعداد
                 if (searchType === 'authors') {
                     document.getElementById('searchMode').value = 'all_words';
-                    searchInstance.updateSearchModeHelp();
+                    window.searchInstance.updateSearchModeHelp();
                 } else if (searchType === 'books') {
                     document.getElementById('searchMode').value = 'phrase_proximity';
-                    searchInstance.updateSearchModeHelp();
+                    window.searchInstance.updateSearchModeHelp();
                 }
                 
                 // تأكد من أن النص في مربع البحث ثم قم بالبحث
                 setTimeout(() => {
-                    if (searchInstance.searchInput.value.trim()) {
-                        searchInstance.performSearch(searchInstance.searchInput.value.trim());
+                    if (window.searchInstance.searchInput.value.trim()) {
+                        window.searchInstance.performSearch(window.searchInstance.searchInput.value.trim());
                     }
                 }, 500);
             }
+
+            // init keyboard navigation handlers (if results present later)
+            initKeyboardNav();
         });
     </script>
 </x-superduper.main>
