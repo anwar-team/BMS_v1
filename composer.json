@@ -53,6 +53,7 @@
         "laravel/sanctum": "^4.0",
         "laravel/tinker": "^2.8",
         "league/commonmark": "^2.4",
+        "marcelweidum/filament-expiration-notice": "^1.0",
         "opcodesio/log-viewer": "^3.11",
         "pxlrbt/filament-spotlight": "^2.0",
         "riodwanto/filament-ace-editor": "^1.0",
