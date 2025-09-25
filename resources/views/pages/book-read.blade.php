@@ -62,7 +62,7 @@
                     <!-- Main Content -->
                     <div class="flex flex-col gap-4 sm:gap-6">
                         <!-- Toolbar -->
-                        <div class="bg-white rounded-xl shadow-md overflow-hidden border border-[#e0d9cc] p-2 sm:p-3">
+                        <div class="bg-white rounded-xl shadow-md overflow-visible border border-[#e0d9cc] p-2 sm:p-3">
                             <div class="flex flex-col sm:flex-row sm:flex-wrap items-center gap-2 sm:gap-3">
                                 <div class="flex items-center border-b border-[#e0d9cc] pb-2 w-full sm:w-auto sm:border-0 sm:pb-0 sm:border-r sm:pr-4">
                                     <button id="decreaseFontSize" class="w-8 h-8 sm:w-10 sm:h-10 flex items-center justify-center rounded-full bg-[#f0e9de] hover:bg-[#e8e0d0] text-[#5D6019] font-bold transition-colors text-sm sm:text-base">
@@ -81,7 +81,7 @@
                                         </svg>
                                     </button>
                                     <!-- نتائج البحث -->
-                                    <div id="searchResults" class="absolute top-full left-0 right-0 bg-white border border-[#e0d9cc] rounded-lg shadow-lg mt-1 max-h-60 overflow-y-auto z-50 hidden">
+                                    <div id="searchResults" class="absolute top-full left-0 right-0 bg-white border border-[#e0d9cc] rounded-lg shadow-lg mt-1 max-h-72 overflow-y-auto z-[9999] hidden" style="overflow: auto; min-width: 360px;">
                                         <!-- سيتم ملء النتائج هنا بواسطة JavaScript -->
                                     </div>
                                 </div>
@@ -315,9 +315,25 @@
             }
         }
 
-        function goToPage(page) {
+        function goToPage(page, q) {
             if (page >= 1 && page <= {{ $navigationInfo['total_pages'] }}) {
-                window.location.href = `{{ route('book.read', ['bookId' => $book->id, 'pageNumber' => '']) }}${page}`;
+                let url = `{{ route('book.read', ['bookId' => $book->id, 'pageNumber' => '']) }}${page}`;
+                if (q) {
+                    try {
+                        // Normalize possible quoted or encoded values passed from onclick
+                        let val = q;
+                        if (typeof val === 'string' && (val.startsWith('"') || val.startsWith("'"))) {
+                            val = val.slice(1, -1);
+                        }
+                        // decode any percent-encoding
+                        try { val = decodeURIComponent(val); } catch (e) { /* ignore */ }
+                        // finally encode for URL param
+                        url += '?q=' + encodeURIComponent(val);
+                    } catch (e) {
+                        url += '?q=' + encodeURIComponent(String(q));
+                    }
+                }
+                window.location.href = url;
             }
         }
 
@@ -356,7 +372,8 @@
             })
             .then(response => response.json())
             .then(data => {
-                displaySearchResults(data.results);
+                console.debug('book.read search response', data);
+                displaySearchResults(data.results || data.data || [], query);
             })
             .catch(error => {
                 console.error('Search error:', error);
@@ -374,24 +391,72 @@
         });
         }
 
-        function displaySearchResults(results) {
+        function displaySearchResults(results, query) {
             const resultsContainer = document.getElementById('searchResults');
-            if (results.length === 0) {
+            if (!results || results.length === 0) {
                 resultsContainer.innerHTML = '<div class="p-4 text-center text-gray-500">لم يتم العثور على نتائج</div>';
-            } else {
-                let html = '<div class="max-h-64 overflow-y-auto">';
-                results.forEach(result => {
-                    html += `
-                        <div class="p-3 border-b border-gray-200 hover:bg-gray-50 cursor-pointer" onclick="goToPage(${result.page_number})">
-                            <div class="text-sm text-gray-600 mb-1">الصفحة ${result.page_number}</div>
-                            <div class="text-sm">${result.excerpt}</div>
-                        </div>
-                    `;
-                });
-                html += '</div>';
-                resultsContainer.innerHTML = html;
+                resultsContainer.classList.remove('hidden');
+                return;
             }
+
+            // richer result item layout
+            let html = '<div class="max-h-64 overflow-y-auto">';
+            results.forEach(result => {
+                const sectionText = result.section || (result.meta && result.meta.section) || '';
+                const volumeText = result.volume_title || (result.meta && result.meta.volume_title) || '';
+                const sectionBadge = sectionText ? `<span class="inline-block bg-gray-100 text-gray-700 px-2 py-0.5 rounded text-xs ml-2">${sectionText}</span>` : '';
+                const volumeBadge = volumeText ? `<span class="inline-block bg-gray-100 text-gray-700 px-2 py-0.5 rounded text-xs ml-2">${volumeText}</span>` : '';
+                const safeQuery = query ? JSON.stringify(query) : 'null';
+                const excerpt = result.excerpt || result.content_preview || result.snippet || '';
+                html += `
+                    <div class="p-3 border-b border-gray-200 hover:bg-gray-50 cursor-pointer" onclick="goToPage(${result.page_number}, ${safeQuery})">
+                        <div class="flex items-start justify-between gap-3">
+                            <div class="flex-1 text-right">
+                                <div class="text-sm text-gray-600 mb-1">الصفحة <span class="font-semibold">${result.page_number}</span></div>
+                                <div class="text-sm text-gray-800 break-words">${excerpt}</div>
+                                <div class="mt-2 text-xs text-gray-500">${sectionBadge} ${volumeBadge}</div>
+                            </div>
+                            <div class="flex-shrink-0 text-left">
+                                <div class="bg-[#f8faf6] border border-gray-200 rounded px-3 py-1 text-sm text-[#5D6019] font-bold">صفحة</div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+            html += '</div>';
+            resultsContainer.innerHTML = html;
             resultsContainer.classList.remove('hidden');
+        }
+
+        // Highlight query terms in page content if ?q=... is present
+        function highlightPageQuery() {
+            const params = new URLSearchParams(window.location.search);
+            const q = params.get('q');
+            if (!q) return;
+            try {
+                const terms = q.split(/\s+/).filter(t => t.length > 0);
+                if (!terms.length) return;
+                const content = document.getElementById('bookContent');
+                if (!content) return;
+                const walker = document.createTreeWalker(content, NodeFilter.SHOW_TEXT, null, false);
+                const nodes = [];
+                while(walker.nextNode()) nodes.push(walker.currentNode);
+
+                const escapedTerms = terms.map(t => t.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'));
+                const pattern = new RegExp('(' + escapedTerms.join('|') + ')', 'gi');
+
+                nodes.forEach(textNode => {
+                    if (textNode.parentNode && !['SCRIPT','STYLE'].includes(textNode.parentNode.nodeName)) {
+                        if (pattern.test(textNode.nodeValue)) {
+                            const span = document.createElement('span');
+                            span.innerHTML = textNode.nodeValue.replace(pattern, '<mark>$1</mark>');
+                            textNode.parentNode.replaceChild(span, textNode);
+                        }
+                    }
+                });
+            } catch (e) {
+                console.error('Highlight error', e);
+            }
         }
         // Font size control functionality - Completely fixed to properly adjust text size
         let currentFontSize = 100;
@@ -453,6 +518,9 @@
                     }
                 }
             });
+
+            // highlight query on page load if present in URL
+            highlightPageQuery();
 
             // Hide search results when clicking outside
             document.addEventListener('click', function(e) {
