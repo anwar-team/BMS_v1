@@ -18,7 +18,7 @@ class VolumeResource extends Resource
 {
     protected static ?string $model = Volume::class;
     protected static ?string $navigationGroup = 'إدارة محتوى الكتب';
-    protected static ?int $navigationSort = 2;
+    protected static ?int $navigationSort = -9;
 
     protected static ?string $navigationIcon = 'heroicon-o-book-open';
     

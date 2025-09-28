@@ -16,7 +16,7 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 class BookSectionResource extends Resource
 {
     protected static ?string $model = BookSection::class;
-    protected static ?int $navigationSort = -5;
+    protected static ?int $navigationSort = -4;
 
     protected static ?string $navigationGroup = 'إدارة المحتوى';
 

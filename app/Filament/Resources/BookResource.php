@@ -70,7 +70,7 @@ class BookResource extends Resource
     {
         return __('resource.book.books');
     }
-    protected static ?int $navigationSort = 1;
+    protected static ?int $navigationSort = -10;
 
     /**
      * تحسين الاستعلامات لتجنب N+1 Query Problem

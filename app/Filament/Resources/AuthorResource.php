@@ -24,7 +24,7 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 class AuthorResource extends Resource
 {
     protected static ?string $model = Author::class;
-    protected static ?int $navigationSort = -3;
+    protected static ?int $navigationSort = -6;
 
     protected static ?string $navigationGroup = 'إدارة المحتوى';
 

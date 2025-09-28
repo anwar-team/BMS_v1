@@ -17,7 +17,7 @@ class ChapterResource extends Resource
 {
     protected static ?string $model = Chapter::class;
     protected static ?string $navigationGroup = 'إدارة محتوى الكتب';
-    protected static ?int $navigationSort = 3;
+    protected static ?int $navigationSort = -8;
 
     protected static ?string $navigationIcon = 'heroicon-o-document-text';
     
