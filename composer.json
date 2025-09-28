@@ -61,7 +61,6 @@
         "pxlrbt/filament-spotlight": "^2.0",
         "riodwanto/filament-ace-editor": "^1.0",
         "stichoza/google-translate-php": "^5.2",
-        "tomatophp/filament-media-manager": "^1.1",
         "z3d0x/filament-logger": "^0.7.2"
     },
     "require-dev": {
