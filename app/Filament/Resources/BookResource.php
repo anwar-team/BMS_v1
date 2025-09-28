@@ -73,7 +73,7 @@ class BookResource extends Resource
     protected static ?int $navigationSort = -10;
 
     /**
-     * تحسين الاستعلامات لتجنب N+1 Query Problem
+     * Optimize queries to avoid N+1 Query Problem
      */
     public static function getEloquentQuery(): Builder
     {
@@ -93,8 +93,8 @@ class BookResource extends Resource
         return $form->schema([
             Tabs::make('BookTabs')
                 ->tabs([
-                    // Tab 1: معلومات الكتاب الأساسية
-                    Tab::make('معلومات الكتاب')
+                    // Tab 1: Basic Book Information
+                    Tab::make('Book Information')
                         ->icon('heroicon-o-book-open')
                         ->schema([
                             self::getBasicInfoSection(),
@@ -102,16 +102,16 @@ class BookResource extends Resource
                             self::getCoverImageSection(),
                         ]),
 
-                    // Tab 2: التصنيفات والمؤلفين
-                    Tab::make('التصنيفات والمؤلفين')
+                    // Tab 2: Categories and Authors
+                    Tab::make('Categories and Authors')
                         ->icon('heroicon-o-tag')
                         ->schema([
                             self::getBookSectionSelect(),
                             self::getAuthorsRepeater(),
                         ]),
 
-                    // Tab 3: المجلدات والفصول
-                    Tab::make('المجلدات والفصول')
+                    // Tab 3: Volumes and Chapters
+                    Tab::make('Volumes and Chapters')
                         ->icon('heroicon-o-folder-open')
                         ->schema([
                             self::getVolumesRepeater(),
