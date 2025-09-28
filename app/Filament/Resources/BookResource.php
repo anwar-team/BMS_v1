@@ -921,6 +921,106 @@ class BookResource extends Resource
                         false: fn (Builder $query) => $query->whereDoesntHave('pages'),
                         blank: fn (Builder $query) => $query,
                     ),
+
+                Filter::make('similar_titles')
+                    ->form([
+                        TextInput::make('title_search')
+                            ->label('البحث عن عناوين متشابهة')
+                            ->placeholder('مثال: صحيح البخاري')
+                            ->helperText('أدخل اسم الكتاب للعثور على الكتب ذات الأسماء المتشابهة')
+                            ->live(debounce: 500),
+                        
+                        Select::make('similarity_level')
+                            ->label('مستوى التشابه')
+                            ->options([
+                                'high' => 'عالي (تطابق دقيق)',
+                                'medium' => 'متوسط (تشابه كبير)',
+                                'low' => 'منخفض (تشابه عام)',
+                            ])
+                            ->default('medium')
+                            ->helperText('اختر مستوى التشابه المطلوب'),
+                    ])
+                    ->query(function (Builder $query, array $data): Builder {
+                        if (!$data['title_search']) {
+                            return $query;
+                        }
+
+                        $searchTitle = trim($data['title_search']);
+                        $similarityLevel = $data['similarity_level'] ?? 'medium';
+                        
+                        // تنظيف النص من الكلمات الشائعة والرموز
+                        $cleanedSearch = self::cleanTitleForSimilarity($searchTitle);
+                        $searchWords = explode(' ', $cleanedSearch);
+                        
+                        return $query->where(function (Builder $subQuery) use ($searchTitle, $searchWords, $similarityLevel) {
+                            switch ($similarityLevel) {
+                                case 'high':
+                                    // تطابق دقيق: يجب أن تحتوي على معظم الكلمات
+                                    foreach ($searchWords as $word) {
+                                        if (strlen($word) > 2) { // تجاهل الكلمات القصيرة
+                                            $subQuery->where('title', 'LIKE', "%{$word}%");
+                                        }
+                                    }
+                                    break;
+                                    
+                                case 'medium':
+                                    // تشابه متوسط: يجب أن تحتوي على بعض الكلمات المهمة
+                                    $subQuery->where(function (Builder $mediumQuery) use ($searchWords) {
+                                        foreach ($searchWords as $word) {
+                                            if (strlen($word) > 2) {
+                                                $mediumQuery->orWhere('title', 'LIKE', "%{$word}%");
+                                            }
+                                        }
+                                    });
+                                    // إضافة شرط للتأكد من وجود كلمتين على الأقل
+                                    $wordCount = 0;
+                                    foreach ($searchWords as $word) {
+                                        if (strlen($word) > 2) {
+                                            $wordCount++;
+                                        }
+                                    }
+                                    if ($wordCount > 1) {
+                                        $subQuery->where(function (Builder $countQuery) use ($searchWords) {
+                                            $conditions = 0;
+                                            foreach ($searchWords as $word) {
+                                                if (strlen($word) > 2) {
+                                                    $countQuery->orWhere('title', 'LIKE', "%{$word}%");
+                                                    $conditions++;
+                                                }
+                                            }
+                                        });
+                                    }
+                                    break;
+                                    
+                                case 'low':
+                                    // تشابه عام: البحث عن أي كلمة من الكلمات
+                                    $subQuery->where(function (Builder $lowQuery) use ($searchWords, $searchTitle) {
+                                        // البحث بالعنوان الكامل
+                                        $lowQuery->where('title', 'LIKE', "%{$searchTitle}%");
+                                        
+                                        // أو البحث بالكلمات المفردة
+                                        foreach ($searchWords as $word) {
+                                            if (strlen($word) > 1) {
+                                                $lowQuery->orWhere('title', 'LIKE', "%{$word}%");
+                                            }
+                                        }
+                                    });
+                                    break;
+                            }
+                        });
+                    })
+                    ->indicateUsing(function (array $data): ?string {
+                        if ($data['title_search']) {
+                            $level = match($data['similarity_level'] ?? 'medium') {
+                                'high' => 'عالي',
+                                'medium' => 'متوسط', 
+                                'low' => 'منخفض',
+                                default => 'متوسط'
+                            };
+                            return "عناوين متشابهة مع: \"{$data['title_search']}\" (مستوى: {$level})";
+                        }
+                        return null;
+                    }),
             ], layout: Tables\Enums\FiltersLayout::AboveContentCollapsible)
             ->filtersFormColumns(3)
             ->headerActions([
@@ -1083,5 +1183,35 @@ class BookResource extends Resource
             'القسم' => $record->bookSection?->name ?? 'غير محدد',
             'الناشر' => $record->publisher?->name ?? 'غير محدد',
         ];
+    }
+
+    /**
+     * تنظيف عنوان الكتاب للبحث عن التشابه
+     * يزيل الكلمات الشائعة والرموز غير المهمة
+     */
+    private static function cleanTitleForSimilarity(string $title): string
+    {
+        // تحويل إلى أحرف صغيرة
+        $title = mb_strtolower($title, 'UTF-8');
+        
+        // إزالة علامات الترقيم والرموز
+        $title = preg_replace('/[^\p{L}\p{N}\s]/u', ' ', $title);
+        
+        // إزالة الكلمات الشائعة في العربية
+        $commonWords = [
+            'في', 'من', 'إلى', 'على', 'عن', 'مع', 'كتاب', 'شرح', 'تفسير',
+            'الـ', 'ال', 'و', 'أو', 'لكن', 'غير', 'سوى', 'إلا', 'بل',
+            'ط', 'طبعة', 'الطبعة', 'مطبعة', 'دار', 'مؤسسة', 'منشورات'
+        ];
+        
+        foreach ($commonWords as $word) {
+            $title = preg_replace('/\b' . preg_quote($word, '/') . '\b/u', ' ', $title);
+        }
+        
+        // إزالة المسافات الزائدة
+        $title = preg_replace('/\s+/', ' ', $title);
+        $title = trim($title);
+        
+        return $title;
     }
 }
