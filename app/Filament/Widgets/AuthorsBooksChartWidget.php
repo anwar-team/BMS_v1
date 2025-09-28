@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Cache;
 
 class AuthorsBooksChartWidget extends ChartWidget
 {
-    protected static ?string $heading = 'أكثر المؤلفين إنتاجاً';
+    protected static ?string $heading = 'Most Productive Authors';
     protected static ?int $sort = 8;
     protected int | string | array $columnSpan = 'full';
     
@@ -32,7 +32,7 @@ class AuthorsBooksChartWidget extends ChartWidget
             return [
                 'datasets' => [
                     [
-                        'label' => 'عدد الكتب',
+                        'label' => 'Number of Books',
                         'data' => $authors->pluck('books_count')->toArray(),
                         'backgroundColor' => [
                             'rgba(255, 99, 132, 0.8)',

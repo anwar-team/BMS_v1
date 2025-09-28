@@ -216,7 +216,7 @@ protected static ?string $navigationGroup = 'ACCESS';
             ])
             ->actions([
                 Tables\Actions\Action::make('verify_email')
-                    ->label('تأكيد البريد الإلكتروني')
+                    ->label('Verify Email')
                     ->icon('heroicon-o-check-badge')
                     ->color('success')
                     ->action(function (User $record) {
@@ -225,7 +225,7 @@ protected static ?string $navigationGroup = 'ACCESS';
                         ])->save();
 
                         Notification::make()
-                            ->title('تم تأكيد البريد الإلكتروني بنجاح!')
+                            ->title('Email verified successfully!')
                             ->success()
                             ->send();
                     })

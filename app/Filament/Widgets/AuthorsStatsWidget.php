@@ -12,18 +12,18 @@ class AuthorsStatsWidget extends BaseWidget
 {
     protected static ?int $sort = 2;
     
-    // تعطيل التحديث التلقائي
+    // Disable automatic refresh
     protected static ?string $pollingInterval = null;
     
-    // Cache للبيانات لمدة 15 دقيقة
+    // Cache data for 15 minutes
     protected static string $cacheKey = 'authors_stats_widget_data';
-    protected static int $cacheDuration = 900; // 15 دقيقة
+    protected static int $cacheDuration = 900; // 15 minutes
 
     protected function getStats(): array
     {
-        // استخدام Cache لتجنب إعادة حساب البيانات في كل مرة
+        // Use Cache to avoid recalculating data every time
         return Cache::remember(static::$cacheKey, static::$cacheDuration, function () {
-            // استخدام query واحد محسن بدلاً من 4 queries منفصلة
+            // Use one optimized query instead of 4 separate queries
             $authorStats = Author::selectRaw('
                 COUNT(*) as total_authors,
                 COUNT(CASE WHEN created_at >= ? THEN 1 END) as recent_authors
@@ -33,23 +33,23 @@ class AuthorsStatsWidget extends BaseWidget
             $totalPublishers = Publisher::count();
 
             return [
-                Stat::make(__('resource.author.total_authors'), $authorStats->total_authors)
-                    ->description(__('resource.author.total_system_authors'))
+                Stat::make('Total Authors', $authorStats->total_authors)
+                    ->description('All authors in the system')
                     ->descriptionIcon('heroicon-m-user-group')
                     ->color('primary'),
 
-                Stat::make(__('resource.author.active_authors'), $activeAuthors)
-                    ->description(__('resource.author.authors_with_published_books'))
+                Stat::make('Active Authors', $activeAuthors)
+                    ->description('Authors with published books')
                     ->descriptionIcon('heroicon-m-pencil-square')
                     ->color('success'),
 
-                Stat::make(__('resource.publisher.publishers'), $totalPublishers)
-                    ->description(__('resource.publisher.registered_publishers'))
+                Stat::make('Publishers', $totalPublishers)
+                    ->description('Registered publishers')
                     ->descriptionIcon('heroicon-m-building-office')
                     ->color('info'),
 
-                Stat::make(__('resource.author.new_authors'), $authorStats->recent_authors)
-                    ->description(__('resource.author.new_authors_last_30_days'))
+                Stat::make('New Authors', $authorStats->recent_authors)
+                    ->description('New authors in the last 30 days')
                     ->descriptionIcon('heroicon-m-user-plus')
                     ->color('warning'),
             ];

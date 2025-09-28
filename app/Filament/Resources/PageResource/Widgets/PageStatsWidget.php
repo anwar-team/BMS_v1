@@ -21,18 +21,18 @@ class PageStatsWidget extends BaseWidget
         $pagesWithContentPercentage = $totalPages > 0 ? round(($pagesWithContent / $totalPages) * 100) : 0;
 
         return [
-            Stat::make('إجمالي الصفحات', $totalPages)
-                ->description('جميع الصفحات في النظام')
+            Stat::make('Total Pages', $totalPages)
+                ->description('All pages in the system')
                 ->descriptionIcon('heroicon-m-document-text')
                 ->color('primary'),
-
-            Stat::make('الصفحات مع محتوى', $pagesWithContent)
-                ->description($pagesWithContentPercentage . '% من إجمالي الصفحات')
+                
+            Stat::make('Pages with Content', $pagesWithContent)
+                ->description($pagesWithContentPercentage . '% of total pages')
                 ->descriptionIcon('heroicon-m-document-check')
                 ->color('success'),
-
-            Stat::make('صفحات جديدة هذا الشهر', $newPagesThisMonth)
-                ->description('تمت إضافتها في ' . Carbon::now()->format('F Y'))
+                
+            Stat::make('New Pages This Month', $newPagesThisMonth)
+                ->description('Added in ' . Carbon::now()->format('F Y'))
                 ->descriptionIcon('heroicon-m-plus-circle')
                 ->color('warning'),
         ];

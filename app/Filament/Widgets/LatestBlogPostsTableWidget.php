@@ -10,11 +10,11 @@ use Illuminate\Database\Eloquent\Builder;
 
 class LatestBlogPostsTableWidget extends BaseWidget
 {
-    protected static ?string $heading = 'أحدث مقالات المدونة';
+    protected static ?string $heading = 'Latest Blog Posts';
     protected static ?int $sort = 9;
     protected int | string | array $columnSpan = 'full';
     
-    // تعطيل التحديث التلقائي
+    // Disable automatic refresh
     protected static ?string $pollingInterval = null;
 
     public function table(Table $table): Table
@@ -28,25 +28,25 @@ class LatestBlogPostsTableWidget extends BaseWidget
             )
             ->columns([
                 Tables\Columns\TextColumn::make('title')
-                    ->label('عنوان المقال')
+                    ->label('Article Title')
                     ->searchable()
                     ->sortable()
                     ->limit(40)
                     ->weight('bold'),
 
                 Tables\Columns\TextColumn::make('category.name')
-                    ->label('التصنيف')
+                    ->label('Category')
                     ->badge()
                     ->color('info'),
 
                 Tables\Columns\TextColumn::make('creator.first_name')
-                    ->label('الكاتب')
-                    ->formatStateUsing(fn ($record) => $record->creator ? $record->creator->first_name . ' ' . $record->creator->last_name : 'غير محدد')
+                    ->label('Author')
+                    ->formatStateUsing(fn ($record) => $record->creator ? $record->creator->first_name . ' ' . $record->creator->last_name : 'Not specified')
                     ->badge()
                     ->color('success'),
 
                 Tables\Columns\TextColumn::make('status')
-                    ->label('الحالة')
+                    ->label('Status')
                     ->badge()
                     ->color(fn ($state): string => match ($state?->value ?? $state) {
                         'published' => 'success',
@@ -56,21 +56,21 @@ class LatestBlogPostsTableWidget extends BaseWidget
                         default => 'gray',
                     })
                     ->formatStateUsing(fn ($state): string => match ($state?->value ?? $state) {
-                        'published' => 'منشور',
-                        'draft' => 'مسودة',
-                        'archived' => 'مؤرشف',
-                        'pending' => 'قيد المراجعة',
+                        'published' => 'Published',
+                        'draft' => 'Draft',
+                        'archived' => 'Archived',
+                        'pending' => 'Under Review',
                         default => $state,
                     }),
 
                 Tables\Columns\TextColumn::make('views_count')
-                    ->label('المشاهدات')
+                    ->label('Views')
                     ->numeric()
                     ->sortable()
                     ->default(0),
 
                 Tables\Columns\TextColumn::make('created_at')
-                    ->label('تاريخ النشر')
+                    ->label('Publication Date')
                     ->dateTime('d/m/Y')
                     ->sortable(),
             ])

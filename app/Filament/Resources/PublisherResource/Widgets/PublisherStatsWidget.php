@@ -23,23 +23,23 @@ class PublisherStatsWidget extends BaseWidget
         $publishersWithBooksPercentage = $totalPublishers > 0 ? round(($publishersWithBooks / $totalPublishers) * 100) : 0;
         
         return [
-            Stat::make('إجمالي دور النشر', $totalPublishers)
-                ->description('جميع دور النشر في النظام')
+            Stat::make('Total Publishers', $totalPublishers)
+                ->description('All publishers in the system')
                 ->descriptionIcon('heroicon-m-building-office')
                 ->color('primary'),
                 
-            Stat::make('دور النشر النشطة', $activePublishers)
-                ->description('دور النشر المفعلة حالياً')
+            Stat::make('Active Publishers', $activePublishers)
+                ->description('Currently active publishers')
                 ->descriptionIcon('heroicon-m-check-circle')
                 ->color('success'),
                 
-            Stat::make('دور نشر لديها كتب', $publishersWithBooks)
-                ->description($publishersWithBooksPercentage . '% من إجمالي دور النشر')
+            Stat::make('Publishers with Books', $publishersWithBooks)
+                ->description($publishersWithBooksPercentage . '% of total publishers')
                 ->descriptionIcon('heroicon-m-book-open')
                 ->color('info'),
                 
-            Stat::make('دور نشر جديدة هذا الشهر', $newPublishersThisMonth)
-                ->description('المضافة في الشهر الحالي')
+            Stat::make('New Publishers This Month', $newPublishersThisMonth)
+                ->description('Added this month')
                 ->descriptionIcon('heroicon-m-plus-circle')
                 ->color('warning'),
         ];

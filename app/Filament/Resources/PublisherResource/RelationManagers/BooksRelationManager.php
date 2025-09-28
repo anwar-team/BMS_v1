@@ -19,96 +19,96 @@ class BooksRelationManager extends RelationManager
         return $form
             ->schema([
                 Forms\Components\TextInput::make('title')
-                    ->label('عنوان الكتاب')
+                    ->label('Book Title')
                     ->required()
                     ->maxLength(255),
                 Forms\Components\TextInput::make('subtitle')
-                    ->label('العنوان الفرعي')
+                    ->label('Subtitle')
                     ->maxLength(255),
                 Forms\Components\Textarea::make('description')
-                    ->label('وصف الكتاب')
+                    ->label('Book Description')
                     ->rows(4)
                     ->columnSpanFull(),
                 Forms\Components\Select::make('book_section_id')
-                    ->label('قسم الكتاب')
+                    ->label('Book Section')
                     ->relationship('bookSection', 'name')
                     ->searchable()
                     ->preload()
                     ->createOptionForm([
                         Forms\Components\TextInput::make('name')
-                            ->label('اسم القسم')
+                            ->label('Section Name')
                             ->required(),
                         Forms\Components\Textarea::make('description')
-                            ->label('وصف القسم'),
+                            ->label('Section Description'),
                     ]),
                 Forms\Components\TextInput::make('isbn')
-                    ->label('رقم ISBN')
+                    ->label('ISBN Number')
                     ->maxLength(20)
                     ->unique(ignoreRecord: true),
                 Forms\Components\DatePicker::make('publication_date')
-                    ->label('تاريخ النشر'),
+                    ->label('Publication Date'),
                 Forms\Components\TextInput::make('publication_year')
-                    ->label('سنة النشر')
+                    ->label('Publication Year')
                     ->numeric()
                     ->minValue(1000)
                     ->maxValue(date('Y') + 10),
                 Forms\Components\TextInput::make('edition')
-                    ->label('الطبعة')
+                    ->label('Edition')
                     ->maxLength(50),
                 Forms\Components\TextInput::make('pages')
-                    ->label('عدد الصفحات')
+                    ->label('Number of Pages')
                     ->numeric()
                     ->minValue(1),
                 Forms\Components\Select::make('language')
-                    ->label('اللغة')
+                    ->label('Language')
                     ->options([
-                        'ar' => 'العربية',
-                        'en' => 'الإنجليزية',
-                        'fr' => 'الفرنسية',
-                        'es' => 'الإسبانية',
-                        'de' => 'الألمانية',
-                        'tr' => 'التركية',
-                        'fa' => 'الفارسية',
-                        'ur' => 'الأردية',
+                        'ar' => 'Arabic',
+                        'en' => 'English',
+                        'fr' => 'French',
+                        'es' => 'Spanish',
+                        'de' => 'German',
+                        'tr' => 'Turkish',
+                        'fa' => 'Persian',
+                        'ur' => 'Urdu',
                     ])
                     ->default('ar'),
                 Forms\Components\TextInput::make('price')
-                    ->label('السعر')
+                    ->label('Price')
                     ->numeric()
                     ->prefix('$')
                     ->minValue(0),
                 Forms\Components\Select::make('currency')
-                    ->label('العملة')
+                    ->label('Currency')
                     ->options([
-                        'USD' => 'دولار أمريكي',
-                        'EUR' => 'يورو',
-                        'SAR' => 'ريال سعودي',
-                        'AED' => 'درهم إماراتي',
-                        'EGP' => 'جنيه مصري',
-                        'JOD' => 'دينار أردني',
-                        'KWD' => 'دينار كويتي',
-                        'QAR' => 'ريال قطري',
-                        'BHD' => 'دينار بحريني',
-                        'OMR' => 'ريال عماني',
+                        'USD' => 'US Dollar',
+                        'EUR' => 'Euro',
+                        'SAR' => 'Saudi Riyal',
+                        'AED' => 'UAE Dirham',
+                        'EGP' => 'Egyptian Pound',
+                        'JOD' => 'Jordanian Dinar',
+                        'KWD' => 'Kuwaiti Dinar',
+                        'QAR' => 'Qatari Riyal',
+                        'BHD' => 'Bahraini Dinar',
+                        'OMR' => 'Omani Riyal',
                     ])
                     ->default('USD'),
                 Forms\Components\Toggle::make('is_published')
-                    ->label('منشور')
+                    ->label('Published')
                     ->default(true),
                 Forms\Components\Toggle::make('is_featured')
-                    ->label('مميز')
+                    ->label('Featured')
                     ->default(false),
                 Forms\Components\Toggle::make('is_bestseller')
-                    ->label('الأكثر مبيعاً')
+                    ->label('Bestseller')
                     ->default(false),
                 Forms\Components\FileUpload::make('cover_image')
-                    ->label('صورة الغلاف')
+                    ->label('Cover Image')
                     ->image()
                     ->directory('book-covers')
                     ->visibility('public')
                     ->columnSpanFull(),
                 Forms\Components\Textarea::make('notes')
-                    ->label('ملاحظات')
+                    ->label('Notes')
                     ->rows(3)
                     ->columnSpanFull(),
             ]);
@@ -120,12 +120,12 @@ class BooksRelationManager extends RelationManager
             ->recordTitleAttribute('title')
             ->columns([
                 Tables\Columns\ImageColumn::make('cover_image')
-                    ->label('الغلاف')
+                    ->label('Cover')
                     ->circular()
                     ->defaultImageUrl(url('/images/default-book-cover.png'))
                     ->size(50),
                 Tables\Columns\TextColumn::make('title')
-                    ->label('عنوان الكتاب')
+                    ->label('Book Title')
                     ->searchable()
                     ->sortable()
                     ->limit(40)
@@ -133,21 +133,21 @@ class BooksRelationManager extends RelationManager
                         return $record->subtitle ? $record->title . ' - ' . $record->subtitle : $record->title;
                     }),
                 Tables\Columns\TextColumn::make('subtitle')
-                    ->label('العنوان الفرعي')
+                    ->label('Subtitle')
                     ->searchable()
                     ->limit(30)
                     ->toggleable()
-                    ->placeholder('بدون عنوان فرعي'),
+                    ->placeholder('No subtitle'),
                 Tables\Columns\TextColumn::make('bookSection.name')
-                    ->label('القسم')
+                    ->label('Section')
                     ->searchable()
                     ->sortable()
                     ->limit(25)
-                    ->placeholder('غير محدد')
+                    ->placeholder('Not specified')
                     ->badge()
                     ->color('info'),
                 Tables\Columns\TextColumn::make('authors_count')
-                    ->label('المؤلفون')
+                    ->label('Authors')
                     ->counts('authors')
                     ->sortable()
                     ->badge()
@@ -158,51 +158,51 @@ class BooksRelationManager extends RelationManager
                         default => 'danger',
                     }),
                 Tables\Columns\TextColumn::make('volumes_count')
-                    ->label('المجلدات')
+                    ->label('Volumes')
                     ->counts('volumes')
                     ->sortable()
                     ->badge()
                     ->color('primary'),
                 Tables\Columns\TextColumn::make('chapters_count')
-                    ->label('الفصول')
+                    ->label('Chapters')
                     ->counts('chapters')
                     ->sortable()
                     ->badge()
                     ->color('secondary'),
                 Tables\Columns\TextColumn::make('pages_count')
-                    ->label('الصفحات')
+                    ->label('Pages')
                     ->counts('pages')
                     ->sortable()
                     ->badge()
                     ->color('warning'),
                 Tables\Columns\TextColumn::make('publication_year')
-                    ->label('سنة النشر')
+                    ->label('Publication Year')
                     ->sortable()
-                    ->placeholder('غير محدد'),
+                    ->placeholder('Not specified'),
                 Tables\Columns\TextColumn::make('isbn')
                     ->label('ISBN')
                     ->searchable()
                     ->copyable()
-                    ->placeholder('غير محدد')
+                    ->placeholder('Not specified')
                     ->toggleable(),
                 Tables\Columns\TextColumn::make('price')
-                    ->label('السعر')
+                    ->label('Price')
                     ->money(fn ($record) => $record->currency ?? 'USD')
                     ->sortable()
-                    ->placeholder('غير محدد')
+                    ->placeholder('Not specified')
                     ->toggleable(),
                 Tables\Columns\TextColumn::make('language')
-                    ->label('اللغة')
+                    ->label('Language')
                     ->badge()
                     ->formatStateUsing(fn (string $state): string => match ($state) {
-                        'ar' => 'العربية',
-                        'en' => 'الإنجليزية',
-                        'fr' => 'الفرنسية',
-                        'es' => 'الإسبانية',
-                        'de' => 'الألمانية',
-                        'tr' => 'التركية',
-                        'fa' => 'الفارسية',
-                        'ur' => 'الأردية',
+                        'ar' => 'Arabic',
+                        'en' => 'English',
+                        'fr' => 'French',
+                        'es' => 'Spanish',
+                        'de' => 'German',
+                        'tr' => 'Turkish',
+                        'fa' => 'Persian',
+                        'ur' => 'Urdu',
                         default => $state,
                     })
                     ->color(fn (string $state): string => match ($state) {
@@ -212,61 +212,61 @@ class BooksRelationManager extends RelationManager
                         default => 'gray',
                     }),
                 Tables\Columns\IconColumn::make('is_published')
-                    ->label('منشور')
+                    ->label('Published')
                     ->boolean()
                     ->sortable(),
                 Tables\Columns\IconColumn::make('is_featured')
-                    ->label('مميز')
+                    ->label('Featured')
                     ->boolean()
                     ->sortable(),
                 Tables\Columns\IconColumn::make('is_bestseller')
-                    ->label('الأكثر مبيعاً')
+                    ->label('Bestseller')
                     ->boolean()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
-                    ->label('تاريخ الإنشاء')
+                    ->label('Created At')
                     ->dateTime('Y-m-d H:i')
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('updated_at')
-                    ->label('آخر تحديث')
+                    ->label('Last Update')
                     ->dateTime('Y-m-d H:i')
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
                 Tables\Filters\SelectFilter::make('book_section_id')
-                    ->label('قسم الكتاب')
+                    ->label('Book Section')
                     ->relationship('bookSection', 'name')
                     ->searchable()
                     ->preload(),
                 Tables\Filters\SelectFilter::make('language')
-                    ->label('اللغة')
+                    ->label('Language')
                     ->options([
-                        'ar' => 'العربية',
-                        'en' => 'الإنجليزية',
-                        'fr' => 'الفرنسية',
-                        'es' => 'الإسبانية',
-                        'de' => 'الألمانية',
-                        'tr' => 'التركية',
-                        'fa' => 'الفارسية',
-                        'ur' => 'الأردية',
+                        'ar' => 'Arabic',
+                        'en' => 'English',
+                        'fr' => 'French',
+                        'es' => 'Spanish',
+                        'de' => 'German',
+                        'tr' => 'Turkish',
+                        'fa' => 'Persian',
+                        'ur' => 'Urdu',
                     ])
                     ->multiple(),
                 Tables\Filters\TernaryFilter::make('is_published')
-                    ->label('منشور'),
+                    ->label('Published'),
                 Tables\Filters\TernaryFilter::make('is_featured')
-                    ->label('مميز'),
+                    ->label('Featured'),
                 Tables\Filters\TernaryFilter::make('is_bestseller')
-                    ->label('الأكثر مبيعاً'),
+                    ->label('Bestseller'),
                 Tables\Filters\Filter::make('publication_year')
-                    ->label('سنة النشر')
+                    ->label('Publication Year')
                     ->form([
                         Forms\Components\TextInput::make('from')
-                            ->label('من سنة')
+                            ->label('From Year')
                             ->numeric(),
                         Forms\Components\TextInput::make('to')
-                            ->label('إلى سنة')
+                            ->label('To Year')
                             ->numeric(),
                     ])
                     ->query(function (Builder $query, array $data): Builder {
@@ -281,13 +281,13 @@ class BooksRelationManager extends RelationManager
                             );
                     }),
                 Tables\Filters\Filter::make('price_range')
-                    ->label('نطاق السعر')
+                    ->label('Price Range')
                     ->form([
                         Forms\Components\TextInput::make('min_price')
-                            ->label('أقل سعر')
+                            ->label('Minimum Price')
                             ->numeric(),
                         Forms\Components\TextInput::make('max_price')
-                            ->label('أعلى سعر')
+                            ->label('Maximum Price')
                             ->numeric(),
                     ])
                     ->query(function (Builder $query, array $data): Builder {
@@ -301,16 +301,23 @@ class BooksRelationManager extends RelationManager
                                 fn (Builder $query, $price): Builder => $query->where('price', '<=', $price),
                             );
                     }),
-                Tables\Filters\Filter::make('has_isbn')
-                    ->label('له رقم ISBN')
-                    ->query(fn (Builder $query): Builder => $query->whereNotNull('isbn')->where('isbn', '!=', '')),
-                Tables\Filters\Filter::make('has_cover')
-                    ->label('له صورة غلاف')
-                    ->query(fn (Builder $query): Builder => $query->whereNotNull('cover_image')),
+                Tables\Filters\TernaryFilter::make('has_isbn')
+                    ->label('Has ISBN')
+                    ->queries(
+                        true: fn (Builder $query) => $query->whereNotNull('isbn'),
+                        false: fn (Builder $query) => $query->whereNull('isbn'),
+                    ),
+                Tables\Filters\TernaryFilter::make('has_cover_image')
+                    ->label('Has Cover Image')
+                    ->queries(
+                        true: fn (Builder $query) => $query->whereNotNull('cover_image'),
+                        false: fn (Builder $query) => $query->whereNull('cover_image'),
+                    ),
             ])
             ->headerActions([
                 Tables\Actions\CreateAction::make()
-                    ->label('إضافة كتاب')
+                    ->label('Add Book')
+                    ->icon('heroicon-o-plus')
                     ->mutateFormDataUsing(function (array $data, RelationManager $livewire): array {
                         // Set publisher_id from the owner record
                         $data['publisher_id'] = $livewire->getOwnerRecord()->id;
@@ -319,131 +326,125 @@ class BooksRelationManager extends RelationManager
             ])
             ->actions([
                 Tables\Actions\ViewAction::make()
-                    ->label('عرض'),
+                    ->label('View'),
                 Tables\Actions\EditAction::make()
-                    ->label('تعديل'),
+                    ->label('Edit'),
                 Tables\Actions\DeleteAction::make()
-                    ->label('حذف')
+                    ->label('Delete')
                     ->requiresConfirmation()
-                    ->modalHeading('حذف الكتاب')
-                    ->modalDescription('هل أنت متأكد من حذف هذا الكتاب؟ سيتم حذف جميع المجلدات والفصول والصفحات المرتبطة به.')
-                    ->modalSubmitActionLabel('حذف'),
-                Tables\Actions\Action::make('duplicate')
-                    ->label('نسخ')
-                    ->icon('heroicon-o-document-duplicate')
-                    ->action(function ($record, RelationManager $livewire) {
-                        $newBook = $record->replicate();
-                        $newBook->title = $record->title . ' (نسخة)';
-                        $newBook->isbn = null; // Clear ISBN for duplicate
-                        $newBook->is_published = false;
-                        $newBook->is_featured = false;
-                        $newBook->is_bestseller = false;
-                        $newBook->publisher_id = $livewire->getOwnerRecord()->id;
-                        $newBook->save();
-                    })
-                    ->requiresConfirmation()
-                    ->modalHeading('نسخ الكتاب')
-                    ->modalDescription('هل تريد إنشاء نسخة من هذا الكتاب؟')
-                    ->modalSubmitActionLabel('نسخ'),
+                    ->modalHeading('Delete Book')
+                    ->modalDescription('Are you sure you want to delete this book? This action cannot be undone.')
+                    ->modalSubmitActionLabel('Delete'),
+                Tables\Actions\ReplicateAction::make()
+                    ->label('Duplicate')
+                    ->modalHeading('Duplicate Book')
+                    ->modalDescription('This will create a copy of the book with all its data.')
+                    ->modalSubmitActionLabel('Duplicate'),
                 Tables\Actions\Action::make('toggle_featured')
-                    ->label(fn ($record) => $record->is_featured ? 'إلغاء التمييز' : 'تمييز')
+                    ->label(fn ($record) => $record->is_featured ? 'Unfeature' : 'Feature')
                     ->icon('heroicon-o-star')
-                    ->color(fn ($record) => $record->is_featured ? 'warning' : 'gray')
+                    ->color(fn ($record) => $record->is_featured ? 'warning' : 'success')
                     ->action(fn ($record) => $record->update(['is_featured' => !$record->is_featured]))
                     ->requiresConfirmation()
-                    ->modalHeading(fn ($record) => $record->is_featured ? 'إلغاء تمييز الكتاب' : 'تمييز الكتاب')
-                    ->modalDescription(fn ($record) => $record->is_featured ? 'هل تريد إلغاء تمييز هذا الكتاب؟' : 'هل تريد تمييز هذا الكتاب؟')
-                    ->modalSubmitActionLabel(fn ($record) => $record->is_featured ? 'إلغاء التمييز' : 'تمييز'),
+                    ->modalHeading(fn ($record) => $record->is_featured ? 'Unfeature Book' : 'Feature Book')
+                    ->modalDescription(fn ($record) => $record->is_featured ? 'Are you sure you want to remove this book from featured books?' : 'Are you sure you want to feature this book?')
+                    ->modalSubmitActionLabel(fn ($record) => $record->is_featured ? 'Unfeature' : 'Feature'),
                 Tables\Actions\Action::make('toggle_bestseller')
-                    ->label(fn ($record) => $record->is_bestseller ? 'إلغاء الأكثر مبيعاً' : 'الأكثر مبيعاً')
+                    ->label(fn ($record) => $record->is_bestseller ? 'Unmark Bestseller' : 'Mark Bestseller')
                     ->icon('heroicon-o-fire')
-                    ->color(fn ($record) => $record->is_bestseller ? 'danger' : 'gray')
+                    ->color(fn ($record) => $record->is_bestseller ? 'danger' : 'success')
                     ->action(fn ($record) => $record->update(['is_bestseller' => !$record->is_bestseller]))
                     ->requiresConfirmation()
-                    ->modalHeading(fn ($record) => $record->is_bestseller ? 'إلغاء الأكثر مبيعاً' : 'تعيين كالأكثر مبيعاً')
-                    ->modalDescription(fn ($record) => $record->is_bestseller ? 'هل تريد إلغاء تصنيف هذا الكتاب كالأكثر مبيعاً؟' : 'هل تريد تصنيف هذا الكتاب كالأكثر مبيعاً؟')
-                    ->modalSubmitActionLabel(fn ($record) => $record->is_bestseller ? 'إلغاء' : 'تعيين'),
-                Tables\Actions\Action::make('view_statistics')
-                    ->label('إحصائيات')
+                    ->modalHeading(fn ($record) => $record->is_bestseller ? 'Unmark as Bestseller' : 'Mark as Bestseller')
+                    ->modalDescription(fn ($record) => $record->is_bestseller ? 'Are you sure you want to remove this book from bestsellers?' : 'Are you sure you want to mark this book as a bestseller?')
+                    ->modalSubmitActionLabel(fn ($record) => $record->is_bestseller ? 'Unmark' : 'Mark'),
+                Tables\Actions\Action::make('statistics')
+                    ->label('Statistics')
                     ->icon('heroicon-o-chart-bar')
                     ->color('info')
                     ->modalContent(function ($record) {
-                        return view('filament.components.book-statistics', [
+                        return view('filament.resources.book-resource.pages.book-statistics', [
                             'record' => $record,
                         ]);
                     })
-                    ->modalHeading('إحصائيات الكتاب')
+                    ->modalHeading('Book Statistics')
                     ->modalSubmitAction(false)
-                    ->modalCancelActionLabel('إغلاق'),
+                    ->modalCancelActionLabel('Close'),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make()
-                        ->label('حذف المحدد')
+                        ->label('Delete Selected')
                         ->requiresConfirmation()
-                        ->modalHeading('حذف الكتب المحددة')
-                        ->modalDescription('هل أنت متأكد من حذف الكتب المحددة؟ سيتم حذف جميع المحتويات المرتبطة بها.')
-                        ->modalSubmitActionLabel('حذف'),
+                        ->modalHeading('Delete Selected Books')
+                        ->modalDescription('Are you sure you want to delete the selected books? This action cannot be undone.')
+                        ->modalSubmitActionLabel('Delete'),
                     Tables\Actions\BulkAction::make('publish')
-                        ->label('نشر المحدد')
+                        ->label('Publish Selected')
                         ->icon('heroicon-o-eye')
+                        ->color('success')
                         ->action(function ($records) {
                             $records->each(fn ($record) => $record->update(['is_published' => true]));
                         })
                         ->requiresConfirmation()
-                        ->modalHeading('نشر الكتب')
-                        ->modalDescription('هل تريد نشر الكتب المحددة؟')
-                        ->modalSubmitActionLabel('نشر'),
+                        ->modalHeading('Publish Selected Books')
+                        ->modalDescription('Are you sure you want to publish the selected books?')
+                        ->modalSubmitActionLabel('Publish'),
                     Tables\Actions\BulkAction::make('unpublish')
-                        ->label('إلغاء نشر المحدد')
+                        ->label('Unpublish Selected')
                         ->icon('heroicon-o-eye-slash')
+                        ->color('warning')
                         ->action(function ($records) {
                             $records->each(fn ($record) => $record->update(['is_published' => false]));
                         })
                         ->requiresConfirmation()
-                        ->modalHeading('إلغاء نشر الكتب')
-                        ->modalDescription('هل تريد إلغاء نشر الكتب المحددة؟')
-                        ->modalSubmitActionLabel('إلغاء النشر'),
+                        ->modalHeading('Unpublish Selected Books')
+                        ->modalDescription('Are you sure you want to unpublish the selected books?')
+                        ->modalSubmitActionLabel('Unpublish'),
                     Tables\Actions\BulkAction::make('feature')
-                        ->label('تمييز المحدد')
+                        ->label('Feature Selected')
                         ->icon('heroicon-o-star')
+                        ->color('success')
                         ->action(function ($records) {
                             $records->each(fn ($record) => $record->update(['is_featured' => true]));
                         })
                         ->requiresConfirmation()
-                        ->modalHeading('تمييز الكتب')
-                        ->modalDescription('هل تريد تمييز الكتب المحددة؟')
-                        ->modalSubmitActionLabel('تمييز'),
+                        ->modalHeading('Feature Selected Books')
+                        ->modalDescription('Are you sure you want to feature the selected books?')
+                        ->modalSubmitActionLabel('Feature'),
                     Tables\Actions\BulkAction::make('unfeature')
-                        ->label('إلغاء تمييز المحدد')
+                        ->label('Unfeature Selected')
                         ->icon('heroicon-o-star')
+                        ->color('warning')
                         ->action(function ($records) {
                             $records->each(fn ($record) => $record->update(['is_featured' => false]));
                         })
                         ->requiresConfirmation()
-                        ->modalHeading('إلغاء تمييز الكتب')
-                        ->modalDescription('هل تريد إلغاء تمييز الكتب المحددة؟')
-                        ->modalSubmitActionLabel('إلغاء التمييز'),
+                        ->modalHeading('Unfeature Selected Books')
+                        ->modalDescription('Are you sure you want to remove the selected books from featured?')
+                        ->modalSubmitActionLabel('Unfeature'),
                     Tables\Actions\BulkAction::make('mark_bestseller')
-                        ->label('تعيين كالأكثر مبيعاً')
+                        ->label('Mark as Bestseller')
                         ->icon('heroicon-o-fire')
+                        ->color('success')
                         ->action(function ($records) {
                             $records->each(fn ($record) => $record->update(['is_bestseller' => true]));
                         })
                         ->requiresConfirmation()
-                        ->modalHeading('تعيين كالأكثر مبيعاً')
-                        ->modalDescription('هل تريد تعيين الكتب المحددة كالأكثر مبيعاً؟')
-                        ->modalSubmitActionLabel('تعيين'),
+                        ->modalHeading('Mark as Bestseller')
+                        ->modalDescription('Are you sure you want to mark the selected books as bestsellers?')
+                        ->modalSubmitActionLabel('Mark'),
                     Tables\Actions\BulkAction::make('unmark_bestseller')
-                        ->label('إلغاء الأكثر مبيعاً')
+                        ->label('Unmark Bestseller')
                         ->icon('heroicon-o-fire')
+                        ->color('danger')
                         ->action(function ($records) {
                             $records->each(fn ($record) => $record->update(['is_bestseller' => false]));
                         })
                         ->requiresConfirmation()
-                        ->modalHeading('إلغاء الأكثر مبيعاً')
-                        ->modalDescription('هل تريد إلغاء تصنيف الكتب المحددة كالأكثر مبيعاً؟')
-                        ->modalSubmitActionLabel('إلغاء'),
+                        ->modalHeading('Unmark Bestseller')
+                        ->modalDescription('Are you sure you want to remove the selected books from bestsellers?')
+                        ->modalSubmitActionLabel('Unmark'),
                 ]),
             ])
             ->defaultSort('created_at', 'desc');

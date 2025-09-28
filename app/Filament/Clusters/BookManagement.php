@@ -8,7 +8,7 @@ class BookManagement extends Cluster
 {
     protected static ?string $navigationIcon = 'heroicon-o-book-open';
     
-    protected static ?string $navigationLabel = 'إدارة محتوى الكتب';
+    protected static ?string $navigationLabel = 'Book Content Management';
     
     protected static ?string $slug = 'book-content-management';
     

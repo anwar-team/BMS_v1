@@ -20,13 +20,13 @@ class PagesRelationManager extends RelationManager
             ->schema([
                 Forms\Components\Grid::make(2)->schema([
                     Forms\Components\TextInput::make('page_number')
-                        ->label('رقم الصفحة')
+                        ->label('Page Number')
                         ->required()
                         ->numeric()
                         ->minValue(1),
                     
                     Forms\Components\Select::make('volume_id')
-                        ->label('المجلد')
+                        ->label('Volume')
                         ->relationship('volume', 'title', fn (Builder $query, $get) => 
                             $query->where('book_id', $this->getOwnerRecord()->id)
                         )
@@ -35,7 +35,7 @@ class PagesRelationManager extends RelationManager
                 ]),
                 
                 Forms\Components\Select::make('chapter_id')
-                    ->label('الفصل')
+                    ->label('Chapter')
                     ->relationship('chapter', 'title', fn (Builder $query, $get) => 
                         $query->where('book_id', $this->getOwnerRecord()->id)
                             ->when($get('volume_id'), fn ($q, $volumeId) => 
@@ -46,7 +46,7 @@ class PagesRelationManager extends RelationManager
                     ->preload(),
                 
                 Forms\Components\RichEditor::make('content')
-                    ->label('محتوى الصفحة')
+                    ->label('Page Content')
                     ->toolbarButtons([
                         'bold',
                         'italic',
@@ -61,12 +61,12 @@ class PagesRelationManager extends RelationManager
                 
                 Forms\Components\Grid::make(2)->schema([
                     Forms\Components\TextInput::make('word_count')
-                        ->label('عدد الكلمات')
+                        ->label('Word Count')
                         ->numeric()
                         ->disabled(),
                     
                     Forms\Components\TextInput::make('character_count')
-                        ->label('عدد الأحرف')
+                        ->label('Character Count')
                         ->numeric()
                         ->disabled(),
                 ]),
@@ -79,67 +79,67 @@ class PagesRelationManager extends RelationManager
             ->recordTitleAttribute('page_number')
             ->columns([
                 Tables\Columns\TextColumn::make('page_number')
-                    ->label('رقم الصفحة')
+                    ->label('Page Number')
                     ->sortable()
                     ->searchable(),
                 
                 Tables\Columns\TextColumn::make('volume.title')
-                    ->label('المجلد')
+                    ->label('Volume')
                     ->sortable()
                     ->searchable(),
                 
                 Tables\Columns\TextColumn::make('chapter.title')
-                    ->label('الفصل')
+                    ->label('Chapter')
                     ->sortable()
                     ->searchable()
                     ->limit(30),
                 
                 Tables\Columns\TextColumn::make('content')
-                    ->label('المحتوى')
-                    ->limit(100) // عرض أول 100 حرف فقط لتحسين الأداء
+                    ->label('Content')
+                    ->limit(100) // Show only first 100 characters for performance
                     ->html()
                     ->searchable()
                     ->toggleable(),
                 
                 Tables\Columns\TextColumn::make('word_count')
-                    ->label('الكلمات')
+                    ->label('Words')
                     ->badge()
                     ->color('info')
                     ->toggleable(),
                 
                 Tables\Columns\TextColumn::make('created_at')
-                    ->label('تاريخ الإنشاء')
+                    ->label('Created At')
                     ->dateTime('d/m/Y H:i')
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
                 Tables\Filters\SelectFilter::make('volume_id')
-                    ->label('المجلد')
+                    ->label('Volume')
                     ->relationship('volume', 'title')
                     ->searchable()
                     ->preload(),
                 
                 Tables\Filters\SelectFilter::make('chapter_id')
-                    ->label('الفصل')
+                    ->label('Chapter')
                     ->relationship('chapter', 'title')
                     ->searchable()
                     ->preload(),
                 
                 Tables\Filters\Filter::make('has_content')
-                    ->label('لها محتوى')
+                    ->label('Has Content')
                     ->query(fn (Builder $query): Builder => 
                         $query->whereNotNull('content')->where('content', '!=', '')
                     ),
                 
                 Tables\Filters\Filter::make('page_range')
-                    ->label('نطاق الصفحات')
+                    ->label('Page Range')
                     ->form([
                         Forms\Components\TextInput::make('from')
-                            ->label('من صفحة')
+                            ->label('From Page')
                             ->numeric(),
                         Forms\Components\TextInput::make('to')
-                            ->label('إلى صفحة')
+                            ->label('To Page')
                             ->numeric(),
                     ])
                     ->query(function (Builder $query, array $data): Builder {
@@ -156,25 +156,25 @@ class PagesRelationManager extends RelationManager
             ])
             ->headerActions([
                 Tables\Actions\CreateAction::make()
-                    ->label('إضافة صفحة جديدة'),
+                    ->label('Add New Page'),
             ])
             ->actions([
                 Tables\Actions\ViewAction::make()
-                    ->label('عرض'),
+                    ->label('View'),
                 Tables\Actions\EditAction::make()
-                    ->label('تعديل'),
+                    ->label('Edit'),
                 Tables\Actions\DeleteAction::make()
-                    ->label('حذف'),
+                    ->label('Delete'),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make()
-                        ->label('حذف المحدد'),
+                        ->label('Delete Selected'),
                 ]),
             ])
             ->defaultSort('page_number', 'asc')
-            ->defaultPaginationPageOption(25) // تحسين الأداء: تقسيم إلى 25 صفحة
-            ->poll('60s') // تحديث كل دقيقة بدلاً من 30 ثانية
+            ->defaultPaginationPageOption(25) // Performance improvement: paginate to 25 pages
+            ->poll('60s') // Update every minute instead of 30 seconds
             ->striped()
             ->paginated([10, 25, 50, 100]);
     }

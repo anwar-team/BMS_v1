@@ -26,7 +26,7 @@ class AuthorResource extends Resource
     protected static ?string $model = Author::class;
     protected static ?int $navigationSort = -6;
 
-    protected static ?string $navigationGroup = 'إدارة المحتوى';
+    protected static ?string $navigationGroup = 'Content Management';
 
     protected static ?string $navigationIcon = 'heroicon-o-user-group';
     
@@ -54,15 +54,15 @@ class AuthorResource extends Resource
         return $form
             ->schema([
                 TextInput::make('full_name')
-                    ->label('الاسم الكامل')
+                    ->label('Full Name')
                     ->required()
                     ->maxLength(255)
                     ->columnSpanFull()
                     ->searchable()
-                    ->placeholder('ابحث عن اسم المؤلف أو أدخل اسماً جديداً'),
+                    ->placeholder('Search for author name or enter a new name'),
 
                 FileUpload::make('image')
-                    ->label('صورة المؤلف')
+                    ->label('Author Image')
                     ->image()
                     ->directory('authors')
                     ->visibility('public')
@@ -70,77 +70,92 @@ class AuthorResource extends Resource
 
                 Grid::make(2)->schema([
                     Select::make('madhhab')
-                        ->label('المذهب')
+                        ->label('Madhhab')
                         ->options([
-                            'المذهب الحنفي' => 'المذهب الحنفي',
-                            'المذهب المالكي' => 'المذهب المالكي',
-                            'المذهب الشافعي' => 'المذهب الشافعي',
-                            'المذهب الحنبلي' => 'المذهب الحنبلي',
-                            'آخرون' => 'آخرون',
+                            'المذهب الحنفي' => 'Hanafi Madhhab',
+                            'المذهب المالكي' => 'Maliki Madhhab',
+                            'المذهب الشافعي' => 'Shafi\'i Madhhab',
+                            'المذهب الحنبلي' => 'Hanbali Madhhab',
+                            'آخرون' => 'Others',
                         ])
-                        ->placeholder('اختر المذهب'),
+                        ->placeholder('Choose Madhhab'),
                     
                     Select::make('is_living')
-                        ->label('حالة المؤلف')
+                        ->label('Author Status')
                         ->options([
-                            true => 'على قيد الحياة',
-                            false => 'متوفى',
+                            true => 'Living',
+                            false => 'Deceased',
                         ])
                         ->default(true)
                         ->live(),
                 ]),
 
                 Textarea::make('biography')
-                    ->label('السيرة الذاتية')
+                    ->label('Biography')
                     ->rows(4)
                     ->columnSpanFull(),
                 
-                // Birth year fields
                 Grid::make(2)->schema([
-                    Select::make('birth_year_type')
-                        ->label('نوع تقويم الميلاد')
+                    Select::make('birth_calendar_type')
+                        ->label('Birth Calendar Type')
                         ->options([
-                            'gregorian' => 'ميلادي',
-                            'hijri' => 'هجري',
+                            'gregorian' => 'Gregorian',
+                            'hijri' => 'Hijri',
                         ])
                         ->default('gregorian')
-                        ->live(),
+                        ->reactive(),
                     
-                    TextInput::make('birth_year')
-                        ->label(fn ($get) => $get('birth_year_type') === 'hijri' ? 'سنة الميلاد (هجري)' : 'سنة الميلاد (ميلادي)')
+                    TextInput::make('birth_year_hijri')
+                        ->label('Birth Year (Hijri)')
                         ->numeric()
                         ->minValue(1)
-                        ->maxValue(fn ($get) => $get('birth_year_type') === 'hijri' ? 1500 : date('Y')),
+                        ->maxValue(1500)
+                        ->visible(fn (Get $get) => $get('birth_calendar_type') === 'hijri'),
+                    
+                    TextInput::make('birth_year_gregorian')
+                        ->label('Birth Year (Gregorian)')
+                        ->numeric()
+                        ->minValue(1)
+                        ->maxValue(2024)
+                        ->visible(fn (Get $get) => $get('birth_calendar_type') === 'gregorian'),
                 ]),
                 
-                // Death year fields (conditional)
                 Grid::make(2)->schema([
-                    Select::make('death_year_type')
-                        ->label('نوع تقويم الوفاة')
+                    Select::make('death_calendar_type')
+                        ->label('Death Calendar Type')
                         ->options([
-                            'gregorian' => 'ميلادي',
-                            'hijri' => 'هجري',
+                            'gregorian' => 'Gregorian',
+                            'hijri' => 'Hijri',
                         ])
                         ->default('gregorian')
-                        ->live()
-                        ->visible(fn ($get) => !$get('is_living')),
+                        ->reactive()
+                        ->visible(fn (Get $get) => !$get('is_living')),
                     
-                    TextInput::make('death_year')
-                        ->label(fn ($get) => $get('death_year_type') === 'hijri' ? 'سنة الوفاة (هجري)' : 'سنة الوفاة (ميلادي)')
+                    TextInput::make('death_year_hijri')
+                        ->label('Death Year (Hijri)')
                         ->numeric()
                         ->minValue(1)
-                        ->maxValue(fn ($get) => $get('death_year_type') === 'hijri' ? 1500 : date('Y'))
-                        ->visible(fn ($get) => !$get('is_living'))
-                        ->nullable(),
+                        ->maxValue(1500)
+                        ->visible(fn (Get $get) => $get('death_calendar_type') === 'hijri' && !$get('is_living')),
+                    
+                    TextInput::make('death_year_gregorian')
+                        ->label('Death Year (Gregorian)')
+                        ->numeric()
+                        ->minValue(1)
+                        ->maxValue(2024)
+                        ->visible(fn (Get $get) => $get('death_calendar_type') === 'gregorian' && !$get('is_living')),
                 ]),
-
-                // Keep original date fields for backward compatibility
-                Forms\Components\DatePicker::make('birth_date')
-                    ->label('تاريخ الميلاد')
-                    ->hidden(),
-                Forms\Components\DatePicker::make('death_date')
-                    ->label('تاريخ الوفاة')
-                    ->hidden(),
+                
+                Grid::make(2)->schema([
+                    DatePicker::make('birth_date')
+                        ->label('Birth Date')
+                        ->nullable(),
+                    
+                    DatePicker::make('death_date')
+                        ->label('Death Date')
+                        ->nullable()
+                        ->visible(fn (Get $get) => !$get('is_living')),
+                ]),
             ]);
     }
 
@@ -149,73 +164,76 @@ class AuthorResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\ImageColumn::make('image')
-                    ->label('الصورة')
+                    ->label('Image')
                     ->circular()
-                    ->size(50)
-                    ->toggleable(),
+                    ->size(40),
                 Tables\Columns\TextColumn::make('full_name')
-                    ->label('الاسم الكامل')
+                    ->label('Full Name')
                     ->searchable()
-                    ->sortable()
-                    ->toggleable(),
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('madhhab')
-                    ->label('المذهب')
-                    ->searchable()
+                    ->label('Madhhab')
                     ->badge()
-                    ->color('info')
-                    ->toggleable(),
+                    ->formatStateUsing(function ($state) {
+                        return match($state) {
+                            'المذهب الحنفي' => 'Hanafi Madhhab',
+                            'المذهب المالكي' => 'Maliki Madhhab',
+                            'المذهب الشافعي' => 'Shafi\'i Madhhab',
+                            'المذهب الحنبلي' => 'Hanbali Madhhab',
+                            'آخرون' => 'Others',
+                            default => $state,
+                        };
+                    }),
                 Tables\Columns\IconColumn::make('is_living')
-                    ->label('على قيد الحياة')
+                    ->label('Living')
                     ->boolean()
                     ->trueIcon('heroicon-o-check-circle')
                     ->falseIcon('heroicon-o-x-circle')
                     ->trueColor('success')
-                    ->falseColor('danger')
-                    ->toggleable(isToggledHiddenByDefault: true),
+                    ->falseColor('danger'),
                 Tables\Columns\TextColumn::make('birth_year')
-                    ->label('سنة الميلاد')
-                    ->formatStateUsing(fn ($record) => $record->birth_year ? $record->birth_year . ' (' . ($record->birth_year_type === 'hijri' ? 'هـ' : 'م') . ')' : '-')
+                    ->label('Birth Year')
                     ->sortable()
-                    ->toggleable(),
+                    ->placeholder('Not specified'),
                 Tables\Columns\TextColumn::make('death_year')
-                    ->label('سنة الوفاة')
-                    ->formatStateUsing(fn ($record) => !$record->is_living && $record->death_year ? $record->death_year . ' (' . ($record->death_year_type === 'hijri' ? 'هـ' : 'م') . ')' : ($record->is_living ? 'على قيد الحياة' : '-'))
+                    ->label('Death Year')
                     ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
+                    ->placeholder('Not specified')
+                    ->visible(fn ($record) => !$record->is_living),
                 Tables\Columns\TextColumn::make('created_at')
-                    ->label('تاريخ الإنشاء')
+                    ->label('Created At')
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('updated_at')
-                    ->label('تاريخ التحديث')
+                    ->label('Last Update')
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
                 Tables\Filters\SelectFilter::make('madhhab')
-                    ->label('المذهب')
+                    ->label('Madhhab')
                     ->options([
-                        'المذهب الحنفي' => 'المذهب الحنفي',
-                        'المذهب المالكي' => 'المذهب المالكي',
-                        'المذهب الشافعي' => 'المذهب الشافعي',
-                        'المذهب الحنبلي' => 'المذهب الحنبلي',
-                        'آخرون' => 'آخرون',
+                        'المذهب الحنفي' => 'Hanafi Madhhab',
+                        'المذهب المالكي' => 'Maliki Madhhab',
+                        'المذهب الشافعي' => 'Shafi\'i Madhhab',
+                        'المذهب الحنبلي' => 'Hanbali Madhhab',
+                        'آخرون' => 'Others',
                     ])
-                    ->placeholder('جميع المذاهب'),
+                    ->placeholder('All Madhabs'),
                 Tables\Filters\TernaryFilter::make('is_living')
-                    ->label('حالة المؤلف')
-                    ->placeholder('الكل')
-                    ->trueLabel('على قيد الحياة')
-                    ->falseLabel('متوفى'),
+                    ->label('Author Status')
+                    ->placeholder('All')
+                    ->trueLabel('Living')
+                    ->falseLabel('Deceased'),
                 Tables\Filters\Filter::make('birth_year')
                     ->form([
                         Forms\Components\TextInput::make('from')
-                            ->label('من سنة')
+                            ->label('From Year')
                             ->numeric(),
                         Forms\Components\TextInput::make('until')
-                            ->label('إلى سنة')
+                            ->label('To Year')
                             ->numeric(),
                     ])
                     ->query(function (Builder $query, array $data): Builder {
@@ -229,14 +247,14 @@ class AuthorResource extends Resource
                                 fn (Builder $query, $date): Builder => $query->where('birth_year', '<=', $date),
                             );
                     })
-                    ->label('سنة الميلاد'),
+                    ->label('Birth Year'),
                 Tables\Filters\Filter::make('death_year')
                     ->form([
                         Forms\Components\TextInput::make('from')
-                            ->label('من سنة')
+                            ->label('From Year')
                             ->numeric(),
                         Forms\Components\TextInput::make('until')
-                            ->label('إلى سنة')
+                            ->label('To Year')
                             ->numeric(),
                     ])
                     ->query(function (Builder $query, array $data): Builder {
@@ -250,7 +268,7 @@ class AuthorResource extends Resource
                                 fn (Builder $query, $date): Builder => $query->where('death_year', '<=', $date),
                             );
                     })
-                    ->label('سنة الوفاة'),
+                    ->label('Death Year'),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),

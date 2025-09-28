@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Cache;
 
 class BooksSectionChartWidget extends ChartWidget
 {
-    protected static ?string $heading = 'توزيع الكتب حسب الأقسام';
+    protected static ?string $heading = 'Books Distribution by Sections';
     protected static ?int $sort = 4;
     protected int | string | array $columnSpan = 'full';
     
@@ -32,7 +32,7 @@ class BooksSectionChartWidget extends ChartWidget
             return [
                 'datasets' => [
                     [
-                        'label' => 'عدد الكتب',
+                        'label' => 'Number of Books',
                         'data' => $sections->pluck('books_count')->toArray(),
                         'backgroundColor' => [
                             '#FF6384',

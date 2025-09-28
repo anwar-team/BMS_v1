@@ -164,40 +164,40 @@ class PagesRelationManager extends RelationManager
             ])
             ->actions([
                 Tables\Actions\ViewAction::make()
-                    ->label('عرض')
+                    ->label('View')
                     ->modalContent(function ($record) {
                         return view('filament.components.page-content', [
                             'record' => $record,
                         ]);
                     }),
                 Tables\Actions\EditAction::make()
-                    ->label('تعديل'),
+                    ->label('Edit'),
                 Tables\Actions\DeleteAction::make()
-                    ->label('حذف')
+                    ->label('Delete')
                     ->requiresConfirmation()
-                    ->modalHeading('حذف الصفحة')
-                    ->modalDescription('هل أنت متأكد من حذف هذه الصفحة؟ سيتم حذف جميع الهوامش المرتبطة بها.')
-                    ->modalSubmitActionLabel('حذف'),
+                    ->modalHeading('Delete Page')
+                    ->modalDescription('Are you sure you want to delete this page? All associated footnotes will be deleted.')
+                    ->modalSubmitActionLabel('Delete'),
                 Tables\Actions\Action::make('duplicate')
-                    ->label('نسخ')
+                    ->label('Duplicate')
                     ->icon('heroicon-o-document-duplicate')
                     ->action(function ($record, RelationManager $livewire) {
                         $maxPage = $livewire->getOwnerRecord()->pages()->max('page_number') ?? 0;
                         $newPage = $record->replicate();
                         $newPage->page_number = $maxPage + 1;
-                        $newPage->title = $record->title ? $record->title . ' (نسخة)' : null;
+                        $newPage->title = $record->title ? $record->title . ' (Copy)' : null;
                         $newPage->save();
                     })
                     ->requiresConfirmation()
-                    ->modalHeading('نسخ الصفحة')
-                    ->modalDescription('هل تريد إنشاء نسخة من هذه الصفحة؟')
-                    ->modalSubmitActionLabel('نسخ'),
+                    ->modalHeading('Duplicate Page')
+                    ->modalDescription('Do you want to create a copy of this page?')
+                    ->modalSubmitActionLabel('Duplicate'),
                 Tables\Actions\Action::make('move_to_chapter')
-                    ->label('نقل إلى فصل آخر')
+                    ->label('Move to Another Chapter')
                     ->icon('heroicon-o-arrow-right')
                     ->form([
                         Forms\Components\Select::make('new_chapter_id')
-                            ->label('الفصل الجديد')
+                            ->label('New Chapter')
                             ->options(function (RelationManager $livewire) {
                                 return $livewire->getOwnerRecord()->book->chapters()
                                     ->where('id', '!=', $livewire->getOwnerRecord()->id)
@@ -210,44 +210,44 @@ class PagesRelationManager extends RelationManager
                         $record->update(['chapter_id' => $data['new_chapter_id']]);
                     })
                     ->requiresConfirmation()
-                    ->modalHeading('نقل الصفحة')
-                    ->modalDescription('هل تريد نقل هذه الصفحة إلى فصل آخر؟')
-                    ->modalSubmitActionLabel('نقل'),
+                    ->modalHeading('Move Page')
+                    ->modalDescription('Do you want to move this page to another chapter?')
+                    ->modalSubmitActionLabel('Move'),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make()
-                        ->label('حذف المحدد')
+                        ->label('Delete Selected')
                         ->requiresConfirmation()
-                        ->modalHeading('حذف الصفحات المحددة')
-                        ->modalDescription('هل أنت متأكد من حذف الصفحات المحددة؟ سيتم حذف جميع الهوامش المرتبطة بها.')
-                        ->modalSubmitActionLabel('حذف'),
+                        ->modalHeading('Delete Selected Pages')
+                        ->modalDescription('Are you sure you want to delete the selected pages? All associated footnotes will be deleted.')
+                        ->modalSubmitActionLabel('Delete'),
                     Tables\Actions\BulkAction::make('publish')
-                        ->label('نشر المحدد')
+                        ->label('Publish Selected')
                         ->icon('heroicon-o-eye')
                         ->action(function ($records) {
                             $records->each(fn ($record) => $record->update(['is_published' => true]));
                         })
                         ->requiresConfirmation()
-                        ->modalHeading('نشر الصفحات')
-                        ->modalDescription('هل تريد نشر الصفحات المحددة؟')
-                        ->modalSubmitActionLabel('نشر'),
+                        ->modalHeading('Publish Pages')
+                        ->modalDescription('Do you want to publish the selected pages?')
+                        ->modalSubmitActionLabel('Publish'),
                     Tables\Actions\BulkAction::make('unpublish')
-                        ->label('إلغاء نشر المحدد')
+                        ->label('Unpublish Selected')
                         ->icon('heroicon-o-eye-slash')
                         ->action(function ($records) {
                             $records->each(fn ($record) => $record->update(['is_published' => false]));
                         })
                         ->requiresConfirmation()
-                        ->modalHeading('إلغاء نشر الصفحات')
-                        ->modalDescription('هل تريد إلغاء نشر الصفحات المحددة؟')
-                        ->modalSubmitActionLabel('إلغاء النشر'),
+                        ->modalHeading('Unpublish Pages')
+                        ->modalDescription('Do you want to unpublish the selected pages?')
+                        ->modalSubmitActionLabel('Unpublish'),
                     Tables\Actions\BulkAction::make('move_to_chapter')
-                        ->label('نقل إلى فصل آخر')
+                        ->label('Move to Another Chapter')
                         ->icon('heroicon-o-arrow-right')
                         ->form([
                             Forms\Components\Select::make('new_chapter_id')
-                                ->label('الفصل الجديد')
+                                ->label('New Chapter')
                                 ->options(function (RelationManager $livewire) {
                                     return $livewire->getOwnerRecord()->book->chapters()
                                         ->where('id', '!=', $livewire->getOwnerRecord()->id)
@@ -260,9 +260,9 @@ class PagesRelationManager extends RelationManager
                             $records->each(fn ($record) => $record->update(['chapter_id' => $data['new_chapter_id']]));
                         })
                         ->requiresConfirmation()
-                        ->modalHeading('نقل الصفحات')
-                        ->modalDescription('هل تريد نقل الصفحات المحددة إلى فصل آخر؟')
-                        ->modalSubmitActionLabel('نقل'),
+                        ->modalHeading('Move Pages')
+                        ->modalDescription('Do you want to move the selected pages to another chapter?')
+                        ->modalSubmitActionLabel('Move'),
                 ]),
             ])
             ->defaultSort('page_number')

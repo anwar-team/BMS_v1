@@ -17,7 +17,7 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 class VolumeResource extends Resource
 {
     protected static ?string $model = Volume::class;
-    protected static ?string $navigationGroup = 'إدارة محتوى الكتب';
+    protected static ?string $navigationGroup = 'Book Content Management';
     protected static ?int $navigationSort = -9;
 
     protected static ?string $navigationIcon = 'heroicon-o-book-open';
@@ -46,25 +46,25 @@ class VolumeResource extends Resource
         return $form
             ->schema([
                 Forms\Components\Select::make('book_id')
-                    ->label('الكتاب')
+                    ->label('Book')
                     ->relationship('book', 'title')
                     ->required()
                     ->searchable()
                     ->preload(),
                 Forms\Components\TextInput::make('volume_number')
-                    ->label('رقم المجلد')
+                    ->label('Volume Number')
                     ->required()
                     ->numeric()
                     ->minValue(1),
                 Forms\Components\TextInput::make('title')
-                    ->label('عنوان المجلد')
+                    ->label('Volume Title')
                     ->maxLength(255),
                 Forms\Components\TextInput::make('pages')
-                    ->label('عدد الصفحات')
+                    ->label('Number of Pages')
                     ->numeric()
                     ->minValue(1),
                 Forms\Components\Textarea::make('description')
-                    ->label('وصف المجلد')
+                    ->label('Volume Description')
                     ->columnSpanFull(),
             ]);
     }
@@ -74,26 +74,26 @@ class VolumeResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('book.title')
-                    ->label('الكتاب')
+                    ->label('Book')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('volume_number')
-                    ->label('رقم المجلد')
+                    ->label('Volume Number')
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('title')
-                    ->label('عنوان المجلد')
+                    ->label('Volume Title')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('pages')
-                    ->label('عدد الصفحات')
+                    ->label('Number of Pages')
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
-                    ->label('تاريخ الإنشاء')
+                    ->label('Created At')
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('updated_at')
-                    ->label('تاريخ التحديث')
+                    ->label('Updated At')
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),

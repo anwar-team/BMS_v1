@@ -11,11 +11,11 @@ use Illuminate\Support\Facades\Cache;
 
 class LatestBooksTableWidget extends BaseWidget
 {
-    protected static ?string $heading = 'أحدث الكتب المضافة';
+    protected static ?string $heading = 'Latest Added Books';
     protected static ?int $sort = 6;
     protected int | string | array $columnSpan = 'full';
     
-    // تعطيل التحديث التلقائي
+    // Disable automatic refresh
     protected static ?string $pollingInterval = null;
 
     public function table(Table $table): Table
@@ -29,30 +29,30 @@ class LatestBooksTableWidget extends BaseWidget
             )
             ->columns([
                 Tables\Columns\TextColumn::make('title')
-                    ->label('عنوان الكتاب')
+                    ->label('Book Title')
                     ->searchable()
                     ->sortable()
                     ->limit(30),
 
                 Tables\Columns\TextColumn::make('main_author')
-                    ->label('المؤلف')
+                    ->label('Author')
                     ->getStateUsing(function ($record) {
                         $mainAuthor = $record->authorBooks
                             ->where('is_main', true)
                             ->first();
                         return $mainAuthor?->author?->full_name ?? 
-                               $record->authorBooks->first()?->author?->full_name ?? 'غير محدد';
+                               $record->authorBooks->first()?->author?->full_name ?? 'Not specified';
                     })
                     ->badge()
                     ->limit(20),
 
                 Tables\Columns\TextColumn::make('bookSection.name')
-                    ->label('القسم')
+                    ->label('Section')
                     ->badge()
                     ->color('info'),
 
                 Tables\Columns\TextColumn::make('status')
-                    ->label('الحالة')
+                    ->label('Status')
                     ->badge()
                     ->color(fn (string $state): string => match ($state) {
                         'published' => 'success',
@@ -61,14 +61,14 @@ class LatestBooksTableWidget extends BaseWidget
                         default => 'gray',
                     })
                     ->formatStateUsing(fn (string $state): string => match ($state) {
-                        'published' => 'منشور',
-                        'draft' => 'مسودة',
-                        'archived' => 'مؤرشف',
+                        'published' => 'Published',
+                        'draft' => 'Draft',
+                        'archived' => 'Archived',
                         default => $state,
                     }),
 
                 Tables\Columns\TextColumn::make('created_at')
-                    ->label('تاريخ الإضافة')
+                    ->label('Date Added')
                     ->dateTime('d/m/Y')
                     ->sortable(),
             ])

@@ -10,11 +10,11 @@ use Illuminate\Database\Eloquent\Builder;
 
 class LatestUsersTableWidget extends BaseWidget
 {
-    protected static ?string $heading = 'أحدث المستخدمين المسجلين';
+    protected static ?string $heading = 'Latest Registered Users';
     protected static ?int $sort = 7;
     protected int | string | array $columnSpan = 'full';
     
-    // تعطيل التحديث التلقائي
+    // Disable automatic refresh
     protected static ?string $pollingInterval = null;
 
     public function table(Table $table): Table
@@ -28,35 +28,35 @@ class LatestUsersTableWidget extends BaseWidget
             )
             ->columns([
                 Tables\Columns\TextColumn::make('first_name')
-                    ->label('الاسم الأول')
+                    ->label('First Name')
                     ->searchable()
                     ->sortable(),
 
                 Tables\Columns\TextColumn::make('last_name')
-                    ->label('اسم العائلة')
+                    ->label('Last Name')
                     ->searchable()
                     ->sortable(),
 
                 Tables\Columns\TextColumn::make('username')
-                    ->label('اسم المستخدم')
+                    ->label('Username')
                     ->searchable()
                     ->sortable(),
 
                 Tables\Columns\TextColumn::make('email')
-                    ->label('البريد الإلكتروني')
+                    ->label('Email')
                     ->searchable()
                     ->sortable()
                     ->limit(25),
 
                 Tables\Columns\TextColumn::make('roles.name')
-                    ->label('الأدوار')
+                    ->label('Roles')
                     ->badge()
                     ->separator(', ')
                     ->formatStateUsing(fn (string $state): string => match ($state) {
-                        'super_admin' => 'مدير عام',
-                        'admin' => 'مسؤول',
-                        'editor' => 'محرر',
-                        'author' => 'مؤلف',
+                        'super_admin' => 'Super Admin',
+                        'admin' => 'Admin',
+                        'editor' => 'Editor',
+                        'author' => 'Author',
                         default => $state,
                     })
                     ->color(fn (string $state): string => match ($state) {
@@ -68,13 +68,13 @@ class LatestUsersTableWidget extends BaseWidget
                     }),
 
                 Tables\Columns\TextColumn::make('created_at')
-                    ->label('تاريخ التسجيل')
+                    ->label('Registration Date')
                     ->dateTime('d/m/Y H:i')
                     ->sortable(),
             ])
             ->actions([
                 Tables\Actions\Action::make('edit')
-                    ->label('تعديل')
+                    ->label('Edit')
                     ->icon('heroicon-m-pencil-square')
                     ->url(fn (User $record): string => route('filament.admin.resources.users.edit', $record))
                     ->openUrlInNewTab(),

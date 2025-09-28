@@ -50,7 +50,7 @@ use Filament\Notifications\Notification;
 class BookResource extends Resource
 {
     protected static ?string $model = Book::class;
-    protected static ?string $navigationGroup = 'إدارة محتوى الكتب';
+    protected static ?string $navigationGroup = 'Book Content Management';
     protected static ?string $navigationIcon = 'heroicon-o-book-open';
     protected static ?string $navigationLabel = null;
     protected static ?string $modelLabel = null;
@@ -1040,7 +1040,7 @@ class BookResource extends Resource
             ->toggleColumnsTriggerAction(
                 fn (\Filament\Tables\Actions\Action $action) => $action
                     ->button()
-                    ->label('إدارة الأعمدة')
+                    ->label('Manage Columns')
                     ->icon('heroicon-o-view-columns')
                     ->color('gray')
             );

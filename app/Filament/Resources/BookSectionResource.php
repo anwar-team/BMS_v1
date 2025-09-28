@@ -18,7 +18,7 @@ class BookSectionResource extends Resource
     protected static ?string $model = BookSection::class;
     protected static ?int $navigationSort = -4;
 
-    protected static ?string $navigationGroup = 'إدارة المحتوى';
+    protected static ?string $navigationGroup = 'Content Management';
 
     protected static ?string $navigationIcon = 'heroicon-o-folder';
     
@@ -46,34 +46,34 @@ class BookSectionResource extends Resource
         return $form
             ->schema([
                 Forms\Components\TextInput::make('name')
-                    ->label('اسم القسم')
+                    ->label('Section Name')
                     ->required()
                     ->maxLength(255),
                     
                 Forms\Components\Textarea::make('description')
-                    ->label('الوصف')
+                    ->label('Description')
                     ->rows(3)
                     ->maxLength(500),
                     
                 Forms\Components\Select::make('parent_id')
-                    ->label('القسم الأب')
+                    ->label('Parent Section')
                     ->relationship('parent', 'name')
                     ->searchable()
                     ->preload(),
                     
                 Forms\Components\TextInput::make('sort_order')
-                    ->label('ترتيب الفرز')
+                    ->label('Sort Order')
                     ->numeric()
                     ->default(0)
                     ->minValue(0),
                     
                 Forms\Components\TextInput::make('slug')
-                    ->label('الرابط المختصر')
+                    ->label('Slug')
                     ->maxLength(255)
                     ->unique(ignoreRecord: true),
                     
                 Forms\Components\Toggle::make('is_active')
-                    ->label('نشط')
+                    ->label('Active')
                     ->default(true),
             ]);
     }
@@ -83,54 +83,54 @@ class BookSectionResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('name')
-                    ->label('اسم القسم')
+                    ->label('Section Name')
                     ->searchable()
                     ->sortable(),
                     
                 Tables\Columns\TextColumn::make('parent.name')
-                    ->label('القسم الأب')
+                    ->label('Parent Section')
                     ->searchable()
                     ->sortable()
                     ->toggleable(),
                     
                 Tables\Columns\TextColumn::make('description')
-                    ->label('الوصف')
+                    ->label('Description')
                     ->limit(50)
                     ->toggleable(),
                     
                 Tables\Columns\TextColumn::make('sort_order')
-                    ->label('ترتيب الفرز')
+                    ->label('Sort Order')
                     ->sortable()
                     ->toggleable(),
                     
                 Tables\Columns\TextColumn::make('slug')
-                    ->label('الرابط المختصر')
+                    ->label('Slug')
                     ->searchable()
                     ->toggleable(),
                     
                 Tables\Columns\IconColumn::make('is_active')
-                    ->label('نشط')
+                    ->label('Active')
                     ->boolean()
                     ->sortable(),
                     
                 Tables\Columns\TextColumn::make('books_count')
-                    ->label('عدد الكتب')
+                    ->label('Books Count')
                     ->counts('books')
                     ->sortable()
                     ->toggleable(),
                     
                 Tables\Columns\TextColumn::make('created_at')
-                    ->label('تاريخ الإنشاء')
+                    ->label('Created At')
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
                 Tables\Filters\TernaryFilter::make('is_active')
-                    ->label('نشط'),
+                    ->label('Active'),
                     
                 Tables\Filters\SelectFilter::make('parent_id')
-                    ->label('القسم الأب')
+                    ->label('Parent Section')
                     ->relationship('parent', 'name')
                     ->searchable()
                     ->preload(),
@@ -138,8 +138,8 @@ class BookSectionResource extends Resource
                 Tables\Filters\Filter::make('name')
                     ->form([
                         Forms\Components\TextInput::make('name')
-                            ->label('اسم القسم')
-                            ->placeholder('ابحث عن قسم...'),
+                            ->label('Section Name')
+                            ->placeholder('Search for section...'),
                     ])
                     ->query(function (Builder $query, array $data): Builder {
                         return $query
@@ -148,11 +148,11 @@ class BookSectionResource extends Resource
                                 fn (Builder $query, $name): Builder => $query->where('name', 'like', "%{$name}%"),
                             );
                     })
-                    ->label('البحث بالاسم'),
+                    ->label('Search by Name'),
                     
                 Tables\Filters\Filter::make('has_books')
                     ->query(fn (Builder $query): Builder => $query->has('books'))
-                    ->label('يحتوي على كتب'),
+                    ->label('Has Books'),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),

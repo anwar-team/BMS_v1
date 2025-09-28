@@ -14,44 +14,45 @@ class UsersAndBlogStatsWidget extends BaseWidget
 {
     protected static ?int $sort = 3;
     
-    // تعطيل التحديث التلقائي
+    // Disable automatic refresh
     protected static ?string $pollingInterval = null;
     
-    // Cache للبيانات لمدة 20 دقيقة
+    // Cache data for 15 minutes
     protected static string $cacheKey = 'users_blog_stats_widget_data';
-    protected static int $cacheDuration = 1200; // 20 دقيقة
+    protected static int $cacheDuration = 900; // 15 minutes
 
     protected function getStats(): array
     {
-        // استخدام Cache لتجنب إعادة حساب البيانات في كل مرة
+        // Use Cache to avoid recalculating data every time
         return Cache::remember(static::$cacheKey, static::$cacheDuration, function () {
-            // استخدام queries محسنة
-            $userStats = User::selectRaw('COUNT(*) as total_users')->first();
-            $postStats = Post::selectRaw('
-                COUNT(*) as total_posts,
-                SUM(CASE WHEN status = "published" THEN 1 ELSE 0 END) as published_posts
-            ')->first();
-            $totalContacts = ContactUs::count();
+            // Use one optimized query instead of 4 separate queries
+            $userStats = User::selectRaw('
+                COUNT(*) as total_users,
+                COUNT(CASE WHEN created_at >= ? THEN 1 END) as recent_users
+            ', [now()->subDays(30)])->first();
+            
+            $activeUsers = User::where('is_active', true)->count();
+            $totalPosts = Post::count();
 
             return [
-                Stat::make(__('resource.stats.total_users'), $userStats->total_users)
-                    ->description(__('resource.stats.total_users'))
+                Stat::make('Total Users', $userStats->total_users)
+                    ->description('All users in the system')
                     ->descriptionIcon('heroicon-m-users')
                     ->color('primary'),
 
-                Stat::make(__('resource.stats.blog_posts'), $postStats->total_posts)
-                    ->description(__('resource.stats.blog_posts'))
-                    ->descriptionIcon('heroicon-m-document-text')
+                Stat::make('Active Users', $activeUsers)
+                    ->description('Currently active users')
+                    ->descriptionIcon('heroicon-m-check-circle')
                     ->color('success'),
 
-                Stat::make(__('resource.stats.published_posts'), $postStats->published_posts)
-                    ->description(__('resource.stats.published_posts'))
-                    ->descriptionIcon('heroicon-m-eye')
+                Stat::make('Blog Posts', $totalPosts)
+                    ->description('Published blog posts')
+                    ->descriptionIcon('heroicon-m-document-text')
                     ->color('info'),
 
-                Stat::make(__('resource.contact.contact_us'), $totalContacts)
-                    ->description(__('resource.stats.visitor_messages'))
-                    ->descriptionIcon('heroicon-m-envelope')
+                Stat::make('New Users', $userStats->recent_users)
+                    ->description('New users in the last 30 days')
+                    ->descriptionIcon('heroicon-m-user-plus')
                     ->color('warning'),
             ];
         });

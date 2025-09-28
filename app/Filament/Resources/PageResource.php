@@ -16,7 +16,7 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 class PageResource extends Resource
 {
     protected static ?string $model = Page::class;
-    protected static ?string $navigationGroup = 'إدارة محتوى الكتب';
+    protected static ?string $navigationGroup = 'Book Content Management';
     protected static ?int $navigationSort = -7;
 
     protected static ?string $navigationIcon = 'heroicon-o-document';
@@ -45,23 +45,23 @@ class PageResource extends Resource
         return $form
             ->schema([
                 Forms\Components\Select::make('book_id')
-                    ->label('الكتاب')
+                    ->label('Book')
                     ->relationship('book', 'title')
                     ->required(),
                 Forms\Components\Select::make('volume_id')
-                    ->label('المجلد')
+                    ->label('Volume')
                     ->relationship('volume', 'title')
                     ->nullable(),
                 Forms\Components\Select::make('chapter_id')
-                    ->label('الفصل')
+                    ->label('Chapter')
                     ->relationship('chapter', 'title')
                     ->nullable(),
                 Forms\Components\TextInput::make('page_number')
-                    ->label('رقم الصفحة')
+                    ->label('Page Number')
                     ->numeric()
                     ->required(),
                 Forms\Components\Textarea::make('content')
-                    ->label('المحتوى')
+                    ->label('Content')
                     ->columnSpanFull(),
             ]);
     }
@@ -71,19 +71,19 @@ class PageResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('book.title')
-                    ->label('الكتاب')
+                    ->label('Book')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('volume.title')
-                    ->label('المجلد')
+                    ->label('Volume')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('chapter.title')
-                    ->label('الفصل')
+                    ->label('Chapter')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('page_number')
-                    ->label('رقم الصفحة')
+                    ->label('Page Number')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('content')
-                    ->label('المحتوى')
+                    ->label('Content')
                     ->limit(50)
                     ->searchable(),
             ])
