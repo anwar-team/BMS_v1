@@ -1044,7 +1044,7 @@ class BookResource extends Resource
                         
                         // إنشاء subquery للعثور على الكتب المتشابهة
                         return $query->whereExists(function ($subQuery) use ($threshold) {
-                            $subQuery->select(\DB::raw(1))
+                            $subQuery->select(\Illuminate\Support\Facades\DB::raw(1))
                                 ->from('books as similar_books')
                                 ->whereColumn('similar_books.id', '!=', 'books.id')
                                 ->where(function ($similarityQuery) use ($threshold) {
