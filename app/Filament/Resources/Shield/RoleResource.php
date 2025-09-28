@@ -22,7 +22,7 @@ use Illuminate\Support\Str;
 class RoleResource extends Resource implements HasShieldPermissions
 {
     protected static ?string $recordTitleAttribute = 'name';
-    //protected static ?string $navigationGroup = 'ACCESS';
+    protected static ?string $navigationGroup = 'ACCESS';
 
     protected static $permissionsCollection;
 
@@ -163,9 +163,7 @@ class RoleResource extends Resource implements HasShieldPermissions
 
     public static function getNavigationGroup(): ?string
     {
-        return Utils::isResourceNavigationGroupEnabled()
-            ? __("menu.nav_group.access")
-            : '';
+        return static::$navigationGroup;
     }
 
     public static function getNavigationLabel(): string
