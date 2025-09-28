@@ -161,12 +161,12 @@ class RoleResource extends Resource implements HasShieldPermissions
         return Utils::isResourceNavigationRegistered();
     }
 
-    //public static function getNavigationGroup(): ?string
-    //{
-    //    return Utils::isResourceNavigationGroupEnabled()
-    //        ? __("menu.nav_group.access")
-    //        : '';
-    //}
+    public static function getNavigationGroup(): ?string
+    {
+        return Utils::isResourceNavigationGroupEnabled()
+            ? __("menu.nav_group.access")
+            : '';
+    }
 
     public static function getNavigationLabel(): string
     {
