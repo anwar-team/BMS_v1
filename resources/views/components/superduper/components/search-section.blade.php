@@ -1,7 +1,7 @@
 <!-- Search Section - Independent Component -->
 <div class="relative">
     <div class="pattern-top top-0"></div>
-    <section class="relative z-10 bg-gradient-to-b from-green-50 to-white py-16">
+    <section class="relative z-10 bg-gradient-to-b from-green-50 to-white pt-32 pb-0">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="max-w-4xl mx-auto text-center">
                 <!-- Search Title -->
@@ -117,24 +117,29 @@
                 </a>
             </div>
 
-            <!-- Section Filter (for books only) -->
-            <div id="section-filter-container" class="max-w-md mx-auto mb-6">
-                <select id="section-filter" 
-                        class="w-full bg-white border-2 border-green-200 rounded-full px-6 py-3 text-gray-700 focus:border-green-500 focus:ring-2 focus:ring-green-200 focus:outline-none">
-                    <option value="">جميع الأقسام</option>
-                </select>
-            </div>
-
             <!-- Search Bar -->
             <div class="max-w-xl mx-auto relative z-[100]">
-                <div class="relative bg-white rounded-full px-6 py-4 flex items-center gap-3 shadow-xl border border-gray-200 hover:shadow-2xl transition-shadow duration-300">
+                <div class="relative bg-white rounded-full px-16 py-4 flex items-center gap-3 shadow-xl border border-gray-200 hover:shadow-2xl transition-shadow duration-300">
                     <img src="{{ asset('images/iconly-light-search0.svg') }}" alt="Search" class="w-6 h-6 text-gray-400">
+                    
                     <input
                         type="text"
                         id="search-input"
                         placeholder="إبحث في عناوين الكتب ..."
                         autocomplete="off"
-                        class="w-full bg-transparent border-none focus:ring-0 text-gray-700 placeholder-gray-500 text-lg focus:outline-none">
+                        class="flex-1 bg-transparent border-none focus:ring-0 text-gray-700 placeholder-gray-500 text-lg focus:outline-none">
+                    
+                    <!-- Filter Icon Button for Books - Simple icon only -->
+                    <div id="section-filter-container" class="flex items-center">
+                        <button id="section-filter-btn" 
+                                class="p-2 bg-green-100 text-green-700 rounded-full hover:bg-green-200 transition-colors duration-200"
+                                type="button">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"></path>
+                            </svg>
+                        </button>
+                    </div>
+                    
                     <button type="button"
                             id="search-btn"
                             class="absolute left-4 p-2 rounded-full bg-green-600 text-white transition-all duration-300 hover:bg-green-700 hover:scale-110 active:scale-95 shadow-md">
@@ -166,6 +171,21 @@
                         <p class="text-gray-500 text-sm md:text-base">جرب كلمات بحث مختلفة</p>
                     </div>
                 </div>
+
+                <!-- Section Filter Dropdown -->
+                <div id="section-filter-dropdown" 
+                     class="absolute top-full left-0 right-0 bg-white border border-gray-200 rounded-2xl shadow-2xl mt-2 max-h-80 overflow-y-auto z-[99999] hidden backdrop-blur-sm"
+                     style="box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25), 0 0 0 1px rgba(0, 0, 0, 0.05);">
+                    <div id="section-options" class="p-2 md:p-4">
+                        <div class="p-2 cursor-pointer hover:bg-gray-100 rounded-lg section-option active" data-section-id="" data-section-name="جميع الأقسام">
+                            <div class="flex items-center justify-between">
+                                <span>جميع الأقسام</span>
+                                <span class="text-xs text-gray-500">الكل</span>
+                            </div>
+                        </div>
+                        <!-- Section options will be populated here -->
+                    </div>
+                </div>
             </div>
 
             <!-- Search Tips -->
@@ -180,6 +200,19 @@
 </section>
 <div class="pattern-bottom bottom-0"></div>
 </div>
+
+<style>
+.section-option {
+    transition: all 0.2s ease;
+}
+.section-option:hover {
+    background-color: #f3f4f6;
+}
+.section-option.active {
+    background-color: #dcfce7;
+    border: 1px solid #86efac;
+}
+</style>
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
@@ -199,12 +232,15 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // فلتر الأقسام
     const sectionFilterContainer = document.getElementById('section-filter-container');
-    const sectionFilter = document.getElementById('section-filter');
+    const sectionFilterBtn = document.getElementById('section-filter-btn');
+    const sectionFilterDropdown = document.getElementById('section-filter-dropdown');
+    const sectionOptions = document.getElementById('section-options');
     
     // متغيرات
     let currentSearchType = 'books'; // الافتراضي: عناوين الكتب
     let searchTimeout;
     let currentSectionId = '';
+    let currentSectionName = 'جميع الأقسام';
     let sectionsData = [];
     
     // تحميل الأقسام عند بدء التشغيل
@@ -213,6 +249,15 @@ document.addEventListener('DOMContentLoaded', function() {
     // تغيير نوع البحث
     authorsBtn.addEventListener('click', () => setSearchType('authors'));
     booksBtn.addEventListener('click', () => setSearchType('books'));
+    
+    // عرض/إخفاء قائمة الأقسام عند النقر على الزر
+    sectionFilterBtn.addEventListener('click', function(e) {
+        e.stopPropagation();
+        if (currentSearchType === 'books') {
+            sectionFilterDropdown.classList.toggle('hidden');
+            searchDropdown.classList.add('hidden');
+        }
+    });
     
     // البحث عند الكتابة
     searchInput.addEventListener('input', function() {
@@ -250,31 +295,25 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
     
-    // تغيير فلتر القسم
-    sectionFilter.addEventListener('change', function() {
-        currentSectionId = this.value;
-        const query = searchInput.value.trim();
-        if (query.length >= 2 && currentSearchType === 'books') {
-            performSearch(query);
-        }
-    });
-    
-    // إخفاء القائمة عند النقر خارجها
+    // إخفاء القوائم عند النقر خارجها
     document.addEventListener('click', function(e) {
         if (!e.target.closest('.max-w-xl')) {
             hideDropdown();
+            hideSectionFilter();
         }
     });
     
-    // إخفاء القائمة عند التمرير
+    // إخفاء القوائم عند التمرير
     window.addEventListener('scroll', function() {
         hideDropdown();
+        hideSectionFilter();
     });
     
-    // إخفاء القائمة عند الضغط على Escape
+    // إخفاء القوائم عند الضغط على Escape
     document.addEventListener('keydown', function(e) {
         if (e.key === 'Escape') {
             hideDropdown();
+            hideSectionFilter();
         }
     });
     
@@ -299,7 +338,13 @@ document.addEventListener('DOMContentLoaded', function() {
             booksBtn.classList.remove('bg-white', 'text-green-800');
             searchInput.placeholder = 'إبحث في عناوين الكتب ...';
             searchTips.innerHTML = '💡 نصائح للبحث: استخدم كلمات مفتاحية واضحة، أو ابحث بعناوين الكتب';
-            sectionFilterContainer.style.display = 'block';
+            sectionFilterContainer.style.display = 'flex';
+        }
+        
+        // تعيين "جميع الأقسام" كافتراضي عند التبديل إلى البحث في الكتب
+        if (type === 'books') {
+            currentSectionId = '';
+            currentSectionName = 'جميع الأقسام';
         }
         
         // إعادة البحث إذا كان هناك نص
@@ -319,7 +364,7 @@ document.addEventListener('DOMContentLoaded', function() {
             
             if (data.success) {
                 sectionsData = data.data;
-                populateSectionFilter(data.data);
+                populateSectionOptions(data.data);
             }
         } catch (error) {
             console.error('خطأ في تحميل الأقسام:', error);
@@ -327,15 +372,83 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     
     // ملء قائمة الأقسام
-    function populateSectionFilter(sections) {
-        sectionFilter.innerHTML = '<option value="">جميع الأقسام</option>';
+    function populateSectionOptions(sections) {
+        // إزالة الخيارات السابقة باستثناء "جميع الأقسام"
+        const defaultOption = sectionOptions.querySelector('[data-section-id=""]');
         
+        // إزالة جميع الخيارات الأخرى
+        while (sectionOptions.firstChild) {
+            sectionOptions.removeChild(sectionOptions.firstChild);
+        }
+        
+        // إضافة خيار "جميع الأقسام" مرة أخرى
+        sectionOptions.appendChild(defaultOption);
+        
+        // إضافة باقي الأقسام
         sections.forEach(section => {
-            const option = document.createElement('option');
-            option.value = section.id;
-            option.textContent = `${section.name} (${section.books_count})`;
-            sectionFilter.appendChild(option);
+            const option = document.createElement('div');
+            option.className = 'p-2 cursor-pointer hover:bg-gray-100 rounded-lg section-option';
+            option.setAttribute('data-section-id', section.id);
+            option.setAttribute('data-section-name', section.name);
+            
+            option.innerHTML = `
+                <div class="flex items-center justify-between">
+                    <span>${section.name}</span>
+                    <span class="text-xs text-gray-500">${section.books_count}</span>
+                </div>
+            `;
+            
+            option.addEventListener('click', function() {
+                currentSectionId = section.id;
+                currentSectionName = section.name;
+                
+                // إزالة التحديد من الخيارات الأخرى
+                document.querySelectorAll('.section-option').forEach(opt => {
+                    opt.classList.remove('active');
+                });
+                
+                // إضافة التحديد للخيار الحالي
+                this.classList.add('active');
+                
+                hideSectionFilter();
+                
+                // إعادة البحث إذا كان هناك نص
+                const query = searchInput.value.trim();
+                if (query.length >= 2) {
+                    performSearch(query);
+                }
+            });
+            
+            sectionOptions.appendChild(option);
         });
+    }
+    
+    // تحديد خيار "جميع الأقسام"
+    const allSectionsOption = sectionOptions.querySelector('[data-section-id=""]');
+    allSectionsOption.addEventListener('click', function() {
+        currentSectionId = '';
+        currentSectionName = 'جميع الأقسام';
+        
+        // إزالة التحديد من الخيارات الأخرى
+        document.querySelectorAll('.section-option').forEach(opt => {
+            opt.classList.remove('active');
+        });
+        
+        // إضافة التحديد للخيار الحالي
+        this.classList.add('active');
+        
+        hideSectionFilter();
+        
+        // إعادة البحث إذا كان هناك نص
+        const query = searchInput.value.trim();
+        if (query.length >= 2) {
+            performSearch(query);
+        }
+    });
+    
+    // إخفاء قائمة الأقسام
+    function hideSectionFilter() {
+        sectionFilterDropdown.classList.add('hidden');
     }
     
     // تنفيذ البحث
