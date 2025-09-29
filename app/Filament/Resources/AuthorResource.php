@@ -155,6 +155,7 @@ class AuthorResource extends Resource
                         ->label('Death Date')
                         ->nullable()
                         ->visible(fn (Get $get) => !$get('is_living')),
+
                 ]),
             ]);
     }

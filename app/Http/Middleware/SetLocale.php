@@ -19,13 +19,15 @@ class SetLocale
     public function handle(Request $request, Closure $next)
     {
         $locale = Session::get('locale', config('app.locale'));
+        $availableLocales = config('app.available_locales', ['ar', 'en']);
         
         // Check if the locale is supported
-        if (in_array($locale, ['ar', 'en'])) {
+        if (in_array($locale, $availableLocales)) {
             App::setLocale($locale);
             
             // Set the direction for RTL languages
-            if ($locale === 'ar') {
+            $rtlLanguages = ['ar', 'he', 'fa', 'ur'];
+            if (in_array($locale, $rtlLanguages)) {
                 config(['app.direction' => 'rtl']);
             } else {
                 config(['app.direction' => 'ltr']);

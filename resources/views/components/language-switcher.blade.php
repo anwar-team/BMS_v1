@@ -5,10 +5,10 @@
                 id="language-menu-button" aria-expanded="false" aria-haspopup="true">
             @php
                 $currentLocale = app()->getLocale();
-                $languages = [
-                    'ar' => ['name' => 'العربية', 'flag' => '🇸🇦'],
-                    'en' => ['name' => 'English', 'flag' => '🇺🇸']
-                ];
+                $availableLocales = \App\Helpers\LanguageHelper::getSupportedLocales();
+                $languages = \App\Helpers\LanguageHelper::getAvailableLanguages();
+                // Filter languages based on available locales
+                $languages = array_intersect_key($languages, array_flip($availableLocales));
             @endphp
             <span class="flex items-center gap-2">
                 <span class="text-lg">{{ $languages[$currentLocale]['flag'] }}</span>
@@ -40,7 +40,7 @@
                         <span class="text-lg">{{ $language['flag'] }}</span>
                         <div class="flex flex-col">
                             <span class="font-medium">{{ $language['name'] }}</span>
-                            <span class="text-xs text-gray-500 dark:text-gray-400">{{ strtoupper($code) }}</span>
+                            <span class="text-xs text-gray-500 dark:text-gray-400">{{ $language['code'] }}</span>
                         </div>
                     </div>
                     @if($currentLocale === $code)
