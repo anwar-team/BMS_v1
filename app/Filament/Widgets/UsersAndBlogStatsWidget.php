@@ -28,10 +28,10 @@ class UsersAndBlogStatsWidget extends BaseWidget
             // Use one optimized query instead of 4 separate queries
             $userStats = User::selectRaw('
                 COUNT(*) as total_users,
-                COUNT(CASE WHEN created_at >= ? THEN 1 END) as recent_users
+                COUNT(CASE WHEN created_at >= ? THEN 1 END) as recent_users,
+                COUNT(CASE WHEN email_verified_at IS NOT NULL THEN 1 END) as verified_users
             ', [now()->subDays(30)])->first();
             
-            $activeUsers = User::where('is_active', true)->count();
             $totalPosts = Post::count();
 
             return [
@@ -40,8 +40,8 @@ class UsersAndBlogStatsWidget extends BaseWidget
                     ->descriptionIcon('heroicon-m-users')
                     ->color('primary'),
 
-                Stat::make('Active Users', $activeUsers)
-                    ->description('Currently active users')
+                Stat::make('Verified Users', $userStats->verified_users)
+                    ->description('Users with verified email addresses')
                     ->descriptionIcon('heroicon-m-check-circle')
                     ->color('success'),
 
