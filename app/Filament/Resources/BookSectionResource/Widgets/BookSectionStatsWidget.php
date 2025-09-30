@@ -23,23 +23,23 @@ class BookSectionStatsWidget extends BaseWidget
         $sectionsWithBooksPercentage = $totalSections > 0 ? round(($sectionsWithBooks / $totalSections) * 100) : 0;
         
         return [
-            Stat::make('Total Book Sections', $totalSections)
-                ->description('All book sections in the system')
+            Stat::make('إجمالي أقسام الكتب', $totalSections)
+                ->description('جميع أقسام الكتب في النظام')
                 ->descriptionIcon('heroicon-m-folder')
                 ->color('primary'),
                 
-            Stat::make('Active Sections', $activeSections)
-                ->description('Currently active sections')
+            Stat::make('الأقسام النشطة', $activeSections)
+                ->description('الأقسام النشطة حالياً')
                 ->descriptionIcon('heroicon-m-check-circle')
                 ->color('success'),
                 
-            Stat::make('Sections with Books', $sectionsWithBooks)
-                ->description($sectionsWithBooksPercentage . '% of total sections')
+            Stat::make('الأقسام التي تحتوي على كتب', $sectionsWithBooks)
+                ->description($sectionsWithBooksPercentage . '% من إجمالي الأقسام')
                 ->descriptionIcon('heroicon-m-book-open')
                 ->color('info'),
                 
-            Stat::make('New Sections This Month', $newSectionsThisMonth)
-                ->description('Added this month')
+            Stat::make('الأقسام الجديدة هذا الشهر', $newSectionsThisMonth)
+                ->description('تمت إضافتها هذا الشهر')
                 ->descriptionIcon('heroicon-m-plus-circle')
                 ->color('warning'),
         ];
