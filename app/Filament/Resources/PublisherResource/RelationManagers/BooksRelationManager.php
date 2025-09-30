@@ -19,96 +19,96 @@ class BooksRelationManager extends RelationManager
         return $form
             ->schema([
                 Forms\Components\TextInput::make('title')
-                    ->label('Book Title')
+                    ->label('عنوان الكتاب')
                     ->required()
                     ->maxLength(255),
                 Forms\Components\TextInput::make('subtitle')
-                    ->label('Subtitle')
+                    ->label('العنوان الفرعي')
                     ->maxLength(255),
                 Forms\Components\Textarea::make('description')
-                    ->label('Book Description')
+                    ->label('وصف الكتاب')
                     ->rows(4)
                     ->columnSpanFull(),
                 Forms\Components\Select::make('book_section_id')
-                    ->label('Book Section')
+                    ->label('قسم الكتاب')
                     ->relationship('bookSection', 'name')
                     ->searchable()
                     ->preload()
                     ->createOptionForm([
                         Forms\Components\TextInput::make('name')
-                            ->label('Section Name')
+                            ->label('اسم القسم')
                             ->required(),
                         Forms\Components\Textarea::make('description')
-                            ->label('Section Description'),
+                            ->label('وصف القسم'),
                     ]),
                 Forms\Components\TextInput::make('isbn')
-                    ->label('ISBN Number')
+                    ->label('رقم ISBN')
                     ->maxLength(20)
                     ->unique(ignoreRecord: true),
                 Forms\Components\DatePicker::make('publication_date')
-                    ->label('Publication Date'),
+                    ->label('تاريخ النشر'),
                 Forms\Components\TextInput::make('publication_year')
-                    ->label('Publication Year')
+                    ->label('سنة النشر')
                     ->numeric()
                     ->minValue(1000)
                     ->maxValue(date('Y') + 10),
                 Forms\Components\TextInput::make('edition')
-                    ->label('Edition')
+                    ->label('الطبعة')
                     ->maxLength(50),
                 Forms\Components\TextInput::make('pages')
-                    ->label('Number of Pages')
+                    ->label('عدد الصفحات')
                     ->numeric()
                     ->minValue(1),
                 Forms\Components\Select::make('language')
-                    ->label('Language')
+                    ->label('اللغة')
                     ->options([
-                        'ar' => 'Arabic',
-                        'en' => 'English',
-                        'fr' => 'French',
-                        'es' => 'Spanish',
-                        'de' => 'German',
-                        'tr' => 'Turkish',
-                        'fa' => 'Persian',
-                        'ur' => 'Urdu',
+                        'ar' => 'العربية',
+                        'en' => 'الإنجليزية',
+                        'fr' => 'الفرنسية',
+                        'es' => 'الإسبانية',
+                        'de' => 'الألمانية',
+                        'tr' => 'التركية',
+                        'fa' => 'الفارسية',
+                        'ur' => 'الأردو',
                     ])
                     ->default('ar'),
                 Forms\Components\TextInput::make('price')
-                    ->label('Price')
+                    ->label('السعر')
                     ->numeric()
                     ->prefix('$')
                     ->minValue(0),
                 Forms\Components\Select::make('currency')
-                    ->label('Currency')
+                    ->label('العملة')
                     ->options([
-                        'USD' => 'US Dollar',
-                        'EUR' => 'Euro',
-                        'SAR' => 'Saudi Riyal',
-                        'AED' => 'UAE Dirham',
-                        'EGP' => 'Egyptian Pound',
-                        'JOD' => 'Jordanian Dinar',
-                        'KWD' => 'Kuwaiti Dinar',
-                        'QAR' => 'Qatari Riyal',
-                        'BHD' => 'Bahraini Dinar',
-                        'OMR' => 'Omani Riyal',
+                        'USD' => 'الدولار الأمريكي',
+                        'EUR' => 'اليورو',
+                        'SAR' => 'الريال السعودي',
+                        'AED' => 'الدرهم الإماراتي',
+                        'EGP' => 'الجنيه المصري',
+                        'JOD' => 'الدينار الأردني',
+                        'KWD' => 'الدينار الكويتي',
+                        'QAR' => 'الريال القطري',
+                        'BHD' => 'الدينار البحريني',
+                        'OMR' => 'الريال العماني',
                     ])
                     ->default('USD'),
                 Forms\Components\Toggle::make('is_published')
-                    ->label('Published')
+                    ->label('منشور')
                     ->default(true),
                 Forms\Components\Toggle::make('is_featured')
-                    ->label('Featured')
+                    ->label('مميز')
                     ->default(false),
                 Forms\Components\Toggle::make('is_bestseller')
-                    ->label('Bestseller')
+                    ->label('الأكثر مبيعاً')
                     ->default(false),
                 Forms\Components\FileUpload::make('cover_image')
-                    ->label('Cover Image')
+                    ->label('صورة الغلاف')
                     ->image()
                     ->directory('book-covers')
                     ->visibility('public')
                     ->columnSpanFull(),
                 Forms\Components\Textarea::make('notes')
-                    ->label('Notes')
+                    ->label('ملاحظات')
                     ->rows(3)
                     ->columnSpanFull(),
             ]);
@@ -120,12 +120,12 @@ class BooksRelationManager extends RelationManager
             ->recordTitleAttribute('title')
             ->columns([
                 Tables\Columns\ImageColumn::make('cover_image')
-                    ->label('Cover')
+                    ->label('الغلاف')
                     ->circular()
                     ->defaultImageUrl(url('/images/default-book-cover.png'))
                     ->size(50),
                 Tables\Columns\TextColumn::make('title')
-                    ->label('Book Title')
+                    ->label('عنوان الكتاب')
                     ->searchable()
                     ->sortable()
                     ->limit(40)
@@ -133,21 +133,21 @@ class BooksRelationManager extends RelationManager
                         return $record->subtitle ? $record->title . ' - ' . $record->subtitle : $record->title;
                     }),
                 Tables\Columns\TextColumn::make('subtitle')
-                    ->label('Subtitle')
+                    ->label('العنوان الفرعي')
                     ->searchable()
                     ->limit(30)
                     ->toggleable()
-                    ->placeholder('No subtitle'),
+                    ->placeholder('لا يوجد عنوان فرعي'),
                 Tables\Columns\TextColumn::make('bookSection.name')
-                    ->label('Section')
+                    ->label('القسم')
                     ->searchable()
                     ->sortable()
                     ->limit(25)
-                    ->placeholder('Not specified')
+                    ->placeholder('غير محدد')
                     ->badge()
                     ->color('info'),
                 Tables\Columns\TextColumn::make('authors_count')
-                    ->label('Authors')
+                    ->label('المؤلفون')
                     ->counts('authors')
                     ->sortable()
                     ->badge()
@@ -158,51 +158,51 @@ class BooksRelationManager extends RelationManager
                         default => 'danger',
                     }),
                 Tables\Columns\TextColumn::make('volumes_count')
-                    ->label('Volumes')
+                    ->label('المجلدات')
                     ->counts('volumes')
                     ->sortable()
                     ->badge()
                     ->color('primary'),
                 Tables\Columns\TextColumn::make('chapters_count')
-                    ->label('Chapters')
+                    ->label('الفصول')
                     ->counts('chapters')
                     ->sortable()
                     ->badge()
                     ->color('secondary'),
                 Tables\Columns\TextColumn::make('pages_count')
-                    ->label('Pages')
+                    ->label('الصفحات')
                     ->counts('pages')
                     ->sortable()
                     ->badge()
                     ->color('warning'),
                 Tables\Columns\TextColumn::make('publication_year')
-                    ->label('Publication Year')
+                    ->label('سنة النشر')
                     ->sortable()
-                    ->placeholder('Not specified'),
+                    ->placeholder('غير محدد'),
                 Tables\Columns\TextColumn::make('isbn')
-                    ->label('ISBN')
+                    ->label('رقم ISBN')
                     ->searchable()
                     ->copyable()
-                    ->placeholder('Not specified')
+                    ->placeholder('غير محدد')
                     ->toggleable(),
                 Tables\Columns\TextColumn::make('price')
-                    ->label('Price')
+                    ->label('السعر')
                     ->money(fn ($record) => $record->currency ?? 'USD')
                     ->sortable()
-                    ->placeholder('Not specified')
+                    ->placeholder('غير محدد')
                     ->toggleable(),
                 Tables\Columns\TextColumn::make('language')
-                    ->label('Language')
+                    ->label('اللغة')
                     ->badge()
                     ->formatStateUsing(fn (string $state): string => match ($state) {
-                        'ar' => 'Arabic',
-                        'en' => 'English',
-                        'fr' => 'French',
-                        'es' => 'Spanish',
-                        'de' => 'German',
-                        'tr' => 'Turkish',
-                        'fa' => 'Persian',
-                        'ur' => 'Urdu',
+                        'ar' => 'العربية',
+                        'en' => 'الإنجليزية',
+                        'fr' => 'الفرنسية',
+                        'es' => 'الإسبانية',
+                        'de' => 'الألمانية',
+                        'tr' => 'التركية',
+                        'fa' => 'الفارسية',
+                        'ur' => 'الأردو',
                         default => $state,
                     })
                     ->color(fn (string $state): string => match ($state) {
@@ -212,53 +212,53 @@ class BooksRelationManager extends RelationManager
                         default => 'gray',
                     }),
                 Tables\Columns\IconColumn::make('is_published')
-                    ->label('Published')
+                    ->label('منشور')
                     ->boolean()
                     ->sortable(),
                 Tables\Columns\IconColumn::make('is_featured')
-                    ->label('Featured')
+                    ->label('مميز')
                     ->boolean()
                     ->sortable(),
                 Tables\Columns\IconColumn::make('is_bestseller')
-                    ->label('Bestseller')
+                    ->label('الأكثر مبيعاً')
                     ->boolean()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
-                    ->label('Created At')
+                    ->label('تاريخ الإنشاء')
                     ->dateTime('Y-m-d H:i')
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('updated_at')
-                    ->label('Last Update')
+                    ->label('آخر تحديث')
                     ->dateTime('Y-m-d H:i')
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
                 Tables\Filters\SelectFilter::make('book_section_id')
-                    ->label('Book Section')
+                    ->label('قسم الكتاب')
                     ->relationship('bookSection', 'name')
                     ->searchable()
                     ->preload(),
                 Tables\Filters\SelectFilter::make('language')
-                    ->label('Language')
+                    ->label('اللغة')
                     ->options([
-                        'ar' => 'Arabic',
-                        'en' => 'English',
-                        'fr' => 'French',
-                        'es' => 'Spanish',
-                        'de' => 'German',
-                        'tr' => 'Turkish',
-                        'fa' => 'Persian',
-                        'ur' => 'Urdu',
+                        'ar' => 'العربية',
+                        'en' => 'الإنجليزية',
+                        'fr' => 'الفرنسية',
+                        'es' => 'الإسبانية',
+                        'de' => 'الألمانية',
+                        'tr' => 'التركية',
+                        'fa' => 'الفارسية',
+                        'ur' => 'الأردو',
                     ])
                     ->multiple(),
                 Tables\Filters\TernaryFilter::make('is_published')
-                    ->label('Published'),
+                    ->label('منشور'),
                 Tables\Filters\TernaryFilter::make('is_featured')
-                    ->label('Featured'),
+                    ->label('مميز'),
                 Tables\Filters\TernaryFilter::make('is_bestseller')
-                    ->label('Bestseller'),
+                    ->label('الأكثر مبيعاً'),
                 Tables\Filters\Filter::make('publication_year')
                     ->label('Publication Year')
                     ->form([

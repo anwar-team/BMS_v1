@@ -78,13 +78,13 @@ class PublisherResource extends Resource
                     ->email()
                     ->maxLength(255),
                 Forms\Components\TextInput::make('website_url')
-                    ->label('Website URL')
+                    ->label('رابط الموقع الإلكتروني')
                     ->url()
                     ->maxLength(255),
                 Forms\Components\Toggle::make('is_active')
-                    ->label('Active')
+                    ->label('نشط')
                     ->default(true)
-                    ->helperText('Determine whether the publisher is active or not'),
+                    ->helperText('تحديد ما إذا كان الناشر نشطاً أم لا'),
             ]);
     }
 
@@ -93,59 +93,59 @@ class PublisherResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('name')
-                    ->label('Publisher Name')
+                    ->label('اسم الناشر')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('address')
-                    ->label('Address')
+                    ->label('العنوان')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('phone')
-                    ->label('Phone Number'),
+                    ->label('رقم الهاتف'),
                 Tables\Columns\TextColumn::make('email')
-                    ->label('Email'),
+                    ->label('البريد الإلكتروني'),
                 Tables\Columns\TextColumn::make('website_url')
-                    ->label('Website URL')
+                    ->label('رابط الموقع')
                     ->limit(30)
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\ImageColumn::make('image')
-                    ->label('Image')
+                    ->label('الصورة')
                     ->circular()
                     ->size(40)
                     ->toggleable(),
                 Tables\Columns\TextColumn::make('description')
-                    ->label('Description')
+                    ->label('الوصف')
                     ->limit(50)
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\IconColumn::make('is_active')
-                    ->label('Status')
+                    ->label('الحالة')
                     ->boolean()
                     ->trueIcon('heroicon-o-check-circle')
                     ->falseIcon('heroicon-o-x-circle')
                     ->trueColor('success')
                     ->falseColor('danger'),
                 Tables\Columns\TextColumn::make('created_at')
-                    ->label('Created At')
+                    ->label('تاريخ الإنشاء')
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('updated_at')
-                    ->label('Updated At')
+                    ->label('آخر تحديث')
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
                 SelectFilter::make('is_active')
-                    ->label('Status')
+                    ->label('الحالة')
                     ->options([
-                        1 => 'Active',
-                        0 => 'Inactive',
+                        1 => 'نشط',
+                        0 => 'غير نشط',
                     ])
-                    ->placeholder('All Statuses'),
+                    ->placeholder('جميع الحالات'),
                 Tables\Filters\Filter::make('name')
                     ->form([
                         Forms\Components\TextInput::make('name')
-                            ->label('Publisher Name')
-                            ->placeholder('Search for publisher...'),
+                            ->label('اسم الناشر')
+                            ->placeholder('البحث عن ناشر...'),
                     ])
                     ->query(function (Builder $query, array $data): Builder {
                         return $query
@@ -154,12 +154,12 @@ class PublisherResource extends Resource
                                 fn (Builder $query, $name): Builder => $query->where('name', 'like', "%{$name}%"),
                             );
                     })
-                    ->label('Search by Name'),
+                    ->label('البحث بالاسم'),
                 Tables\Filters\Filter::make('address')
                     ->form([
                         Forms\Components\TextInput::make('address')
-                            ->label('Address')
-                            ->placeholder('Search for address...'),
+                            ->label('العنوان')
+                            ->placeholder('البحث عن عنوان...'),
                     ])
                     ->query(function (Builder $query, array $data): Builder {
                         return $query
@@ -168,10 +168,10 @@ class PublisherResource extends Resource
                                 fn (Builder $query, $address): Builder => $query->where('address', 'like', "%{$address}%"),
                             );
                     })
-                    ->label('Search by Address'),
+                    ->label('البحث بالعنوان'),
                 Tables\Filters\Filter::make('has_website')
                     ->query(fn (Builder $query): Builder => $query->whereNotNull('website_url'))
-                    ->label('Has Website'),
+                    ->label('لديه موقع إلكتروني'),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
