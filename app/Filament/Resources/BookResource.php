@@ -1046,7 +1046,7 @@ class BookResource extends Resource
             ->toggleColumnsTriggerAction(
                 fn (\Filament\Tables\Actions\Action $action) => $action
                     ->button()
-                    ->label('Manage Columns')
+                    ->label('إظهار/إخفاء الأعمدة')
                     ->icon('heroicon-o-view-columns')
                     ->color('gray')
             );
