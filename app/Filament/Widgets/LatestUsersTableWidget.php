@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Builder;
 
 class LatestUsersTableWidget extends BaseWidget
 {
-    protected static ?string $heading = 'Latest Registered Users';
+    protected static ?string $heading = null;
     protected static ?int $sort = 7;
     protected int | string | array $columnSpan = 'full';
     
@@ -20,6 +20,7 @@ class LatestUsersTableWidget extends BaseWidget
     public function table(Table $table): Table
     {
         return $table
+            ->heading(__('dashboard.widgets.tables.latest_users'))
             ->query(
                 User::query()
                     ->with('roles')
@@ -28,35 +29,35 @@ class LatestUsersTableWidget extends BaseWidget
             )
             ->columns([
                 Tables\Columns\TextColumn::make('first_name')
-                    ->label('First Name')
+                    ->label(__('users.fields.first_name'))
                     ->searchable()
                     ->sortable(),
 
                 Tables\Columns\TextColumn::make('last_name')
-                    ->label('Last Name')
+                    ->label(__('users.fields.last_name'))
                     ->searchable()
                     ->sortable(),
 
                 Tables\Columns\TextColumn::make('username')
-                    ->label('Username')
+                    ->label(__('users.fields.username'))
                     ->searchable()
                     ->sortable(),
 
                 Tables\Columns\TextColumn::make('email')
-                    ->label('Email')
+                    ->label(__('users.fields.email'))
                     ->searchable()
                     ->sortable()
                     ->limit(25),
 
                 Tables\Columns\TextColumn::make('roles.name')
-                    ->label('Roles')
+                    ->label(__('users.fields.roles'))
                     ->badge()
                     ->separator(', ')
                     ->formatStateUsing(fn (string $state): string => match ($state) {
-                        'super_admin' => 'Super Admin',
-                        'admin' => 'Admin',
-                        'editor' => 'Editor',
-                        'author' => 'Author',
+                        'super_admin' => __('users.roles.super_admin'),
+                        'admin' => __('users.roles.admin'),
+                        'editor' => __('users.roles.editor'),
+                        'author' => __('users.roles.author'),
                         default => $state,
                     })
                     ->color(fn (string $state): string => match ($state) {
@@ -68,13 +69,13 @@ class LatestUsersTableWidget extends BaseWidget
                     }),
 
                 Tables\Columns\TextColumn::make('created_at')
-                    ->label('Registration Date')
+                    ->label(__('users.fields.registration_date'))
                     ->dateTime('d/m/Y H:i')
                     ->sortable(),
             ])
             ->actions([
                 Tables\Actions\Action::make('edit')
-                    ->label('Edit')
+                    ->label(__('dashboard.actions.edit'))
                     ->icon('heroicon-m-pencil-square')
                     ->url(fn (User $record): string => route('filament.admin.resources.users.edit', $record))
                     ->openUrlInNewTab(),

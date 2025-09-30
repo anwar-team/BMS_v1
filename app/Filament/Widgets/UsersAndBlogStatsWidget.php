@@ -35,23 +35,23 @@ class UsersAndBlogStatsWidget extends BaseWidget
             $totalPosts = Post::count();
 
             return [
-                Stat::make('Total Users', $userStats->total_users)
-                    ->description('All users in the system')
+                Stat::make(__('dashboard.widgets.stats.total_users'), $userStats->total_users)
+                    ->description(__('dashboard.widgets.stats.all_users_system'))
                     ->descriptionIcon('heroicon-m-users')
                     ->color('primary'),
 
-                Stat::make('Verified Users', $userStats->verified_users)
-                    ->description('Users with verified email addresses')
+                Stat::make(__('dashboard.widgets.stats.verified_users'), $userStats->verified_users)
+                    ->description(__('dashboard.widgets.stats.users_verified_email'))
                     ->descriptionIcon('heroicon-m-check-circle')
                     ->color('success'),
 
-                Stat::make('Blog Posts', $totalPosts)
-                    ->description('Published blog posts')
+                Stat::make(__('dashboard.widgets.stats.blog_posts'), $totalPosts)
+                    ->description(__('dashboard.widgets.stats.published_blog_posts'))
                     ->descriptionIcon('heroicon-m-document-text')
                     ->color('info'),
 
-                Stat::make('New Users', $userStats->recent_users)
-                    ->description('New users in the last 30 days')
+                Stat::make(__('dashboard.widgets.stats.new_users'), $userStats->recent_users)
+                    ->description(__('dashboard.widgets.stats.new_users_30_days'))
                     ->descriptionIcon('heroicon-m-user-plus')
                     ->color('warning'),
             ];

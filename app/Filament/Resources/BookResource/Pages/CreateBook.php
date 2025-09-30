@@ -9,4 +9,9 @@ use Filament\Resources\Pages\CreateRecord;
 class CreateBook extends CreateRecord
 {
     protected static string $resource = BookResource::class;
+
+    public function getTitle(): string
+    {
+        return __('library.books.create_book');
+    }
 }

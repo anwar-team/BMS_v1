@@ -26,7 +26,7 @@ class AuthorResource extends Resource
     protected static ?string $model = Author::class;
     protected static ?int $navigationSort = -6;
 
-    protected static ?string $navigationGroup = 'Content Management';
+    protected static ?string $navigationGroup = null;
 
     protected static ?string $navigationIcon = 'heroicon-o-user-group';
     
@@ -47,6 +47,11 @@ class AuthorResource extends Resource
     public static function getPluralModelLabel(): string
     {
         return __('resource.author.authors');
+    }
+
+    public static function getNavigationGroup(): ?string
+    {
+        return __('library.navigation_group');
     }
 
     public static function form(Form $form): Form

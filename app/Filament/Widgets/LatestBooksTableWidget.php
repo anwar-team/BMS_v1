@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Cache;
 
 class LatestBooksTableWidget extends BaseWidget
 {
-    protected static ?string $heading = 'Latest Added Books';
+    protected static ?string $heading = null;
     protected static ?int $sort = 6;
     protected int | string | array $columnSpan = 'full';
     
@@ -21,6 +21,7 @@ class LatestBooksTableWidget extends BaseWidget
     public function table(Table $table): Table
     {
         return $table
+            ->heading(__('dashboard.widgets.tables.latest_books'))
             ->query(
                 Book::query()
                     ->with(['authorBooks.author', 'bookSection'])
@@ -29,30 +30,30 @@ class LatestBooksTableWidget extends BaseWidget
             )
             ->columns([
                 Tables\Columns\TextColumn::make('title')
-                    ->label('Book Title')
+                    ->label(__('library.fields.title'))
                     ->searchable()
                     ->sortable()
                     ->limit(30),
 
                 Tables\Columns\TextColumn::make('main_author')
-                    ->label('Author')
+                    ->label(__('library.fields.author'))
                     ->getStateUsing(function ($record) {
                         $mainAuthor = $record->authorBooks
                             ->where('is_main', true)
                             ->first();
                         return $mainAuthor?->author?->full_name ?? 
-                               $record->authorBooks->first()?->author?->full_name ?? 'Not specified';
+                               $record->authorBooks->first()?->author?->full_name ?? __('library.values.not_specified');
                     })
                     ->badge()
                     ->limit(20),
 
                 Tables\Columns\TextColumn::make('bookSection.name')
-                    ->label('Section')
+                    ->label(__('library.fields.section'))
                     ->badge()
                     ->color('info'),
 
                 Tables\Columns\TextColumn::make('status')
-                    ->label('Status')
+                    ->label(__('dashboard.fields.status'))
                     ->badge()
                     ->color(fn (string $state): string => match ($state) {
                         'published' => 'success',
@@ -61,14 +62,14 @@ class LatestBooksTableWidget extends BaseWidget
                         default => 'gray',
                     })
                     ->formatStateUsing(fn (string $state): string => match ($state) {
-                        'published' => 'Published',
-                        'draft' => 'Draft',
-                        'archived' => 'Archived',
+                        'published' => __('dashboard.status.published'),
+                        'draft' => __('dashboard.status.draft'),
+                        'archived' => __('dashboard.status.archived'),
                         default => $state,
                     }),
 
                 Tables\Columns\TextColumn::make('created_at')
-                    ->label('Date Added')
+                    ->label(__('dashboard.fields.date_added'))
                     ->dateTime('d/m/Y')
                     ->sortable(),
             ])

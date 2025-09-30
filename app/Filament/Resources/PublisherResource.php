@@ -21,7 +21,7 @@ class PublisherResource extends Resource
     protected static ?int $navigationSort = -5;
 
     protected static ?string $navigationIcon = 'heroicon-o-building-office';
-    protected static ?string $navigationGroup = 'Content Management';
+    protected static ?string $navigationGroup = null;
     
     protected static ?string $navigationLabel = null;
     protected static ?string $modelLabel = null;
@@ -40,6 +40,11 @@ class PublisherResource extends Resource
     public static function getPluralModelLabel(): string
     {
         return __('resource.publisher.publishers');
+    }
+
+    public static function getNavigationGroup(): ?string
+    {
+        return __('library.navigation_group');
     }
 
     public static function form(Form $form): Form

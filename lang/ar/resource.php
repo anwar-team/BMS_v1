@@ -257,4 +257,50 @@ return [
     'validation.max' => 'يجب ألا يتجاوز :max أحرف',
     'validation.unique' => 'هذه القيمة مستخدمة مسبقاً',
     'validation.confirmed' => 'تأكيد كلمة المرور غير متطابق',
+
+    // Resources Labels
+    'book' => [
+        'book' => 'كتاب',
+        'books' => 'الكتب',
+    ],
+    'author' => [
+        'author' => 'مؤلف',
+        'authors' => 'المؤلفين',
+    ],
+    'user' => [
+        'user' => 'مستخدم',
+        'users' => 'المستخدمين',
+    ],
+    'publisher' => [
+        'publisher' => 'ناشر',
+        'publishers' => 'الناشرين',
+    ],
+    'book_section' => [
+        'section' => 'قسم',
+        'sections' => 'الأقسام',
+    ],
+    'chapter' => [
+        'chapter' => 'فصل',
+        'chapters' => 'الفصول',
+    ],
+    'volume' => [
+        'volume' => 'مجلد',
+        'volumes' => 'المجلدات',
+    ],
+    'page' => [
+        'page' => 'صفحة',
+        'pages' => 'الصفحات',
+    ],
+    'menu' => [
+        'menu' => 'قائمة',
+        'menus' => 'القوائم',
+    ],
+    'contact_us' => [
+        'contact' => 'رسالة',
+        'contacts' => 'الرسائل',
+    ],
+    'role' => [
+        'role' => 'دور',
+        'roles' => 'الأدوار',
+    ],
 ];

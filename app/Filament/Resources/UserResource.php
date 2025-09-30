@@ -32,8 +32,32 @@ class UserResource extends Resource
 
     protected static ?int $navigationSort = -1;
     protected static ?string $navigationIcon = 'heroicon-s-users';
-protected static ?string $navigationGroup = 'ACCESS';
+    protected static ?string $navigationGroup = null;
     protected static ?string $recordTitleAttribute = 'name';
+    
+    protected static ?string $navigationLabel = null;
+    protected static ?string $modelLabel = null;
+    protected static ?string $pluralModelLabel = null;
+
+    public static function getNavigationLabel(): string
+    {
+        return __('resource.user.users');
+    }
+
+    public static function getModelLabel(): string
+    {
+        return __('resource.user.user');
+    }
+
+    public static function getPluralModelLabel(): string
+    {
+        return __('resource.user.users');
+    }
+
+    public static function getNavigationGroup(): ?string
+    {
+        return __('users.navigation_group');
+    }
 
     public static function form(Form $form): Form
     {

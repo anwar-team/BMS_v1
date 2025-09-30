@@ -11,6 +11,11 @@ class ListBooks extends ListRecords
 {
     protected static string $resource = BookResource::class;
 
+    public function getTitle(): string
+    {
+        return __('library.books.books_list');
+    }
+
     protected function getHeaderActions(): array
     {
         return [

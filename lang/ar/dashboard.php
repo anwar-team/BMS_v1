@@ -43,6 +43,33 @@ return [
             'total_categories' => 'إجمالي الفئات',
             'total_downloads' => 'إجمالي التحميلات',
             'total_reads' => 'إجمالي القراءات',
+            
+            // Books Stats
+            'all_books_system' => 'جميع الكتب في النظام',
+            'published_books' => 'الكتب المنشورة',
+            'books_available_readers' => 'الكتب المتاحة للقراء',
+            'authors' => 'المؤلفون',
+            'registered_authors' => 'المؤلفون المسجلون',
+            'new_books' => 'الكتب الجديدة',
+            'new_books_30_days' => 'الكتب الجديدة خلال آخر 30 يوماً',
+            
+            // Authors Stats
+            'all_authors_system' => 'جميع المؤلفين في النظام',
+            'active_authors' => 'المؤلفون النشطون', 
+            'authors_published_books' => 'المؤلفون الذين لديهم كتب منشورة',
+            'publishers' => 'دور النشر',
+            'registered_publishers' => 'دور النشر المسجلة',
+            'new_authors' => 'المؤلفون الجدد',
+            'new_authors_30_days' => 'المؤلفون الجدد خلال آخر 30 يوماً',
+            
+            // Users Stats
+            'all_users_system' => 'جميع المستخدمين في النظام',
+            'verified_users' => 'المستخدمون المؤكدون',
+            'users_verified_email' => 'المستخدمون الذين لديهم بريد إلكتروني مؤكد',
+            'blog_posts' => 'مقالات المدونة',
+            'published_blog_posts' => 'مقالات المدونة المنشورة',
+            'new_users' => 'المستخدمون الجدد',
+            'new_users_30_days' => 'المستخدمون الجدد خلال آخر 30 يوماً',
             'popular_books' => 'الكتب الشائعة',
             'new_books' => 'الكتب الجديدة',
             'featured_books' => 'الكتب المميزة',
@@ -66,7 +93,8 @@ return [
         
         // Table Widgets
         'tables' => [
-            'latest_users' => 'أحدث المستخدمين',
+            'latest_users' => 'أحدث المستخدمين المسجلين',
+            'latest_books' => 'أحدث الكتب المضافة',
             'recent_posts' => 'أحدث المقالات',
             'top_pages' => 'الصفحات الأكثر زيارة',
             'recent_orders' => 'أحدث الطلبات',

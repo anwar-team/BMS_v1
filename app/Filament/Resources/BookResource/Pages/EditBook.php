@@ -10,6 +10,11 @@ class EditBook extends EditRecord
 {
     protected static string $resource = BookResource::class;
 
+    public function getTitle(): string
+    {
+        return __('library.books.edit_book');
+    }
+
     protected function getHeaderActions(): array
     {
         return [

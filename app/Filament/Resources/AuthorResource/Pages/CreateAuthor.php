@@ -9,4 +9,9 @@ use Filament\Resources\Pages\CreateRecord;
 class CreateAuthor extends CreateRecord
 {
     protected static string $resource = AuthorResource::class;
+
+    public function getTitle(): string
+    {
+        return __('library.authors.create_author');
+    }
 }

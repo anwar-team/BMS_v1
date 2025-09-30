@@ -14,6 +14,8 @@ class BooksRelationManager extends RelationManager
 {
     protected static string $relationship = 'books';
 
+    protected static ?string $title = 'كتب المؤلف';
+
     public function form(Form $form): Form
     {
         return $form

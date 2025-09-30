@@ -13,6 +13,11 @@ return [
         'plural' => 'كتب',
         'navigation_label' => 'الكتب',
         'navigation_group' => 'إدارة المكتبة',
+        'create_book' => 'إنشاء كتاب جديد',
+        'edit_book' => 'تحرير الكتاب',
+        'view_book' => 'عرض الكتاب',
+        'books_list' => 'قائمة الكتب',
+        'author_books' => 'كتب المؤلف',
         
         'fields' => [
             'title' => 'عنوان الكتاب',
@@ -96,6 +101,10 @@ return [
         'plural' => 'مؤلفين',
         'navigation_label' => 'المؤلفين',
         'navigation_group' => 'إدارة المكتبة',
+        'create_author' => 'إنشاء مؤلف جديد',
+        'edit_author' => 'تحرير المؤلف',
+        'view_author' => 'عرض المؤلف',
+        'authors_list' => 'قائمة المؤلفين',
         
         'fields' => [
             'name' => 'اسم المؤلف',

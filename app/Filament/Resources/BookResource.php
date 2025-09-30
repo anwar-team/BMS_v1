@@ -50,7 +50,7 @@ use Filament\Notifications\Notification;
 class BookResource extends Resource
 {
     protected static ?string $model = Book::class;
-    protected static ?string $navigationGroup = 'Book Content Management';
+    protected static ?string $navigationGroup = null;
     protected static ?string $navigationIcon = 'heroicon-o-book-open';
     protected static ?string $navigationLabel = null;
     protected static ?string $modelLabel = null;
@@ -70,6 +70,12 @@ class BookResource extends Resource
     {
         return __('resource.book.books');
     }
+
+    public static function getNavigationGroup(): ?string
+    {
+        return __('library.navigation_group');
+    }
+    
     protected static ?int $navigationSort = -10;
 
     /**
