@@ -59,15 +59,15 @@ class AuthorResource extends Resource
         return $form
             ->schema([
                 TextInput::make('full_name')
-                    ->label('Full Name')
+                    ->label('الاسم الكامل')
                     ->required()
                     ->maxLength(255)
                     ->columnSpanFull()
                     ->searchable()
-                    ->placeholder('Search for author name or enter a new name'),
+                    ->placeholder('ابحث عن اسم المؤلف أو أدخل اسماً جديداً'),
 
                 FileUpload::make('image')
-                    ->label('Author Image')
+                    ->label('صورة المؤلف')
                     ->image()
                     ->directory('authors')
                     ->visibility('public')
@@ -170,49 +170,49 @@ class AuthorResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\ImageColumn::make('image')
-                    ->label('Image')
+                    ->label('الصورة')
                     ->circular()
                     ->size(40),
                 Tables\Columns\TextColumn::make('full_name')
-                    ->label('Full Name')
+                    ->label('الاسم الكامل')
                     ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('madhhab')
-                    ->label('Madhhab')
+                    ->label('المذهب')
                     ->badge()
                     ->formatStateUsing(function ($state) {
                         return match($state) {
-                            'المذهب الحنفي' => 'Hanafi Madhhab',
-                            'المذهب المالكي' => 'Maliki Madhhab',
-                            'المذهب الشافعي' => 'Shafi\'i Madhhab',
-                            'المذهب الحنبلي' => 'Hanbali Madhhab',
-                            'آخرون' => 'Others',
+                            'المذهب الحنفي' => 'المذهب الحنفي',
+                            'المذهب المالكي' => 'المذهب المالكي',
+                            'المذهب الشافعي' => 'المذهب الشافعي',
+                            'المذهب الحنبلي' => 'المذهب الحنبلي',
+                            'آخرون' => 'آخرون',
                             default => $state,
                         };
                     }),
                 Tables\Columns\IconColumn::make('is_living')
-                    ->label('Living')
+                    ->label('على قيد الحياة')
                     ->boolean()
                     ->trueIcon('heroicon-o-check-circle')
                     ->falseIcon('heroicon-o-x-circle')
                     ->trueColor('success')
                     ->falseColor('danger'),
                 Tables\Columns\TextColumn::make('birth_year')
-                    ->label('Birth Year')
+                    ->label('سنة الميلاد')
                     ->sortable()
-                    ->placeholder('Not specified'),
+                    ->placeholder('غير محدد'),
                 Tables\Columns\TextColumn::make('death_year')
-                    ->label('Death Year')
+                    ->label('سنة الوفاة')
                     ->sortable()
-                    ->placeholder('Not specified')
-                    ->visible(fn ($record) => !$record->is_living),
+                    ->placeholder('غير محدد')
+                    ->visible(fn ($record) => $record && !$record->is_living),
                 Tables\Columns\TextColumn::make('created_at')
-                    ->label('Created At')
+                    ->label('تاريخ الإنشاء')
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('updated_at')
-                    ->label('Last Update')
+                    ->label('آخر تحديث')
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
