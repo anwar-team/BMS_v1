@@ -7,7 +7,7 @@
                 <section class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 pt-32">
                     <div class="mb-12 z-10">
                         <div class="flex items-center gap-3 mb-8">
-                            <img src="{{ asset('images/group0.svg') }}" alt="البحث" class="w-16 h-16">
+                            <img src="{{ asset('images/group0.svg') }}" alt="البحث" class="w-8 h-8">
                             <h2 class="text-4xl text-green-800 font-bold">البحث الفوري المُحسَّن</h2>
                             <span class="bg-blue-100 text-blue-800 text-sm font-medium px-2.5 py-0.5 rounded">Ultra-Fast</span>
                         </div>
