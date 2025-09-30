@@ -1,0 +1,22 @@
+{
+  "public/images/main-pattern.svg": {
+    "file": "assets/main-pattern-CQawGIau.svg",
+    "src": "public/images/main-pattern.svg"
+  },
+  "resources/css/app.css": {
+    "file": "assets/app-CsHcmIOJ.css",
+    "src": "resources/css/app.css",
+    "isEntry": true
+  },
+  "resources/css/filament/admin/theme.css": {
+    "file": "assets/theme-CLKl3Mtg.css",
+    "src": "resources/css/filament/admin/theme.css",
+    "isEntry": true
+  },
+  "resources/js/app.js": {
+    "file": "assets/app-BRQJfwiZ.js",
+    "name": "app",
+    "src": "resources/js/app.js",
+    "isEntry": true
+  }
+}
