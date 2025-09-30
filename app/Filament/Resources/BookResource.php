@@ -697,6 +697,15 @@ class BookResource extends Resource
                     ->toggleable(),
                 
                 // الأعمدة الإضافية المخفية افتراضياً
+                TextColumn::make('shamela_id')
+                    ->label('معرف شاملة')
+                    ->searchable()
+                    ->sortable()
+                    ->badge()
+                    ->color('primary')
+                    ->formatStateUsing(fn (?string $state): string => $state ? $state : 'غير محدد')
+                    ->toggleable(isToggledHiddenByDefault: true),
+                
                 TextColumn::make('source_url')
                     ->label('رابط المصدر')
                     ->formatStateUsing(fn (?string $state): string => $state ? 'متوفر' : 'غير متوفر')

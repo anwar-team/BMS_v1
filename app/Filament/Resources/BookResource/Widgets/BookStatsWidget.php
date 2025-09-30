@@ -22,23 +22,23 @@ class BookStatsWidget extends BaseWidget
         $booksWithAuthorsPercentage = $totalBooks > 0 ? round(($booksWithAuthors / $totalBooks) * 100) : 0;
 
         return [
-            Stat::make('Total Books', $totalBooks)
-                ->description('All books in the system')
+            Stat::make('إجمالي الكتب', $totalBooks)
+                ->description('جميع الكتب في النظام')
                 ->descriptionIcon('heroicon-m-book-open')
                 ->color('primary'),
 
-            Stat::make('Published Books', $publishedBooks)
-                ->description('Books available for reading')
+            Stat::make('الكتب المنشورة', $publishedBooks)
+                ->description('الكتب المتاحة للقراءة')
                 ->descriptionIcon('heroicon-m-check-circle')
                 ->color('success'),
 
-            Stat::make('Books with Authors', $booksWithAuthors)
-                ->description($booksWithAuthorsPercentage . '% of total books')
+            Stat::make('الكتب التي لها مؤلفون', $booksWithAuthors)
+                ->description($booksWithAuthorsPercentage . '% من إجمالي الكتب')
                 ->descriptionIcon('heroicon-m-users')
                 ->color('info'),
 
-            Stat::make('New Books This Month', $newBooksThisMonth)
-                ->description('Added in ' . Carbon::now()->format('F Y'))
+            Stat::make('الكتب الجديدة هذا الشهر', $newBooksThisMonth)
+                ->description('أُضيفت في ' . Carbon::now()->format('F Y'))
                 ->descriptionIcon('heroicon-m-plus-circle')
                 ->color('warning'),
         ];
