@@ -23,20 +23,20 @@ class ReplyAction extends Action
 
         $this->color('success');
 
-        $this->modalHeading(fn (ContactUs $record): string => "Reply to {$record->name}");
+    $this->modalHeading(fn (ContactUs $record): string => __('contact_us.modal.reply_heading', ['name' => $record->name]));
 
-        $this->modalDescription(fn (ContactUs $record): string => "Responding to {$record->subject}");
+    $this->modalDescription(fn (ContactUs $record): string => __('contact_us.modal.reply_description', ['subject' => $record->subject]));
 
         $this->modalIcon(FilamentIcon::resolve('heroicon-o-paper-airplane'));
 
         $this->form([
             Forms\Components\TextInput::make('reply_subject')
-                ->label('Subject')
+                ->label(__('contact_us.modal.subject_label'))
                 ->required()
                 ->maxLength(255)
-                ->default(fn (ContactUs $record): string => "RE: {$record->subject}"),
+                ->default(fn (ContactUs $record): string => __('contact_us.modal.subject_default_prefix', ['subject' => $record->subject])),
             Forms\Components\RichEditor::make('reply_message')
-                ->label('Message')
+                ->label(__('contact_us.modal.message_label'))
                 ->required()
                 ->fileAttachmentsDisk('public')
                 ->fileAttachmentsDirectory('contact-replies')
@@ -61,8 +61,8 @@ class ReplyAction extends Action
                     Log::warning('Mail settings not configured. Reply email not sent for contact ID: ' . $record->id);
 
                     Notification::make()
-                        ->title('Reply saved but email not sent')
-                        ->body('Mail settings are not properly configured. The reply has been saved but the email could not be sent.')
+                        ->title(__('contact_us.notifications.reply_saved_email_not_sent'))
+                        ->body(__('contact_us.notifications.mail_settings_not_configured'))
                         ->warning()
                         ->send();
 
@@ -83,7 +83,7 @@ class ReplyAction extends Action
                     ]);
 
                     Notification::make()
-                        ->title('Reply sent successfully')
+                        ->title(__('contact_us.notifications.reply_sent_success'))
                         ->success()
                         ->send();
 
@@ -96,8 +96,8 @@ class ReplyAction extends Action
                     ]);
 
                     Notification::make()
-                        ->title('Reply saved but email failed to send')
-                        ->body('The reply has been saved but there was an error sending the email: ' . $e->getMessage())
+                        ->title(__('contact_us.notifications.reply_saved_email_failed'))
+                        ->body(__('contact_us.notifications.reply_saved_email_failed', ['error' => $e->getMessage()]))
                         ->warning()
                         ->send();
                 }
@@ -110,8 +110,8 @@ class ReplyAction extends Action
                 ]);
 
                 Notification::make()
-                    ->title('Error processing reply')
-                    ->body($e->getMessage())
+                    ->title(__('contact_us.notifications.reply_error'))
+                    ->body(__('contact_us.notifications.reply_error', ['error' => $e->getMessage()]))
                     ->danger()
                     ->send();
             }
