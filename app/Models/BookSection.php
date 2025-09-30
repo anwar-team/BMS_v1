@@ -25,7 +25,6 @@ class BookSection extends Model
         'icon_color',
         'icon_size',
         'icon_library',
-    ];// إضافة logo_path
     ];
 
     protected $casts = [
