@@ -16,7 +16,7 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 class PageResource extends Resource
 {
     protected static ?string $model = Page::class;
-    protected static ?string $navigationGroup = 'Book Content Management';
+    protected static ?string $navigationGroup = 'إدارة محتوى الكتب';
     protected static ?int $navigationSort = -7;
 
     protected static ?string $navigationIcon = 'heroicon-o-document';
@@ -27,17 +27,17 @@ class PageResource extends Resource
 
     public static function getNavigationLabel(): string
     {
-        return __('resource.page.pages');
+        return 'الصفحات';
     }
 
     public static function getModelLabel(): string
     {
-        return __('resource.page.page');
+        return 'صفحة';
     }
 
     public static function getPluralModelLabel(): string
     {
-        return __('resource.page.pages');
+        return 'الصفحات';
     }
 
     public static function form(Form $form): Form
@@ -45,23 +45,23 @@ class PageResource extends Resource
         return $form
             ->schema([
                 Forms\Components\Select::make('book_id')
-                    ->label('Book')
+                    ->label('الكتاب')
                     ->relationship('book', 'title')
                     ->required(),
                 Forms\Components\Select::make('volume_id')
-                    ->label('Volume')
+                    ->label('المجلد')
                     ->relationship('volume', 'title')
                     ->nullable(),
                 Forms\Components\Select::make('chapter_id')
-                    ->label('Chapter')
+                    ->label('الفصل')
                     ->relationship('chapter', 'title')
                     ->nullable(),
                 Forms\Components\TextInput::make('page_number')
-                    ->label('Page Number')
+                    ->label('رقم الصفحة')
                     ->numeric()
                     ->required(),
                 Forms\Components\Textarea::make('content')
-                    ->label('Content')
+                    ->label('المحتوى')
                     ->columnSpanFull(),
             ]);
     }
@@ -71,19 +71,19 @@ class PageResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('book.title')
-                    ->label('Book')
+                    ->label('الكتاب')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('volume.title')
-                    ->label('Volume')
+                    ->label('المجلد')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('chapter.title')
-                    ->label('Chapter')
+                    ->label('الفصل')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('page_number')
-                    ->label('Page Number')
+                    ->label('رقم الصفحة')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('content')
-                    ->label('Content')
+                    ->label('المحتوى')
                     ->limit(50)
                     ->searchable(),
             ])

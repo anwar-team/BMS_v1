@@ -16,7 +16,7 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 class ChapterResource extends Resource
 {
     protected static ?string $model = Chapter::class;
-    protected static ?string $navigationGroup = 'Book Content Management';
+    protected static ?string $navigationGroup = 'إدارة محتوى الكتب';
     protected static ?int $navigationSort = -8;
 
     protected static ?string $navigationIcon = 'heroicon-o-document-text';
@@ -27,17 +27,17 @@ class ChapterResource extends Resource
 
     public static function getNavigationLabel(): string
     {
-        return __('resource.chapter.chapters');
+        return 'الفصول';
     }
 
     public static function getModelLabel(): string
     {
-        return __('resource.chapter.chapter');
+        return 'فصل';
     }
 
     public static function getPluralModelLabel(): string
     {
-        return __('resource.chapter.chapters');
+        return 'الفصول';
     }
 
     public static function form(Form $form): Form
@@ -45,31 +45,31 @@ class ChapterResource extends Resource
         return $form
             ->schema([
                 Forms\Components\Select::make('book_id')
-                    ->label('Book')
+                    ->label('الكتاب')
                     ->relationship('book', 'title')
                     ->required(),
                 Forms\Components\Select::make('volume_id')
-                    ->label('Volume')
+                    ->label('المجلد')
                     ->relationship('volume', 'title')
                     ->nullable(),
                 Forms\Components\TextInput::make('title')
-                    ->label('Chapter Title')
+                    ->label('عنوان الفصل')
                     ->required()
                     ->maxLength(255),
                 Forms\Components\Select::make('parent_id')
-                    ->label('Parent Chapter')
+                    ->label('الفصل الأب')
                     ->relationship('parent', 'title')
                     ->nullable(),
                 Forms\Components\TextInput::make('order')
-                    ->label('Order')
+                    ->label('الترتيب')
                     ->numeric()
                     ->nullable(),
                 Forms\Components\TextInput::make('page_start')
-                    ->label('Start Page')
+                    ->label('الصفحة الأولى')
                     ->numeric()
                     ->nullable(),
                 Forms\Components\TextInput::make('page_end')
-                    ->label('End Page')
+                    ->label('الصفحة الأخيرة')
                     ->numeric()
                     ->nullable(),
             ]);
@@ -80,22 +80,22 @@ class ChapterResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('book.title')
-                    ->label('Book')
+                    ->label('الكتاب')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('title')
-                    ->label('Chapter Title')
+                    ->label('عنوان الفصل')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('parent.title')
-                    ->label('Parent Chapter')
+                    ->label('الفصل الأب')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('order')
-                    ->label('Order')
+                    ->label('الترتيب')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('page_start')
-                    ->label('Start Page')
+                    ->label('الصفحة الأولى')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('page_end')
-                    ->label('End Page')
+                    ->label('الصفحة الأخيرة')
                     ->sortable(),
             ])
             ->filters([

@@ -17,7 +17,7 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 class VolumeResource extends Resource
 {
     protected static ?string $model = Volume::class;
-    protected static ?string $navigationGroup = 'Book Content Management';
+    protected static ?string $navigationGroup = 'إدارة محتوى الكتب';
     protected static ?int $navigationSort = -9;
 
     protected static ?string $navigationIcon = 'heroicon-o-book-open';
@@ -28,17 +28,17 @@ class VolumeResource extends Resource
 
     public static function getNavigationLabel(): string
     {
-        return __('resource.volume.volumes');
+        return 'المجلدات';
     }
 
     public static function getModelLabel(): string
     {
-        return __('resource.volume.volume');
+        return 'مجلد';
     }
 
     public static function getPluralModelLabel(): string
     {
-        return __('resource.volume.volumes');
+        return 'المجلدات';
     }
 
     public static function form(Form $form): Form
@@ -46,25 +46,25 @@ class VolumeResource extends Resource
         return $form
             ->schema([
                 Forms\Components\Select::make('book_id')
-                    ->label('Book')
+                    ->label('الكتاب')
                     ->relationship('book', 'title')
                     ->required()
                     ->searchable()
                     ->preload(),
                 Forms\Components\TextInput::make('volume_number')
-                    ->label('Volume Number')
+                    ->label('رقم المجلد')
                     ->required()
                     ->numeric()
                     ->minValue(1),
                 Forms\Components\TextInput::make('title')
-                    ->label('Volume Title')
+                    ->label('عنوان المجلد')
                     ->maxLength(255),
                 Forms\Components\TextInput::make('pages')
-                    ->label('Number of Pages')
+                    ->label('عدد الصفحات')
                     ->numeric()
                     ->minValue(1),
                 Forms\Components\Textarea::make('description')
-                    ->label('Volume Description')
+                    ->label('وصف المجلد')
                     ->columnSpanFull(),
             ]);
     }
@@ -74,26 +74,26 @@ class VolumeResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('book.title')
-                    ->label('Book')
+                    ->label('الكتاب')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('volume_number')
-                    ->label('Volume Number')
+                    ->label('رقم المجلد')
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('title')
-                    ->label('Volume Title')
+                    ->label('عنوان المجلد')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('pages')
-                    ->label('Number of Pages')
+                    ->label('عدد الصفحات')
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
-                    ->label('Created At')
+                    ->label('تاريخ الإنشاء')
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('updated_at')
-                    ->label('Updated At')
+                    ->label('آخر تحديث')
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),

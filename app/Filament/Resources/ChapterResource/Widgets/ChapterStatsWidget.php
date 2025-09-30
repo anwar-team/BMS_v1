@@ -21,18 +21,18 @@ class ChapterStatsWidget extends BaseWidget
         $chaptersWithPagesPercentage = $totalChapters > 0 ? round(($chaptersWithPages / $totalChapters) * 100) : 0;
 
         return [
-            Stat::make('Total Chapters', $totalChapters)
-                ->description('All chapters in the system')
+            Stat::make('إجمالي الفصول', $totalChapters)
+                ->description('جميع الفصول في النظام')
                 ->descriptionIcon('heroicon-m-book-open')
                 ->color('primary'),
                 
-            Stat::make('Chapters with Pages', $chaptersWithPages)
-                ->description($chaptersWithPagesPercentage . '% of total chapters')
+            Stat::make('الفصول التي تحتوي على صفحات', $chaptersWithPages)
+                ->description($chaptersWithPagesPercentage . '% من إجمالي الفصول')
                 ->descriptionIcon('heroicon-m-document-text')
                 ->color('success'),
                 
-            Stat::make('New Chapters This Month', $newChaptersThisMonth)
-                ->description('Added in ' . Carbon::now()->format('F Y'))
+            Stat::make('الفصول الجديدة هذا الشهر', $newChaptersThisMonth)
+                ->description('أُضيفت في ' . Carbon::now()->format('F Y'))
                 ->descriptionIcon('heroicon-m-plus-circle')
                 ->color('warning'),
         ];

@@ -22,23 +22,23 @@ class VolumeStatsWidget extends BaseWidget
         $volumesWithPagesPercentage = $totalVolumes > 0 ? round(($volumesWithPages / $totalVolumes) * 100) : 0;
 
         return [
-            Stat::make('Total Volumes', $totalVolumes)
-                ->description('All volumes in the system')
+            Stat::make('إجمالي المجلدات', $totalVolumes)
+                ->description('جميع المجلدات في النظام')
                 ->descriptionIcon('heroicon-m-book-open')
                 ->color('primary'),
                 
-            Stat::make('Volumes with Pages', $volumesWithPages)
-                ->description($volumesWithPagesPercentage . '% of total volumes')
+            Stat::make('المجلدات التي تحتوي على صفحات', $volumesWithPages)
+                ->description($volumesWithPagesPercentage . '% من إجمالي المجلدات')
                 ->descriptionIcon('heroicon-m-document-text')
                 ->color('success'),
                 
-            Stat::make('Volumes with Chapters', $volumesWithChapters)
-                ->description('Volumes that contain chapters')
+            Stat::make('المجلدات التي تحتوي على فصول', $volumesWithChapters)
+                ->description('المجلدات التي تحتوي على فصول')
                 ->descriptionIcon('heroicon-m-list-bullet')
                 ->color('info'),
                 
-            Stat::make('New Volumes This Month', $newVolumesThisMonth)
-                ->description('Added in ' . Carbon::now()->format('F Y'))
+            Stat::make('المجلدات الجديدة هذا الشهر', $newVolumesThisMonth)
+                ->description('أُضيفت في ' . Carbon::now()->format('F Y'))
                 ->descriptionIcon('heroicon-m-plus-circle')
                 ->color('warning'),
         ];
