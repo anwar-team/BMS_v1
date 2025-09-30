@@ -40,7 +40,7 @@ class ContactUsResource extends Resource
     {
         return $infolist
             ->schema([
-                Infolists\Components\Section::make('Contact Information')
+                Infolists\Components\Section::make(__('contact_us.sections.contact_information'))
                     ->schema([
                         Infolists\Components\TextEntry::make('firstname'),
                         Infolists\Components\TextEntry::make('lastname'),
@@ -48,61 +48,62 @@ class ContactUsResource extends Resource
                             ->copyable(),
                         Infolists\Components\TextEntry::make('phone')
                             ->copyable(),
-                        Infolists\Components\TextEntry::make('company'),
+                        Infolists\Components\TextEntry::make('company')
+                            ->label(__('contact_us.fields.company')),
                         Infolists\Components\TextEntry::make('employees')
-                            ->formatStateUsing(fn(?string $state): ?string => $state ? $state . ' Employees' : null),
+                            ->formatStateUsing(fn(?string $state): ?string => $state ? $state . ' ' . __('contact_us.fields.employees') : null),
                         Infolists\Components\TextEntry::make('title')
-                            ->label('Job Title'),
+                            ->label(__('contact_us.fields.job_title')),
                         Infolists\Components\TextEntry::make('ip_address')
-                            ->visible(fn () => auth()->user()->can('viewConfidential', ContactUs::class)),
+                            ->visible(fn () => auth()->user()?->can('viewConfidential', ContactUs::class) ?? false),
                     ])
                     ->columns(2),
 
-                Infolists\Components\Section::make('Message')
+                Infolists\Components\Section::make(__('contact_us.sections.message'))
                     ->schema([
                         Infolists\Components\TextEntry::make('subject')
-                            ->label('Subject'),
+                            ->label(__('contact_us.fields.subject')),
                         Infolists\Components\TextEntry::make('message')
                             ->prose()
                             ->columnSpanFull(),
                     ]),
 
-                Infolists\Components\Section::make('Metadata')
+                Infolists\Components\Section::make(__('contact_us.sections.metadata'))
                     ->schema([
                         Infolists\Components\TextEntry::make('created_at')
                             ->dateTime()
-                            ->label('Received'),
+                            ->label(__('contact_us.fields.received')),
                         Infolists\Components\TextEntry::make('metadata.source')
-                            ->label('Source'),
+                            ->label(__('contact_us.fields.source')),
                         Infolists\Components\TextEntry::make('metadata.utm_source')
-                            ->label('Campaign Source'),
+                            ->label(__('contact_us.fields.campaign_source')),
                         Infolists\Components\TextEntry::make('metadata.utm_medium')
-                            ->label('Campaign Medium'),
+                            ->label(__('contact_us.fields.campaign_medium')),
                         Infolists\Components\TextEntry::make('metadata.utm_campaign')
-                            ->label('Campaign Name'),
+                            ->label(__('contact_us.fields.campaign_name')),
                         Infolists\Components\TextEntry::make('metadata.referrer')
-                            ->label('Referrer URL'),
+                            ->label(__('contact_us.fields.referrer')),
                         Infolists\Components\TextEntry::make('user_agent')
-                            ->visible(fn () => auth()->user()->can('viewConfidential', ContactUs::class))
+                            ->visible(fn () => auth()->user()?->can('viewConfidential', ContactUs::class) ?? false)
                             ->columnSpanFull(),
                     ])
                     ->collapsible()
                     ->collapsed(),
 
                 // Show reply section if a reply has been sent
-                Infolists\Components\Section::make('Your Reply')
+                Infolists\Components\Section::make(__('contact_us.sections.your_reply'))
                     ->schema([
                         Infolists\Components\TextEntry::make('reply_subject')
-                            ->label('Subject'),
+                            ->label(__('contact_us.fields.reply_subject')),
                         Infolists\Components\TextEntry::make('replied_at')
                             ->dateTime()
-                            ->label('Replied At'),
+                            ->label(__('contact_us.fields.replied_at')),
                         Infolists\Components\TextEntry::make('repliedBy.firstname')
-                            ->label('Replied By')
+                            ->label(__('contact_us.fields.replied_by'))
                             ->formatStateUsing(function ($state, ContactUs $record) {
                                 return $record->repliedBy
                                     ? "{$record->repliedBy->firstname} {$record->repliedBy->lastname}"
-                                    : 'System';
+                                    : __('contact_us.fields.replied_by');
                             }),
                         Infolists\Components\TextEntry::make('reply_message')
                             ->html()
@@ -154,7 +155,7 @@ class ContactUsResource extends Resource
                     Tables\Columns\Layout\Stack::make([
                         Tables\Columns\TextColumn::make('status')
                             ->badge()
-                            ->formatStateUsing(fn(string $state): string => ucfirst($state))
+                            ->formatStateUsing(fn(string $state): string => __("contact_us.status.{" . $state . "}") ?? ucfirst($state))
                             ->color(fn(string $state): string => match ($state) {
                                 'new' => 'danger',
                                 'read' => 'warning',
@@ -166,7 +167,7 @@ class ContactUsResource extends Resource
                             ->alignLeft(),
                         Tables\Columns\TextColumn::make('created_at')
                             ->dateTime('M j, Y H:i')
-                            ->label('Sent at')
+                            ->label(__('contact_us.fields.sent_at'))
                             ->alignLeft(),
                     ])->alignment('center')->space(1),
                 ])
@@ -182,19 +183,19 @@ class ContactUsResource extends Resource
                 TrashedFilter::make(),
 
                 SelectFilter::make('status')
-                    ->label('Status')
+                    ->label(__('contact_us.filters.status'))
                     ->options([
-                        'new' => 'New',
-                        'read' => 'Read',
-                        'pending' => 'Pending',
-                        'responded' => 'Responded',
-                        'closed' => 'Closed',
+                        'new' => __('contact_us.status.new'),
+                        'read' => __('contact_us.status.read'),
+                        'pending' => __('contact_us.status.pending'),
+                        'responded' => __('contact_us.status.responded'),
+                        'closed' => __('contact_us.status.closed'),
                     ]),
 
                 Filter::make('created_at')
                     ->form([
-                        FilamentDatePicker::make('from')->label('From'),
-                        FilamentDatePicker::make('until')->label('Until'),
+                        FilamentDatePicker::make('from')->label(__('contact_us.filters.from')),
+                        FilamentDatePicker::make('until')->label(__('contact_us.filters.until')),
                     ])
                     ->query(function ($query, $data) {
                         return $query
@@ -204,7 +205,7 @@ class ContactUsResource extends Resource
                     ->label('Received Date'),
 
                 SelectFilter::make('company')
-                    ->label('Company')
+                    ->label(__('contact_us.fields.company'))
                     ->searchable()
                     ->options(
                         fn () => ContactUs::query()
@@ -215,7 +216,7 @@ class ContactUsResource extends Resource
                     ),
 
                 SelectFilter::make('employees')
-                    ->label('Employees')
+                    ->label(__('contact_us.fields.employees'))
                     ->options([
                         '1-10' => '1-10',
                         '11-50' => '11-50',
@@ -226,13 +227,13 @@ class ContactUsResource extends Resource
             ], layout: FiltersLayout::AboveContentCollapsible)
             ->filtersFormColumns(2)
             ->filtersFormWidth(MaxWidth::ThreeExtraLarge)
-            ->bulkActions([
+                    ->bulkActions([
                 TablesActions\BulkActionGroup::make([
                     TablesActions\DeleteBulkAction::make(),
                     TablesActions\ForceDeleteBulkAction::make(),
                     TablesActions\RestoreBulkAction::make(),
                     Tables\Actions\BulkAction::make('markAsRead')
-                        ->label('Mark as Read')
+                        ->label(__('contact_us.actions.mark_as_read'))
                         ->icon('heroicon-o-check')
                         ->action(function (Collection $records): void {
                             $count = 0;
@@ -245,7 +246,7 @@ class ContactUsResource extends Resource
 
                             if ($count > 0) {
                                 Notification::make()
-                                    ->title("Marked {$count} messages as read")
+                                    ->title(__('contact_us.notifications.marked_as_read', ['count' => $count]))
                                     ->success()
                                     ->send();
                             }
@@ -258,7 +259,7 @@ class ContactUsResource extends Resource
                     ->hiddenLabel()
                     ->button()
                     ->size('xs')
-                    ->tooltip('Reply to this message')
+                        ->tooltip(__('contact_us.actions.reply_tooltip'))
                     ->color(fn(ContactUs $record): string => (empty($record->reply_message) || empty($record->reply_subject)) ? 'success' : 'gray')
                     ->disabled(fn(ContactUs $record): bool => !empty($record->reply_message) || !empty($record->reply_subject)),
                 TablesActions\ActionGroup::make([
@@ -271,7 +272,7 @@ class ContactUsResource extends Resource
                             return $data;
                         }),
                     TablesActions\Action::make('markAsRead')
-                        ->label('Mark as Read')
+                        ->label(__('contact_us.actions.mark_as_read'))
                         ->icon('heroicon-o-check')
                         ->action(function (ContactUs $record): void {
                             if ($record->status === 'new') {
@@ -279,12 +280,12 @@ class ContactUsResource extends Resource
                                 $record->refresh();
 
                                 Notification::make()
-                                    ->title('Message marked as read')
+                                    ->title(__('contact_us.notifications.message_marked_read'))
                                     ->success()
                                     ->send();
                             } else {
                                 Notification::make()
-                                    ->title('Message already read')
+                                    ->title(__('contact_us.notifications.message_already_read'))
                                     ->info()
                                     ->send();
                             }

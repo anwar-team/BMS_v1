@@ -84,13 +84,10 @@ return [
         'until' => 'إلى',
     ],
 
-    'notifications' => array_merge(isset($GLOBALS['__contact_us_notifications']) ? $GLOBALS['__contact_us_notifications'] : [], [
+    'notifications' => [
         'marked_as_read' => 'تم وضع :count رسالة كمقروءة',
         'message_marked_read' => 'تم وضع الرسالة كمقروءة',
         'message_already_read' => 'الرسالة مقروءة بالفعل',
-    ]),
-
-    'notifications' => [
         'reply_saved_email_not_sent' => 'تم حفظ الرد ولكن لم يتم إرسال البريد الإلكتروني',
         'mail_settings_not_configured' => 'إعدادات البريد غير مفعلة. لم يتم إرسال البريد الإلكتروني.',
         'reply_sent_success' => 'تم إرسال الرد بنجاح',
