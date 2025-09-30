@@ -1,125 +1,59 @@
-<!-- Search Section - Independent Component -->
-<div class="relative">
-    <div class="pattern-top top-0"></div>
-    <section class="relative z-10 bg-gradient-to-b from-green-50 to-white pt-32 pb-0">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="max-w-4xl mx-auto text-center">
-                <!-- Search Title -->
-                <div class="mb-12">
-                    <h2 class="text-4xl text-green-800 font-bold mb-4">
-                        ابحث في مكتبتنا الشاملة
-                    </h2>
-                    <p class="text-xl text-gray-600 mb-8">
-                        اكتشف آلاف الكتب في الحديث، الفقه، الأدب، البلاغة، والتاريخ والأنساب وغيرها الكثير
+<!-- Search Section - Hero Section with Full Screen -->
+<div id="search-section" class="relative min-h-screen flex items-center justify-center" 
+     style="background-image: url('{{ asset('images/search-bg.jpg') }}'); background-size: cover; background-position: center; background-attachment: fixed;">
+    
+    <!-- Dark Overlay for better text readability -->
+    <div class="absolute inset-0 bg-black bg-opacity-40"></div>
+    
+    <!-- Content Container -->
+    <div class="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20" style="padding-top: 120px;">
+        <div class="text-center">
+            
+            <!-- Main Title -->
+            <div class="mb-8">
+                <h1 class="text-5xl md:text-6xl lg:text-7xl text-white font-bold mb-6 leading-tight">
+                    مكتبة تكاملت موضوعاتها و كتبها
+                </h1>
+                
+                <!-- Smart Description with Dynamic Stats -->
+                <div class="max-w-4xl mx-auto">
+                    <p class="text-xl md:text-2xl text-white/90 mb-4 leading-relaxed">
+                        اكتشف 
+                        <span class="text-amber-400 font-bold bg-amber-400/20 px-2 py-1 rounded-lg shadow-lg">{{ number_format($stats['total_books']) }}</span> 
+                        كتاباً في الحديث، الفقه، الأدب، البلاغة، والتاريخ والأنساب وغيرها الكثير
                     </p>
-
-                    <!-- Statistics Section -->
-                    <div class="mb-8">
-                        <div class="bg-white/80 backdrop-blur-sm rounded-2xl p-6 shadow-lg border border-gray-200">
-                            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-                            <!-- Total Books -->
-                            <div class="bg-white rounded-lg shadow-md overflow-hidden border border-gray-200 hover:shadow-lg transition-shadow duration-300">
-                                <div class="relative">
-                                    <img src="{{ asset('images/mask-group0.svg') }}" alt="Background" class="absolute left-0 top-0 w-32 h-32">
-                                    <div class="p-4">
-                                        <div class="flex justify-around items-center">
-                                            <div class="bg-green-100 rounded-lg p-2">
-                                                <svg class="w-8 h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253z"></path>
-                                                </svg>
-                                            </div>
-                                            <div>
-                                                <h3 class="text-lg text-green-800 font-bold mb-1">{{ number_format($stats['total_books']) }}</h3>
-                                                <p class="text-xs text-gray-600">إجمالي الكتب</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Total Authors -->
-                            <div class="bg-white rounded-lg shadow-md overflow-hidden border border-gray-200 hover:shadow-lg transition-shadow duration-300">
-                                <div class="relative">
-                                    <img src="{{ asset('images/mask-group0.svg') }}" alt="Background" class="absolute left-0 top-0 w-32 h-32">
-                                    <div class="p-4">
-                                        <div class="flex justify-around items-center">
-                                            <div class="bg-blue-100 rounded-lg p-2">
-                                                <svg class="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
-                                                </svg>
-                                            </div>
-                                            <div>
-                                                <h3 class="text-lg text-green-800 font-bold mb-1">{{ number_format($stats['total_authors']) }}</h3>
-                                                <p class="text-xs text-gray-600">إجمالي المؤلفين</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Total Pages -->
-                            <div class="bg-white rounded-lg shadow-md overflow-hidden border border-gray-200 hover:shadow-lg transition-shadow duration-300">
-                                <div class="relative">
-                                    <img src="{{ asset('images/mask-group0.svg') }}" alt="Background" class="absolute left-0 top-0 w-32 h-32">
-                                    <div class="p-4">
-                                        <div class="flex justify-around items-center">
-                                            <div class="bg-purple-100 rounded-lg p-2">
-                                                <svg class="w-8 h-8 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
-                                                </svg>
-                                            </div>
-                                            <div>
-                                                <h3 class="text-lg text-green-800 font-bold mb-1">{{ number_format($stats['total_pages']) }}</h3>
-                                                <p class="text-xs text-gray-600">إجمالي الصفحات</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Total Sections -->
-                            <div class="bg-white rounded-lg shadow-md overflow-hidden border border-gray-200 hover:shadow-lg transition-shadow duration-300">
-                                <div class="relative">
-                                    <img src="{{ asset('images/mask-group0.svg') }}" alt="Background" class="absolute left-0 top-0 w-32 h-32">
-                                    <div class="p-4">
-                                        <div class="flex justify-around items-center">
-                                            <div class="bg-orange-100 rounded-lg p-2">
-                                                <svg class="w-8 h-8 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14-7H5a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2V6a2 2 0 00-2-2z"></path>
-                                                </svg>
-                                            </div>
-                                            <div>
-                                                <h3 class="text-lg text-green-800 font-bold mb-1">{{ number_format($stats['total_sections']) }}</h3>
-                                                <p class="text-xs text-gray-600">إجمالي الأقسام</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    <p class="text-lg md:text-xl text-white/80 mb-8">
+                        بأقلام 
+                        <span class="text-emerald-400 font-bold bg-emerald-400/20 px-2 py-1 rounded-lg shadow-lg">{{ number_format($stats['total_authors']) }}</span> 
+                        مؤلف عبر 
+                        <span class="text-cyan-400 font-bold bg-cyan-400/20 px-2 py-1 rounded-lg shadow-lg">{{ number_format($stats['total_pages']) }}</span> 
+                        صفحة موزعة على 
+                        <span class="text-violet-400 font-bold bg-violet-400/20 px-2 py-1 rounded-lg shadow-lg">{{ number_format($stats['total_sections']) }}</span> 
+                        قسم متخصص - كل ذلك متاح لك في مكان واحد
+                    </p>
                 </div>
+            </div>
 
             <!-- Search Buttons -->
             <div class="flex flex-col sm:flex-row gap-4 mb-10 justify-center">
                 <button id="search-authors-btn" 
-                        class="search-type-btn bg-white text-green-800 border-2 border-green-800 transition-all duration-300 hover:bg-green-800 hover:text-white hover:shadow-lg transform hover:-translate-y-1 px-8 py-3 rounded-3xl font-bold shadow-md text-center">
+                        class="search-type-btn bg-white/20 backdrop-blur-sm text-white border-2 border-white/50 transition-all duration-300 hover:bg-white hover:text-green-800 hover:shadow-lg transform hover:-translate-y-1 px-8 py-3 rounded-3xl font-bold shadow-md text-center">
                     المؤلفين
                 </button>
                 <button id="search-books-btn" 
-                        class="search-type-btn bg-green-700 text-white border-2 border-green-700 transition-all duration-300 hover:bg-green-800 hover:shadow-lg transform hover:-translate-y-1 px-8 py-3 rounded-3xl font-bold shadow-md text-center relative active">
-                    <span class="absolute inset-0 border-2 border-green-900 rounded-3xl"></span>
+                        class="search-type-btn bg-white text-green-800 border-2 border-white transition-all duration-300 hover:bg-white/90 hover:shadow-lg transform hover:-translate-y-1 px-8 py-3 rounded-3xl font-bold shadow-md text-center relative active">
+                    <span class="absolute inset-0 border-2 border-green-600 rounded-3xl"></span>
                     عناوين الكتب
                 </button>
                 <a href="{{ route('search.ultra-fast') }}" 
-                   class="bg-white text-green-800 border-2 border-green-800 transition-all duration-300 hover:bg-green-800 hover:text-white hover:shadow-lg transform hover:-translate-y-1 px-8 py-3 rounded-3xl font-bold shadow-md text-center">
+                   class="bg-white/20 backdrop-blur-sm text-white border-2 border-white/50 transition-all duration-300 hover:bg-white hover:text-green-800 hover:shadow-lg transform hover:-translate-y-1 px-8 py-3 rounded-3xl font-bold shadow-md text-center">
                     محتوى الكتب
                 </a>
             </div>
 
             <!-- Search Bar -->
-            <div class="max-w-xl mx-auto relative z-[100]">
-                <div class="relative bg-white rounded-full px-16 py-4 flex items-center gap-3 shadow-xl border border-gray-200 hover:shadow-2xl transition-shadow duration-300">
+            <div class="max-w-2xl mx-auto relative z-[100]">
+                <div class="relative bg-white/95 backdrop-blur-sm rounded-full px-16 py-5 flex items-center gap-3 shadow-2xl border border-white/20 hover:shadow-3xl transition-all duration-300">
                     <img src="{{ asset('images/iconly-light-search0.svg') }}" alt="Search" class="w-6 h-6 text-gray-400">
                     
                     <input
@@ -129,7 +63,7 @@
                         autocomplete="off"
                         class="flex-1 bg-transparent border-none focus:ring-0 text-gray-700 placeholder-gray-500 text-lg focus:outline-none">
                     
-                    <!-- Filter Icon Button for Books - Simple icon only -->
+                    <!-- Filter Icon Button for Books -->
                     <div id="section-filter-container" class="flex items-center">
                         <button id="section-filter-btn" 
                                 class="p-2 bg-green-100 text-green-700 rounded-full hover:bg-green-200 transition-colors duration-200"
@@ -142,14 +76,14 @@
                     
                     <button type="button"
                             id="search-btn"
-                            class="absolute left-4 p-2 rounded-full bg-green-600 text-white transition-all duration-300 hover:bg-green-700 hover:scale-110 active:scale-95 shadow-md">
+                            class="absolute left-4 p-3 rounded-full bg-green-600 text-white transition-all duration-300 hover:bg-green-700 hover:scale-110 active:scale-95 shadow-lg">
                         <img src="{{ asset('images/iconly-bold-send0.svg') }}" alt="Search icon" class="w-5 h-5 filter brightness-0 invert">
                     </button>
                 </div>
 
                 <!-- Dropdown Results -->
                 <div id="search-dropdown" 
-                     class="absolute top-full left-0 right-0 bg-white border border-gray-200 rounded-2xl shadow-2xl mt-2 max-h-80 md:max-h-96 overflow-y-auto z-[99999] hidden backdrop-blur-sm"
+                     class="absolute top-full left-0 right-0 bg-white/95 backdrop-blur-sm border border-gray-200 rounded-2xl shadow-2xl mt-2 max-h-80 md:max-h-96 overflow-y-auto z-[99999] hidden"
                      style="box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25), 0 0 0 1px rgba(0, 0, 0, 0.05);">
                     <div id="search-results" class="p-2 md:p-4">
                         <!-- Results will be populated here -->
@@ -174,7 +108,7 @@
 
                 <!-- Section Filter Dropdown -->
                 <div id="section-filter-dropdown" 
-                     class="absolute top-full left-0 right-0 bg-white border border-gray-200 rounded-2xl shadow-2xl mt-2 max-h-80 overflow-y-auto z-[99999] hidden backdrop-blur-sm"
+                     class="absolute top-full left-0 right-0 bg-white/95 backdrop-blur-sm border border-gray-200 rounded-2xl shadow-2xl mt-2 max-h-80 overflow-y-auto z-[99999] hidden"
                      style="box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25), 0 0 0 1px rgba(0, 0, 0, 0.05);">
                     <div id="section-options" class="p-2 md:p-4">
                         <div class="p-2 cursor-pointer hover:bg-gray-100 rounded-lg section-option active" data-section-id="" data-section-name="جميع الأقسام">
@@ -189,16 +123,18 @@
             </div>
 
             <!-- Search Tips -->
-            <div class="mt-8 text-sm text-gray-500">
+            <div class="mt-8 text-sm text-white/70">
                 <p id="search-tips">💡 نصائح للبحث: استخدم كلمات مفتاحية واضحة، أو ابحث بعناوين الكتب</p>
             </div>
             
-            <!-- Extra spacing to prevent dropdown overlap -->
-            <div class="h-32"></div>
+            <!-- Scroll Down Indicator -->
+            <div class="mt-16 animate-bounce">
+                <svg class="w-6 h-6 mx-auto text-white/70" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
+                </svg>
+            </div>
         </div>
     </div>
-</section>
-<div class="pattern-bottom bottom-0"></div>
 </div>
 
 <style>
@@ -211,6 +147,43 @@
 .section-option.active {
     background-color: #dcfce7;
     border: 1px solid #86efac;
+}
+
+/* Custom scrollbar for dropdowns */
+#search-dropdown::-webkit-scrollbar,
+#section-filter-dropdown::-webkit-scrollbar {
+    width: 6px;
+}
+
+#search-dropdown::-webkit-scrollbar-track,
+#section-filter-dropdown::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 10px;
+}
+
+#search-dropdown::-webkit-scrollbar-thumb,
+#section-filter-dropdown::-webkit-scrollbar-thumb {
+    background: #c1c1c1;
+    border-radius: 10px;
+}
+
+#search-dropdown::-webkit-scrollbar-thumb:hover,
+#section-filter-dropdown::-webkit-scrollbar-thumb:hover {
+    background: #a8a8a8;
+}
+
+/* Responsive adjustments */
+@media (max-width: 640px) {
+    .min-h-screen {
+        min-height: 100vh;
+    }
+}
+
+@media (max-width: 768px) {
+    h1 {
+        font-size: 2.5rem !important;
+        line-height: 1.2 !important;
+    }
 }
 </style>
 
@@ -297,17 +270,17 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // إخفاء القوائم عند النقر خارجها
     document.addEventListener('click', function(e) {
-        if (!e.target.closest('.max-w-xl')) {
+        if (!e.target.closest('.max-w-2xl')) {
             hideDropdown();
             hideSectionFilter();
         }
     });
     
-    // إخفاء القوائم عند التمرير
-    window.addEventListener('scroll', function() {
-        hideDropdown();
-        hideSectionFilter();
-    });
+    // منع إخفاء القوائم عند التمرير (تم إزالة هذه الوظيفة)
+    // window.addEventListener('scroll', function() {
+    //     hideDropdown();
+    //     hideSectionFilter();
+    // });
     
     // إخفاء القوائم عند الضغط على Escape
     document.addEventListener('keydown', function(e) {
@@ -323,19 +296,19 @@ document.addEventListener('DOMContentLoaded', function() {
         
         // تحديث أزرار نوع البحث
         searchTypeBtns.forEach(btn => {
-            btn.classList.remove('active', 'bg-green-700', 'text-white');
-            btn.classList.add('bg-white', 'text-green-800');
+            btn.classList.remove('active', 'bg-white', 'text-green-800');
+            btn.classList.add('bg-white/20', 'backdrop-blur-sm', 'text-white', 'border-white/50');
         });
         
         if (type === 'authors') {
-            authorsBtn.classList.add('active', 'bg-green-700', 'text-white');
-            authorsBtn.classList.remove('bg-white', 'text-green-800');
+            authorsBtn.classList.add('active', 'bg-white', 'text-green-800');
+            authorsBtn.classList.remove('bg-white/20', 'backdrop-blur-sm', 'text-white', 'border-white/50');
             searchInput.placeholder = 'إبحث في أسماء المؤلفين ...';
             searchTips.innerHTML = '💡 نصائح للبحث: استخدم أسماء المؤلفين أو أجزاء منها';
             sectionFilterContainer.style.display = 'none';
         } else {
-            booksBtn.classList.add('active', 'bg-green-700', 'text-white');
-            booksBtn.classList.remove('bg-white', 'text-green-800');
+            booksBtn.classList.add('active', 'bg-white', 'text-green-800');
+            booksBtn.classList.remove('bg-white/20', 'backdrop-blur-sm', 'text-white', 'border-white/50');
             searchInput.placeholder = 'إبحث في عناوين الكتب ...';
             searchTips.innerHTML = '💡 نصائح للبحث: استخدم كلمات مفتاحية واضحة، أو ابحث بعناوين الكتب';
             sectionFilterContainer.style.display = 'flex';
@@ -454,6 +427,9 @@ document.addEventListener('DOMContentLoaded', function() {
     // تنفيذ البحث
     async function performSearch(query) {
         try {
+            // التمرير التلقائي لمربع البحث عند بدء البحث
+            scrollToSearchBox();
+            
             let url = '';
             const params = new URLSearchParams({
                 q: query,
@@ -483,6 +459,18 @@ document.addEventListener('DOMContentLoaded', function() {
             console.error('خطأ في البحث:', error);
             hideLoading();
             showNoResults();
+        }
+    }
+    
+    // وظيفة التمرير التلقائي لمربع البحث
+    function scrollToSearchBox() {
+        const searchBox = document.querySelector('.max-w-2xl');
+        if (searchBox) {
+            const offsetTop = searchBox.offsetTop - 100; // ترك مساحة 100px من الأعلى
+            window.scrollTo({
+                top: offsetTop,
+                behavior: 'smooth'
+            });
         }
     }
     

@@ -18,11 +18,13 @@ class AuthorsTable extends Component
     public $title = 'المؤلفين';
     public $showPagination = true;
     public $showPerPageSelector = true;
+    public $madhhab = null;
 
     protected $queryString = [
         'search' => ['except' => ''],
         'page' => ['except' => 1],
         'perPage' => ['except' => 10],
+        'madhhab' => ['except' => null],
     ];
 
     public function mount($showSearch = true, $showFilters = true, $title = 'المؤلفين', $perPage = 10, $showPagination = true, $showPerPageSelector = true)
@@ -45,9 +47,19 @@ class AuthorsTable extends Component
         $this->resetPage();
     }
 
+    public function updatingMadhhab()
+    {
+        $this->resetPage();
+    }
+
     public function getAuthors()
     {
         $query = Author::withCount('books');
+
+        // تطبيق فلترة المذهب
+        if ($this->madhhab) {
+            $query->where('madhhab', $this->madhhab);
+        }
 
         // تطبيق البحث
         if ($this->search) {
