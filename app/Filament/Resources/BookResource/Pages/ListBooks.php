@@ -13,7 +13,7 @@ class ListBooks extends ListRecords
 
     public function getTitle(): string
     {
-        return __('library.books.books_list');
+        return 'قائمة الكتب';
     }
 
     protected function getHeaderActions(): array

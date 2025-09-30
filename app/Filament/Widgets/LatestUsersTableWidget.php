@@ -20,7 +20,7 @@ class LatestUsersTableWidget extends BaseWidget
     public function table(Table $table): Table
     {
         return $table
-            ->heading(__('dashboard.widgets.tables.latest_users'))
+            ->heading('أحدث المستخدمين')
             ->query(
                 User::query()
                     ->with('roles')
@@ -29,35 +29,35 @@ class LatestUsersTableWidget extends BaseWidget
             )
             ->columns([
                 Tables\Columns\TextColumn::make('first_name')
-                    ->label(__('users.fields.first_name'))
+                    ->label('الاسم الأول')
                     ->searchable()
                     ->sortable(),
 
                 Tables\Columns\TextColumn::make('last_name')
-                    ->label(__('users.fields.last_name'))
+                    ->label('الاسم الأخير')
                     ->searchable()
                     ->sortable(),
 
                 Tables\Columns\TextColumn::make('username')
-                    ->label(__('users.fields.username'))
+                    ->label('اسم المستخدم')
                     ->searchable()
                     ->sortable(),
 
                 Tables\Columns\TextColumn::make('email')
-                    ->label(__('users.fields.email'))
+                    ->label('البريد الإلكتروني')
                     ->searchable()
                     ->sortable()
                     ->limit(25),
 
                 Tables\Columns\TextColumn::make('roles.name')
-                    ->label(__('users.fields.roles'))
+                    ->label('الأدوار')
                     ->badge()
                     ->separator(', ')
                     ->formatStateUsing(fn (string $state): string => match ($state) {
-                        'super_admin' => __('users.roles.super_admin'),
-                        'admin' => __('users.roles.admin'),
-                        'editor' => __('users.roles.editor'),
-                        'author' => __('users.roles.author'),
+                        'super_admin' => 'مدير عام',
+                        'admin' => 'مدير',
+                        'editor' => 'محرر',
+                        'author' => 'مؤلف',
                         default => $state,
                     })
                     ->color(fn (string $state): string => match ($state) {
@@ -69,13 +69,13 @@ class LatestUsersTableWidget extends BaseWidget
                     }),
 
                 Tables\Columns\TextColumn::make('created_at')
-                    ->label(__('users.fields.registration_date'))
+                    ->label('تاريخ التسجيل')
                     ->dateTime('d/m/Y H:i')
                     ->sortable(),
             ])
             ->actions([
                 Tables\Actions\Action::make('edit')
-                    ->label(__('dashboard.actions.edit'))
+                    ->label('تعديل')
                     ->icon('heroicon-m-pencil-square')
                     ->url(fn (User $record): string => route('filament.admin.resources.users.edit', $record))
                     ->openUrlInNewTab(),

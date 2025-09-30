@@ -35,23 +35,23 @@ class UsersAndBlogStatsWidget extends BaseWidget
             $totalPosts = Post::count();
 
             return [
-                Stat::make(__('dashboard.widgets.stats.total_users'), $userStats->total_users)
-                    ->description(__('dashboard.widgets.stats.all_users_system'))
+                Stat::make('إجمالي المستخدمين', $userStats->total_users)
+                    ->description('جميع المستخدمين في النظام')
                     ->descriptionIcon('heroicon-m-users')
                     ->color('primary'),
 
-                Stat::make(__('dashboard.widgets.stats.verified_users'), $userStats->verified_users)
-                    ->description(__('dashboard.widgets.stats.users_verified_email'))
+                Stat::make('المستخدمون المفعلون', $userStats->verified_users)
+                    ->description('المستخدمون الذين فعلوا بريدهم الإلكتروني')
                     ->descriptionIcon('heroicon-m-check-circle')
                     ->color('success'),
 
-                Stat::make(__('dashboard.widgets.stats.blog_posts'), $totalPosts)
-                    ->description(__('dashboard.widgets.stats.published_blog_posts'))
+                Stat::make('مقالات المدونة', $totalPosts)
+                    ->description('مقالات المدونة المنشورة')
                     ->descriptionIcon('heroicon-m-document-text')
                     ->color('info'),
 
-                Stat::make(__('dashboard.widgets.stats.new_users'), $userStats->recent_users)
-                    ->description(__('dashboard.widgets.stats.new_users_30_days'))
+                Stat::make('المستخدمون الجدد', $userStats->recent_users)
+                    ->description('المستخدمون الجدد خلال 30 يوماً')
                     ->descriptionIcon('heroicon-m-user-plus')
                     ->color('warning'),
             ];

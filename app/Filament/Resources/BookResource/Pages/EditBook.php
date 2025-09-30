@@ -12,7 +12,7 @@ class EditBook extends EditRecord
 
     public function getTitle(): string
     {
-        return __('library.books.edit_book');
+        return 'تعديل الكتاب';
     }
 
     protected function getHeaderActions(): array

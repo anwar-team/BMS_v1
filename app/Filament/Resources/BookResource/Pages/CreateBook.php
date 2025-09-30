@@ -12,6 +12,6 @@ class CreateBook extends CreateRecord
 
     public function getTitle(): string
     {
-        return __('library.books.create_book');
+        return 'إضافة كتاب جديد';
     }
 }
