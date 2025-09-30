@@ -4,23 +4,17 @@
     "src": "public/images/main-pattern.svg"
   },
   "resources/css/app.css": {
-    "file": "assets/app-CYBWYw9-.css",
+    "file": "assets/app-CsHcmIOJ.css",
     "src": "resources/css/app.css",
-    "isEntry": true,
-    "names": [
-      "app.css"
-    ]
+    "isEntry": true
   },
   "resources/css/filament/admin/theme.css": {
-    "file": "assets/theme-DN6VTn5B.css",
+    "file": "assets/theme-CLKl3Mtg.css",
     "src": "resources/css/filament/admin/theme.css",
-    "isEntry": true,
-    "names": [
-      "theme.css"
-    ]
+    "isEntry": true
   },
   "resources/js/app.js": {
-    "file": "assets/app-7LlsINDV.js",
+    "file": "assets/app-BRQJfwiZ.js",
     "name": "app",
     "src": "resources/js/app.js",
     "isEntry": true

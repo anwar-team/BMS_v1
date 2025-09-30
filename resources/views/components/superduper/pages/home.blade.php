@@ -2,54 +2,6 @@
 
     <div class="page-wrapper relative z-[1]" dir="rtl">
         <main class="relative overflow-hidden main-wrapper">
-
-            <!--
-========================================
-          My Main Aziz     
-========================================
- -->
-            <!-- <div class="bg-white min-h-screen">
-                 Main Hero Section 
-                <section class="relative overflow-hidden">
-                    <img
-                        src="{{ asset('images/whats-app-image-2025-03-20-at-1-58-04-pm-10.png') }}"
-                        alt="Library background"
-                        class="absolute inset-0 w-full h-96 object-cover">
-                    <div class="absolute inset-0 bg-black/30"></div>
-
-                    <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-24 pb-20">
-                        <div class="max-w-3xl mx-auto text-center">
-                            <h1 class="text-5xl text-white font-bold mb-6 leading-tight">
-                                مكتبة تكاملت موضوعاتها<br>وكتبها
-                            </h1>
-                            <p class="text-xl text-white mb-10">
-                                اكتشف آلاف الكتب في الحديث، الفقه، الأدب، البلاغة، و التاريخ و الأنساب و غيرها الكثير متاحة لك في مكان واحد
-                            </p>
-
-                            <div class="flex flex-col sm:flex-row gap-4 mb-10 justify-center">
-                                <button class="bg-white text-green-800 px-8 py-3 rounded-3xl font-bold shadow-md">
-                                    المؤلفين
-                                </button>
-                                <button class="bg-green-700 text-white px-8 py-3 rounded-3xl font-bold shadow-md relative">
-                                    <span class="absolute inset-0 border-2 border-green-900 rounded-3xl"></span>
-                                    محتوى الكتب
-                                </button>
-                                <button class="bg-white text-green-800 px-8 py-3 rounded-3xl font-bold shadow-md">
-                                    عناوين الكتب
-                                </button>
-                            </div>
-
-                            <div class="max-w-xl mx-auto bg-white rounded-full px-6 py-3 flex items-center gap-3">
-                                <img src="{{ asset('images/iconly-light-search0.svg') }}" alt="Search" class="w-6 h-6">
-                                <span class="text-gray-500">إبحث في محتوى الكتب ...</span>
-                                <img src="{{ asset('images/iconly-bold-send0.svg') }}" alt="Search icon" class="w-5 h-5">
-                            </div>
-                        </div>
-                    </div>
-                </section> -->
-            <!-- Banner Section -->
-            <x-superduper.components.banner />
-
             <!-- Search Section -->
             <x-superduper.components.search-section :stats="$stats" />
 
