@@ -100,7 +100,7 @@ class BookResource extends Resource
             Tabs::make('BookTabs')
                 ->tabs([
                     // Tab 1: Basic Book Information
-                    Tab::make('Book Information')
+                    Tab::make('معلومات الكتاب')
                         ->icon('heroicon-o-book-open')
                         ->schema([
                             self::getBasicInfoSection(),
@@ -109,7 +109,7 @@ class BookResource extends Resource
                         ]),
 
                     // Tab 2: Categories and Authors
-                    Tab::make('Categories and Authors')
+                    Tab::make('الأقسام والمؤلفون')
                         ->icon('heroicon-o-tag')
                         ->schema([
                             self::getBookSectionSelect(),
@@ -117,7 +117,7 @@ class BookResource extends Resource
                         ]),
 
                     // Tab 3: Volumes and Chapters
-                    Tab::make('Volumes and Chapters')
+                    Tab::make('الأجزاء والفصول')
                         ->icon('heroicon-o-folder-open')
                         ->schema([
                             self::getVolumesRepeater(),
