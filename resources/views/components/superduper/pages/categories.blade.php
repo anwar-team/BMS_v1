@@ -47,8 +47,15 @@
                                         class="absolute left-0 top-0 w-32 h-32">
                                     <div class="p-8">
                                         <div class="flex justify-around items-center">
-                                            <img src="{{ $section->logo_path ? asset($section->logo_path) : asset('images/group1.svg') }}" 
-                                                 alt="Icon" class="w-16 h-16">
+                                            @if($section->hasIcon())
+                                                {!! $section->icon_html !!}
+                                            @elseif($section->logo_path)
+                                                <img src="{{ asset($section->logo_path) }}" 
+                                                     alt="Icon" class="w-16 h-16">
+                                            @else
+                                                <img src="{{ asset('images/group1.svg') }}" 
+                                                     alt="Icon" class="w-16 h-16">
+                                            @endif
                                             <div>
                                                 <h3 class="text-xl text-green-800 font-bold mb-1">{{ $section->name }}</h3>
                                                 <p class="text-sm text-gray-600">{{ $section->books_count }} كتاب</p>

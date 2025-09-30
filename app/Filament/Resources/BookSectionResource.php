@@ -75,6 +75,75 @@ class BookSectionResource extends Resource
                 Forms\Components\Toggle::make('is_active')
                     ->label('نشط')
                     ->default(true),
+
+                // قسم الأيقونات
+                Forms\Components\Section::make('إعدادات الأيقونة')
+                    ->schema([
+                        Forms\Components\Select::make('icon_type')
+                            ->label('نوع الأيقونة')
+                            ->options([
+                                'upload' => 'رفع ملف',
+                                'url' => 'رابط URL',
+                                'library' => 'من المكتبة',
+                                'color' => 'لون فقط',
+                            ])
+                            ->reactive()
+                            ->afterStateUpdated(fn (callable $set) => $set('icon_url', null)),
+
+                        Forms\Components\FileUpload::make('icon_url')
+                            ->label('رفع الأيقونة')
+                            ->image()
+                            ->directory('icons')
+                            ->visibility('public')
+                            ->imageResizeMode('contain')
+                            ->imageCropAspectRatio('1:1')
+                            ->imageResizeTargetWidth('64')
+                            ->imageResizeTargetHeight('64')
+                            ->visible(fn (callable $get) => $get('icon_type') === 'upload'),
+
+                        Forms\Components\TextInput::make('icon_url')
+                            ->label('رابط الأيقونة')
+                            ->url()
+                            ->placeholder('https://example.com/icon.svg')
+                            ->visible(fn (callable $get) => $get('icon_type') === 'url'),
+
+                        Forms\Components\Grid::make(2)
+                            ->schema([
+                                Forms\Components\Select::make('icon_library')
+                                    ->label('مكتبة الأيقونات')
+                                    ->options([
+                                        'heroicons' => 'Heroicons',
+                                        'fontawesome' => 'Font Awesome',
+                                        'custom' => 'مخصص',
+                                    ])
+                                    ->visible(fn (callable $get) => $get('icon_type') === 'library'),
+
+                                Forms\Components\TextInput::make('icon_name')
+                                    ->label('اسم الأيقونة')
+                                    ->placeholder('home, user, book')
+                                    ->visible(fn (callable $get) => $get('icon_type') === 'library'),
+                            ])
+                            ->visible(fn (callable $get) => $get('icon_type') === 'library'),
+
+                        Forms\Components\Grid::make(2)
+                            ->schema([
+                                Forms\Components\ColorPicker::make('icon_color')
+                                    ->label('لون الأيقونة')
+                                    ->default('#3B82F6'),
+
+                                Forms\Components\Select::make('icon_size')
+                                    ->label('حجم الأيقونة')
+                                    ->options([
+                                        'sm' => 'صغير',
+                                        'md' => 'متوسط',
+                                        'lg' => 'كبير',
+                                        'xl' => 'كبير جداً',
+                                    ])
+                                    ->default('md'),
+                            ]),
+                    ])
+                    ->collapsible()
+                    ->collapsed(),
             ]);
     }
 
@@ -82,6 +151,11 @@ class BookSectionResource extends Resource
     {
         return $table
             ->columns([
+                Tables\Columns\ViewColumn::make('icon')
+                    ->label('الأيقونة')
+                    ->view('filament.tables.columns.icon-column')
+                    ->toggleable(),
+
                 Tables\Columns\TextColumn::make('name')
                     ->label('اسم القسم')
                     ->searchable()
