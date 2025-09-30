@@ -18,7 +18,7 @@ class BookSectionResource extends Resource
     protected static ?string $model = BookSection::class;
     protected static ?int $navigationSort = -4;
 
-    protected static ?string $navigationGroup = 'إدارة المحتوى';
+    protected static ?string $navigationGroup = 'المكتبة';
 
     protected static ?string $navigationIcon = 'heroicon-o-folder';
     
