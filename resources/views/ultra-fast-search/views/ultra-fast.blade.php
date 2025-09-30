@@ -78,98 +78,313 @@
             <div class="relative">
                 <div class="pattern-top top-24"></div>
                 
-                <!-- Search Header (updated to requested design) -->
-                <div class="bg-white shadow-sm border-b border-gray-200">
-                    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6" style="padding-top: 7.5rem;">
-                        <div class="text-center mb-6">
-                            <div class="flex items-center gap-3 mb-8 justify-center">
-                                <img src="{{ asset('images/group0.svg') }}" alt="البحث" class="w-16 h-16">
-                                <h2 class="text-4xl text-green-800 font-bold">البحث المتقدم</h2>
-                                <div class="hidden sm:block">
-                                    <button onclick="showHelpModal()" class="bg-gray-100 hover:bg-gray-200 text-gray-700 px-4 py-2 rounded-lg text-sm transition-colors">
-                                        ❓ شرح الخصائص
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
                 <!-- Search Interface -->
-                <section class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-
-                <!-- Search Interface -->
-                <section class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+                <section class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8" style="padding-top: 8rem;">
                     
                     <!-- Search Box -->
                     <div class="bg-white rounded-lg shadow-md p-6 mb-6">
                         
                         <div class="space-y-4">
-                            <!-- Main Search Input -->
+                            <!-- Main Search Input with Integrated Options -->
                             <div class="relative">
-                                <input 
-                                    type="text"
-                                    id="instantSearch" 
-                                    placeholder="ابحث في المكتبة الكاملة... (من أول حرف)"
-                                    value="{{ request('q', '') }}"
-                                    class="search-input w-full px-4 py-3 text-lg border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-colors"
-                                    dir="rtl"
-                                    autocomplete="off"
-                                />
-                                
-                                <div class="absolute left-3 top-1/2 transform -translate-y-1/2">
-                                    <!-- مؤشر التحميل -->
-                                    <div id="searchSpinner" class="spinner hidden"></div>
-                                    <!-- أيقونة البحث -->
-                                    <svg id="searchIcon" class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m21 21-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
-                                    </svg>
+                                <!-- شريط البحث مع الأيقونات المدمجة -->
+                                <div class="relative flex items-center bg-gray-50 rounded-lg border border-gray-300 focus-within:border-emerald-500 focus-within:ring-2 focus-within:ring-emerald-200">
+                                    <!-- أيقونة البحث في البداية -->
+                                    <div class="flex items-center pointer-events-none px-4 border-l border-gray-300">
+                                        <svg id="searchIcon" class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                                        </svg>
+                                        <div id="searchSpinner" class="hidden w-5 h-5 text-emerald-500">
+                                            <svg class="animate-spin" fill="none" viewBox="0 0 24 24">
+                                                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                                                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                            </svg>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- حقل البحث -->
+                                    <input 
+                                        type="text"
+                                        id="instantSearch" 
+                                        placeholder="ابحث في المكتبة الكاملة... (من أول حرف)"
+                                        value="{{ request('q', '') }}"
+                                        class="w-full px-4 py-4 bg-transparent border-0 focus:outline-none text-lg"
+                                        dir="rtl"
+                                        autocomplete="off"
+                                    />
+                                    
+                                    <!-- أيقونات خيارات البحث -->
+                                    <div class="flex items-center gap-2 px-4 border-r border-gray-300">
+                                        <!-- أيقونة الإعدادات -->
+                                        <div class="relative">
+                                            <button 
+                                                type="button" 
+                                                id="settingsToggle"
+                                                class="flex items-center gap-1 px-3 py-2 text-sm text-gray-600 hover:text-emerald-600 hover:bg-emerald-50 rounded-md transition-colors"
+                                                title="إعدادات البحث"
+                                            >
+                                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path>
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                                </svg>
+                                                <span>إعدادات</span>
+                                                <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                                                </svg>
+                                            </button>
+                                            
+                                            <!-- قائمة الإعدادات -->
+                                            <div id="settingsDropdown" class="hidden absolute top-full left-0 mt-2 w-64 bg-white rounded-lg shadow-lg border border-gray-200 z-30 max-h-80 overflow-y-auto">
+                                                <div class="p-3">
+                                                    <!-- طبيعة البحث -->
+                                                    <div class="mb-4">
+                                                        <h3 class="text-sm font-medium text-gray-700 mb-2 text-right">طبيعة البحث</h3>
+                                                        <div class="space-y-1">
+                                                            <label class="flex items-center gap-3 p-2 hover:bg-gray-50 rounded-md cursor-pointer">
+                                                                <input type="radio" name="searchMode" value="flexible" class="text-emerald-600 focus:ring-emerald-500">
+                                                                <div class="flex items-center gap-2 flex-1 text-right">
+                                                                    <span class="w-2 h-2 bg-emerald-500 rounded-full"></span>
+                                                                    <span class="text-sm">البحث المرن</span>
+                                                                </div>
+                                                            </label>
+                                                            <label class="flex items-center gap-3 p-2 hover:bg-gray-50 rounded-md cursor-pointer">
+                                                                <input type="radio" name="searchMode" value="exact_phrase" class="text-blue-600 focus:ring-blue-500">
+                                                                <div class="flex items-center gap-2 flex-1 text-right">
+                                                                    <span class="w-2 h-2 bg-blue-500 rounded-full"></span>
+                                                                    <span class="text-sm">مطابقة العبارة تماماً</span>
+                                                                </div>
+                                                            </label>
+                                                            <label class="flex items-center gap-3 p-2 hover:bg-gray-50 rounded-md cursor-pointer">
+                                                                <input type="radio" name="searchMode" value="phrase_proximity" class="text-purple-600 focus:ring-purple-500" checked>
+                                                                <div class="flex items-center gap-2 flex-1 text-right">
+                                                                    <span class="w-2 h-2 bg-purple-500 rounded-full"></span>
+                                                                    <span class="text-sm">عبارة مع تباعد مسموح</span>
+                                                                </div>
+                                                            </label>
+                                                            <label class="flex items-center gap-3 p-2 hover:bg-gray-50 rounded-md cursor-pointer">
+                                                                <input type="radio" name="searchMode" value="all_words" class="text-orange-600 focus:ring-orange-500">
+                                                                <div class="flex items-center gap-2 flex-1 text-right">
+                                                                    <span class="w-2 h-2 bg-orange-500 rounded-full"></span>
+                                                                    <span class="text-sm">جميع الكلمات مطلوبة</span>
+                                                                </div>
+                                                            </label>
+                                                            <label class="flex items-center gap-3 p-2 hover:bg-gray-50 rounded-md cursor-pointer">
+                                                                <input type="radio" name="searchMode" value="any_word" class="text-red-600 focus:ring-red-500">
+                                                                <div class="flex items-center gap-2 flex-1 text-right">
+                                                                    <span class="w-2 h-2 bg-red-500 rounded-full"></span>
+                                                                    <span class="text-sm">أي كلمة من الكلمات</span>
+                                                                </div>
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                    
+                                                    <!-- تباعد الكلمات -->
+                                                    <div class="border-t border-gray-200 pt-3">
+                                                        <h3 class="text-sm font-medium text-gray-700 mb-2 text-right">تباعد الكلمات</h3>
+                                                        <div class="space-y-1">
+                                                            <label class="flex items-center gap-3 p-2 hover:bg-gray-50 rounded-md cursor-pointer">
+                                                                <input type="radio" name="proximityMode" value="any_order" class="text-gray-600 focus:ring-gray-500" checked>
+                                                                <span class="text-sm text-right flex-1">أي ترتيب</span>
+                                                            </label>
+                                                            <label class="flex items-center gap-3 p-2 hover:bg-gray-50 rounded-md cursor-pointer">
+                                                                <input type="radio" name="proximityMode" value="consecutive" class="text-gray-600 focus:ring-gray-500">
+                                                                <span class="text-sm text-right flex-1">متتالية (ورا بعض)</span>
+                                                            </label>
+                                                            <label class="flex items-center gap-3 p-2 hover:bg-gray-50 rounded-md cursor-pointer">
+                                                                <input type="radio" name="proximityMode" value="same_paragraph" class="text-gray-600 focus:ring-gray-500">
+                                                                <span class="text-sm text-right flex-1">نفس الفقرة</span>
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <!-- أيقونة ترتيب النتائج -->
+                                        <div class="relative">
+                                            <button 
+                                                type="button" 
+                                                id="sortToggle"
+                                                class="flex items-center gap-1 px-3 py-2 text-sm text-gray-600 hover:text-emerald-600 hover:bg-emerald-50 rounded-md transition-colors"
+                                                title="ترتيب النتائج"
+                                            >
+                                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4h13M3 8h9m-9 4h9m5-4v12m0 0l-4-4m4 4l4-4"></path>
+                                                </svg>
+                                                <span id="sortLabel">أقرب صلة</span>
+                                                <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                                                </svg>
+                                            </button>
+                                            
+                                            <!-- قائمة ترتيب النتائج -->
+                                            <div id="sortDropdown" class="hidden absolute top-full left-0 mt-2 w-56 bg-white rounded-lg shadow-lg border border-gray-200 z-30">
+                                                <div class="p-2">
+                                                    <div class="space-y-1">
+                                                        <label class="flex items-center gap-3 p-2 hover:bg-gray-50 rounded-md cursor-pointer">
+                                                            <input type="radio" name="sortOrder" value="relevance" class="text-emerald-600 focus:ring-emerald-500" checked>
+                                                            <div class="flex items-center gap-2 flex-1 text-right">
+                                                                <svg class="w-4 h-4 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                                                                </svg>
+                                                                <span class="text-sm">أقرب صلة</span>
+                                                            </div>
+                                                        </label>
+                                                        <label class="flex items-center gap-3 p-2 hover:bg-gray-50 rounded-md cursor-pointer">
+                                                            <input type="radio" name="sortOrder" value="death_year_asc" class="text-blue-600 focus:ring-blue-500">
+                                                            <div class="flex items-center gap-2 flex-1 text-right">
+                                                                <svg class="w-4 h-4 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                                                                </svg>
+                                                                <span class="text-sm">سنة الوفاة (الأقدم أولاً)</span>
+                                                            </div>
+                                                        </label>
+                                                        <label class="flex items-center gap-3 p-2 hover:bg-gray-50 rounded-md cursor-pointer">
+                                                            <input type="radio" name="sortOrder" value="death_year_desc" class="text-purple-600 focus:ring-purple-500">
+                                                            <div class="flex items-center gap-2 flex-1 text-right">
+                                                                <svg class="w-4 h-4 text-purple-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                                                                </svg>
+                                                                <span class="text-sm">سنة الوفاة (الأحدث أولاً)</span>
+                                                            </div>
+                                                        </label>
+                                                        <label class="flex items-center gap-3 p-2 hover:bg-gray-50 rounded-md cursor-pointer">
+                                                            <input type="radio" name="sortOrder" value="book_title" class="text-orange-600 focus:ring-orange-500">
+                                                            <div class="flex items-center gap-2 flex-1 text-right">
+                                                                <svg class="w-4 h-4 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
+                                                                </svg>
+                                                                <span class="text-sm">اسم الكتاب (أبجدياً)</span>
+                                                            </div>
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- أيقونة الفلترة -->
+                                        <div class="relative">
+                                            <button 
+                                                type="button" 
+                                                id="filterToggle"
+                                                class="flex items-center gap-1 px-3 py-2 text-sm text-gray-600 hover:text-blue-600 hover:bg-blue-50 rounded-md transition-colors"
+                                                title="خيارات الفلترة"
+                                            >
+                                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"></path>
+                                                </svg>
+                                                <span>فلترة</span>
+                                                <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                                                </svg>
+                                            </button>
+                                            
+                                            <!-- قائمة الفلترة -->
+                                            <div id="filterDropdown" class="hidden absolute top-full left-0 mt-2 w-72 bg-white rounded-lg shadow-lg border border-gray-200 z-30">
+                                                <div class="p-4">
+                                                    <div class="space-y-4">
+                                                        <!-- فلترة حسب القسم -->
+                                                        <div>
+                                                            <button type="button" class="filter-category-btn w-full flex items-center justify-between p-2 text-sm font-medium text-gray-700 hover:bg-gray-50 rounded-md" data-filter="section">
+                                                                <span>القسم</span>
+                                                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                                                                </svg>
+                                                            </button>
+                                                        </div>
+                                                        
+                                                        <!-- فلترة حسب الكتاب -->
+                                                        <div>
+                                                            <button type="button" class="filter-category-btn w-full flex items-center justify-between p-2 text-sm font-medium text-gray-700 hover:bg-gray-50 rounded-md" data-filter="book">
+                                                                <span>الكتاب</span>
+                                                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                                                                </svg>
+                                                            </button>
+                                                        </div>
+                                                        
+                                                        <!-- فلترة حسب المؤلف -->
+                                                        <div>
+                                                            <button type="button" class="filter-category-btn w-full flex items-center justify-between p-2 text-sm font-medium text-gray-700 hover:bg-gray-50 rounded-md" data-filter="author">
+                                                                <span>المؤلف</span>
+                                                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                                                                </svg>
+                                                            </button>
+                                                        </div>
+                                                        
+                                                        <!-- فلترة حسب تاريخ الوفاة -->
+                                                        <div>
+                                                            <button type="button" class="filter-category-btn w-full flex items-center justify-between p-2 text-sm font-medium text-gray-700 hover:bg-gray-50 rounded-md" data-filter="death_date">
+                                                                <span>تاريخ الوفاة</span>
+                                                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                                                                </svg>
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        
+                                        <!-- أيقونة المساعدة -->
+                                        <button 
+                                            type="button" 
+                                            onclick="showHelpModal()"
+                                            class="flex items-center justify-center w-8 h-8 text-gray-400 hover:text-emerald-600 hover:bg-emerald-50 rounded-md transition-colors"
+                                            title="مساعدة"
+                                        >
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                            </svg>
+                                        </button>
+                                    </div>
                                 </div>
+                                
+                                <!-- الحقول المخفية للقيم -->
+                                <select id="searchMode" class="hidden">
+                                    <option value="flexible">مرن - أفضل النتائج</option>
+                                    <option value="exact_phrase">مطابقة العبارة تماماً</option>
+                                    <option value="phrase_proximity">عبارة مع تباعد مسموح (افتراضي)</option>
+                                    <option value="all_words">جميع الكلمات مطلوبة</option>
+                                    <option value="any_word">أي كلمة من الكلمات</option>
+                                </select>
+                                
+                                <select id="proximityMode" class="hidden">
+                                    <option value="any_order">أي ترتيب (افتراضي)</option>
+                                    <option value="consecutive">متتالية (ورا بعض)</option>
+                                    <option value="same_paragraph">نفس الفقرة</option>
+                                </select>
+                                
+                                <select id="perPageSelect" class="hidden">
+                                    <option value="10">10 نتائج</option>
+                                    <option value="15" selected>15 نتيجة</option>
+                                    <option value="25">25 نتيجة</option>
+                                    <option value="50">50 نتيجة</option>
+                                </select>
                             </div>
 
-                            <!-- Search Filters -->
-                            <div class="search-filters flex flex-wrap gap-4">
-                                <!-- نوع البحث -->
-                                <div class="flex-1 min-w-[200px]">
-                                    <label class="block text-sm font-medium text-gray-700 mb-1">نوع البحث</label>
-                                    <select id="searchMode" class="filter-select w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-emerald-500 focus:border-emerald-500">
-                                        <option value="flexible">مرن (افتراضي) - أفضل النتائج</option>
-                                        <option value="exact_phrase">مطابقة العبارة تماماً</option>
-                                        <option value="phrase_proximity">عبارة مع تباعد مسموح</option>
-                                        <option value="all_words">جميع الكلمات مطلوبة</option>
-                                        <option value="any_word">أي كلمة من الكلمات</option>
-                                    </select>
+                            <!-- منطقة عرض Tags المختارة -->
+                            <div id="selectedFiltersContainer" class="hidden mt-4 p-3 bg-gray-50 rounded-lg border border-gray-200">
+                                <div class="flex items-center gap-2 mb-2">
+                                    <svg class="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"></path>
+                                    </svg>
+                                    <span class="text-sm font-medium text-gray-700">الفلاتر المختارة:</span>
+                                    <button type="button" id="clearAllFilters" class="text-xs text-red-600 hover:text-red-800 underline">
+                                        مسح الكل
+                                    </button>
                                 </div>
-
-                                <!-- تباعد الكلمات -->
-                                <div class="flex-1 min-w-[200px]">
-                                    <label class="block text-sm font-medium text-gray-700 mb-1">تباعد الكلمات</label>
-                                    <select id="proximityMode" class="filter-select w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-emerald-500 focus:border-emerald-500">
-                                        <option value="any_order">أي ترتيب (افتراضي)</option>
-                                        <option value="consecutive">متتالية (ورا بعض)</option>
-                                        <option value="same_paragraph">نفس الفقرة</option>
-                                    </select>
+                                <div id="selectedFiltersTags" class="flex flex-wrap gap-2">
+                                    <!-- Tags will be dynamically added here -->
                                 </div>
-
-                                <!-- عدد النتائج -->
-                                <div class="flex-1 min-w-[150px]">
-                                    <label class="block text-sm font-medium text-gray-700 mb-1">عدد النتائج لكل صفحة</label>
-                                    <select id="perPageSelect" class="filter-select w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-emerald-500 focus:border-emerald-500">
-                                        <option value="10">10 نتائج</option>
-                                        <option value="15" selected>15 نتيجة</option>
-                                        <option value="25">25 نتيجة</option>
-                                        <option value="50">50 نتيجة</option>
-                                    </select>
-                                </div>
-
-                                <!-- الحالة (مُحذوف المحتوى) -->
-                                <div class="flex-1 min-w-[120px]"></div>
                             </div>
 
                             <!-- شرح مبسط للخيارات -->
                             <div id="searchModeHelp" class="p-3 bg-blue-50 border-l-4 border-blue-400 text-sm text-blue-800 rounded">
-                                <div class="font-medium mb-1">البحث المرن (المختار حالياً):</div>
-                                <div>يبحث بأفضل النتائج مع مراعاة المعنى والسياق</div>
+                                <div class="font-medium mb-1">عبارة مع تباعد مسموح (المختار حالياً):</div>
+                                <div>يبحث عن الكلمات بنفس الترتيب مع السماح بوجود كلمات أخرى بينها</div>
                             </div>
 
                             <!-- Search Stats -->
@@ -178,6 +393,34 @@
                                     <div>
                                         <span id="resultCount"></span>
                                         <span id="searchTime">(خلال <span></span> ميلي ثانية)</span>
+                                    </div>
+                                    <div class="flex items-center gap-2">
+                                        <span class="text-gray-500">عدد النتائج في الصفحة:</span>
+                                        <div class="relative">
+                                            <button 
+                                                type="button" 
+                                                id="perPageToggle"
+                                                class="flex items-center gap-1 px-3 py-1 text-sm text-gray-600 hover:text-emerald-600 hover:bg-emerald-50 rounded-md transition-colors border border-gray-300"
+                                                title="عدد النتائج في الصفحة"
+                                            >
+                                                <span id="perPageLabel">15</span>
+                                                <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                                                </svg>
+                                            </button>
+                                            
+                                            <!-- قائمة عدد النتائج -->
+                                            <div id="perPageDropdown" class="hidden absolute top-full left-0 mt-2 w-32 bg-white rounded-lg shadow-lg border border-gray-200 z-30">
+                                                <div class="p-2">
+                                                    <div class="space-y-1">
+                                                        <button type="button" data-per-page="10" class="per-page-option w-full text-center px-3 py-2 text-sm hover:bg-gray-50 rounded-md">10</button>
+                                                        <button type="button" data-per-page="15" class="per-page-option w-full text-center px-3 py-2 text-sm hover:bg-gray-50 rounded-md">15</button>
+                                                        <button type="button" data-per-page="25" class="per-page-option w-full text-center px-3 py-2 text-sm hover:bg-gray-50 rounded-md">25</button>
+                                                        <button type="button" data-per-page="50" class="per-page-option w-full text-center px-3 py-2 text-sm hover:bg-gray-50 rounded-md">50</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -387,6 +630,9 @@
                     }
                 });
                 
+                // إعداد الأيقونات والقوائم المنسدلة الجديدة
+                this.initIconDropdowns();
+                
                 // تغيير تباعد الكلمات
                 this.proximityMode.addEventListener('change', () => {
                     const query = this.searchInput.value.trim();
@@ -402,7 +648,7 @@
                 const mode = this.searchMode.value;
                 const helpTexts = {
                     'flexible': {
-                        title: 'البحث المرن (المختار حالياً):',
+                        title: 'البحث المرن:',
                         desc: 'يبحث بأفضل النتائج مع مراعاة المعنى والسياق'
                     },
                     'exact_phrase': {
@@ -410,8 +656,8 @@
                         desc: 'يبحث عن العبارة كما هي بنفس الترتيب والتتابع'
                     },
                     'phrase_proximity': {
-                        title: 'عبارة مع تباعد مسموح:',
-                        desc: 'يبحث عن الكلمات قريبة من بعض حسب إعداد التباعد'
+                        title: 'عبارة مع تباعد مسموح (المختار حالياً):',
+                        desc: 'يبحث عن الكلمات بنفس الترتيب مع السماح بوجود كلمات أخرى بينها'
                     },
                     'all_words': {
                         title: 'جميع الكلمات مطلوبة:',
@@ -428,6 +674,447 @@
                     <div class="font-medium mb-1">${help.title}</div>
                     <div>${help.desc}</div>
                 `;
+            }
+            
+            initIconDropdowns() {
+                // إعداد قائمة الإعدادات الجديدة
+                const settingsToggle = document.getElementById('settingsToggle');
+                const settingsDropdown = document.getElementById('settingsDropdown');
+                
+                if (settingsToggle && settingsDropdown) {
+                    settingsToggle.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        settingsDropdown.classList.toggle('hidden');
+                        // إغلاق القوائم الأخرى
+                        const sortDropdown = document.getElementById('sortDropdown');
+                        const filterDropdown = document.getElementById('filterDropdown');
+                        if (sortDropdown) sortDropdown.classList.add('hidden');
+                        if (filterDropdown) filterDropdown.classList.add('hidden');
+                    });
+                    
+                    // إعداد خيارات نوع البحث
+                    const searchModeInputs = document.querySelectorAll('input[name="searchMode"]');
+                    searchModeInputs.forEach(input => {
+                        input.addEventListener('change', () => {
+                            this.searchMode.value = input.value;
+                            this.updateSearchModeHelp();
+                            
+                            // إعادة البحث
+                            const query = this.searchInput.value.trim();
+                            if (query.length >= 1) {
+                                this.performSearch(query);
+                            }
+                        });
+                    });
+                    
+                    // إعداد خيارات التباعد
+                    const proximityInputs = document.querySelectorAll('input[name="proximityMode"]');
+                    proximityInputs.forEach(input => {
+                        input.addEventListener('change', () => {
+                            this.proximityMode.value = input.value;
+                            
+                            // إعادة البحث
+                            const query = this.searchInput.value.trim();
+                            if (query.length >= 1) {
+                                this.performSearch(query);
+                            }
+                        });
+                    });
+                }
+                
+                // إغلاق القوائم عند النقر خارجها
+                document.addEventListener('click', () => {
+                    const settingsDropdown = document.getElementById('settingsDropdown');
+                    const sortDropdown = document.getElementById('sortDropdown');
+                    const filterDropdown = document.getElementById('filterDropdown');
+                    
+                    if (settingsDropdown) settingsDropdown.classList.add('hidden');
+                    if (sortDropdown) sortDropdown.classList.add('hidden');
+                    if (filterDropdown) filterDropdown.classList.add('hidden');
+                });
+                
+                // إعداد قائمة عدد النتائج في قسم معلومات البحث
+                this.setupSearchInfoPerPageDropdown();
+                
+                // إعداد القوائم المنسدلة الجديدة
+                this.setupSortDropdown();
+                this.setupFilterDropdown();
+                this.setupClearAllFilters();
+            }
+            
+            setupSearchInfoPerPageDropdown() {
+                const perPageToggleInfo = document.getElementById('perPageToggle');
+                const perPageDropdownInfo = document.getElementById('perPageDropdown');
+                const perPageLabelInfo = document.getElementById('perPageLabel');
+                const perPageOptionsInfo = document.querySelectorAll('.per-page-option');
+                
+                if (perPageToggleInfo && perPageDropdownInfo) {
+                    perPageToggleInfo.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        perPageDropdownInfo.classList.toggle('hidden');
+                    });
+                    
+                    perPageOptionsInfo.forEach(option => {
+                        option.addEventListener('click', () => {
+                            const perPage = option.dataset.perPage;
+                            const text = option.textContent.trim();
+                            
+                            // تحديث النص المعروض
+                            perPageLabelInfo.textContent = text;
+                            
+                            // تحديث القيمة المخفية
+                            this.perPageSelect.value = perPage;
+                            
+                            // إغلاق القائمة
+                            perPageDropdownInfo.classList.add('hidden');
+                            
+                            // إعادة البحث
+                            const query = this.searchInput.value.trim();
+                            if (query.length >= 1) {
+                                this.performSearch(query);
+                            }
+                        });
+                    });
+                    
+                    // إغلاق القائمة عند النقر خارجها
+                    document.addEventListener('click', () => {
+                        perPageDropdownInfo.classList.add('hidden');
+                    });
+                }
+            }
+            
+            setupSortDropdown() {
+                const sortToggle = document.getElementById('sortToggle');
+                const sortDropdown = document.getElementById('sortDropdown');
+                const sortLabel = document.getElementById('sortLabel');
+                const sortOptions = document.querySelectorAll('input[name="sortOrder"]');
+                
+                if (sortToggle && sortDropdown) {
+                    sortToggle.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        sortDropdown.classList.toggle('hidden');
+                    });
+                    
+                    sortOptions.forEach(option => {
+                        option.addEventListener('change', () => {
+                            const value = option.value;
+                            let text = '';
+                            
+                            switch(value) {
+                                case 'relevance':
+                                    text = 'أقرب صلة';
+                                    break;
+                                case 'death_year_asc':
+                                    text = 'سنة الوفاة (الأقدم أولاً)';
+                                    break;
+                                case 'death_year_desc':
+                                    text = 'سنة الوفاة (الأحدث أولاً)';
+                                    break;
+                                case 'book_title':
+                                    text = 'اسم الكتاب (أبجدياً)';
+                                    break;
+                            }
+                            
+                            sortLabel.textContent = text;
+                            sortDropdown.classList.add('hidden');
+                            
+                            // إعادة البحث مع الترتيب الجديد
+                            const query = this.searchInput.value.trim();
+                            if (query.length >= 1) {
+                                this.performSearch(query);
+                            }
+                        });
+                    });
+                    
+                    // إغلاق القائمة عند النقر خارجها
+                    document.addEventListener('click', () => {
+                        sortDropdown.classList.add('hidden');
+                    });
+                }
+            }
+            
+            setupFilterDropdown() {
+                const filterToggle = document.getElementById('filterToggle');
+                const filterDropdown = document.getElementById('filterDropdown');
+                const filterCategoryBtns = document.querySelectorAll('.filter-category-btn');
+                const filterModal = document.getElementById('filterModal');
+                const filterModalTitle = document.getElementById('filterModalTitle');
+                const closeFilterModal = document.getElementById('closeFilterModal');
+                const cancelFilterModal = document.getElementById('cancelFilterModal');
+                const applyFilterModal = document.getElementById('applyFilterModal');
+                const clearFilterSelection = document.getElementById('clearFilterSelection');
+                const filterSearch = document.getElementById('filterSearch');
+                const filterOptionsList = document.getElementById('filterOptionsList');
+                const dateRangeContainer = document.getElementById('dateRangeContainer');
+                const filterSearchContainer = document.getElementById('filterSearchContainer');
+                
+                let currentFilterType = '';
+                let selectedFilters = {
+                    section: [],
+                    book: [],
+                    author: [],
+                    death_date: { from: '', to: '' }
+                };
+                
+                if (filterToggle && filterDropdown) {
+                    filterToggle.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        filterDropdown.classList.toggle('hidden');
+                    });
+                    
+                    filterCategoryBtns.forEach(btn => {
+                        btn.addEventListener('click', () => {
+                            currentFilterType = btn.dataset.filter;
+                            filterDropdown.classList.add('hidden');
+                            
+                            // تحديث عنوان المودال
+                            const titles = {
+                                section: 'فلترة حسب القسم',
+                                book: 'فلترة حسب الكتاب',
+                                author: 'فلترة حسب المؤلف',
+                                death_date: 'فلترة حسب تاريخ الوفاة'
+                            };
+                            filterModalTitle.textContent = titles[currentFilterType];
+                            
+                            // إظهار/إخفاء عناصر حسب نوع الفلتر
+                            if (currentFilterType === 'death_date') {
+                                dateRangeContainer.classList.remove('hidden');
+                                filterSearchContainer.classList.add('hidden');
+                                filterOptionsList.classList.add('hidden');
+                            } else {
+                                dateRangeContainer.classList.add('hidden');
+                                filterSearchContainer.classList.remove('hidden');
+                                filterOptionsList.classList.remove('hidden');
+                                window.ultraFastSearch.loadFilterOptions(currentFilterType);
+                            }
+                            
+                            filterModal.classList.remove('hidden');
+                        });
+                    });
+                    
+                    // إغلاق المودال
+                    [closeFilterModal, cancelFilterModal].forEach(btn => {
+                        btn.addEventListener('click', () => {
+                            filterModal.classList.add('hidden');
+                        });
+                    });
+                    
+                    // تطبيق الفلتر
+                    applyFilterModal.addEventListener('click', () => {
+                        window.ultraFastSearch.applyCurrentFilter();
+                        filterModal.classList.add('hidden');
+                    });
+                    
+                    // مسح التحديد
+                    clearFilterSelection.addEventListener('click', () => {
+                        window.ultraFastSearch.clearCurrentFilterSelection();
+                    });
+                    
+                    // البحث في الخيارات
+                    filterSearch.addEventListener('input', (e) => {
+                        window.ultraFastSearch.filterOptionsSearch(e.target.value);
+                    });
+                    
+                    // إغلاق القائمة عند النقر خارجها
+                    document.addEventListener('click', () => {
+                        filterDropdown.classList.add('hidden');
+                    });
+                    
+                    // إغلاق المودال عند النقر على الخلفية
+                    filterModal.addEventListener('click', (e) => {
+                        if (e.target === filterModal) {
+                            filterModal.classList.add('hidden');
+                        }
+                    });
+                }
+                
+                this.selectedFilters = selectedFilters;
+            }
+            
+            async loadFilterOptions(filterType) {
+                const filterOptionsList = document.getElementById('filterOptionsList');
+                
+                // عرض مؤشر التحميل
+                filterOptionsList.innerHTML = `
+                    <div class="flex items-center justify-center p-4">
+                        <div class="animate-spin rounded-full h-6 w-6 border-b-2 border-blue-600"></div>
+                        <span class="mr-2 text-sm text-gray-600">جاري التحميل...</span>
+                    </div>
+                `;
+                
+                try {
+                    const response = await fetch(`/api/filter-options?type=${filterType}`);
+                    const result = await response.json();
+                    
+                    if (result.success && result.data) {
+                        const options = result.data;
+                        
+                        filterOptionsList.innerHTML = options.map(option => `
+                            <label class="flex items-center gap-3 p-2 hover:bg-gray-50 rounded-md cursor-pointer">
+                                <input type="checkbox" value="${option.id}" data-name="${option.name}" class="text-blue-600 focus:ring-blue-500 filter-option-checkbox">
+                                <span class="text-sm flex-1 text-right">${option.name}</span>
+                            </label>
+                        `).join('');
+                        
+                        // تحديد الخيارات المختارة مسبقاً
+                        const selectedOptions = this.selectedFilters[filterType] || [];
+                        filterOptionsList.querySelectorAll('.filter-option-checkbox').forEach(checkbox => {
+                            if (selectedOptions.includes(checkbox.value)) {
+                                checkbox.checked = true;
+                            }
+                        });
+                    } else {
+                        throw new Error(result.message || 'فشل في جلب البيانات');
+                    }
+                } catch (error) {
+                    console.error('Error loading filter options:', error);
+                    
+                    // عرض رسالة خطأ مع إمكانية إعادة المحاولة
+                    filterOptionsList.innerHTML = `
+                        <div class="text-center p-4">
+                            <p class="text-red-600 text-sm mb-2">فشل في تحميل الخيارات</p>
+                            <button onclick="ultraFastSearch.loadFilterOptions('${filterType}')" 
+                                    class="text-blue-600 text-sm hover:underline">
+                                إعادة المحاولة
+                            </button>
+                        </div>
+                    `;
+                }
+            }
+            
+            filterOptionsSearch(searchTerm) {
+                const filterOptionsList = document.getElementById('filterOptionsList');
+                const labels = filterOptionsList.querySelectorAll('label');
+                
+                labels.forEach(label => {
+                    const text = label.textContent.toLowerCase();
+                    const matches = text.includes(searchTerm.toLowerCase());
+                    label.style.display = matches ? 'flex' : 'none';
+                });
+            }
+            
+            applyCurrentFilter() {
+                if (currentFilterType === 'death_date') {
+                    const from = document.getElementById('deathYearFrom').value;
+                    const to = document.getElementById('deathYearTo').value;
+                    this.selectedFilters.death_date = { from, to };
+                    
+                    if (from || to) {
+                        this.addFilterTag('death_date', `${from || '...'} - ${to || '...'}`, { from, to });
+                    }
+                } else {
+                    const checkboxes = document.querySelectorAll('.filter-option-checkbox:checked');
+                    const selected = Array.from(checkboxes).map(cb => cb.value);
+                    this.selectedFilters[currentFilterType] = selected;
+                    
+                    checkboxes.forEach(checkbox => {
+                        const id = checkbox.value;
+                        const name = checkbox.getAttribute('data-name');
+                        this.addFilterTag(currentFilterType, name, id);
+                    });
+                }
+                
+                this.updateFiltersDisplay();
+                
+                // إعادة البحث مع الفلاتر الجديدة
+                const query = this.searchInput.value.trim();
+                if (query.length >= 1) {
+                    this.performSearch(query);
+                }
+            }
+            
+            clearCurrentFilterSelection() {
+                if (currentFilterType === 'death_date') {
+                    document.getElementById('deathYearFrom').value = '';
+                    document.getElementById('deathYearTo').value = '';
+                } else {
+                    document.querySelectorAll('.filter-option-checkbox').forEach(cb => {
+                        cb.checked = false;
+                    });
+                }
+            }
+            
+            addFilterTag(type, label, value) {
+                const container = document.getElementById('selectedFiltersTags');
+                const tagId = `tag-${type}-${Date.now()}`;
+                
+                const tag = document.createElement('div');
+                tag.id = tagId;
+                tag.className = 'inline-flex items-center gap-1 px-3 py-1 bg-blue-100 text-blue-800 text-sm rounded-full';
+                tag.innerHTML = `
+                    <span>${label}</span>
+                    <button type="button" class="text-blue-600 hover:text-blue-800" onclick="window.ultraFastSearch.removeFilterTag('${tagId}', '${type}', '${JSON.stringify(value).replace(/"/g, '&quot;')}')">
+                        <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                        </svg>
+                    </button>
+                `;
+                
+                container.appendChild(tag);
+                this.updateFiltersDisplay();
+            }
+            
+            removeFilterTag(tagId, type, value) {
+                const tag = document.getElementById(tagId);
+                if (tag) {
+                    tag.remove();
+                    
+                    // إزالة من البيانات المحفوظة
+                    if (type === 'death_date') {
+                        this.selectedFilters.death_date = { from: '', to: '' };
+                    } else {
+                        const parsedValue = JSON.parse(value.replace(/&quot;/g, '"'));
+                        const index = this.selectedFilters[type].indexOf(parsedValue);
+                        if (index > -1) {
+                            this.selectedFilters[type].splice(index, 1);
+                        }
+                    }
+                    
+                    this.updateFiltersDisplay();
+                    
+                    // إعادة البحث
+                    const query = this.searchInput.value.trim();
+                    if (query.length >= 1) {
+                        this.performSearch(query);
+                    }
+                }
+            }
+            
+            updateFiltersDisplay() {
+                const container = document.getElementById('selectedFiltersContainer');
+                const tagsContainer = document.getElementById('selectedFiltersTags');
+                
+                if (tagsContainer.children.length > 0) {
+                    container.classList.remove('hidden');
+                } else {
+                    container.classList.add('hidden');
+                }
+            }
+            
+            setupClearAllFilters() {
+                const clearAllBtn = document.getElementById('clearAllFilters');
+                const container = document.getElementById('selectedFiltersContainer');
+                const tagsContainer = document.getElementById('selectedFiltersTags');
+                
+                if (clearAllBtn && !clearAllBtn.hasAttribute('data-listener-added')) {
+                    clearAllBtn.addEventListener('click', () => {
+                        tagsContainer.innerHTML = '';
+                        this.selectedFilters = {
+                            section: [],
+                            book: [],
+                            author: [],
+                            death_date: { from: '', to: '' }
+                        };
+                        container.classList.add('hidden');
+                        
+                        // إعادة البحث
+                        const query = this.searchInput.value.trim();
+                        if (query.length >= 1) {
+                            this.performSearch(query);
+                        }
+                    });
+                    clearAllBtn.setAttribute('data-listener-added', 'true');
+                }
             }
             
             showWelcome() {
@@ -466,6 +1153,14 @@
                         proximity: proximityMode
                     });
                     
+                    // إضافة الفلاتر المحددة
+                    if (this.selectedFilters.author && this.selectedFilters.author.length > 0) {
+                        params.append('author_id', this.selectedFilters.author.join(','));
+                    }
+                    if (this.selectedFilters.section && this.selectedFilters.section.length > 0) {
+                        params.append('section_id', this.selectedFilters.section.join(','));
+                    }
+                    
                     const response = await fetch(`/api/ultra-search?${params}`);
                     const data = await response.json();
                     console.debug('UltraFastSearch.performSearch response', data);
@@ -503,30 +1198,36 @@
                 let globalStart = ((pagination.current_page - 1) * pagination.per_page) || 0;
                 this.resultsContainer.innerHTML = results.map((result, index) => `
                     <div id="result-${globalStart + index}" data-page-id="${result.id}" tabindex="0" data-result-index="${globalStart + index}" class="result-item result-card bg-white rounded-lg shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow">
-                        <div class="flex justify-between items-start mb-3">
+                        <div class="flex items-center gap-3 mb-3">
+                            <div class="flex-shrink-0 bg-gray-100 text-gray-700 px-3 py-1 rounded-full text-sm font-medium">
+                                ${globalStart + index + 1}
+                            </div>
                             <div class="flex-1">
-                                    <h3 class="text-lg font-semibold text-gray-900 mb-1">
+                                <h3 class="text-lg font-semibold text-gray-900 mb-1">
                                     <a href="${result.url ? result.url : ('/book/' + result.book_id + '/' + result.page_number)}" class="hover:text-emerald-600 transition-colors">${result.book_title || 'كتاب غير محدد'}</a>
                                 </h3>
-                                ${result.section ? `<div class="mt-2"><span class="inline-block bg-gray-100 text-gray-700 px-2 py-1 rounded text-xs">${result.section}</span></div>` : ''}
-                                <div class="text-sm text-gray-600 space-y-1">
-                                    ${result.author_name ? `<div><span class="font-medium">المؤلف:</span> ${result.author_name}</div>` : ''}
-                                    <div class="flex flex-wrap gap-4 items-center">
-                                        ${result.section ? `<span><span class="font-medium">القسم:</span> ${result.section}</span>` : ''}
-                                        ${result.chapter_title ? `<span><span class="font-medium">الفصل:</span> ${result.chapter_title}</span>` : ''}
-                                        ${result.volume_title ? `<span><span class="font-medium">المجلد:</span> ${result.volume_title}</span>` : ''}
-                                        <span class="flex items-center gap-2">
-                                            <span class="font-medium">الصفحة:</span>
-                                            <span class="text-gray-700">${result.page_number || ''}</span>
-                                        </span>
+                            </div>
+                            <div class="text-right flex items-center gap-3">
+                                <button onclick="toggleFullContent(${result.id})" class="toggle-btn toggle-btn-${result.id} px-3 py-2 bg-emerald-100 hover:bg-emerald-200 text-emerald-700 rounded text-sm">🔍 عرض كاملة</button>
+                                <div class="relative inline-block">
+                                    <button onclick="toggleMoreOptions(${result.id})" class="px-3 py-2 bg-gray-100 hover:bg-gray-200 rounded text-sm">⋯</button>
+                                    <div id="more-options-${result.id}" class="hidden more-options-menu absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg z-20 border border-gray-200">
+                                        <div class="py-1">
+                                            <button onclick="showRelatedPages(${result.book_id}, ${result.page_number})" class="block w-full text-right px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">📄 صفحات مشابهة</button>
+                                            <button onclick="copyContent(${result.id})" class="block w-full text-right px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">📋 نسخ النص</button>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                            <div class="text-right">
-                                <div class="text-sm text-gray-500" >
-                                    ${result.score ? `الصلة: ${Math.round(result.score * 100)}%` : ''}
+                        </div>
+                        <div class="mr-12">
+                            ${result.section ? `<div class="mb-2"><span class="inline-block bg-gray-100 text-gray-700 px-2 py-1 rounded text-xs">${result.section}</span></div>` : ''}
+                            <div class="text-sm text-gray-600 space-y-1 mb-3">
+                                <div class="flex flex-wrap gap-4 items-center">
+                                    ${result.section ? `<span><span class="font-medium">القسم:</span> ${result.section}</span>` : ''}
+                                    ${result.chapter_title ? `<span><span class="font-medium">الفصل:</span> ${result.chapter_title}</span>` : ''}
+                                    ${result.volume_title ? `<span><span class="font-medium">المجلد:</span> ${result.volume_title}</span>` : ''}
                                 </div>
-                                <div class="text-xs text-gray-500 mt-2">النتيجة ${index + 1}</div>
                             </div>
                         </div>
 
@@ -537,24 +1238,14 @@
                         </div>
 
                         <div class="flex items-center justify-between gap-3 pt-3 border-t border-gray-100">
-                            <div class="flex items-center gap-3 flex-row-reverse">
-                                <button onclick="toggleFullContent(${result.id})" class="toggle-btn toggle-btn-${result.id} px-3 py-2 bg-gray-100 hover:bg-gray-200 rounded text-sm">🔍 عرض الصفحة كاملة</button>
-                                <button onclick="copyContent(${result.id})" class="px-3 py-2 bg-gray-100 hover:bg-gray-200 rounded text-sm">نسخ</button>
-                                <button onclick="shareResult(${result.id})" class="px-3 py-2 bg-gray-100 hover:bg-gray-200 rounded text-sm">مشاركة</button>
-                                <button onclick="printContent(${result.id})" class="px-3 py-2 bg-gray-100 hover:bg-gray-200 rounded text-sm">طباعة</button>
-                                <div class="relative inline-block">
-                                    <button onclick="toggleMoreOptions(${result.id})" class="px-3 py-2 bg-gray-100 hover:bg-gray-200 rounded text-sm">⋯</button>
-                                    <div id="more-options-${result.id}" class="hidden more-options-menu absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg z-20 border border-gray-200">
-                                        <div class="py-1">
-                                            <button onclick="showRelatedPages(${result.book_id}, ${result.page_number})" class="block w-full text-right px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">📄 صفحات مشابهة</button>
-                                            <button onclick="copyContent(${result.id})" class="block w-full text-right px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">📋 نسخ النص</button>
-                                            <button onclick="shareResult(${result.id})" class="block w-full text-right px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">🔗 مشاركة</button>
-                                            <button onclick="printContent(${result.id})" class="block w-full text-right px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">🖨️ طباعة</button>
-                                        </div>
-                                    </div>
+                            <div class="flex items-center gap-6 text-sm text-gray-600">
+                                ${result.author_name && result.author_name !== 'غير محدد' && result.author_name !== 'مؤلف' ? `<div class="flex items-center gap-2"><span class="font-medium text-gray-700">👤 المؤلف:</span> ${result.author_id ? `<a href="/authors/${result.author_id}/details" class="text-blue-600 hover:text-blue-800 hover:underline transition-colors">${result.author_name}</a>` : `<span class="text-gray-600">${result.author_name}</span>`}</div>` : result.author_name ? `<div class="flex items-center gap-2"><span class="font-medium text-gray-700">👤 المؤلف:</span> <span class="text-gray-600">غير محدد</span></div>` : ''}
+                                <div class="flex items-center gap-2">
+                                    <span class="font-medium text-gray-700">📄 الصفحة:</span>
+                                    <span class="bg-gray-100 text-gray-700 px-2 py-1 rounded text-xs font-medium">${result.page_number || 'غير محدد'}</span>
                                 </div>
                             </div>
-                            <div class="text-xs text-gray-500 text-left">ID: ${result.id}</div>
+
                         </div>
 
                         <div class="full-content-${result.id} hidden mt-4">
@@ -566,9 +1257,8 @@
                 // re-init keyboard navigation
                 initKeyboardNav();
                 
-                // إضافة زر "تحميل المزيد" إذا كان هناك المزيد من النتائج
+                // إضافة شريط التنقل البسيط إذا كان هناك أكثر من صفحة واحدة
                 if (pagination.last_page && pagination.last_page > 1) {
-                    // replace with requested pagination design (non-Alpine bindings)
                     this.resultsContainer.innerHTML += `
                         <div id="paginationBar" class="bg-white rounded-lg shadow-sm border border-gray-200 p-4 mt-6">
                             <div class="flex justify-between items-center">
@@ -576,8 +1266,10 @@
                                     صفحة <span class="font-medium">${pagination.current_page}</span> من <span class="font-medium">${pagination.last_page}</span>
                                 </div>
                                 <div class="flex space-x-2 space-x-reverse">
-                                    <button onclick="window.searchInstance.goToPage(${Math.max(1, pagination.current_page - 1)})" ${pagination.current_page === 1 ? 'disabled' : ''} class="px-3 py-2 rounded-md text-sm font-medium transition-colors ${pagination.current_page === 1 ? 'bg-gray-300 text-gray-500 cursor-not-allowed' : 'bg-emerald-600 text-white hover:bg-emerald-700'}">السابق</button>
-                                    <button onclick="window.searchInstance.goToPage(${Math.min(pagination.last_page, pagination.current_page + 1)})" ${pagination.current_page === pagination.last_page ? 'disabled' : ''} class="px-3 py-2 rounded-md text-sm font-medium transition-colors ${pagination.current_page === pagination.last_page ? 'bg-gray-300 text-gray-500 cursor-not-allowed' : 'bg-emerald-600 text-white hover:bg-emerald-700'}">التالي</button>
+                                    <button onclick="window.searchInstance.goToPage(${Math.max(1, pagination.current_page - 1)})" ${pagination.current_page === 1 ? 'disabled' : ''} 
+                                        class="px-3 py-2 rounded-md text-sm font-medium transition-colors ${pagination.current_page === 1 ? 'bg-gray-300 text-gray-500 cursor-not-allowed' : 'bg-emerald-600 text-white hover:bg-emerald-700'}">السابق</button>
+                                    <button onclick="window.searchInstance.goToPage(${Math.min(pagination.last_page, pagination.current_page + 1)})" ${pagination.current_page === pagination.last_page ? 'disabled' : ''} 
+                                        class="px-3 py-2 rounded-md text-sm font-medium transition-colors ${pagination.current_page === pagination.last_page ? 'bg-gray-300 text-gray-500 cursor-not-allowed' : 'bg-emerald-600 text-white hover:bg-emerald-700'}">التالي</button>
                                 </div>
                             </div>
                         </div>
@@ -597,6 +1289,46 @@
                     this.performSearch(query);
                 }
             }
+
+            generatePageNumbers(currentPage, totalPages) {
+                if (totalPages <= 1) return '';
+                
+                let pages = [];
+                const maxVisible = 5; // عدد الصفحات المرئية
+                
+                if (totalPages <= maxVisible) {
+                    // إذا كان العدد الكلي أقل من أو يساوي الحد الأقصى، اعرض جميع الصفحات
+                    for (let i = 1; i <= totalPages; i++) {
+                        pages.push(i);
+                    }
+                } else {
+                    // منطق ذكي لعرض الصفحات
+                    if (currentPage <= 3) {
+                        // في البداية: 1, 2, 3, 4, ..., last
+                        pages = [1, 2, 3, 4];
+                        if (totalPages > 5) pages.push('...');
+                        pages.push(totalPages);
+                    } else if (currentPage >= totalPages - 2) {
+                        // في النهاية: 1, ..., last-3, last-2, last-1, last
+                        pages = [1];
+                        if (totalPages > 5) pages.push('...');
+                        pages.push(totalPages - 3, totalPages - 2, totalPages - 1, totalPages);
+                    } else {
+                        // في المنتصف: 1, ..., current-1, current, current+1, ..., last
+                        pages = [1, '...', currentPage - 1, currentPage, currentPage + 1, '...', totalPages];
+                    }
+                }
+                
+                return pages.map(page => {
+                    if (page === '...') {
+                        return '<span class="px-2 py-1 text-gray-400 text-sm">...</span>';
+                    } else if (page === currentPage) {
+                        return `<button class="w-8 h-8 flex items-center justify-center rounded-md text-sm font-medium bg-emerald-600 text-white">${page}</button>`;
+                    } else {
+                        return `<button onclick="window.searchInstance.goToPage(${page})" class="w-8 h-8 flex items-center justify-center rounded-md text-sm font-medium text-gray-600 hover:text-emerald-600 hover:bg-emerald-50 transition-all duration-200">${page}</button>`;
+                    }
+                }).join('');
+            }
             
             getSearchModeLabel(mode) {
                 const labels = {
@@ -606,7 +1338,7 @@
                     'all_words': 'جميع الكلمات',
                     'any_word': 'أي كلمة'
                 };
-                return labels[mode] || 'مرن';
+                return labels[mode] || 'مع تباعد';
             }
             
             showNoResults() {
@@ -687,17 +1419,25 @@
                         const highlighted = currentQuery ? highlightTerms(escaped, currentQuery) : escaped;
 
                         fullContentDiv.innerHTML = `
-                            <div class="bg-blue-50 p-4 rounded-lg mb-3">
-                                <h4 class="font-semibold text-blue-800 mb-2">📄 المحتوى الكامل للصفحة ${data.page.page_number}</h4>
-                                <div class="text-sm text-blue-600 mb-2">من كتاب: ${data.page.book_title}</div>
-                                <div class="text-sm text-gray-700 mt-1">
-                                    ${data.page.section ? `<span class="inline-block bg-gray-100 px-2 py-1 rounded mr-2">${data.page.section}</span>` : ''}
-                                    ${data.page.chapter_title ? `<span class="inline-block bg-gray-100 px-2 py-1 rounded mr-2">${data.page.chapter_title}</span>` : ''}
-                                    ${data.page.volume_title ? `<span class="inline-block bg-gray-100 px-2 py-1 rounded mr-2">${data.page.volume_title}</span>` : ''}
-                                </div>
-                            </div>
-                            <div class="text-gray-700 leading-relaxed" dir="rtl">
+                            <div class="text-gray-700 leading-relaxed mb-6" dir="rtl">
                                 <div style="white-space: pre-wrap; word-wrap: break-word;">${highlighted}</div>
+                            </div>
+                            <div class="flex justify-between items-center mt-6 pt-4 border-t border-gray-200 bg-gradient-to-r from-gray-50 to-blue-50 rounded-lg p-4 shadow-lg">
+                                <button onclick="navigateToPage(${data.page.book_id}, ${data.page.page_number - 1})" 
+                                        class="flex items-center gap-2 px-5 py-3 bg-white hover:bg-blue-50 disabled:bg-gray-100 disabled:text-gray-400 disabled:cursor-not-allowed rounded-lg text-sm font-medium transition-all duration-300 shadow-md hover:shadow-lg border border-gray-200 hover:border-blue-300 ${data.page.page_number <= 1 ? 'opacity-50' : ''}"
+                                        ${data.page.page_number <= 1 ? 'disabled' : ''}>
+                                    <span class="text-lg">→</span>
+                                    <span>الصفحة السابقة</span>
+                                </button>
+                                <div class="flex items-center gap-2 bg-white px-4 py-2 rounded-full shadow-md border border-gray-200">
+                                    <span class="text-blue-600 font-bold">📄</span>
+                                    <span class="text-sm font-bold text-gray-700">صفحة ${data.page.page_number}</span>
+                                </div>
+                                <button onclick="navigateToPage(${data.page.book_id}, ${data.page.page_number + 1})" 
+                                        class="flex items-center gap-2 px-5 py-3 bg-white hover:bg-blue-50 rounded-lg text-sm font-medium transition-all duration-300 shadow-md hover:shadow-lg border border-gray-200 hover:border-blue-300">
+                                    <span>الصفحة التالية</span>
+                                    <span class="text-lg">←</span>
+                                </button>
                             </div>
                         `;
 
@@ -747,6 +1487,65 @@
                 return escapedText.replace(pattern, '<mark>$1</mark>');
             } catch (e) {
                 return escapedText;
+            }
+        }
+
+        // التنقل إلى صفحة معينة في الكتاب
+        async function navigateToPage(bookId, pageNumber) {
+            if (pageNumber < 1) return;
+            
+            try {
+                const response = await fetch(`/api/book/${bookId}/page/${pageNumber}`);
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}: فشل في تحميل الصفحة`);
+                }
+                
+                const data = await response.json();
+                
+                if (data && data.success && data.page) {
+                    // البحث عن العنصر الحالي المفتوح للمحتوى الكامل
+                    const currentFullContent = document.querySelector('[class*="full-content-"]:not(.hidden)');
+                    
+                    if (currentFullContent) {
+                        // تحديث المحتوى الحالي بدلاً من فتح صفحة جديدة
+                        const currentQuery = document.getElementById('instantSearch').value || '';
+                        const raw = data.page.full_content || 'لا يوجد محتوى متاح';
+                        const escaped = escapeHtml(raw);
+                        const highlighted = currentQuery ? highlightTerms(escaped, currentQuery) : escaped;
+
+                        currentFullContent.innerHTML = `
+                            <div class="text-gray-700 leading-relaxed mb-6" dir="rtl">
+                                <div style="white-space: pre-wrap; word-wrap: break-word;">${highlighted}</div>
+                            </div>
+                            <div class="flex justify-between items-center mt-6 pt-4 border-t border-gray-200 bg-gradient-to-r from-gray-50 to-blue-50 rounded-lg p-4 shadow-lg">
+                                <button onclick="navigateToPage(${data.page.book_id}, ${data.page.page_number - 1})" 
+                                        class="flex items-center gap-2 px-5 py-3 bg-white hover:bg-blue-50 disabled:bg-gray-100 disabled:text-gray-400 disabled:cursor-not-allowed rounded-lg text-sm font-medium transition-all duration-300 shadow-md hover:shadow-lg border border-gray-200 hover:border-blue-300 ${data.page.page_number <= 1 ? 'opacity-50' : ''}"
+                                        ${data.page.page_number <= 1 ? 'disabled' : ''}>
+                                    <span class="text-lg">→</span>
+                                    <span>الصفحة السابقة</span>
+                                </button>
+                                <div class="flex items-center gap-2 bg-white px-4 py-2 rounded-full shadow-md border border-gray-200">
+                                    <span class="text-blue-600 font-bold">📄</span>
+                                    <span class="text-sm font-bold text-gray-700">صفحة ${data.page.page_number}</span>
+                                </div>
+                                <button onclick="navigateToPage(${data.page.book_id}, ${data.page.page_number + 1})" 
+                                        class="flex items-center gap-2 px-5 py-3 bg-white hover:bg-blue-50 rounded-lg text-sm font-medium transition-all duration-300 shadow-md hover:shadow-lg border border-gray-200 hover:border-blue-300">
+                                    <span>الصفحة التالية</span>
+                                    <span class="text-lg">←</span>
+                                </button>
+                            </div>
+                        `;
+                    } else {
+                        // إذا لم يكن هناك محتوى كامل مفتوح، افتح المحتوى الكامل للصفحة الجديدة
+                        await toggleFullContent(data.page.id);
+                    }
+                } else {
+                    throw new Error(data.error || 'الصفحة غير موجودة');
+                }
+            } catch (error) {
+                console.error('خطأ في التنقل:', error);
+                alert('خطأ في تحميل الصفحة: ' + error.message);
             }
         }
         
@@ -845,51 +1644,7 @@
             }
         }
         
-        // مشاركة النتيجة
-        function shareResult(resultId) {
-            const contentDiv = document.querySelector(`.result-content-${resultId}`);
-            const text = contentDiv.textContent;
-            const url = window.location.href;
-            
-            if (navigator.share) {
-                navigator.share({
-                    title: 'نتيجة بحث من المكتبة',
-                    text: text.substring(0, 100) + '...',
-                    url: url
-                });
-            } else {
-                const shareText = `${text.substring(0, 100)}...\n\nمن: ${url}`;
-                copyContent(resultId);
-                showToast('تم نسخ رابط المشاركة! 🔗');
-            }
-        }
-        
-        // طباعة المحتوى
-        function printContent(resultId) {
-            const contentDiv = document.querySelector(`.result-content-${resultId}`);
-            const content = contentDiv.innerHTML;
-            
-            const printWindow = window.open('', '_blank');
-            printWindow.document.write(`
-                <html dir="rtl">
-                <head>
-                    <title>طباعة نتيجة البحث</title>
-                    <style>
-                        body { font-family: Arial, sans-serif; padding: 20px; line-height: 1.6; }
-                        .highlight { background-color: #fef08a; padding: 0 2px; }
-                    </style>
-                </head>
-                <body>
-                    <h2>نتيجة بحث من المكتبة</h2>
-                    <div>${content}</div>
-                    <hr style="margin: 20px 0;">
-                    <p style="color: #666; font-size: 12px;">طُبع من: ${window.location.href}</p>
-                </body>
-                </html>
-            `);
-            printWindow.document.close();
-            printWindow.print();
-        }
+
         
         // إغلاق النوافذ المنبثقة
         function closeModal(modalId) {
@@ -936,123 +1691,188 @@
         // إظهار نافذة الشرح
         function showHelpModal() {
             const helpModal = `
-                <div id="help-modal" class="modal-overlay fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
-                    <div class="modal-content bg-white rounded-lg max-w-4xl w-full max-h-96 overflow-hidden shadow-lg">
-                        <div class="bg-blue-600 text-white p-6">
-                            <div class="flex justify-between items-center">
-                                <h3 class="text-xl font-bold">📚 شرح خصائص البحث الفوري</h3>
-                                <button onclick="closeModal('help-modal')" class="text-white hover:text-gray-200 text-2xl font-bold">✕</button>
-                            </div>
-                            <p class="text-blue-100 mt-2">دليل شامل لاستخدام نظام البحث المتقدم</p>
-                        </div>
-                        <div class="p-6 overflow-y-auto max-h-80">
-                            <div class="space-y-6">
-                                <div class="border-b border-gray-200 pb-4">
-                                    <h4 class="text-lg font-semibold text-gray-800 mb-3">🔍 أنواع البحث المتاحة</h4>
-                                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                        <div class="bg-gray-50 p-4 rounded-lg">
-                                            <h5 class="font-medium text-blue-600 mb-2">البحث المرن (افتراضي)</h5>
-                                            <p class="text-sm text-gray-600">يبحث بأفضل النتائج مع مراعاة المعنى والسياق. يفهم المترادفات والمعاني المختلفة للكلمات.</p>
-                                        </div>
-                                        <div class="bg-gray-50 p-4 rounded-lg">
-                                            <h5 class="font-medium text-green-600 mb-2">مطابقة العبارة تماماً</h5>
-                                            <p class="text-sm text-gray-600">يبحث عن العبارة كما هي بنفس الترتيب والتتابع. مفيد للبحث عن نصوص محددة أو اقتباسات.</p>
-                                        </div>
-                                        <div class="bg-gray-50 p-4 rounded-lg">
-                                            <h5 class="font-medium text-purple-600 mb-2">عبارة مع تباعد مسموح</h5>
-                                            <p class="text-sm text-gray-600">يبحث عن الكلمات قريبة من بعض مع السماح بكلمات أخرى بينها حسب إعداد التباعد.</p>
-                                        </div>
-                                        <div class="bg-gray-50 p-4 rounded-lg">
-                                            <h5 class="font-medium text-orange-600 mb-2">جميع الكلمات مطلوبة</h5>
-                                            <p class="text-sm text-gray-600">يجب وجود جميع الكلمات في النص، لكن يمكن أن تكون في أي ترتيب أو مكان.</p>
-                                        </div>
-                                        <div class="bg-gray-50 p-4 rounded-lg">
-                                            <h5 class="font-medium text-red-600 mb-2">أي كلمة من الكلمات</h5>
-                                            <p class="text-sm text-gray-600">يكفي وجود كلمة واحدة من كلمات البحث. مفيد للبحث الواسع والاستكشافي.</p>
-                                        </div>
-                                    </div>
-                                </div>
-                                
-                                <div class="border-b border-gray-200 pb-4">
-                                    <h4 class="text-lg font-semibold text-gray-800 mb-3">⚙️ إعدادات التباعد والمسافة</h4>
-                                    <div class="space-y-3">
-                                        <div class="flex items-start gap-3">
-                                            <span class="bg-blue-100 text-blue-800 px-2 py-1 rounded text-xs font-medium">أي ترتيب</span>
-                                            <p class="text-sm text-gray-600">الكلمات يمكن أن تكون في أي مكان من النص، بأي ترتيب وبأي مسافة بينها.</p>
-                                        </div>
-                                        <div class="flex items-start gap-3">
-                                            <span class="bg-green-100 text-green-800 px-2 py-1 rounded text-xs font-medium">متتالية (ورا بعض)</span>
-                                            <p class="text-sm text-gray-600">الكلمات يجب أن تكون متتالية بلا فواصل أو كلمات أخرى بينها.</p>
-                                        </div>
-                                        <div class="flex items-start gap-3">
-                                            <span class="bg-purple-100 text-purple-800 px-2 py-1 rounded text-xs font-medium">نفس الفقرة</span>
-                                            <p class="text-sm text-gray-600">الكلمات يجب أن تكون في نفس الفقرة من النص، مما يحافظ على السياق.</p>
-                                        </div>
-                                    </div>
-                                </div>
-                                
-                                <div class="border-b border-gray-200 pb-4">
-                                    <h4 class="text-lg font-semibold text-gray-800 mb-3">🔗 خيارات المزيد لكل نتيجة</h4>
-                                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                        <div class="space-y-2">
-                                            <h5 class="font-medium text-gray-700">📄 صفحات مشابهة</h5>
-                                            <p class="text-sm text-gray-600">عرض صفحات أخرى من نفس الكتاب للانتقال المباشر إليها وتصفح المحتوى المرتبط.</p>
-                                        </div>
-                                        <div class="space-y-2">
-                                            <h5 class="font-medium text-gray-700">📋 نسخ النص</h5>
-                                            <p class="text-sm text-gray-600">نسخ محتوى النتيجة إلى الحافظة للاستخدام في تطبيقات أخرى.</p>
-                                        </div>
-                                        <div class="space-y-2">
-                                            <h5 class="font-medium text-gray-700">🔗 مشاركة النتيجة</h5>
-                                            <p class="text-sm text-gray-600">مشاركة النتيجة مع الآخرين عبر وسائل التواصل أو التطبيقات المختلفة.</p>
-                                        </div>
-                                        <div class="space-y-2">
-                                            <h5 class="font-medium text-gray-700">🖨️ طباعة المحتوى</h5>
-                                            <p class="text-sm text-gray-600">طباعة النتيجة بتنسيق مناسب للقراءة والمراجعة الورقية.</p>
-                                        </div>
-                                    </div>
-                                </div>
-                                
+                <div id="help-modal" class="modal-overlay fixed inset-0 bg-black bg-opacity-60 z-50 flex items-center justify-center p-4 backdrop-blur-sm">
+                    <div class="modal-content bg-white rounded-2xl max-w-6xl w-full max-h-[90vh] overflow-hidden shadow-2xl border border-gray-100 transform transition-all duration-300">
+                        <!-- Header -->
+                        <div class="bg-gradient-to-r from-blue-600 via-blue-700 to-indigo-700 text-white p-6 relative overflow-hidden">
+                            <div class="absolute inset-0 bg-gradient-to-r from-blue-600/20 to-transparent"></div>
+                            <div class="relative z-10 flex justify-between items-center">
                                 <div>
-                                    <h4 class="text-lg font-semibold text-gray-800 mb-3">✨ الخصائص والميزات المتقدمة</h4>
-                                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                        <div class="space-y-2">
-                                            <h5 class="font-medium text-gray-700">🔍 البحث الفوري</h5>
-                                            <p class="text-sm text-gray-600">النتائج تظهر فوراً أثناء الكتابة من أول حرف مع تحديث مستمر للنتائج.</p>
-                                        </div>
-                                        <div class="space-y-2">
-                                            <h5 class="font-medium text-gray-700">📄 عرض المحتوى الكامل</h5>
-                                            <p class="text-sm text-gray-600">إمكانية عرض النص الكامل للصفحة بدلاً من المقطع المختصر.</p>
-                                        </div>
-                                        <div class="space-y-2">
-                                            <h5 class="font-medium text-gray-700">📚 تحميل المزيد</h5>
-                                            <p class="text-sm text-gray-600">زر "تحميل المزيد" في نهاية النتائج لعرض صفحات إضافية من النتائج.</p>
-                                        </div>
-                                        <div class="space-y-2">
-                                            <h5 class="font-medium text-gray-700">⚡ سرعة فائقة</h5>
-                                            <p class="text-sm text-gray-600">تم تصميم النظام للحصول على استجابات سريعة ضمن مئات المللي ثواني.</p>
-                                        </div>
-                                        <div class="space-y-2">
-                                            <h5 class="font-medium text-gray-700">🎯 دقة عالية</h5>
-                                            <p class="text-sm text-gray-600">نظام تسجيل النقاط المتقدم لترتيب النتائج حسب الصلة والأهمية.</p>
-                                        </div>
-                                        <div class="space-y-2">
-                                            <h5 class="font-medium text-gray-700">📱 متوافق مع الأجهزة</h5>
-                                            <p class="text-sm text-gray-600">يعمل بكفاءة على الحاسوب والجوال والتابلت مع واجهة متجاوبة.</p>
-                                        </div>
-                                    </div>
+                                    <h3 class="text-2xl font-bold flex items-center gap-3">
+                                        <span class="text-3xl">📚</span>
+                                        دليل البحث الفوري المتقدم
+                                    </h3>
+                                    <p class="text-blue-100 mt-2 text-lg">اكتشف قوة البحث الذكي والمتطور</p>
                                 </div>
+                                <button onclick="closeModal('help-modal')" class="text-white hover:text-red-200 text-3xl font-bold transition-colors duration-200 hover:scale-110 transform">✕</button>
                             </div>
                         </div>
-                        <div class="bg-gray-50 px-6 py-4 border-t">
-                            <div class="text-sm text-gray-600 text-center">
-                                <span class="bg-blue-100 text-blue-800 px-3 py-1 rounded-full font-medium">
-                                    نظام بحث متطور مع تقنية Elasticsearch
-                                </span>
+                        
+                        <!-- Content -->
+                        <div class="p-8 overflow-y-auto max-h-[calc(90vh-200px)] custom-scrollbar">
+                            <div class="space-y-8">
+                                <!-- أنواع البحث -->
+                                <section class="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-xl p-6 border border-blue-100">
+                                    <h4 class="text-2xl font-bold text-gray-800 mb-6 flex items-center gap-3">
+                                        <span class="text-2xl">🔍</span>
+                                        أنواع البحث المتاحة
+                                    </h4>
+                                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                                        <div class="bg-white p-6 rounded-xl shadow-sm border border-blue-100 hover:shadow-md transition-shadow duration-200">
+                                            <div class="flex items-center gap-3 mb-3">
+                                                <span class="w-3 h-3 bg-blue-500 rounded-full"></span>
+                                                <h5 class="font-bold text-blue-700 text-lg">البحث المرن</h5>
+                                            </div>
+                                            <p class="text-gray-700 leading-relaxed">يبحث بأفضل النتائج مع مراعاة المعنى والسياق. يفهم المترادفات والمعاني المختلفة للكلمات ويقدم نتائج ذكية.</p>
+                                        </div>
+                                        <div class="bg-white p-6 rounded-xl shadow-sm border border-green-100 hover:shadow-md transition-shadow duration-200">
+                                            <div class="flex items-center gap-3 mb-3">
+                                                <span class="w-3 h-3 bg-green-500 rounded-full"></span>
+                                                <h5 class="font-bold text-green-700 text-lg">مطابقة العبارة تماماً</h5>
+                                            </div>
+                                            <p class="text-gray-700 leading-relaxed">يبحث عن العبارة كما هي بنفس الترتيب والتتابع. مثالي للبحث عن نصوص محددة أو اقتباسات دقيقة.</p>
+                                        </div>
+                                        <div class="bg-white p-6 rounded-xl shadow-sm border border-purple-100 hover:shadow-md transition-shadow duration-200">
+                                            <div class="flex items-center gap-3 mb-3">
+                                                <span class="w-3 h-3 bg-purple-500 rounded-full"></span>
+                                                <h5 class="font-bold text-purple-700 text-lg">عبارة مع تباعد مسموح <span class="text-sm bg-purple-100 text-purple-800 px-2 py-1 rounded-full">افتراضي</span></h5>
+                                            </div>
+                                            <p class="text-gray-700 leading-relaxed">يبحث عن الكلمات بنفس الترتيب مع السماح بوجود كلمات أخرى بينها. يوازن بين الدقة والمرونة.</p>
+                                        </div>
+                                        <div class="bg-white p-6 rounded-xl shadow-sm border border-orange-100 hover:shadow-md transition-shadow duration-200">
+                                            <div class="flex items-center gap-3 mb-3">
+                                                <span class="w-3 h-3 bg-orange-500 rounded-full"></span>
+                                                <h5 class="font-bold text-orange-700 text-lg">جميع الكلمات مطلوبة</h5>
+                                            </div>
+                                            <p class="text-gray-700 leading-relaxed">يجب وجود جميع الكلمات في النص، لكن يمكن أن تكون في أي ترتيب أو مكان. مفيد للبحث الشامل.</p>
+                                        </div>
+                                        <div class="bg-white p-6 rounded-xl shadow-sm border border-red-100 hover:shadow-md transition-shadow duration-200 lg:col-span-2">
+                                            <div class="flex items-center gap-3 mb-3">
+                                                <span class="w-3 h-3 bg-red-500 rounded-full"></span>
+                                                <h5 class="font-bold text-red-700 text-lg">أي كلمة من الكلمات</h5>
+                                            </div>
+                                            <p class="text-gray-700 leading-relaxed">يكفي وجود كلمة واحدة من كلمات البحث. مثالي للبحث الواسع والاستكشافي للحصول على أكبر عدد من النتائج.</p>
+                                        </div>
+                                    </div>
+                                </section>
+                                
+                                <!-- إعدادات التباعد -->
+                                <section class="bg-gradient-to-br from-green-50 to-emerald-50 rounded-xl p-6 border border-green-100">
+                                    <h4 class="text-2xl font-bold text-gray-800 mb-6 flex items-center gap-3">
+                                        <span class="text-2xl">⚙️</span>
+                                        إعدادات التباعد والمسافة
+                                    </h4>
+                                    <div class="space-y-4">
+                                        <div class="bg-white p-5 rounded-xl shadow-sm border border-green-100 flex items-start gap-4 hover:shadow-md transition-shadow duration-200">
+                                            <span class="bg-blue-100 text-blue-800 px-3 py-2 rounded-lg text-sm font-bold whitespace-nowrap">أي ترتيب</span>
+                                            <p class="text-gray-700 leading-relaxed">الكلمات يمكن أن تكون في أي مكان من النص، بأي ترتيب وبأي مسافة بينها. يعطي أوسع نطاق من النتائج.</p>
+                                        </div>
+                                        <div class="bg-white p-5 rounded-xl shadow-sm border border-green-100 flex items-start gap-4 hover:shadow-md transition-shadow duration-200">
+                                            <span class="bg-green-100 text-green-800 px-3 py-2 rounded-lg text-sm font-bold whitespace-nowrap">متتالية</span>
+                                            <p class="text-gray-700 leading-relaxed">الكلمات يجب أن تكون متتالية بلا فواصل أو كلمات أخرى بينها. للبحث الدقيق جداً.</p>
+                                        </div>
+                                        <div class="bg-white p-5 rounded-xl shadow-sm border border-green-100 flex items-start gap-4 hover:shadow-md transition-shadow duration-200">
+                                            <span class="bg-purple-100 text-purple-800 px-3 py-2 rounded-lg text-sm font-bold whitespace-nowrap">نفس الفقرة</span>
+                                            <p class="text-gray-700 leading-relaxed">الكلمات يجب أن تكون في نفس الفقرة من النص، مما يحافظ على السياق والمعنى المترابط.</p>
+                                        </div>
+                                    </div>
+                                </section>
+                                
+                                <!-- الميزات المتقدمة -->
+                                <section class="bg-gradient-to-br from-purple-50 to-pink-50 rounded-xl p-6 border border-purple-100">
+                                    <h4 class="text-2xl font-bold text-gray-800 mb-6 flex items-center gap-3">
+                                        <span class="text-2xl">✨</span>
+                                        الميزات والخصائص المتقدمة
+                                    </h4>
+                                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                                        <div class="bg-white p-5 rounded-xl shadow-sm border border-purple-100 hover:shadow-md transition-all duration-200 hover:scale-105">
+                                            <div class="text-center mb-4">
+                                                <span class="text-4xl">🔍</span>
+                                                <h5 class="font-bold text-purple-700 text-lg mt-2">البحث الفوري</h5>
+                                            </div>
+                                            <p class="text-gray-700 text-center leading-relaxed">النتائج تظهر فوراً أثناء الكتابة من أول حرف مع تحديث مستمر.</p>
+                                        </div>
+                                        <div class="bg-white p-5 rounded-xl shadow-sm border border-purple-100 hover:shadow-md transition-all duration-200 hover:scale-105">
+                                            <div class="text-center mb-4">
+                                                <span class="text-4xl">⚡</span>
+                                                <h5 class="font-bold text-purple-700 text-lg mt-2">سرعة فائقة</h5>
+                                            </div>
+                                            <p class="text-gray-700 text-center leading-relaxed">استجابات سريعة ضمن مئات المللي ثواني مع تقنية متطورة.</p>
+                                        </div>
+                                        <div class="bg-white p-5 rounded-xl shadow-sm border border-purple-100 hover:shadow-md transition-all duration-200 hover:scale-105">
+                                            <div class="text-center mb-4">
+                                                <span class="text-4xl">🎯</span>
+                                                <h5 class="font-bold text-purple-700 text-lg mt-2">دقة عالية</h5>
+                                            </div>
+                                            <p class="text-gray-700 text-center leading-relaxed">نظام تسجيل النقاط المتقدم لترتيب النتائج حسب الصلة.</p>
+                                        </div>
+                                        <div class="bg-white p-5 rounded-xl shadow-sm border border-purple-100 hover:shadow-md transition-all duration-200 hover:scale-105">
+                                            <div class="text-center mb-4">
+                                                <span class="text-4xl">📱</span>
+                                                <h5 class="font-bold text-purple-700 text-lg mt-2">متجاوب</h5>
+                                            </div>
+                                            <p class="text-gray-700 text-center leading-relaxed">يعمل بكفاءة على جميع الأجهزة مع واجهة متجاوبة.</p>
+                                        </div>
+                                        <div class="bg-white p-5 rounded-xl shadow-sm border border-purple-100 hover:shadow-md transition-all duration-200 hover:scale-105">
+                                            <div class="text-center mb-4">
+                                                <span class="text-4xl">📄</span>
+                                                <h5 class="font-bold text-purple-700 text-lg mt-2">عرض شامل</h5>
+                                            </div>
+                                            <p class="text-gray-700 text-center leading-relaxed">إمكانية عرض النص الكامل والصفحات المشابهة.</p>
+                                        </div>
+                                        <div class="bg-white p-5 rounded-xl shadow-sm border border-purple-100 hover:shadow-md transition-all duration-200 hover:scale-105">
+                                            <div class="text-center mb-4">
+                                                <span class="text-4xl">🔗</span>
+                                                <h5 class="font-bold text-purple-700 text-lg mt-2">مشاركة سهلة</h5>
+                                            </div>
+                                            <p class="text-gray-700 text-center leading-relaxed">نسخ ومشاركة وطباعة النتائج بسهولة تامة.</p>
+                                        </div>
+                                    </div>
+                                </section>
+                            </div>
+                        </div>
+                        
+                        <!-- Footer -->
+                        <div class="bg-gradient-to-r from-gray-50 to-blue-50 px-8 py-6 border-t border-gray-200">
+                            <div class="text-center">
+                                <div class="inline-flex items-center gap-3 bg-white px-6 py-3 rounded-full shadow-sm border border-gray-200">
+                                    <span class="text-2xl">🚀</span>
+                                    <span class="text-gray-700 font-medium">مدعوم بتقنية Elasticsearch المتطورة</span>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
+                
+                <style>
+                    .custom-scrollbar::-webkit-scrollbar {
+                        width: 8px;
+                    }
+                    .custom-scrollbar::-webkit-scrollbar-track {
+                        background: #f1f5f9;
+                        border-radius: 4px;
+                    }
+                    .custom-scrollbar::-webkit-scrollbar-thumb {
+                        background: #cbd5e1;
+                        border-radius: 4px;
+                    }
+                    .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+                        background: #94a3b8;
+                    }
+                    @keyframes modalSlideIn {
+                        from {
+                            opacity: 0;
+                            transform: scale(0.9) translateY(-20px);
+                        }
+                        to {
+                            opacity: 1;
+                            transform: scale(1) translateY(0);
+                        }
+                    }
+                    .modal-content {
+                        animation: modalSlideIn 0.3s ease-out;
+                    }
+                </style>
             `;
             document.body.insertAdjacentHTML('beforeend', helpModal);
         }
@@ -1106,7 +1926,7 @@
                                     ${result.section ? `<div class="mt-2"><span class="inline-block bg-gray-100 text-gray-700 px-2 py-1 rounded text-xs">${result.section}</span></div>` : ''}
                                         <div class="text-sm text-gray-600 flex items-center gap-3">
                                         <span class="inline-flex items-center gap-1 bg-gray-100 px-2 py-1 rounded text-xs">الصفحة ${result.page_number || ''}</span>
-                                        ${result.author_name ? `<span class="inline-flex items-center gap-1 bg-gray-100 px-2 py-1 rounded text-xs">✍️ ${result.author_name}</span>` : ''}
+                                        ${result.author_name && result.author_name !== 'غير محدد' && result.author_name !== 'مؤلف' ? (result.author_id ? `<a href="/authors/${result.author_id}/details" class="inline-flex items-center gap-1 bg-blue-50 hover:bg-blue-100 px-2 py-1 rounded text-xs text-blue-700 hover:text-blue-800 transition-colors">✍️ ${result.author_name}</a>` : `<span class="inline-flex items-center gap-1 bg-gray-100 px-2 py-1 rounded text-xs text-gray-600">✍️ ${result.author_name}</span>`) : (result.author_name ? `<span class="inline-flex items-center gap-1 bg-gray-100 px-2 py-1 rounded text-xs text-gray-600">✍️ غير محدد</span>` : '')}
                                         ${result.section ? `<span class="inline-flex items-center gap-1 bg-gray-100 px-2 py-1 rounded text-xs">${result.section}</span>` : ''}
                                         ${result.chapter_title ? `<span class="inline-flex items-center gap-1 bg-gray-100 px-2 py-1 rounded text-xs">${result.chapter_title}</span>` : ''}
                                         ${result.volume_title ? `<span class="inline-flex items-center gap-1 bg-gray-100 px-2 py-1 rounded text-xs">${result.volume_title}</span>` : ''}
@@ -1186,7 +2006,7 @@
                 'all_words': 'جميع الكلمات',
                 'any_word': 'أي كلمة'
             };
-            return labels[mode] || 'مرن';
+            return labels[mode] || 'مطابق تماماً';
         }
         
         // إخفاء القوائم عند النقر خارجها
@@ -1238,12 +2058,14 @@
 
         document.addEventListener('keydown', function(e) {
             const items = Array.from(document.querySelectorAll('#searchResults .result-item'));
+            
+            // التنقل بين النتائج بالأسهم أعلى وأسفل فقط
             if (!items.length) return;
 
-            if (e.key === 'ArrowDown' || e.key === 'ArrowRight') {
+            if (e.key === 'ArrowDown') {
                 e.preventDefault();
                 setFocusedIndex((keyboardNav.focusedIndex === -1 ? 0 : keyboardNav.focusedIndex + 1));
-            } else if (e.key === 'ArrowUp' || e.key === 'ArrowLeft') {
+            } else if (e.key === 'ArrowUp') {
                 e.preventDefault();
                 setFocusedIndex((keyboardNav.focusedIndex === -1 ? 0 : keyboardNav.focusedIndex - 1));
             } else if (e.key === 'Enter') {
@@ -1267,7 +2089,8 @@
         
         // تهيئة البحث عند تحميل الصفحة
         document.addEventListener('DOMContentLoaded', function() {
-            window.searchInstance = new UltraFastSearch();
+            window.ultraFastSearch = new UltraFastSearch();
+        window.searchInstance = window.ultraFastSearch; // للتوافق مع الكود الموجود
             
             // إذا جاء المستخدم من صفحة الـ home مع نص بحث، قم بالبحث تلقائياً
             const urlParams = new URLSearchParams(window.location.search);
@@ -1282,6 +2105,10 @@
                 } else if (searchType === 'books') {
                     document.getElementById('searchMode').value = 'phrase_proximity';
                     window.searchInstance.updateSearchModeHelp();
+                } else {
+                    // إذا لم يكن هناك نوع بحث محدد، استخدم البحث المتتالي كافتراضي
+                    document.getElementById('searchMode').value = 'phrase_proximity';
+                    window.searchInstance.updateSearchModeHelp();
                 }
                 
                 // تأكد من أن النص في مربع البحث ثم قم بالبحث
@@ -1290,10 +2117,110 @@
                         window.searchInstance.performSearch(window.searchInstance.searchInput.value.trim());
                     }
                 }, 500);
+            } else {
+                // إذا لم يكن هناك استعلام، تأكد من أن البحث المتتالي هو الافتراضي
+                document.getElementById('searchMode').value = 'phrase_proximity';
+                window.searchInstance.updateSearchModeHelp();
             }
 
             // init keyboard navigation handlers (if results present later)
             initKeyboardNav();
         });
+
+        // التنقل بالأسهم يمين/يسار فقط في عرض المحتوى الكامل
+        document.addEventListener('keydown', function(e) {
+            // التحقق من وجود محتوى كامل مفتوح
+            const currentFullContent = document.querySelector('[class*="full-content-"]:not(.hidden)');
+            
+            if (currentFullContent) {
+                // استخراج معرف الصفحة من class name
+                const classNames = currentFullContent.className.split(' ');
+                const fullContentClass = classNames.find(cls => cls.startsWith('full-content-'));
+                
+                if (fullContentClass) {
+                    const pageId = fullContentClass.replace('full-content-', '');
+                    
+                    // البحث عن أزرار التنقل في المحتوى الكامل
+                    const prevButton = currentFullContent.querySelector('button[onclick*="navigateToPage"][onclick*="- 1"]');
+                    const nextButton = currentFullContent.querySelector('button[onclick*="navigateToPage"][onclick*="+ 1"]');
+                    
+                    if (e.key === 'ArrowLeft') {
+                        e.preventDefault();
+                        // التنقل للصفحة السابقة
+                        if (prevButton && !prevButton.disabled) {
+                            prevButton.click();
+                        }
+                    } else if (e.key === 'ArrowRight') {
+                        e.preventDefault();
+                        // التنقل للصفحة التالية
+                        if (nextButton && !nextButton.disabled) {
+                            nextButton.click();
+                        }
+                    }
+                }
+            }
+        });
     </script>
+
+    <!-- Filter Modal -->
+    <div id="filterModal" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center">
+        <div class="bg-white rounded-lg shadow-xl max-w-md w-full mx-4 max-h-[80vh] overflow-hidden">
+            <div class="flex items-center justify-between p-4 border-b border-gray-200">
+                <h3 id="filterModalTitle" class="text-lg font-semibold text-gray-900">فلترة حسب القسم</h3>
+                <button type="button" id="closeFilterModal" class="text-gray-400 hover:text-gray-600">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                </button>
+            </div>
+            
+            <div class="p-4">
+                <!-- Search input for filter options -->
+                <div class="mb-4" id="filterSearchContainer">
+                    <div class="relative">
+                        <input 
+                            type="text" 
+                            id="filterSearch" 
+                            placeholder="البحث في الخيارات..."
+                            class="w-full px-3 py-2 pr-10 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                        >
+                        <svg class="absolute right-3 top-2.5 w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                        </svg>
+                    </div>
+                </div>
+                
+                <!-- Date range inputs for death date filter -->
+                <div id="dateRangeContainer" class="hidden mb-4 space-y-3">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">من سنة</label>
+                        <input type="number" id="deathYearFrom" placeholder="مثال: 1200" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">إلى سنة</label>
+                        <input type="number" id="deathYearTo" placeholder="مثال: 1400" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    </div>
+                </div>
+                
+                <!-- Filter options list -->
+                <div id="filterOptionsList" class="max-h-60 overflow-y-auto space-y-1">
+                    <!-- Options will be dynamically loaded here -->
+                </div>
+            </div>
+            
+            <div class="flex items-center justify-between p-4 border-t border-gray-200">
+                <button type="button" id="clearFilterSelection" class="text-sm text-gray-600 hover:text-gray-800">
+                    مسح التحديد
+                </button>
+                <div class="flex gap-2">
+                    <button type="button" id="cancelFilterModal" class="px-4 py-2 text-sm text-gray-600 hover:text-gray-800">
+                        إلغاء
+                    </button>
+                    <button type="button" id="applyFilterModal" class="px-4 py-2 bg-blue-600 text-white text-sm rounded-md hover:bg-blue-700">
+                        تطبيق
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
 </x-superduper.main>

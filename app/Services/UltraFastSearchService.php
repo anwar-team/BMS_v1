@@ -222,6 +222,7 @@ class UltraFastSearchService
 				'content' => $highlight ?: $this->formatContent($source['content'] ?? '', $query),
 				'book_title' => $source['book_title'] ?? 'غير محدد',
 				'author_name' => $source['author_names'] ?? 'غير محدد',
+				'author_id' => !empty($source['author_ids']) ? $source['author_ids'][0] : null,
 				'book_id' => $source['book_id'] ?? null,
 				'book_section_id' => $source['book_section_id'] ?? null,
 				'score' => $hit['_score'] ?? 0,
@@ -291,6 +292,7 @@ class UltraFastSearchService
 					'content' => $this->formatContent($page->content ?? '', $query),
 					'book_title' => $page->book->title ?? 'كتاب',
 					'author_name' => $page->book && $page->book->authors ? $page->book->authors->pluck('full_name')->implode(', ') : 'مؤلف',
+					'author_id' => $page->book && $page->book->authors && $page->book->authors->isNotEmpty() ? $page->book->authors->first()->id : null,
 					'book_id' => $page->book_id,
 					'book_section_id' => $page->book->book_section_id ?? null,
 				];
@@ -366,9 +368,7 @@ class UltraFastSearchService
 				'error' => 'Search service temporarily unavailable: ' . $e->getMessage()
 			];
 		}
-	}
-
-	/**
+	}	/**
 	 * Health check for search service
 	 */
 	public function healthCheck(): array
