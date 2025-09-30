@@ -36,22 +36,22 @@ class AuthorResource extends Resource
 
     public static function getNavigationLabel(): string
     {
-        return __('resource.author.authors');
+        return 'المؤلفون';
     }
 
     public static function getModelLabel(): string
     {
-        return __('resource.author.author');
+        return 'مؤلف';
     }
 
     public static function getPluralModelLabel(): string
     {
-        return __('resource.author.authors');
+        return 'المؤلفون';
     }
 
     public static function getNavigationGroup(): ?string
     {
-        return __('library.navigation_group');
+        return 'المكتبة';
     }
 
     public static function form(Form $form): Form

@@ -58,22 +58,22 @@ class BookResource extends Resource
 
     public static function getNavigationLabel(): string
     {
-        return __('resource.book.books');
+        return 'الكتب';
     }
 
     public static function getModelLabel(): string
     {
-        return __('resource.book.book');
+        return 'كتاب';
     }
 
     public static function getPluralModelLabel(): string
     {
-        return __('resource.book.books');
+        return 'الكتب';
     }
 
     public static function getNavigationGroup(): ?string
     {
-        return __('library.navigation_group');
+        return 'المكتبة';
     }
     
     protected static ?int $navigationSort = -10;
@@ -136,7 +136,7 @@ class BookResource extends Resource
             ->schema([
                 Grid::make(2)->schema([
                     TextInput::make('title')
-                        ->label(__('resource.book.title'))
+                        ->label('العنوان')
                         ->required()
                         ->maxLength(255)
                         ->live(onBlur: true)
@@ -149,14 +149,14 @@ class BookResource extends Resource
                 ]),
                 
                 Textarea::make('description')
-                    ->label(__('resource.book.description'))
+                    ->label('الوصف')
                     ->rows(4)
                     ->maxLength(1000)
                     ->columnSpanFull(),
 
                 Grid::make(3)->schema([
                     TextInput::make('slug')
-                        ->label(__('resource.book.slug'))
+                        ->label('المعرف')
                         ->required()
                         ->maxLength(255)
                         ->unique(Book::class, 'slug', ignoreRecord: true)

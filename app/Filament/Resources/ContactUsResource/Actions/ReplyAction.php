@@ -23,20 +23,20 @@ class ReplyAction extends Action
 
         $this->color('success');
 
-    $this->modalHeading(fn (ContactUs $record): string => __('contact_us.modal.reply_heading', ['name' => $record->name]));
+    $this->modalHeading(fn (ContactUs $record): string => "الرد على رسالة من {$record->name}");
 
-    $this->modalDescription(fn (ContactUs $record): string => __('contact_us.modal.reply_description', ['subject' => $record->subject]));
+    $this->modalDescription(fn (ContactUs $record): string => "الرد على الموضوع: {$record->subject}");
 
         $this->modalIcon(FilamentIcon::resolve('heroicon-o-paper-airplane'));
 
         $this->form([
             Forms\Components\TextInput::make('reply_subject')
-                ->label(__('contact_us.modal.subject_label'))
+                ->label('الموضوع')
                 ->required()
                 ->maxLength(255)
-                ->default(fn (ContactUs $record): string => __('contact_us.modal.subject_default_prefix', ['subject' => $record->subject])),
+                ->default(fn (ContactUs $record): string => "RE: {$record->subject}"),
             Forms\Components\RichEditor::make('reply_message')
-                ->label(__('contact_us.modal.message_label'))
+                ->label('الرسالة')
                 ->required()
                 ->fileAttachmentsDisk('public')
                 ->fileAttachmentsDirectory('contact-replies')
@@ -61,8 +61,8 @@ class ReplyAction extends Action
                     Log::warning('Mail settings not configured. Reply email not sent for contact ID: ' . $record->id);
 
                     Notification::make()
-                        ->title(__('contact_us.notifications.reply_saved_email_not_sent'))
-                        ->body(__('contact_us.notifications.mail_settings_not_configured'))
+                        ->title('تم حفظ الرد ولكن لم يتم إرسال البريد الإلكتروني')
+                        ->body('إعدادات البريد غير مفعلة. لم يتم إرسال البريد الإلكتروني.')
                         ->warning()
                         ->send();
 
@@ -83,7 +83,7 @@ class ReplyAction extends Action
                     ]);
 
                     Notification::make()
-                        ->title(__('contact_us.notifications.reply_sent_success'))
+                        ->title('تم إرسال الرد بنجاح')
                         ->success()
                         ->send();
 
@@ -96,8 +96,8 @@ class ReplyAction extends Action
                     ]);
 
                     Notification::make()
-                        ->title(__('contact_us.notifications.reply_saved_email_failed'))
-                        ->body(__('contact_us.notifications.reply_saved_email_failed', ['error' => $e->getMessage()]))
+                        ->title('تم حفظ الرد ولكن فشل إرسال البريد الإلكتروني')
+                        ->body("خطأ: {$e->getMessage()}")
                         ->warning()
                         ->send();
                 }
@@ -110,8 +110,8 @@ class ReplyAction extends Action
                 ]);
 
                 Notification::make()
-                    ->title(__('contact_us.notifications.reply_error'))
-                    ->body(__('contact_us.notifications.reply_error', ['error' => $e->getMessage()]))
+                    ->title('حدث خطأ أثناء معالجة الرد')
+                    ->body("خطأ: {$e->getMessage()}")
                     ->danger()
                     ->send();
             }

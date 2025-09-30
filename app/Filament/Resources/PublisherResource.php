@@ -29,22 +29,22 @@ class PublisherResource extends Resource
 
     public static function getNavigationLabel(): string
     {
-        return __('resource.publisher.publishers');
+        return 'الناشرون';
     }
 
     public static function getModelLabel(): string
     {
-        return __('resource.publisher.publisher');
+        return 'ناشر';
     }
 
     public static function getPluralModelLabel(): string
     {
-        return __('resource.publisher.publishers');
+        return 'الناشرون';
     }
 
     public static function getNavigationGroup(): ?string
     {
-        return __('library.navigation_group');
+        return 'المكتبة';
     }
 
     public static function form(Form $form): Form
@@ -52,29 +52,29 @@ class PublisherResource extends Resource
         return $form
             ->schema([
                 Forms\Components\TextInput::make('name')
-                    ->label('Publisher Name')
+                    ->label('اسم الناشر')
                     ->required()
                     ->maxLength(255),
                 Forms\Components\TextInput::make('address')
-                    ->label('Address')
+                    ->label('العنوان')
                     ->maxLength(255),
                 Forms\Components\Textarea::make('description')
-                    ->label('Description')
+                    ->label('الوصف')
                     ->rows(3)
                     ->maxLength(1000),
                 Forms\Components\FileUpload::make('image')
-                    ->label('Publisher Image')
+                    ->label('صورة الناشر')
                     ->image()
                     ->imageEditor()
                     ->maxSize(2048)
                     ->directory('publishers')
                     ->visibility('public'),
                 Forms\Components\TextInput::make('phone')
-                    ->label('Phone Number')
+                    ->label('رقم الهاتف')
                     ->tel()
                     ->maxLength(20),
                 Forms\Components\TextInput::make('email')
-                    ->label('Email')
+                    ->label('البريد الإلكتروني')
                     ->email()
                     ->maxLength(255),
                 Forms\Components\TextInput::make('website_url')

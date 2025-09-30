@@ -34,22 +34,24 @@ class ContactUsStatsWidget extends BaseWidget
             : 0;
         $trend = $percentageChange >= 0 ? 'up' : 'down';
 
-        $trendLabel = $trend === 'up' ? __('contact_us.widgets.stats.trend_up', ['percent' => $percentageChange]) : __('contact_us.widgets.stats.trend_down', ['percent' => $percentageChange]);
+        $trendLabel = $trend === 'up' 
+            ? "{$percentageChange}% زيادة مقارنة بالشهر الماضي" 
+            : "{$percentageChange}% نقصان مقارنة بالشهر الماضي";
 
         return [
-            Stat::make(__('contact_us.widgets.stats.total_messages'), $total)
-                ->description(__('contact_us.widgets.stats.all_messages'))
+            Stat::make('إجمالي الرسائل', $total)
+                ->description('جميع رسائل التواصل')
                 ->descriptionIcon('heroicon-m-envelope')
                 ->color('gray'),
-            Stat::make(__('contact_us.widgets.stats.new'), $new)
-                ->description(__('contact_us.widgets.stats.new_messages'))
+            Stat::make('جديدة', $new)
+                ->description('الرسائل الجديدة')
                 ->descriptionIcon('heroicon-m-plus-circle')
                 ->color('danger'),
-            Stat::make(__('contact_us.widgets.stats.responded'), $responded)
-                ->description(__('contact_us.widgets.stats.responded_messages'))
+            Stat::make('مستجابة', $responded)
+                ->description('الرسائل التي تم الرد عليها')
                 ->descriptionIcon('heroicon-m-check-circle')
                 ->color('success'),
-            Stat::make(__('contact_us.widgets.stats.this_month'), $thisMonth)
+            Stat::make('هذا الشهر', $thisMonth)
                 ->description($trendLabel)
                 ->descriptionIcon($trend === 'up' ? 'heroicon-m-arrow-trending-up' : 'heroicon-m-arrow-trending-down')
                 ->color($trend === 'up' ? 'success' : 'danger'),

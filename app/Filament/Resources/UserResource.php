@@ -41,22 +41,22 @@ class UserResource extends Resource
 
     public static function getNavigationLabel(): string
     {
-        return __('resource.user.users');
+        return 'المستخدمون';
     }
 
     public static function getModelLabel(): string
     {
-        return __('resource.user.user');
+        return 'مستخدم';
     }
 
     public static function getPluralModelLabel(): string
     {
-        return __('resource.user.users');
+        return 'المستخدمون';
     }
 
     public static function getNavigationGroup(): ?string
     {
-        return __('users.navigation_group');
+        return 'إدارة المستخدمين';
     }
 
     public static function form(Form $form): Form

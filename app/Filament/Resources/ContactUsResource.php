@@ -40,7 +40,7 @@ class ContactUsResource extends Resource
     {
         return $infolist
             ->schema([
-                Infolists\Components\Section::make(__('contact_us.sections.contact_information'))
+                Infolists\Components\Section::make('معلومات المرسل')
                     ->schema([
                         Infolists\Components\TextEntry::make('firstname'),
                         Infolists\Components\TextEntry::make('lastname'),
@@ -49,40 +49,40 @@ class ContactUsResource extends Resource
                         Infolists\Components\TextEntry::make('phone')
                             ->copyable(),
                         Infolists\Components\TextEntry::make('company')
-                            ->label(__('contact_us.fields.company')),
+                            ->label('الشركة'),
                         Infolists\Components\TextEntry::make('employees')
-                            ->formatStateUsing(fn(?string $state): ?string => $state ? $state . ' ' . __('contact_us.fields.employees') : null),
+                            ->formatStateUsing(fn(?string $state): ?string => $state ? $state . ' موظف' : null),
                         Infolists\Components\TextEntry::make('title')
-                            ->label(__('contact_us.fields.job_title')),
+                            ->label('المسمى الوظيفي'),
                         Infolists\Components\TextEntry::make('ip_address')
                             ->visible(fn () => auth()->user()?->can('viewConfidential', ContactUs::class) ?? false),
                     ])
                     ->columns(2),
 
-                Infolists\Components\Section::make(__('contact_us.sections.message'))
+                Infolists\Components\Section::make('الرسالة')
                     ->schema([
                         Infolists\Components\TextEntry::make('subject')
-                            ->label(__('contact_us.fields.subject')),
+                            ->label('الموضوع'),
                         Infolists\Components\TextEntry::make('message')
                             ->prose()
                             ->columnSpanFull(),
                     ]),
 
-                Infolists\Components\Section::make(__('contact_us.sections.metadata'))
+                Infolists\Components\Section::make('البيانات الوصفية')
                     ->schema([
                         Infolists\Components\TextEntry::make('created_at')
                             ->dateTime()
-                            ->label(__('contact_us.fields.received')),
+                            ->label('تاريخ الاستلام'),
                         Infolists\Components\TextEntry::make('metadata.source')
-                            ->label(__('contact_us.fields.source')),
+                            ->label('المصدر'),
                         Infolists\Components\TextEntry::make('metadata.utm_source')
-                            ->label(__('contact_us.fields.campaign_source')),
+                            ->label('مصدر الحملة'),
                         Infolists\Components\TextEntry::make('metadata.utm_medium')
-                            ->label(__('contact_us.fields.campaign_medium')),
+                            ->label('الوسيط'),
                         Infolists\Components\TextEntry::make('metadata.utm_campaign')
-                            ->label(__('contact_us.fields.campaign_name')),
+                            ->label('اسم الحملة'),
                         Infolists\Components\TextEntry::make('metadata.referrer')
-                            ->label(__('contact_us.fields.referrer')),
+                            ->label('مرجع الإحالة'),
                         Infolists\Components\TextEntry::make('user_agent')
                             ->visible(fn () => auth()->user()?->can('viewConfidential', ContactUs::class) ?? false)
                             ->columnSpanFull(),
@@ -91,19 +91,19 @@ class ContactUsResource extends Resource
                     ->collapsed(),
 
                 // Show reply section if a reply has been sent
-                Infolists\Components\Section::make(__('contact_us.sections.your_reply'))
+                Infolists\Components\Section::make('ردك')
                     ->schema([
                         Infolists\Components\TextEntry::make('reply_subject')
-                            ->label(__('contact_us.fields.reply_subject')),
+                            ->label('موضوع الرد'),
                         Infolists\Components\TextEntry::make('replied_at')
                             ->dateTime()
-                            ->label(__('contact_us.fields.replied_at')),
+                            ->label('تاريخ الرد'),
                         Infolists\Components\TextEntry::make('repliedBy.firstname')
-                            ->label(__('contact_us.fields.replied_by'))
+                            ->label('رد بواسطة')
                             ->formatStateUsing(function ($state, ContactUs $record) {
                                 return $record->repliedBy
                                     ? "{$record->repliedBy->firstname} {$record->repliedBy->lastname}"
-                                    : __('contact_us.fields.replied_by');
+                                    : 'النظام';
                             }),
                         Infolists\Components\TextEntry::make('reply_message')
                             ->html()
@@ -155,7 +155,14 @@ class ContactUsResource extends Resource
                     Tables\Columns\Layout\Stack::make([
                         Tables\Columns\TextColumn::make('status')
                             ->badge()
-                            ->formatStateUsing(fn(string $state): string => __("contact_us.status.{" . $state . "}") ?? ucfirst($state))
+                            ->formatStateUsing(fn(string $state): string => match ($state) {
+                                'new' => 'جديدة',
+                                'read' => 'مقروءة',
+                                'pending' => 'قيد الانتظار',
+                                'responded' => 'تم الرد',
+                                'closed' => 'مغلقة',
+                                default => ucfirst($state),
+                            })
                             ->color(fn(string $state): string => match ($state) {
                                 'new' => 'danger',
                                 'read' => 'warning',
@@ -167,7 +174,7 @@ class ContactUsResource extends Resource
                             ->alignLeft(),
                         Tables\Columns\TextColumn::make('created_at')
                             ->dateTime('M j, Y H:i')
-                            ->label(__('contact_us.fields.sent_at'))
+                            ->label('تم الإرسال')
                             ->alignLeft(),
                     ])->alignment('center')->space(1),
                 ])
@@ -183,29 +190,29 @@ class ContactUsResource extends Resource
                 TrashedFilter::make(),
 
                 SelectFilter::make('status')
-                    ->label(__('contact_us.filters.status'))
+                    ->label('الحالة')
                     ->options([
-                        'new' => __('contact_us.status.new'),
-                        'read' => __('contact_us.status.read'),
-                        'pending' => __('contact_us.status.pending'),
-                        'responded' => __('contact_us.status.responded'),
-                        'closed' => __('contact_us.status.closed'),
+                        'new' => 'جديدة',
+                        'read' => 'مقروءة',
+                        'pending' => 'قيد الانتظار',
+                        'responded' => 'تم الرد',
+                        'closed' => 'مغلقة',
                     ]),
 
                 Filter::make('created_at')
                     ->form([
-                        FilamentDatePicker::make('from')->label(__('contact_us.filters.from')),
-                        FilamentDatePicker::make('until')->label(__('contact_us.filters.until')),
+                        FilamentDatePicker::make('from')->label('من'),
+                        FilamentDatePicker::make('until')->label('إلى'),
                     ])
                     ->query(function ($query, $data) {
                         return $query
                             ->when($data['from'], fn($q, $date) => $q->whereDate('created_at', '>=', $date))
                             ->when($data['until'], fn($q, $date) => $q->whereDate('created_at', '<=', $date));
                     })
-                    ->label('Received Date'),
+                    ->label('تاريخ الاستلام'),
 
                 SelectFilter::make('company')
-                    ->label(__('contact_us.fields.company'))
+                    ->label('الشركة')
                     ->searchable()
                     ->options(
                         fn () => ContactUs::query()
@@ -216,7 +223,7 @@ class ContactUsResource extends Resource
                     ),
 
                 SelectFilter::make('employees')
-                    ->label(__('contact_us.fields.employees'))
+                    ->label('عدد الموظفين')
                     ->options([
                         '1-10' => '1-10',
                         '11-50' => '11-50',
@@ -233,7 +240,7 @@ class ContactUsResource extends Resource
                     TablesActions\ForceDeleteBulkAction::make(),
                     TablesActions\RestoreBulkAction::make(),
                     Tables\Actions\BulkAction::make('markAsRead')
-                        ->label(__('contact_us.actions.mark_as_read'))
+                        ->label('وضع كمقروء')
                         ->icon('heroicon-o-check')
                         ->action(function (Collection $records): void {
                             $count = 0;
@@ -246,7 +253,7 @@ class ContactUsResource extends Resource
 
                             if ($count > 0) {
                                 Notification::make()
-                                    ->title(__('contact_us.notifications.marked_as_read', ['count' => $count]))
+                                    ->title("تم وضع {$count} رسالة كمقروءة")
                                     ->success()
                                     ->send();
                             }
@@ -259,7 +266,7 @@ class ContactUsResource extends Resource
                     ->hiddenLabel()
                     ->button()
                     ->size('xs')
-                        ->tooltip(__('contact_us.actions.reply_tooltip'))
+                    ->tooltip('الرد على هذه الرسالة')
                     ->color(fn(ContactUs $record): string => (empty($record->reply_message) || empty($record->reply_subject)) ? 'success' : 'gray')
                     ->disabled(fn(ContactUs $record): bool => !empty($record->reply_message) || !empty($record->reply_subject)),
                 TablesActions\ActionGroup::make([
@@ -272,7 +279,7 @@ class ContactUsResource extends Resource
                             return $data;
                         }),
                     TablesActions\Action::make('markAsRead')
-                        ->label(__('contact_us.actions.mark_as_read'))
+                        ->label('وضع كمقروء')
                         ->icon('heroicon-o-check')
                         ->action(function (ContactUs $record): void {
                             if ($record->status === 'new') {
@@ -280,12 +287,12 @@ class ContactUsResource extends Resource
                                 $record->refresh();
 
                                 Notification::make()
-                                    ->title(__('contact_us.notifications.message_marked_read'))
+                                    ->title('تم وضع الرسالة كمقروءة')
                                     ->success()
                                     ->send();
                             } else {
                                 Notification::make()
-                                    ->title(__('contact_us.notifications.message_already_read'))
+                                    ->title('الرسالة مقروءة بالفعل')
                                     ->info()
                                     ->send();
                             }
@@ -314,12 +321,12 @@ class ContactUsResource extends Resource
 
     public static function getLabel(): string
     {
-        return 'Inbox';
+        return 'صندوق الوارد';
     }
 
     public static function getPluralLabel(): string
     {
-        return 'Contact Us';
+        return 'تواصل معنا';
     }
 
     public static function getNavigationBadge(): ?string
@@ -334,7 +341,7 @@ class ContactUsResource extends Resource
 
     public static function getNavigationLabel(): string
     {
-        return 'Inbox';
+        return 'صندوق الوارد';
     }
 
     public static function getEloquentQuery(): Builder

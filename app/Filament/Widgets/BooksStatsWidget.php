@@ -33,23 +33,23 @@ class BooksStatsWidget extends BaseWidget
             $totalAuthors = Author::count();
 
             return [
-                Stat::make(__('dashboard.widgets.stats.total_books'), $bookStats->total_books)
-                    ->description(__('dashboard.widgets.stats.all_books_system'))
+                Stat::make('إجمالي الكتب', $bookStats->total_books)
+                    ->description('جميع الكتب في النظام')
                     ->descriptionIcon('heroicon-m-book-open')
                     ->color('primary'),
 
-                Stat::make(__('dashboard.widgets.stats.published_books'), $publishedBooks)
-                    ->description(__('dashboard.widgets.stats.books_available_readers'))
+                Stat::make('الكتب المنشورة', $publishedBooks)
+                    ->description('الكتب المتاحة للقراء')
                     ->descriptionIcon('heroicon-m-check-circle')
                     ->color('success'),
 
-                Stat::make(__('dashboard.widgets.stats.authors'), $totalAuthors)
-                    ->description(__('dashboard.widgets.stats.registered_authors'))
+                Stat::make('المؤلفون', $totalAuthors)
+                    ->description('المؤلفون المسجلون')
                     ->descriptionIcon('heroicon-m-user-group')
                     ->color('info'),
 
-                Stat::make(__('dashboard.widgets.stats.new_books'), $bookStats->recent_books)
-                    ->description(__('dashboard.widgets.stats.new_books_30_days'))
+                Stat::make('الكتب الجديدة', $bookStats->recent_books)
+                    ->description('الكتب الجديدة خلال 30 يوماً')
                     ->descriptionIcon('heroicon-m-plus-circle')
                     ->color('warning'),
             ];

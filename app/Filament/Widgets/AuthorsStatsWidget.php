@@ -33,23 +33,23 @@ class AuthorsStatsWidget extends BaseWidget
             $totalPublishers = Publisher::count();
 
             return [
-                Stat::make(__('dashboard.widgets.stats.total_authors'), $authorStats->total_authors)
-                    ->description(__('dashboard.widgets.stats.all_authors_system'))
+                Stat::make('إجمالي المؤلفين', $authorStats->total_authors)
+                    ->description('جميع المؤلفين في النظام')
                     ->descriptionIcon('heroicon-m-user-group')
                     ->color('primary'),
 
-                Stat::make(__('dashboard.widgets.stats.active_authors'), $activeAuthors)
-                    ->description(__('dashboard.widgets.stats.authors_published_books'))
+                Stat::make('المؤلفون النشطون', $activeAuthors)
+                    ->description('المؤلفون الذين نشروا كتباً')
                     ->descriptionIcon('heroicon-m-pencil-square')
                     ->color('success'),
 
-                Stat::make(__('dashboard.widgets.stats.publishers'), $totalPublishers)
-                    ->description(__('dashboard.widgets.stats.registered_publishers'))
+                Stat::make('الناشرون', $totalPublishers)
+                    ->description('الناشرون المسجلون')
                     ->descriptionIcon('heroicon-m-building-office')
                     ->color('info'),
 
-                Stat::make(__('dashboard.widgets.stats.new_authors'), $authorStats->recent_authors)
-                    ->description(__('dashboard.widgets.stats.new_authors_30_days'))
+                Stat::make('المؤلفون الجدد', $authorStats->recent_authors)
+                    ->description('المؤلفون الجدد خلال 30 يوماً')
                     ->descriptionIcon('heroicon-m-user-plus')
                     ->color('warning'),
             ];
