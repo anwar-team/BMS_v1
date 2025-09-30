@@ -104,7 +104,7 @@
 
         {{-- Pagination Footer --}}
         @if($showPagination && ($books->hasPages() || $books->count() > 0))
-            <div class="px-6 py-4 flex items-center justify-center border-t border-gray-200 bg-gray-50">
+            <div class="px-6 py-4 flex items-center justify-center border-t border-gray-200 bg-gray-50 relative">
                 {{-- Navigation Buttons --}}
                 <div class="flex items-center gap-2">
                     @if($books->hasPages())
