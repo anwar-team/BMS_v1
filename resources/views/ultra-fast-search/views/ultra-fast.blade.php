@@ -1257,45 +1257,20 @@
                 // re-init keyboard navigation
                 initKeyboardNav();
                 
-                // إضافة زر "تحميل المزيد" إذا كان هناك المزيد من النتائج
+                // إضافة شريط التنقل البسيط إذا كان هناك أكثر من صفحة واحدة
                 if (pagination.last_page && pagination.last_page > 1) {
-                    // تصميم شريط التنقل المحسن والبسيط
                     this.resultsContainer.innerHTML += `
-                        <div class="flex items-center justify-center gap-1 mt-8 mb-4">
-                            <!-- معلومات الصفحة -->
-                            <div class="text-sm text-gray-500 ml-4">
-                                صفحة ${pagination.current_page} من ${pagination.last_page}
-                            </div>
-                            
-                            <!-- فاصل -->
-                            <div class="w-px h-6 bg-gray-300 mx-2"></div>
-                            
-                            <!-- أزرار التنقل -->
-                            <div class="flex items-center gap-1">
-                                <!-- الصفحة الأولى -->
-                                <button onclick="window.searchInstance.goToPage(1)" ${pagination.current_page === 1 ? 'disabled' : ''} 
-                                    class="w-8 h-8 flex items-center justify-center rounded-md text-sm font-medium transition-all duration-200 ${pagination.current_page === 1 ? 'text-gray-300 cursor-not-allowed' : 'text-gray-600 hover:text-emerald-600 hover:bg-emerald-50'}" 
-                                    title="الصفحة الأولى">⏮</button>
-                                
-                                <!-- الصفحة السابقة -->
-                                <button onclick="window.searchInstance.goToPage(${Math.max(1, pagination.current_page - 1)})" ${pagination.current_page === 1 ? 'disabled' : ''} 
-                                    class="w-8 h-8 flex items-center justify-center rounded-md text-sm font-medium transition-all duration-200 ${pagination.current_page === 1 ? 'text-gray-300 cursor-not-allowed' : 'text-gray-600 hover:text-emerald-600 hover:bg-emerald-50'}" 
-                                    title="الصفحة السابقة">◀</button>
-                                
-                                <!-- أرقام الصفحات -->
-                                <div class="flex items-center gap-1 mx-2">
-                                    ${this.generatePageNumbers(pagination.current_page, pagination.last_page)}
+                        <div id="paginationBar" class="bg-white rounded-lg shadow-sm border border-gray-200 p-4 mt-6">
+                            <div class="flex justify-between items-center">
+                                <div class="text-sm text-gray-600">
+                                    صفحة <span class="font-medium">${pagination.current_page}</span> من <span class="font-medium">${pagination.last_page}</span>
                                 </div>
-                                
-                                <!-- الصفحة التالية -->
-                                <button onclick="window.searchInstance.goToPage(${Math.min(pagination.last_page, pagination.current_page + 1)})" ${pagination.current_page === pagination.last_page ? 'disabled' : ''} 
-                                    class="w-8 h-8 flex items-center justify-center rounded-md text-sm font-medium transition-all duration-200 ${pagination.current_page === pagination.last_page ? 'text-gray-300 cursor-not-allowed' : 'text-gray-600 hover:text-emerald-600 hover:bg-emerald-50'}" 
-                                    title="الصفحة التالية">▶</button>
-                                
-                                <!-- الصفحة الأخيرة -->
-                                <button onclick="window.searchInstance.goToPage(${pagination.last_page})" ${pagination.current_page === pagination.last_page ? 'disabled' : ''} 
-                                    class="w-8 h-8 flex items-center justify-center rounded-md text-sm font-medium transition-all duration-200 ${pagination.current_page === pagination.last_page ? 'text-gray-300 cursor-not-allowed' : 'text-gray-600 hover:text-emerald-600 hover:bg-emerald-50'}" 
-                                    title="الصفحة الأخيرة">⏭</button>
+                                <div class="flex space-x-2 space-x-reverse">
+                                    <button onclick="window.searchInstance.goToPage(${Math.max(1, pagination.current_page - 1)})" ${pagination.current_page === 1 ? 'disabled' : ''} 
+                                        class="px-3 py-2 rounded-md text-sm font-medium transition-colors ${pagination.current_page === 1 ? 'bg-gray-300 text-gray-500 cursor-not-allowed' : 'bg-emerald-600 text-white hover:bg-emerald-700'}">السابق</button>
+                                    <button onclick="window.searchInstance.goToPage(${Math.min(pagination.last_page, pagination.current_page + 1)})" ${pagination.current_page === pagination.last_page ? 'disabled' : ''} 
+                                        class="px-3 py-2 rounded-md text-sm font-medium transition-colors ${pagination.current_page === pagination.last_page ? 'bg-gray-300 text-gray-500 cursor-not-allowed' : 'bg-emerald-600 text-white hover:bg-emerald-700'}">التالي</button>
+                                </div>
                             </div>
                         </div>
                     `;
@@ -2084,24 +2059,7 @@
         document.addEventListener('keydown', function(e) {
             const items = Array.from(document.querySelectorAll('#searchResults .result-item'));
             
-            // التنقل بين الصفحات بالأسهم اليمين واليسار
-            if (e.key === 'ArrowRight') {
-                e.preventDefault();
-                // الانتقال للصفحة التالية
-                if (window.searchInstance && window.searchInstance.currentPage < window.searchInstance.totalPages) {
-                    window.searchInstance.goToPage(window.searchInstance.currentPage + 1);
-                }
-                return;
-            } else if (e.key === 'ArrowLeft') {
-                e.preventDefault();
-                // الانتقال للصفحة السابقة
-                if (window.searchInstance && window.searchInstance.currentPage > 1) {
-                    window.searchInstance.goToPage(window.searchInstance.currentPage - 1);
-                }
-                return;
-            }
-            
-            // التنقل بين النتائج بالأسهم أعلى وأسفل
+            // التنقل بين النتائج بالأسهم أعلى وأسفل فقط
             if (!items.length) return;
 
             if (e.key === 'ArrowDown') {
@@ -2167,6 +2125,40 @@
 
             // init keyboard navigation handlers (if results present later)
             initKeyboardNav();
+        });
+
+        // التنقل بالأسهم يمين/يسار فقط في عرض المحتوى الكامل
+        document.addEventListener('keydown', function(e) {
+            // التحقق من وجود محتوى كامل مفتوح
+            const currentFullContent = document.querySelector('[class*="full-content-"]:not(.hidden)');
+            
+            if (currentFullContent) {
+                // استخراج معرف الصفحة من class name
+                const classNames = currentFullContent.className.split(' ');
+                const fullContentClass = classNames.find(cls => cls.startsWith('full-content-'));
+                
+                if (fullContentClass) {
+                    const pageId = fullContentClass.replace('full-content-', '');
+                    
+                    // البحث عن أزرار التنقل في المحتوى الكامل
+                    const prevButton = currentFullContent.querySelector('button[onclick*="navigateToPage"][onclick*="- 1"]');
+                    const nextButton = currentFullContent.querySelector('button[onclick*="navigateToPage"][onclick*="+ 1"]');
+                    
+                    if (e.key === 'ArrowLeft') {
+                        e.preventDefault();
+                        // التنقل للصفحة السابقة
+                        if (prevButton && !prevButton.disabled) {
+                            prevButton.click();
+                        }
+                    } else if (e.key === 'ArrowRight') {
+                        e.preventDefault();
+                        // التنقل للصفحة التالية
+                        if (nextButton && !nextButton.disabled) {
+                            nextButton.click();
+                        }
+                    }
+                }
+            }
         });
     </script>
 
