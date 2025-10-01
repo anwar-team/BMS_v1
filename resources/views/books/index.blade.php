@@ -8,7 +8,7 @@
                     <!-- Page Title Section -->
                     <div class="mb-12 z-10">
                         <div class="flex items-center gap-3 mb-8">
-                            <img src="{{ asset('images/group0.svg') }}" alt="Icon" class="w-16 h-16">
+                            <img src="{{ asset('images/group0.svg') }}" alt="Icon" class="w-8 h-8">
                             <h1 class="text-4xl text-green-800 font-bold">مكتبة الكتب</h1>
                         </div>
                         <p class="text-lg text-gray-600">استكشف مجموعة كبيرة من الكتب الرقمية</p>

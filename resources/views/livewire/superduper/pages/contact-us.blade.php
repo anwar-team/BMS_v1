@@ -20,7 +20,7 @@
                     <!-- قسم رسالتنـا -->
                     <div class="mb-12 z-10">
                         <div class="flex items-center gap-3 mb-8">
-                            <img src="{{ asset('images/group0.svg') }}" alt="Icon" class="w-16 h-16">
+                            <img src="{{ asset('images/group0.svg') }}" alt="Icon" class="w-8 h-8">
                             <h2 class="text-4xl text-green-800 font-bold">رسالتنـا</h2>
                         </div>
                     </div>
@@ -72,7 +72,7 @@
                     <!-- قسم تواصل معنا -->
                     <div class="mb-12 z-10">
                         <div class="flex items-center gap-3 mb-8">
-                            <img src="{{ asset('images/group0.svg') }}" alt="Icon" class="w-16 h-16">
+                            <img src="{{ asset('images/group0.svg') }}" alt="Icon" class="w-8 h-8">
                             <h2 class="text-4xl text-green-800 font-bold">تواصل معنا</h2>
                         </div>
                     </div>

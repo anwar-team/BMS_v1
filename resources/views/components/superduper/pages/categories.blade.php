@@ -9,7 +9,7 @@
                 <section class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 pt-32">
                     <div class="mb-12 z-10">
                         <div class="flex items-center gap-3 mb-8">
-                            <img src="{{ asset('images/group0.svg') }}" alt="Icon" class="w-16 h-16">
+                            <img src="{{ asset('images/group0.svg') }}" alt="Icon" class="w-8 h-8">
                             <div>
                                 <h2 class="text-4xl text-green-800 font-bold">أقسام الكتب</h2>
                                 @if(request('search'))
@@ -47,8 +47,15 @@
                                         class="absolute left-0 top-0 w-32 h-32">
                                     <div class="p-8">
                                         <div class="flex justify-around items-center">
-                                            <img src="{{ $section->logo_path ? asset($section->logo_path) : asset('images/group1.svg') }}" 
-                                                 alt="Icon" class="w-16 h-16">
+                                            @if($section->hasIcon())
+                                                {!! $section->icon_html !!}
+                                            @elseif($section->logo_path)
+                                                <img src="{{ asset($section->logo_path) }}" 
+                                                     alt="Icon" class="w-16 h-16">
+                                            @else
+                                                <img src="{{ asset('images/group1.svg') }}" 
+                                                     alt="Icon" class="w-16 h-16">
+                                            @endif
                                             <div>
                                                 <h3 class="text-xl text-green-800 font-bold mb-1">{{ $section->name }}</h3>
                                                 <p class="text-sm text-gray-600">{{ $section->books_count }} كتاب</p>

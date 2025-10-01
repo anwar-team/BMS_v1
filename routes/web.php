@@ -55,6 +55,7 @@ Route::get('/search', function() {
 })->name('search.ultra-fast');
 
 Route::get('/api/ultra-search', [\App\Http\Controllers\SearchController::class, 'apiSearch'])->name('api.ultra-search');
+Route::get('/api/filter-options', [\App\Http\Controllers\SearchController::class, 'getFilterOptions'])->name('api.filter-options');
 
 // Search All API Routes - Advanced Search
 Route::prefix('api/search-all')->group(function () {
@@ -101,6 +102,28 @@ Route::get('/api/book/{bookId}/pages', function($bookId) {
         'pages' => $pages,
         'pagination' => [
             'total' => $pages->count()
+        ]
+    ]);
+});
+
+Route::get('/api/book/{bookId}/page/{pageNumber}', function($bookId, $pageNumber) {
+    $page = \App\Models\Page::with(['book', 'book.authors'])
+        ->where('book_id', $bookId)
+        ->where('page_number', $pageNumber)
+        ->first();
+        
+    if (!$page) {
+        return response()->json(['error' => 'الصفحة غير موجودة'], 404);
+    }
+    
+    return response()->json([
+        'success' => true,
+        'page' => [
+            'id' => $page->id,
+            'full_content' => $page->content,
+            'page_number' => $page->page_number,
+            'book_id' => $page->book_id,
+            'book_title' => $page->book->title ?? '',
         ]
     ]);
 });

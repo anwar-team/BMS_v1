@@ -75,6 +75,133 @@ class BookSectionResource extends Resource
                 Forms\Components\Toggle::make('is_active')
                     ->label('نشط')
                     ->default(true),
+
+                // قسم الأيقونات
+                Forms\Components\Section::make('إعدادات الأيقونة')
+                    ->schema([
+                        // معاينة الأيقونة
+                        Forms\Components\ViewField::make('icon_preview')
+                            ->label('معاينة الأيقونة')
+                            ->view('filament.forms.components.icon-preview')
+                            ->viewData(fn (callable $get) => [
+                                'icon_type' => $get('icon_type'),
+                                'icon_url' => $get('icon_url'),
+                                'icon_library' => $get('icon_library'),
+                                'icon_name' => $get('icon_name'),
+                                'icon_color' => $get('icon_color') ?? '#3B82F6',
+                                'icon_size' => $get('icon_size') ?? 'md',
+                            ])
+                            ->visible(fn (callable $get) => !empty($get('icon_type'))),
+
+                        Forms\Components\Actions::make([
+                            Forms\Components\Actions\Action::make('reset_icon')
+                                ->label('إعادة تعيين للافتراضي')
+                                ->icon('heroicon-o-arrow-path')
+                                ->color('gray')
+                                ->action(function (callable $set) {
+                                    $set('icon_type', null);
+                                    $set('icon_url', null);
+                                    $set('icon_library', null);
+                                    $set('icon_name', null);
+                                    $set('icon_color', null);
+                                    $set('icon_size', null);
+                                })
+                                ->requiresConfirmation()
+                                ->modalHeading('إعادة تعيين الأيقونة')
+                                ->modalDescription('هل أنت متأكد من إعادة تعيين الأيقونة للحالة الافتراضية؟')
+                                ->modalSubmitActionLabel('نعم، إعادة تعيين')
+                                ->modalCancelActionLabel('إلغاء')
+                        ])
+                        ->visible(fn (callable $get) => !empty($get('icon_type'))),
+
+                        Forms\Components\Select::make('icon_type')
+                            ->label('نوع الأيقونة')
+                            ->options([
+                                'upload' => 'رفع ملف',
+                                'url' => 'رابط URL',
+                                'library' => 'من المكتبة',
+                                'color' => 'لون فقط',
+                            ])
+                            ->reactive()
+                            ->afterStateUpdated(fn (callable $set) => $set('icon_url', null)),
+
+                        Forms\Components\FileUpload::make('icon_url')
+                            ->label('رفع الأيقونة')
+                            ->image()
+                            ->disk('public')
+                            ->directory('icons')
+                            ->visibility('public')
+                            ->imageResizeMode('contain')
+                            ->imageCropAspectRatio('1:1')
+                            ->imageResizeTargetWidth('64')
+                            ->imageResizeTargetHeight('64')
+                            ->acceptedFileTypes(['image/png', 'image/jpg', 'image/jpeg', 'image/svg+xml', 'image/gif'])
+                            ->maxSize(2048)
+                            ->reactive()
+                            ->visible(fn (callable $get) => $get('icon_type') === 'upload'),
+
+                        Forms\Components\TextInput::make('icon_url')
+                            ->label('رابط الأيقونة')
+                            ->url()
+                            ->placeholder('https://example.com/icon.svg')
+                            ->reactive()
+                            ->visible(fn (callable $get) => $get('icon_type') === 'url'),
+
+                        Forms\Components\Grid::make(2)
+                            ->schema([
+                                Forms\Components\Select::make('icon_library')
+                                    ->label('مكتبة الأيقونات')
+                                    ->options([
+                                        'heroicons' => 'Heroicons',
+                                        'fontawesome' => 'Font Awesome',
+                                        'custom' => 'مخصص',
+                                    ])
+                                    ->reactive()
+                                    ->visible(fn (callable $get) => $get('icon_type') === 'library'),
+
+                                \App\Filament\Forms\Components\IconPicker::make('icon_name')
+                                    ->label('اختر الأيقونة')
+                                    ->placeholder('ابحث عن الأيقونة...')
+                                    ->helperText('ابحث واختر الأيقونة من المكتبة المحددة')
+                                    ->visible(fn (callable $get) => $get('icon_type') === 'library' && $get('icon_library'))
+                                    ->reactive()
+                                    ->required(fn (callable $get) => $get('icon_type') === 'library'),
+                            ])
+                            ->visible(fn (callable $get) => $get('icon_type') === 'library'),
+
+                        Forms\Components\Grid::make(2)
+                            ->schema([
+                                Forms\Components\ColorPicker::make('icon_color')
+                                    ->label('لون الأيقونة')
+                                    ->default('#3B82F6')
+                                    ->reactive(),
+
+                                Forms\Components\Select::make('icon_size')
+                                    ->label('حجم الأيقونة')
+                                    ->options([
+                                        'sm' => 'صغير (16px)',
+                                        'md' => 'متوسط (24px)',
+                                        'lg' => 'كبير (32px)',
+                                        'xl' => 'كبير جداً (48px)',
+                                        'custom' => 'حجم مخصص'
+                                    ])
+                                    ->default('md')
+                                    ->reactive(),
+
+                                Forms\Components\TextInput::make('icon_custom_size')
+                                    ->label('الحجم المخصص (بكسل)')
+                                    ->numeric()
+                                    ->minValue(8)
+                                    ->maxValue(200)
+                                    ->default(24)
+                                    ->suffix('px')
+                                    ->visible(fn (callable $get) => $get('icon_type') === 'library' && $get('icon_size') === 'custom')
+                                    ->reactive()
+                                    ->helperText('أدخل حجم الأيقونة بالبكسل (من 8 إلى 200)'),
+                            ]),
+                    ])
+                    ->collapsible()
+                    ->collapsed(),
             ]);
     }
 
@@ -82,6 +209,11 @@ class BookSectionResource extends Resource
     {
         return $table
             ->columns([
+                Tables\Columns\ViewColumn::make('icon')
+                    ->label('الأيقونة')
+                    ->view('filament.tables.columns.icon-column')
+                    ->toggleable(),
+
                 Tables\Columns\TextColumn::make('name')
                     ->label('اسم القسم')
                     ->searchable()

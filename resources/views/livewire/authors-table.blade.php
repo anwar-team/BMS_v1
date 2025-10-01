@@ -16,15 +16,12 @@
 
     {{-- Filter Buttons --}}
     @if($showFilters)
-        <div class="flex flex-wrap gap-4 mb-8">
-            <button class="bg-white text-green-800 border border-green-800 px-5 py-2 rounded-full transition-colors duration-300 hover:bg-green-800 hover:text-white">
-                المؤلفون المشهورون
-            </button>
-            <button class="bg-white text-green-800 border border-green-800 px-5 py-2 rounded-full transition-colors duration-300 hover:bg-green-800 hover:text-white">
-                الأكثر كتابة
+        <div class="flex flex-wrap gap-2 mb-4">
+            <button wire:click="$set('madhhab', 'المذهب الحنفي')" class="bg-white text-green-800 border border-green-800 px-5 py-2 rounded-full transition-colors duration-300 hover:bg-green-800 hover:text-white {{ $madhhab === 'المذهب الحنفي' ? 'bg-green-800 text-white' : '' }}">
+                المؤلفون الحنفيون
             </button>
             <a href="{{ route('show-all', ['type' => 'authors']) }}" class="bg-white text-green-800 border border-green-800 px-5 py-2 rounded-full transition-colors duration-300 hover:bg-green-800 hover:text-white">
-                جميع المؤلفين
+                عرض الكل
             </a>
         </div>
     @endif
@@ -32,56 +29,56 @@
     {{-- Authors Table --}}
     <div class="bg-white rounded-lg shadow overflow-hidden" wire:loading.class="opacity-50" wire:target="search,perPage,previousPage,nextPage">
         <div class="overflow-x-auto">
-            <table class="min-w-full divide-y divide-gray-200 text-base">
-                <thead class="bg-green-50">
+            <table class="min-w-full divide-y divide-gray-200">
+                <thead class="bg-gray-50">
                     <tr>
-                        <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        <th scope="col" class="px-6 py-3 text-right text-sm font-semibold text-gray-900 uppercase tracking-wider">
                             #
                         </th>
-                        <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        <th scope="col" class="px-6 py-3 text-right text-sm font-semibold text-gray-900 uppercase tracking-wider">
                             اسم المؤلف
                         </th>
-                        <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        <th scope="col" class="px-6 py-3 text-right text-sm font-semibold text-gray-900 uppercase tracking-wider">
                             عدد الكتب
                         </th>
-                        <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        <th scope="col" class="px-6 py-3 text-right text-sm font-semibold text-gray-900 uppercase tracking-wider">
                             المذهب
                         </th>
-                        <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        <th scope="col" class="px-6 py-3 text-right text-sm font-semibold text-gray-900 uppercase tracking-wider">
                             تاريخ الميلاد
                         </th>
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-gray-200">
-                    @forelse ($authors as $author)
+                    @forelse ($authors as $index => $author)
                         <tr class="hover:bg-gray-50 transition-colors duration-150">
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 font-medium">
-                                {{ $loop->iteration + ($authors->currentPage() - 1) * $authors->perPage() }}
+                            <td class="px-6 py-4 whitespace-nowrap text-base text-gray-900">
+                                {{ ($authors->currentPage() - 1) * $authors->perPage() + $index + 1 }}
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap">
-                                    <div class="text-sm font-medium text-gray-900">
-                                        <a href="{{ route('authors.details', $author->id) }}" 
-                                           class="text-green-700 hover:text-green-900 hover:underline transition-colors duration-200">
-                                            {!! $this->highlightText($author->full_name, $search) !!}
-                                        </a>
-                                    </div>
-                                    @if($author->biography)
-                                        <div class="text-sm text-gray-500 truncate max-w-xs">{!! $this->highlightText(Str::limit($author->biography, 50), $search) !!}</div>
-                                    @endif
-                                </td>
+                                <div class="text-base font-medium text-gray-900">
+                                    <a href="{{ route('authors.details', $author->id) }}" 
+                                       class="text-green-700 hover:text-green-900 hover:underline transition-colors duration-200">
+                                        {!! $this->highlightText($author->full_name, $search) !!}
+                                    </a>
+                                </div>
+                                @if($author->biography)
+                                    <div class="text-sm text-gray-500 truncate max-w-xs">{!! $this->highlightText(Str::limit($author->biography, 50), $search) !!}</div>
+                                @endif
+                            </td>
                             <td class="px-6 py-4 whitespace-nowrap">
-                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-sm font-medium bg-green-100 text-green-800">
                                     {{ $author->books_count }} كتاب
                                 </span>
                             </td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                            <td class="px-6 py-4 whitespace-nowrap text-base text-gray-900">
                                 @if($author->madhhab)
                                     {!! $this->highlightText($author->madhhab, $search) !!}
                                 @else
                                     <span class="text-gray-400">غير محدد</span>
                                 @endif
                             </td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                            <td class="px-6 py-4 whitespace-nowrap text-base text-gray-900">
                                 {{ $author->birth_date ? $author->birth_date->format('Y/m/d') : 'غير محدد' }}
                             </td>
                         </tr>
@@ -106,18 +103,18 @@
 
         {{-- Pagination Footer --}}
         @if($showPagination && ($authors->hasPages() || $authors->count() > 0))
-            <div class="px-6 py-4 flex items-center justify-between border-t border-gray-200 bg-gray-50">
+            <div class="px-6 py-4 flex items-center justify-center border-t border-gray-200 bg-gray-50">
                 {{-- Navigation Buttons --}}
                 <div class="flex items-center gap-2">
                     @if($authors->hasPages())
-                        @if($authors->hasMorePages())
-                            <button wire:click="nextPage" class="p-2 rounded-full hover:bg-gray-200 text-gray-600 hover:text-gray-800 transition-colors">
+                        @if($authors->onFirstPage())
+                            <button disabled class="p-2 rounded-full bg-gray-100 text-gray-400 cursor-not-allowed">
                                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
                                 </svg>
                             </button>
                         @else
-                            <button disabled class="p-2 rounded-full bg-gray-100 text-gray-400 cursor-not-allowed">
+                            <button wire:click="previousPage" class="p-2 rounded-full hover:bg-gray-200 text-gray-600 hover:text-gray-800 transition-colors">
                                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
                                 </svg>
@@ -128,14 +125,14 @@
                             {{ $authors->firstItem() ?: 0 }}-{{ $authors->lastItem() ?: 0 }} من {{ $authors->total() }}
                         </span>
 
-                        @if($authors->onFirstPage())
-                            <button disabled class="p-2 rounded-full bg-gray-100 text-gray-400 cursor-not-allowed">
+                        @if($authors->hasMorePages())
+                            <button wire:click="nextPage" class="p-2 rounded-full hover:bg-gray-200 text-gray-600 hover:text-gray-800 transition-colors">
                                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
                                 </svg>
                             </button>
                         @else
-                            <button wire:click="previousPage" class="p-2 rounded-full hover:bg-gray-200 text-gray-600 hover:text-gray-800 transition-colors">
+                            <button disabled class="p-2 rounded-full bg-gray-100 text-gray-400 cursor-not-allowed">
                                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
                                 </svg>
@@ -146,15 +143,15 @@
 
                 {{-- Items per page selector --}}
                 @if($showPerPageSelector)
-                    <div class="flex items-center gap-2">
+                    <div class="flex items-center gap-2 absolute right-6">
+                        <span class="text-sm text-gray-600">نتيجة</span>
                         <select wire:model.live="perPage" 
-                                class="border border-gray-300 rounded-md px-3 py-1 text-sm focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500">
+                                class="border border-gray-300 rounded-md px-2 py-1 text-sm focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500">
+                            <option value="5">5</option>
                             <option value="10">10</option>
                             <option value="25">25</option>
                             <option value="50">50</option>
-                            <option value="100">100</option>
                         </select>
-                        <span class="text-sm text-gray-600">مؤلف في الصفحة</span>
                     </div>
                 @endif
             </div>

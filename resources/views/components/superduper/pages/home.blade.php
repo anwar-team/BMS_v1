@@ -13,7 +13,7 @@
                 <section class="relative z-1 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
                     <div class="mb-12 z-1">
                         <div class="flex items-center gap-3 mb-8">
-                            <img src="{{ asset('images/group0.svg') }}" alt="Icon" class="w-16 h-16">
+                            <img src="{{ asset('images/group0.svg') }}" alt="Icon" class="w-8 h-8">
                             <h2 class="text-4xl text-green-800 font-bold">أقسام الكتب</h2>
                         </div>
                     </div>
@@ -61,7 +61,7 @@
         <!-- end of background pattern-->
         <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 relative z-1">
             <div class="flex items-center gap-3 mb-8">
-                <img src="{{ asset('images/group7.svg') }}" alt="Icon" class="w-16 h-16">
+                <img src="{{ asset('images/group0.svg') }}" alt="Icon" class="w-8 h-8">
                 <h2 class="text-4xl text-green-800 font-bold">الكتب</h2>
             </div>
 
@@ -84,7 +84,7 @@
         <!-- end of background pattern-->
         <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 relative z-10">
             <div class="flex items-center gap-3 mb-8">
-                <img src="{{ asset('images/group8.svg') }}" alt="Icon" class="w-16 h-16">
+                <img src="{{ asset('images/group0.svg') }}" alt="Icon" class="w-8 h-8">
                 <h2 class="text-4xl text-green-800 font-bold">المؤلفين</h2>
             </div>
 

@@ -8,7 +8,7 @@
                     <!-- Author Title Section -->
                     <div class="mb-12 z-10">
                         <div class="flex items-center gap-3 mb-8">
-                            <img src="{{ asset('images/group8.svg') }}" alt="Icon" class="w-16 h-16">
+                            <img src="{{ asset('images/group0.svg') }}" alt="Icon" class="w-8 h-8">
                             <h1 class="text-4xl text-green-800 font-bold">تفاصيل المؤلف</h1>
                         </div>
                     </div>
@@ -36,7 +36,7 @@
                                 <div class="bg-gray-50 rounded-lg p-6">
                                     <!-- Card Title with Icon -->
                                     <div class="flex items-center gap-3 mb-6">
-                                        <img src="{{ asset('images/group8.svg') }}" alt="Icon" class="w-6 h-6">
+                                        <img src="{{ asset('images/group0.svg') }}" alt="Icon" class="w-6 h-6">
                                         <h3 class="text-xl font-semibold text-green-800">{{ $author->full_name }}</h3>
                                     </div>
                                     
@@ -91,7 +91,7 @@
                     @if($author->biography)
                         <div class="bg-white rounded-lg shadow-md overflow-hidden border border-gray-200 p-8 mb-8">
                             <div class="flex items-center gap-3 mb-6">
-                                <img src="{{ asset('images/group8.svg') }}" alt="Icon" class="w-8 h-8">
+                                <img src="{{ asset('images/group0.svg') }}" alt="Icon" class="w-8 h-8">
                                 <h3 class="text-2xl font-semibold text-[#5D6019]">السيرة الذاتية</h3>
                             </div>
                             <div class="text-lg text-gray-700 leading-relaxed whitespace-pre-line">
