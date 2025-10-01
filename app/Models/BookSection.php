@@ -24,6 +24,7 @@ class BookSection extends Model
         'icon_name',
         'icon_color',
         'icon_size',
+        'icon_custom_size',
         'icon_library',
     ];
 
@@ -108,11 +109,13 @@ class BookSection extends Model
      */
     public function getIconUrlAttribute()
     {
+        $iconUrl = $this->getAttributes()['icon_url'] ?? null;
+        
         switch ($this->icon_type) {
             case 'upload':
-                return $this->icon_url ? asset('storage/' . $this->icon_url) : null;
+                return $iconUrl ? asset('storage/' . $iconUrl) : null;
             case 'url':
-                return $this->icon_url;
+                return $iconUrl;
             case 'library':
                 return $this->getLibraryIconUrl();
             case 'color':
