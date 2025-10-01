@@ -1,6 +1,14 @@
-<li class="{{ $level > 0 ? 'mr-' . ($level * 3) : '' }}">
-    <div class="toc-item flex items-center justify-between p-2 rounded-lg 
-              {{ $currentChapterId === $chapter->id ? 'bg-[#957717] text-white shadow-sm active' : 'hover:bg-[#f0e9de]' }}">
+@php
+    $hasSearchTerm = !empty(trim($tocSearch ?? ''));
+    $matchesSearch = $hasSearchTerm ? $this->chapterMatchesCurrentSearch($chapter) : false;
+    $isCurrentChapter = $currentChapterId === $chapter->id;
+    $shouldDim = $hasSearchTerm && !$matchesSearch && !$isCurrentChapter;
+@endphp
+
+<li class="{{ $level > 0 ? 'mr-' . ($level * 3) : '' }} {{ $shouldDim ? 'toc-item-dimmed' : '' }}">
+    <div class="toc-item flex items-center justify-between p-2 rounded-lg transition-all duration-300
+              {{ $isCurrentChapter ? 'bg-[#957717] text-white shadow-sm active' : 'hover:bg-[#f0e9de]' }}
+              {{ $matchesSearch ? 'toc-search-match' : '' }}">
         <div class="flex items-center cursor-pointer flex-1" wire:click="gotoChapter({{ $chapter->id }})">
             @if($chapter->children->isNotEmpty())
                 <div class="w-4 h-4 ml-1"></div>
@@ -9,13 +17,17 @@
             @endif
             
             <span class="{{ $level === 0 ? 'text-base sm:text-lg font-semibold' : 'text-sm sm:text-base' }} 
-                         {{ $currentChapterId === $chapter->id ? 'text-white' : ($level === 0 ? 'text-[#5D6019]' : 'text-gray-700') }} 
-                         hover:text-[#957717] transition-colors">
-                {{ $chapter->title }}
+                         {{ $isCurrentChapter ? 'text-white' : ($level === 0 ? 'text-[#5D6019]' : 'text-gray-700') }} 
+                         {{ !$isCurrentChapter ? 'hover:text-[#957717]' : '' }} transition-colors">
+                @if($hasSearchTerm && $matchesSearch)
+                    {!! $this->highlightSearchTerm($chapter->title) !!}
+                @else
+                    {{ $chapter->title }}
+                @endif
             </span>
             
             @if($chapter->page_number)
-                <span class="mr-auto text-xs sm:text-sm {{ $currentChapterId === $chapter->id ? 'text-white/80' : 'text-gray-500' }}">
+                <span class="mr-auto text-xs sm:text-sm {{ $isCurrentChapter ? 'text-white/80' : 'text-gray-500' }}">
                     ({{ $chapter->page_number }})
                 </span>
             @endif

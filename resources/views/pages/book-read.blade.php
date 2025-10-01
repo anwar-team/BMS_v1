@@ -26,39 +26,7 @@
                             <h2 class="text-2xl sm:text-3xl md:text-4xl text-[#5D6019] font-bold font-tajawal">معاينة كتاب: {{ $book->title }}</h2>
                         </div>
                     </div>
-                    <!-- Header -->
-                    <header class="bg-white shadow-sm py-2 sm:py-3 px-4 sm:px-6 rounded-xl mb-4 sm:mb-6">
-                        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4">
-                            <div class="flex items-center w-full sm:w-auto">
-                                <img src="{{ asset('images/logo-01.jpg') }}" alt="الشعار" class="h-10 sm:h-12 ml-3 sm:ml-4">
-                                <div class="w-full sm:w-auto">
-                                    <h1 class="text-xl sm:text-2xl font-bold text-[#5D6019] font-tajawal">{{ $book->title }}</h1>
-                                    <p class="text-gray-600 text-base sm:text-lg">
-                                        تأليف: 
-                                        @if($book->authors->isNotEmpty())
-                                            {{ $book->authors->pluck('name')->join('، ') }}
-                                        @else
-                                            غير محدد
-                                        @endif
-                                    </p>
-                                </div>
-                            </div>
-                            <div class="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-3 w-full sm:w-auto">
-                                <div class="flex items-center bg-[#f0e9de] rounded-full px-3 py-1 sm:px-4 sm:py-1.5 w-full sm:w-auto">
-                                    <span class="text-[#39100C] font-medium text-sm sm:text-base ml-2 sm:ml-2">الصفحة</span>
-                                    <span class="bg-[#5D6019] text-white rounded-full w-6 h-6 sm:w-8 sm:h-8 flex items-center justify-center font-bold text-sm sm:text-base">{{ $navigationInfo['current_page_number'] }}</span>
-                                    <span class="text-[#39100C] mx-1 sm:mx-2 text-sm sm:text-base">من</span>
-                                    <span class="text-[#957717] font-bold text-sm sm:text-base">{{ $navigationInfo['total_pages'] }}</span>
-                                </div>
-                                <button class="bg-[#FF7300] hover:bg-[#e06600] text-white px-3 py-1.5 sm:px-4 sm:py-2 rounded-lg font-medium transition-colors flex items-center w-full sm:w-auto justify-center mt-2 sm:mt-0">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3 sm:h-4 sm:w-4 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5h12M9 3v2m0 4v2m-6 4h12m-6 4v2m-6-8h12a2 2 0 012 2v4a2 2 0 01-2 2H3a2 2 0 01-2-2v-4a2 2 0 012-2z" />
-                                    </svg>
-                                    English
-                                </button>
-                            </div>
-                        </div>
-                    </header>
+
                     <!-- Main Content -->
                     <div class="flex flex-col gap-4 sm:gap-6">
                         <!-- Toolbar -->

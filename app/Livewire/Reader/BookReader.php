@@ -91,9 +91,8 @@ class BookReader extends Component
             $this->internalIndex = $this->currentPage->internal_index ?? $this->currentPage->page_number;
         }
         
-        // Initialize TOC expansion state
-        $this->expandedVolumes = [];
-        $this->expandedChapters = [];
+        // Initialize TOC expansion state with smart defaults
+        $this->initializeTocExpansionState();
         
         // Apply initial font size
         $this->applyFontSize();
@@ -684,27 +683,42 @@ class BookReader extends Component
         $searchQuery = trim($this->tocSearch);
         $filtered = $this->tableOfContents;
         
+        // Arrays to track which volumes/chapters should be expanded
+        $volumesToExpand = [];
+        $chaptersToExpand = [];
+        
         if ($filtered['type'] === 'volumes_with_chapters') {
-            $filteredVolumes = collect($filtered['data'])->filter(function($volume) use ($searchQuery) {
+            $filteredVolumes = collect($filtered['data'])->filter(function($volume) use ($searchQuery, &$volumesToExpand, &$chaptersToExpand) {
                 // Check if volume title matches
                 $volumeMatches = stripos($volume->title ?: 'الجزء ' . $volume->number, $searchQuery) !== false;
                 
-                // Check if any chapter matches
-                $chapterMatches = $volume->chapters->filter(function($chapter) use ($searchQuery) {
-                    return $this->chapterMatchesSearch($chapter, $searchQuery);
-                })->isNotEmpty();
+                // Check if any chapter matches and collect matching chapters
+                $matchingChapters = $volume->chapters->filter(function($chapter) use ($searchQuery, &$chaptersToExpand) {
+                    $matches = $this->chapterMatchesSearch($chapter, $searchQuery, $chaptersToExpand);
+                    return $matches;
+                });
+                
+                $chapterMatches = $matchingChapters->isNotEmpty();
+                
+                // If volume or any chapter matches, expand this volume
+                if ($volumeMatches || $chapterMatches) {
+                    $volumesToExpand[] = $volume->id;
+                }
                 
                 return $volumeMatches || $chapterMatches;
             });
             
             $filtered['data'] = $filteredVolumes;
         } else {
-            $filteredChapters = collect($filtered['data'])->filter(function($chapter) use ($searchQuery) {
-                return $this->chapterMatchesSearch($chapter, $searchQuery);
+            $filteredChapters = collect($filtered['data'])->filter(function($chapter) use ($searchQuery, &$chaptersToExpand) {
+                return $this->chapterMatchesSearch($chapter, $searchQuery, $chaptersToExpand);
             });
             
             $filtered['data'] = $filteredChapters;
         }
+        
+        // Auto-expand volumes and chapters that contain search results
+        $this->expandSearchResults($volumesToExpand, $chaptersToExpand);
         
         $this->filteredTableOfContents = $filtered;
     }
@@ -714,23 +728,59 @@ class BookReader extends Component
      * 
      * @param object $chapter
      * @param string $searchQuery
+     * @param array &$chaptersToExpand
      * @return bool
      */
-    private function chapterMatchesSearch($chapter, string $searchQuery): bool
+    private function chapterMatchesSearch($chapter, string $searchQuery, array &$chaptersToExpand = []): bool
     {
+        $matches = false;
+        
         // Check chapter title
         if (stripos($chapter->title, $searchQuery) !== false) {
-            return true;
+            $matches = true;
+            $chaptersToExpand[] = $chapter->id;
         }
         
         // Check children recursively
         if ($chapter->children && $chapter->children->isNotEmpty()) {
-            return $chapter->children->filter(function($child) use ($searchQuery) {
-                return $this->chapterMatchesSearch($child, $searchQuery);
+            $childMatches = $chapter->children->filter(function($child) use ($searchQuery, &$chaptersToExpand) {
+                return $this->chapterMatchesSearch($child, $searchQuery, $chaptersToExpand);
             })->isNotEmpty();
+            
+            // If any child matches, expand this parent chapter too
+            if ($childMatches) {
+                $matches = true;
+                if (!in_array($chapter->id, $chaptersToExpand)) {
+                    $chaptersToExpand[] = $chapter->id;
+                }
+            }
         }
         
-        return false;
+        return $matches;
+    }
+    
+    /**
+     * Auto-expand volumes and chapters that contain search results
+     * 
+     * @param array $volumesToExpand
+     * @param array $chaptersToExpand
+     * @return void
+     */
+    private function expandSearchResults(array $volumesToExpand, array $chaptersToExpand): void
+    {
+        // Expand volumes that contain search results
+        foreach ($volumesToExpand as $volumeId) {
+            if (!in_array($volumeId, $this->expandedVolumes)) {
+                $this->expandedVolumes[] = $volumeId;
+            }
+        }
+        
+        // Expand chapters that contain search results
+        foreach ($chaptersToExpand as $chapterId) {
+            if (!in_array($chapterId, $this->expandedChapters)) {
+                $this->expandedChapters[] = $chapterId;
+            }
+        }
     }
     
     /**
@@ -752,6 +802,9 @@ class BookReader extends Component
     {
         $this->tocSearch = '';
         $this->filteredTableOfContents = $this->tableOfContents;
+        
+        // Reset expansion state to smart defaults when clearing search
+        $this->initializeTocExpansionState();
     }
     
     /**
@@ -804,6 +857,109 @@ class BookReader extends Component
     public function closeMobileToc(): void
     {
         $this->showMobileToc = false;
+    }
+
+    /**
+     * Initialize TOC expansion state with smart defaults
+     * 
+     * @return void
+     */
+    private function initializeTocExpansionState(): void
+    {
+        // Initialize arrays
+        $this->expandedVolumes = [];
+        $this->expandedChapters = [];
+        
+        // If we have table of contents data
+        if (!empty($this->tableOfContents)) {
+            // For books with volumes, auto-expand the first volume and current volume
+            if ($this->tableOfContents['type'] === 'volumes_with_chapters' && !empty($this->tableOfContents['data'])) {
+                $volumes = collect($this->tableOfContents['data']);
+                
+                // Always expand the first volume for better UX
+                $firstVolume = $volumes->first();
+                if ($firstVolume) {
+                    $this->expandedVolumes[] = $firstVolume->id;
+                }
+                
+                // If current page has a volume, expand it too (if different from first)
+                if ($this->currentPage && $this->currentPage->volume_id) {
+                    $this->currentVolumeId = $this->currentPage->volume_id;
+                    if (!in_array($this->currentVolumeId, $this->expandedVolumes)) {
+                        $this->expandedVolumes[] = $this->currentVolumeId;
+                    }
+                }
+            }
+            
+            // Auto-expand current chapter and its parents
+            if ($this->currentPage && $this->currentPage->chapter_id) {
+                $this->currentChapterId = $this->currentPage->chapter_id;
+                $this->expandedChapters[] = $this->currentChapterId;
+                
+                // Expand parent chapters recursively
+                $this->expandParentChapters($this->currentChapterId);
+            }
+        }
+        
+        // For books without volumes but with chapters, expand first level chapters
+        if ($this->tableOfContents['type'] === 'chapters_only' && !empty($this->tableOfContents['data'])) {
+            $chapters = collect($this->tableOfContents['data']);
+            
+            // Auto-expand first few main chapters for better navigation
+            $firstChapters = $chapters->take(3); // Expand first 3 main chapters
+            foreach ($firstChapters as $chapter) {
+                $this->expandedChapters[] = $chapter->id;
+            }
+            
+            // Always expand current chapter if exists
+            if ($this->currentPage && $this->currentPage->chapter_id) {
+                $this->currentChapterId = $this->currentPage->chapter_id;
+                if (!in_array($this->currentChapterId, $this->expandedChapters)) {
+                    $this->expandedChapters[] = $this->currentChapterId;
+                }
+                
+                // Expand parent chapters recursively
+                $this->expandParentChapters($this->currentChapterId);
+            }
+        }
+    }
+
+    /**
+     * Highlight search terms in text
+     * 
+     * @param string $text
+     * @param string $searchQuery
+     * @return string
+     */
+    public function highlightSearchTerm(string $text, string $searchQuery = null): string
+    {
+        if (empty($searchQuery) || empty(trim($this->tocSearch))) {
+            return $text;
+        }
+        
+        $searchTerm = trim($this->tocSearch);
+        if (empty($searchTerm)) {
+            return $text;
+        }
+        
+        // Use case-insensitive search and highlight
+        $pattern = '/(' . preg_quote($searchTerm, '/') . ')/ui';
+        return preg_replace($pattern, '<span class="toc-search-highlight">$1</span>', $text);
+    }
+    
+    /**
+     * Check if chapter matches current search
+     * 
+     * @param object $chapter
+     * @return bool
+     */
+    public function chapterMatchesCurrentSearch($chapter): bool
+    {
+        if (empty(trim($this->tocSearch))) {
+            return false;
+        }
+        
+        return stripos($chapter->title, trim($this->tocSearch)) !== false;
     }
 
     /**
