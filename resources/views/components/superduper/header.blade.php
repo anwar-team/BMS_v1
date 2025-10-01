@@ -1,18 +1,29 @@
 <header class="fixed z-50 w-full py-4 transition-all duration-300 bg-white md:py-6">
     <div class="px-4 mx-auto container-default">
-        <div class="flex items-center justify-between gap-x-4 md:gap-x-8">
+        <div class="flex items-center justify-between gap-x-4 md:gap-x-8" dir="rtl">
 
-            <!-- تم تبديل موقع زر تسجيل الدخول ليكون في البداية بدلاً من اللوجو -->
-            <!-- Header Event - Admin Panel Button for Desktop (تم نقله من النهاية) -->
-            <div class="flex items-center gap-4 md:gap-6">
-                <a href="admin/login" class="relative z-10 hidden sm:inline-block group">
-                    <div class="px-4 py-2 text-sm font-medium transition-all duration-300 btn md:text-base bg-white hover:bg-secondary-700">Login</div>
-                    <div class="absolute inset-0 -z-10 translate-x-[3px] translate-y-[3px] bg-primary-700 transition-all duration-300 ease-linear group-hover:translate-x-0 group-hover:translate-y-0"></div>
+            <!-- Header Logo - Fixed position from right -->
+            <div class="flex items-center gap-4 md:gap-6 order-1">
+                <a href="{{ route('home') }}" class="relative z-10 flex-shrink-0">
+                    @php
+                    $brandLogo = $siteSettings->logo ?? null;
+                    $brandName = $generalSettings->brand_name ?? $siteSettings->name ?? config('app.name', 'SuperDuper');
+                    @endphp
+
+                    @if($brandLogo)
+                    <img src="{{ Storage::url($brandLogo) }}"
+                        alt="{{ $brandName }}"
+                        class="w-auto h-10 md:h-12" />
+                    @else
+                    <div class="flex items-center">
+                        <span class="text-xl font-bold md:text-2xl text-primary-800 dark:text-white header-brand-text">{{ $brandName }}</span>
+                    </div>
+                    @endif
                 </a>
             </div>
 
             <!-- Header Navigation -->
-            <div class="menu-block-wrapper lg:static">
+            <div class="menu-block-wrapper lg:static order-2" dir="ltr">
                 <div class="fixed inset-0 z-40 menu-overlay bg-primary-white/70 backdrop-blur-sm lg:hidden" style="display: none;"></div>
                 <nav class="menu-block fixed top-0 right-0 bottom-0 w-[280px] text-secondary-600 md:w-[320px] bg-white dark:bg-primary-800 z-50 shadow-2xl overflow-y-auto transform translate-x-full transition-transform duration-300 lg:static lg:translate-x-0 lg:w-auto lg:bg-transparent lg:shadow-none lg:overflow-visible lg:dark:bg-transparent" id="append-menu-header">
 
@@ -107,35 +118,22 @@
                 </nav>
             </div>
 
-            <!-- تم نقل اللوجو ليكون في النهاية بدلاً من البداية -->
-            <!-- Header Logo (تم نقله من البداية) -->
-            <div class="flex items-center gap-4 md:gap-6">
-                <a href="{{ route('home') }}" class="relative z-10 flex-shrink-0">
-                    @php
-                    $brandLogo = $siteSettings->logo ?? null;
-                    $brandName = $generalSettings->brand_name ?? $siteSettings->name ?? config('app.name', 'SuperDuper');
-                    @endphp
-
-                    @if($brandLogo)
-                    <img src="{{ Storage::url($brandLogo) }}"
-                        alt="{{ $brandName }}"
-                        class="w-auto h-10 md:h-12" />
-                    @else
-                    <div class="flex items-center">
-                        <span class="text-xl font-bold md:text-2xl text-primary-800 dark:text-white header-brand-text">{{ $brandName }}</span>
-                    </div>
-                    @endif
-                </a>
-
-                <!-- زر القائمة للجوال (تم الاحتفاظ به في نفس المكان) -->
+            <!-- Mobile Menu Button - Far Left -->
+            <div class="flex items-center gap-4 md:gap-6 order-3">
+                <!-- Mobile Menu Button -->
                 <div class="block lg:hidden">
                     <button id="openBtn" class="flex flex-col items-center justify-center w-10 h-10 rounded-md hamburger-menu mobile-menu-trigger focus:outline-none focus:ring-2 focus:ring-primary-600">
-                        <!-- تم تغيير لون خطوط قائمة الجوال إلى الأسود في الوضع الافتراضي -->
                         <span class="block w-6 h-0.5 bg-black dark:bg-black mb-1.5 transition-transform hamburger-line"></span>
                         <span class="block w-6 h-0.5 bg-black dark:bg-black mb-1.5 transition-opacity hamburger-line"></span>
                         <span class="block w-6 h-0.5 bg-black dark:bg-black transition-transform hamburger-line"></span>
                     </button>
                 </div>
+                
+                <!-- Login Button for Desktop -->
+                <a href="admin/login" class="relative z-10 hidden lg:inline-block group">
+                    <div class="px-4 py-2 text-sm font-medium transition-all duration-300 btn md:text-base bg-white hover:bg-secondary-700">Login</div>
+                    <div class="absolute inset-0 -z-10 translate-x-[3px] translate-y-[3px] bg-primary-700 transition-all duration-300 ease-linear group-hover:translate-x-0 group-hover:translate-y-0"></div>
+                </a>
             </div>
         </div>
     </div>
@@ -189,57 +187,93 @@
         handleScroll();
 
         function setupMobileMenu() {
-            if (window.innerWidth < 1024) {
-                // Reset any previously opened submenus
-                document.querySelectorAll('.sub-menu').forEach(menu => {
+            // Reset all inline styles when switching between mobile and desktop
+            document.querySelectorAll('.sub-menu').forEach(menu => {
+                if (window.innerWidth >= 1024) {
+                    menu.style.display = '';
+                } else {
                     menu.style.display = 'none';
-                });
+                }
+            });
 
-                document.querySelector('.site-menu-main').style.display = 'block';
+            const siteMenuMain = document.querySelector('.site-menu-main');
+            if (siteMenuMain) {
+                siteMenuMain.style.display = window.innerWidth >= 1024 ? '' : 'block';
+            }
 
-                if (goBack) goBack.style.display = 'none';
+            if (goBack) {
+                goBack.style.display = window.innerWidth >= 1024 ? 'none' : 'none';
+            }
 
+            // Close mobile menu when resizing to desktop
+            if (window.innerWidth >= 1024) {
+                if (menuBlock && !menuBlock.classList.contains('translate-x-full')) {
+                    menuBlock.classList.add('translate-x-full');
+                    document.body.classList.remove('overflow-hidden');
+                    if (menuOverlay) menuOverlay.style.display = 'none';
+                    
+                    // Reset hamburger animation
+                    const spans = menuTrigger.querySelectorAll('span');
+                    spans[0].classList.remove('rotate-45', 'translate-y-2');
+                    spans[1].classList.remove('opacity-0');
+                    spans[2].classList.remove('-rotate-45', '-translate-y-2');
+                }
+                
+                // Reset menu title
+                if (currentMenuTitle) currentMenuTitle.textContent = '';
+            }
+
+            if (window.innerWidth < 1024) {
                 dropTriggers.forEach(trigger => {
-                    trigger.addEventListener('click', function(e) {
-                        if (window.innerWidth < 1024) {
-                            e.preventDefault();
-                            const parent = this.parentElement;
-                            const submenu = parent.querySelector('.sub-menu');
-                            const title = this.querySelector('span').textContent;
-
-                            if (submenu) {
-                                const siblingMenus = parent.parentElement.querySelectorAll('.sub-menu');
-                                siblingMenus.forEach(menu => {
-                                    if (menu !== submenu) menu.style.display = 'none';
-                                });
-
-                                submenu.style.display = 'block';
-                                currentMenuTitle.textContent = title;
-                                parent.parentElement.style.display = 'none';
-                                goBack.style.display = 'flex';
-                            }
-                        }
-                    });
+                    // Remove existing event listeners to prevent duplicates
+                    trigger.removeEventListener('click', handleDropTriggerClick);
+                    trigger.addEventListener('click', handleDropTriggerClick);
                 });
 
                 // Back button functionality
-                goBack.addEventListener('click', function() {
-                    const activeSubmenu = document.querySelector('.sub-menu[style="display: block;"]');
-                    if (activeSubmenu) {
-                        activeSubmenu.style.display = 'none';
-                        activeSubmenu.parentElement.parentElement.style.display = 'block';
+                if (goBack) {
+                    goBack.removeEventListener('click', handleGoBack);
+                    goBack.addEventListener('click', handleGoBack);
+                }
+            }
+        }
 
-                        if (activeSubmenu.parentElement.parentElement.classList.contains('site-menu-main')) {
-                            currentMenuTitle.textContent = '';
-                            this.style.display = 'none';
-                        } else {
-                            const parentTrigger = activeSubmenu.parentElement.parentElement.previousElementSibling;
-                            if (parentTrigger && parentTrigger.classList.contains('drop-trigger')) {
-                                currentMenuTitle.textContent = parentTrigger.querySelector('span').textContent;
-                            }
-                        }
+        function handleDropTriggerClick(e) {
+            if (window.innerWidth < 1024) {
+                e.preventDefault();
+                const parent = this.parentElement;
+                const submenu = parent.querySelector('.sub-menu');
+                const title = this.querySelector('span').textContent;
+
+                if (submenu) {
+                    const siblingMenus = parent.parentElement.querySelectorAll('.sub-menu');
+                    siblingMenus.forEach(menu => {
+                        if (menu !== submenu) menu.style.display = 'none';
+                    });
+
+                    submenu.style.display = 'block';
+                    currentMenuTitle.textContent = title;
+                    parent.parentElement.style.display = 'none';
+                    if (goBack) goBack.style.display = 'flex';
+                }
+            }
+        }
+
+        function handleGoBack() {
+            const activeSubmenu = document.querySelector('.sub-menu[style="display: block;"]');
+            if (activeSubmenu) {
+                activeSubmenu.style.display = 'none';
+                activeSubmenu.parentElement.parentElement.style.display = 'block';
+
+                if (activeSubmenu.parentElement.parentElement.classList.contains('site-menu-main')) {
+                    currentMenuTitle.textContent = '';
+                    this.style.display = 'none';
+                } else {
+                    const parentTrigger = activeSubmenu.parentElement.parentElement.previousElementSibling;
+                    if (parentTrigger && parentTrigger.classList.contains('drop-trigger')) {
+                        currentMenuTitle.textContent = parentTrigger.querySelector('span').textContent;
                     }
-                });
+                }
             }
         }
 
