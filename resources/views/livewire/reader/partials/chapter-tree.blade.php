@@ -27,8 +27,21 @@
             </span>
             
             @if($chapter->page_number)
-                <span class="mr-auto text-xs sm:text-sm {{ $isCurrentChapter ? 'text-white/80' : 'text-gray-500' }}">
+                @php
+                    // Check if there are other chapters with the same page number
+                    $samePageChapters = collect($tableOfContents['data'] ?? [])->flatMap(function($item) {
+                        if (isset($item->chapters)) {
+                            return $item->chapters;
+                        }
+                        return [$item];
+                    })->where('page_number', $chapter->page_number)->count();
+                @endphp
+                
+                <span class="mr-auto text-xs sm:text-sm {{ $isCurrentChapter ? 'text-white/80' : 'text-gray-500' }} flex items-center gap-1">
                     ({{ $chapter->page_number }})
+                    @if($samePageChapters > 1)
+                        <span class="inline-block w-1.5 h-1.5 bg-orange-400 rounded-full" title="Multiple chapters on this page"></span>
+                    @endif
                 </span>
             @endif
         </div>

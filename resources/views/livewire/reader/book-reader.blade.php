@@ -18,7 +18,7 @@
     </div>
     
     <div class="page-wrapper relative z-[1]" dir="rtl">
-        <main class="relative overflow-hidden main-wrapper bg-[#f8f5f0]">
+        <main class="relative overflow-visible main-wrapper bg-[#f8f5f0]">
             <!-- أنماط الخلفية -->
             <div class="relative">
                 <div class="pattern-top top-24"></div>
@@ -61,7 +61,7 @@
                     <!-- Main Content -->
                     <div class="flex flex-col gap-4 sm:gap-6">
                         <!-- Toolbar -->
-                        <div class="bg-white rounded-xl shadow-md overflow-hidden border border-[#e0d9cc] p-3 sm:p-4">
+                        <div class="bg-white rounded-xl shadow-md overflow-visible border border-[#e0d9cc] p-3 sm:p-4">
                             <!-- Single Row Layout with Search Box in Center -->
                             <div class="flex items-center gap-3 sm:gap-4">
                                 <!-- Left Side: Mobile Menu -->
@@ -220,7 +220,7 @@
                         <!-- Mobile TOC Overlay -->
                         @if($showMobileToc)
                             <div id="book-reader-backdrop" class="fixed inset-0 bg-black bg-opacity-50 z-40 lg:hidden mobile-toc-backdrop" wire:click="closeMobileToc"></div>
-                            <div id="book-reader-mobile-toc" class="fixed top-0 right-0 h-full w-80 max-w-[85vw] bg-white shadow-2xl z-50 lg:hidden mobile-toc-sidebar">
+                            <div id="book-reader-mobile-toc" class="fixed top-0 right-0 h-full w-80 max-w-[85vw] bg-white shadow-2xl z-50 lg:hidden mobile-toc-sidebar mobile-toc-active">
                                 <!-- Enhanced Mobile TOC Header -->
                                 <div class="bg-gradient-to-r from-[#5D6019] to-[#4a4d13] p-4 flex items-center justify-between shadow-lg">
                                     <div class="flex items-center gap-3">
@@ -371,7 +371,7 @@
                         <!-- Content Area -->
                         <div class="flex flex-col lg:flex-row gap-4 sm:gap-6">
                             <!-- Sidebar (Right) - Hidden on mobile when mobile TOC is active -->
-                            <aside class="lg:w-72 flex-shrink-0 w-full hidden lg:block">
+                            <aside class="lg:w-72 flex-shrink-0 w-full hidden lg:block {{ $showMobileToc ? 'desktop-toc-hidden' : '' }}">
                                 <div class="bg-white rounded-xl shadow-md overflow-hidden border border-[#e0d9cc] h-full">
                                     <div class="bg-[#5D6019] p-3 sm:p-4">
                                         <h2 class="text-white text-xl sm:text-2xl font-bold font-tajawal mb-3">فهرس المحتويات</h2>
@@ -786,27 +786,116 @@
              }
          });
          
-         // Enhanced Livewire updates with smooth animations
+         // Enhanced Livewire updates with smooth animations and conflict prevention
+         let tocUpdateTimeout;
          document.addEventListener('livewire:updated', function() {
-             const showMobileToc = @json($showMobileToc ?? false);
-             const mobileToc = document.getElementById('book-reader-mobile-toc');
-             
-             // Manage body scroll class
-             if (showMobileToc) {
-                 document.body.classList.add('mobile-toc-open');
-                 // Add show class for smooth animation
-                 if (mobileToc) {
-                     setTimeout(() => mobileToc.classList.add('show'), 10);
-                 }
-             } else {
-                 document.body.classList.remove('mobile-toc-open');
-                 // Remove show class
-                 if (mobileToc) {
-                     mobileToc.classList.remove('show');
-                 }
+             // Clear any pending updates to prevent conflicts
+             if (tocUpdateTimeout) {
+                 clearTimeout(tocUpdateTimeout);
              }
+             
+             tocUpdateTimeout = setTimeout(() => {
+                 const showMobileToc = @json($showMobileToc ?? false);
+                 const mobileToc = document.getElementById('book-reader-mobile-toc');
+                 const desktopToc = document.querySelector('.lg\\:w-72.flex-shrink-0');
+                 
+                 // Manage body scroll class
+                 if (showMobileToc) {
+                     document.body.classList.add('mobile-toc-open');
+                     // Add show class for smooth animation
+                     if (mobileToc) {
+                         setTimeout(() => mobileToc.classList.add('show'), 10);
+                     }
+                     // Ensure desktop TOC is hidden on mobile
+                     if (desktopToc && window.innerWidth < 1024) {
+                         desktopToc.style.display = 'none';
+                     }
+                 } else {
+                     document.body.classList.remove('mobile-toc-open');
+                     // Remove show class
+                     if (mobileToc) {
+                         mobileToc.classList.remove('show');
+                     }
+                     // Restore desktop TOC visibility
+                     if (desktopToc && window.innerWidth >= 1024) {
+                         desktopToc.style.display = '';
+                     }
+                 }
+                 
+                 // Additional safety check to prevent both TOCs from showing
+                 if (window.innerWidth < 1024 && mobileToc && desktopToc) {
+                     if (showMobileToc) {
+                         desktopToc.style.display = 'none';
+                     } else {
+                         mobileToc.style.display = 'none';
+                     }
+                 }
+             }, 50); // Debounce with 50ms delay
+         });
+         
+         // Window resize handler to manage TOC visibility
+         let resizeTimeout;
+         window.addEventListener('resize', function() {
+             if (resizeTimeout) {
+                 clearTimeout(resizeTimeout);
+             }
+             
+             resizeTimeout = setTimeout(() => {
+                 const showMobileToc = @json($showMobileToc ?? false);
+                 const mobileToc = document.getElementById('book-reader-mobile-toc');
+                 const desktopToc = document.querySelector('.lg\\:w-72.flex-shrink-0');
+                 
+                 if (window.innerWidth >= 1024) {
+                     // Desktop view - hide mobile TOC, show desktop TOC
+                     if (mobileToc) {
+                         mobileToc.style.display = 'none';
+                     }
+                     if (desktopToc) {
+                         desktopToc.style.display = '';
+                     }
+                     document.body.classList.remove('mobile-toc-open');
+                     // Close mobile TOC if open
+                     if (showMobileToc) {
+                         @this.set('showMobileToc', false);
+                     }
+                 } else {
+                     // Mobile view - hide desktop TOC
+                     if (desktopToc) {
+                         desktopToc.style.display = 'none';
+                     }
+                     if (mobileToc) {
+                         mobileToc.style.display = showMobileToc ? '' : 'none';
+                     }
+                 }
+             }, 100); // Debounce with 100ms delay
          });
         
+        // Function to scroll TOC to current chapter
+        function scrollToCurrentChapter() {
+            // Find the active chapter in both desktop and mobile TOC
+            const activeChapters = document.querySelectorAll('.toc-item.active');
+            
+            activeChapters.forEach(activeChapter => {
+                const tocContainer = activeChapter.closest('.toc-container, #book-reader-mobile-toc .overflow-y-auto');
+                
+                if (tocContainer && activeChapter) {
+                    // Calculate the position to scroll to
+                    const containerRect = tocContainer.getBoundingClientRect();
+                    const chapterRect = activeChapter.getBoundingClientRect();
+                    const scrollTop = tocContainer.scrollTop;
+                    
+                    // Calculate the target scroll position (center the active chapter)
+                    const targetScrollTop = scrollTop + chapterRect.top - containerRect.top - (containerRect.height / 2) + (chapterRect.height / 2);
+                    
+                    // Smooth scroll to the target position
+                    tocContainer.scrollTo({
+                        top: Math.max(0, targetScrollTop),
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        }
+
         // Listen for URL updates and font size changes
         document.addEventListener('livewire:init', () => {
             console.log('Livewire initialized successfully');
@@ -871,12 +960,17 @@
                 }
             });
             
-            // Also listen for Livewire updates to refresh font display
+            // Also listen for Livewire updates to refresh font display and scroll TOC
              document.addEventListener('livewire:updated', () => {
                  const fontDisplay = document.getElementById('font-percent-display');
                  if (fontDisplay) {
                      console.log('Livewire updated, font display found');
                  }
+                 
+                 // Scroll TOC to current chapter after Livewire update
+                 setTimeout(() => {
+                     scrollToCurrentChapter();
+                 }, 100);
              });
         });
         
@@ -887,6 +981,11 @@
             // Debug TOC expansion state
             console.log('Expanded volumes:', @json($expandedVolumes ?? []));
             console.log('Expanded chapters:', @json($expandedChapters ?? []));
+            
+            // Scroll TOC to current chapter on initial load
+            setTimeout(() => {
+                scrollToCurrentChapter();
+            }, 500);
             
             // Test font size buttons
             const increaseFontBtn = document.getElementById('increase-font-btn');
@@ -1256,6 +1355,39 @@
         
         .prose p, .prose div, .prose span {
             font-size: inherit !important;
+        }
+        
+        /* TOC Conflict Prevention */
+        .mobile-toc-active ~ .desktop-toc-hidden {
+            display: none !important;
+        }
+        
+        /* Enhanced TOC Transitions */
+        .mobile-toc-sidebar {
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .mobile-toc-backdrop {
+            transition: opacity 0.3s ease-in-out;
+        }
+        
+        /* Prevent body scroll when mobile TOC is open */
+        body.mobile-toc-open {
+            overflow: hidden;
+        }
+        
+        /* Additional safety check for TOC visibility */
+        @media (min-width: 1024px) {
+            .mobile-toc-sidebar,
+            .mobile-toc-backdrop {
+                display: none !important;
+            }
+        }
+        
+        @media (max-width: 1023px) {
+            .desktop-toc-hidden {
+                display: none !important;
+            }
         }
     </style>
 </div>
