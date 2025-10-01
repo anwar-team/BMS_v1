@@ -40,17 +40,17 @@ class ContentResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\Tabs::make('Banner Details')
+                Forms\Components\Tabs::make('تفاصيل البانر')
                     ->tabs([
-                        Forms\Components\Tabs\Tab::make('General')
+                        Forms\Components\Tabs\Tab::make('عام')
                             ->icon('heroicon-o-information-circle')
                             ->schema([
-                                Forms\Components\Section::make('Main Details')
-                                    ->description('Fill out the main details of the banner')
+                                Forms\Components\Section::make('التفاصيل الرئيسية')
+                                    ->description('املأ التفاصيل الرئيسية للبانر')
                                     ->icon('heroicon-o-clipboard')
                                     ->schema([
                                         Forms\Components\Select::make('banner_category_id')
-                                            ->label('Category')
+                                            ->label('الفئة')
                                             ->relationship('category', 'name')
                                             ->searchable()
                                             ->preload()

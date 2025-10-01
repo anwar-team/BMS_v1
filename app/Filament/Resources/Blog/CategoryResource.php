@@ -30,12 +30,12 @@ class CategoryResource extends Resource
     {
         return $form
             ->schema([
-                Tabs::make('Category Details')
+                Tabs::make('تفاصيل الفئة')
                     ->tabs([
-                        Tabs\Tab::make('Basic Information')
+                        Tabs\Tab::make('المعلومات الأساسية')
                             ->schema([
                                 Forms\Components\Select::make('parent_id')
-                                    ->label('Parent Category')
+                                    ->label('الفئة الأب')
                                     ->options(function () {
                                         // Exclude the current category if editing
                                         $query = Category::query();

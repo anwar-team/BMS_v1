@@ -66,15 +66,15 @@ class PostResource extends Resource implements HasShieldPermissions
             ->schema([
                 Forms\Components\Group::make()
                     ->schema([
-                        Forms\Components\Section::make('Post Content')
-                            ->description('The main content of your blog post')
+                        Forms\Components\Section::make('محتوى المقال')
+                            ->description('المحتوى الرئيسي لمقال المدونة')
                             ->icon('heroicon-o-document-text')
                             ->schema([
                                 Forms\Components\TextInput::make('title')
                                     ->required()
                                     ->live(onBlur: true)
                                     ->maxLength(255)
-                                    ->placeholder('Enter post title')
+                                    ->placeholder('أدخل عنوان المقال')
                                     ->afterStateUpdated(fn(string $operation, $state, Forms\Set $set) => $operation === 'create' ? $set('slug', Str::slug($state)) : null),
 
                                 Forms\Components\TextInput::make('slug')
@@ -155,19 +155,19 @@ class PostResource extends Resource implements HasShieldPermissions
                                     ->extraInputAttributes(['style' => 'min-height: 500px;']),
                             ]),
 
-                        Forms\Components\Section::make('Media')
-                            ->description('Visual elements for your post')
+                        Forms\Components\Section::make('الوسائط')
+                            ->description('العناصر المرئية للمقال')
                             ->icon('heroicon-o-photo')
                             ->schema([
                                 SpatieMediaLibraryFileUpload::make('featured')
-                                    ->label('Featured Image')
+                                    ->label('الصورة البارزة')
                                     ->collection('featured')
                                     ->image()
                                     ->imageResizeMode('contain')
                                     ->imageCropAspectRatio('16:9')
                                     ->imageResizeTargetWidth('1200')
                                     ->imageResizeTargetHeight('675')
-                                    ->helperText('This image will be displayed prominently in post listings and social shares (16:9 ratio recommended)')
+                                    ->helperText('ستظهر هذه الصورة بشكل بارز في قوائم المقالات والمشاركات الاجتماعية (نسبة 16:9 موصى بها)')
                                     ->downloadable()
                                     ->responsiveImages(),
                             ]),
@@ -176,8 +176,8 @@ class PostResource extends Resource implements HasShieldPermissions
 
                 Forms\Components\Group::make()
                     ->schema([
-                        Forms\Components\Section::make('Status & Visibility')
-                            ->description('Control how this post appears')
+                        Forms\Components\Section::make('الحالة والرؤية')
+                            ->description('التحكم في كيفية ظهور هذا المقال')
                             ->icon('heroicon-o-eye')
                             ->schema([
                                 Forms\Components\Select::make('status')
@@ -224,10 +224,10 @@ class PostResource extends Resource implements HasShieldPermissions
                                     }),
 
                                 Forms\Components\DatePicker::make('published_at')
-                                    ->label('Publication Date')
+                                    ->label('تاريخ النشر')
                                     ->required(fn(Get $get): bool => $get('status') === PostStatus::PUBLISHED->value)
-                                    ->placeholder('Select publication date')
-                                    ->helperText('Date when the post will be published')
+                                    ->placeholder('اختر تاريخ النشر')
+                                    ->helperText('التاريخ الذي سيتم نشر المقال فيه')
                                     ->default(now())
                                     ->disabled(function () {
                                         $user = Auth::user();
@@ -235,13 +235,13 @@ class PostResource extends Resource implements HasShieldPermissions
                                     }),
 
                                 Forms\Components\DateTimePicker::make('scheduled_at')
-                                    ->label('Schedule For')
+                                    ->label('جدولة النشر')
                                     ->required(fn(Get $get): bool => $get('status') === PostStatus::PENDING->value)
                                     ->visible(fn(Get $get): bool => $get('status') === PostStatus::PENDING->value)
-                                    ->placeholder('Select scheduled date')
+                                    ->placeholder('اختر موعد الجدولة')
                                     ->seconds(false)
                                     ->timezone('UTC')
-                                    ->hint('Post will be automatically published at this time')
+                                    ->hint('سيتم نشر المقال تلقائياً في هذا الوقت')
                                     ->hintIcon('heroicon-m-clock')
                                     ->disabled(function (?Post $record) {
                                         $user = Auth::user();
@@ -249,8 +249,8 @@ class PostResource extends Resource implements HasShieldPermissions
                                     }),
 
                                 Forms\Components\Toggle::make('is_featured')
-                                    ->label('Featured Post')
-                                    ->helperText('Featured posts appear prominently on the site')
+                                    ->label('مقال مميز')
+                                    ->helperText('المقالات المميزة تظهر بشكل بارز في الموقع')
                                     ->default(false)
                                     ->visible(function (?Post $record) {
                                         $user = Auth::user();
@@ -262,24 +262,24 @@ class PostResource extends Resource implements HasShieldPermissions
                                     }),
 
                                 Forms\Components\Placeholder::make('analytics')
-                                    ->label('Post Analytics')
+                                    ->label('إحصائيات المقال')
                                     ->content(function (?Post $record): HtmlString {
                                         if (!$record) {
-                                            return new HtmlString('<span class="text-sm text-gray-500">Analytics will be available after saving</span>');
+                                            return new HtmlString('<span class="text-sm text-gray-500">ستكون الإحصائيات متاحة بعد الحفظ</span>');
                                         }
 
                                         return new HtmlString("
                                             <div class='space-y-2'>
                                                 <div class='flex justify-between'>
-                                                    <span class='text-sm text-gray-600'>Views:</span>
+                                                    <span class='text-sm text-gray-600'>المشاهدات:</span>
                                                     <span class='text-sm font-semibold'>{$record->view_count}</span>
                                                 </div>
                                                 <div class='flex justify-between'>
-                                                    <span class='text-sm text-gray-600'>Reading Time:</span>
-                                                    <span class='text-sm font-semibold'>{$record->reading_time} min</span>
+                                                    <span class='text-sm text-gray-600'>وقت القراءة:</span>
+                                                    <span class='text-sm font-semibold'>{$record->reading_time} دقيقة</span>
                                                 </div>
                                                 <div class='flex justify-between'>
-                                                    <span class='text-sm text-gray-600'>Comments:</span>
+                                                    <span class='text-sm text-gray-600'>التعليقات:</span>
                                                     <span class='text-sm font-semibold'>{$record->comments_count}</span>
                                                 </div>
                                             </div>
@@ -291,12 +291,12 @@ class PostResource extends Resource implements HasShieldPermissions
                                     }),
                             ]),
 
-                        Forms\Components\Section::make('Categorization')
-                            ->description('Organize and classify this post')
+                        Forms\Components\Section::make('التصنيف')
+                            ->description('تنظيم وتصنيف هذا المقال')
                             ->icon('heroicon-o-tag')
                             ->schema([
                                 Forms\Components\Select::make('blog_category_id')
-                                    ->label('Category')
+                                    ->label('الفئة')
                                     ->relationship('category', 'name')
                                     ->searchable()
                                     ->preload()
@@ -307,17 +307,17 @@ class PostResource extends Resource implements HasShieldPermissions
                                     ->required(),
 
                                 SpatieTagsInput::make('tags')
-                                    ->label('Tags')
-                                    ->placeholder('Add tags')
-                                    ->helperText('Comma-separated tags to help with search and filtering'),
+                                    ->label('العلامات')
+                                    ->placeholder('أضف علامات')
+                                    ->helperText('علامات مفصولة بفواصل للمساعدة في البحث والتصفية'),
                             ]),
 
-                        Forms\Components\Section::make('Attribution')
-                            ->description('Who created this post')
+                        Forms\Components\Section::make('الإسناد')
+                            ->description('من أنشأ هذا المقال')
                             ->icon('heroicon-o-user')
                             ->schema([
                                 Forms\Components\Select::make('blog_author_id')
-                                    ->label('Author')
+                                    ->label('المؤلف')
                                     ->relationship(
                                         name: 'author',
                                         modifyQueryUsing: fn(Builder $query) => $query->with('roles')->whereRelation('roles', 'name', '=', 'author'),
@@ -482,7 +482,7 @@ class PostResource extends Resource implements HasShieldPermissions
                     ->limit(30),
 
                 Tables\Columns\IconColumn::make('is_featured')
-                    ->label('Featured')
+                    ->label('مميز')
                     ->boolean()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true)
@@ -492,13 +492,13 @@ class PostResource extends Resource implements HasShieldPermissions
                     }),
 
                 Tables\Columns\TextColumn::make('author.firstname')
-                    ->label('Author')
+                    ->label('المؤلف')
                     ->formatStateUsing(fn(Model $record) => "{$record->author->firstname} {$record->author->lastname}")
                     ->searchable(['firstname', 'lastname'])
                     ->sortable(),
 
                 Tables\Columns\TextColumn::make('category.name')
-                    ->label('Category')
+                    ->label('الفئة')
                     ->searchable()
                     ->sortable(),
 
@@ -506,13 +506,13 @@ class PostResource extends Resource implements HasShieldPermissions
                     ->badge(),
 
                 Tables\Columns\TextColumn::make('reading_time')
-                    ->label('Reading')
-                    ->suffix(' min')
+                    ->label('القراءة')
+                    ->suffix(' دقيقة')
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: false),
 
                 Tables\Columns\TextColumn::make('view_count')
-                    ->label('Views')
+                    ->label('المشاهدات')
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: false)
                     ->visible(function () {
@@ -521,12 +521,12 @@ class PostResource extends Resource implements HasShieldPermissions
                     }),
 
                 Tables\Columns\TextColumn::make('published_at')
-                    ->label('Published')
+                    ->label('تاريخ النشر')
                     ->date()
                     ->sortable(),
 
                 Tables\Columns\TextColumn::make('updated_at')
-                    ->label('Last update')
+                    ->label('آخر تحديث')
                     ->since()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
@@ -541,13 +541,13 @@ class PostResource extends Resource implements HasShieldPermissions
                     ->options(PostStatus::class),
 
                 Tables\Filters\SelectFilter::make('blog_category_id')
-                    ->label('Category')
+                    ->label('الفئة')
                     ->relationship('category', 'name')
                     ->searchable()
                     ->preload(),
 
                 Tables\Filters\SelectFilter::make('blog_author_id')
-                    ->label('Author')
+                    ->label('المؤلف')
                     ->relationship('author', 'firstname')
                     ->getOptionLabelFromRecordUsing(fn(Model $record) => "{$record->firstname} {$record->lastname}")
                     ->searchable()
@@ -555,16 +555,16 @@ class PostResource extends Resource implements HasShieldPermissions
                     ->visible(fn() => auth()->user()->hasAnyRole(['super_admin', 'admin', 'editor'])),
 
                 Tables\Filters\Filter::make('is_featured')
-                    ->label('Featured Posts')
+                    ->label('المقالات المميزة')
                     ->query(fn(Builder $query): Builder => $query->where('is_featured', true))
                     ->visible(fn() => auth()->user()->hasAnyRole(['super_admin', 'admin', 'editor'])),
 
                 Tables\Filters\Filter::make('published')
-                    ->label('Published Posts')
+                    ->label('المقالات المنشورة')
                     ->query(fn(Builder $query): Builder => $query->published()),
 
                 Tables\Filters\Filter::make('published_at')
-                    ->label('Published This Month')
+                    ->label('منشور هذا الشهر')
                     ->query(fn(Builder $query): Builder => $query->whereMonth('published_at', now()->month)),
 
                 Tables\Filters\Filter::make('pending_approval')

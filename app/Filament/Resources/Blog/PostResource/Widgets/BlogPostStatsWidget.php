@@ -42,28 +42,28 @@ class BlogPostStatsWidget extends BaseWidget
             : 0;
         $trend = $percentageChange >= 0 ? 'up' : 'down';
         return [
-            Stat::make('Total Posts', $totalPosts)
-                ->description('All blog posts')
+            Stat::make('إجمالي المقالات', $totalPosts)
+                ->description('جميع مقالات المدونة')
                 ->descriptionIcon('heroicon-m-document-text')
                 ->color('gray'),
-            Stat::make('Published', $publishedPosts)
-                ->description('Live on the site')
+            Stat::make('منشورة', $publishedPosts)
+                ->description('نشطة على الموقع')
                 ->descriptionIcon('heroicon-m-check-circle')
                 ->color('success'),
-            Stat::make('Drafts', $draftPosts)
-                ->description('Posts in progress')
+            Stat::make('مسودات', $draftPosts)
+                ->description('مقالات قيد التحرير')
                 ->descriptionIcon('heroicon-m-document')
                 ->color('warning'),
-            Stat::make('Pending', $pendingPosts)
-                ->description('Scheduled for publication')
+            Stat::make('في الانتظار', $pendingPosts)
+                ->description('مجدولة للنشر')
                 ->descriptionIcon('heroicon-m-clock')
                 ->color('info'),
-            Stat::make('This Month', $postsThisMonth)
-                ->description($percentageChange . '% ' . $trend . ' from last month')
+            Stat::make('هذا الشهر', $postsThisMonth)
+                ->description($percentageChange . '% ' . ($trend === 'up' ? 'زيادة' : 'نقص') . ' عن الشهر الماضي')
                 ->descriptionIcon($trend === 'up' ? 'heroicon-m-arrow-trending-up' : 'heroicon-m-arrow-trending-down')
                 ->color($trend === 'up' ? 'success' : 'danger'),
-            Stat::make('Categories', Category::active()->count())
-                ->description('Active categories')
+            Stat::make('الفئات', Category::active()->count())
+                ->description('الفئات النشطة')
                 ->descriptionIcon('heroicon-m-tag')
                 ->color('primary'),
         ];

@@ -40,24 +40,24 @@ class BannerStatsOverview extends BaseWidget
             ->count();
 
         return [
-            Stat::make('Active Banners', $activeBanners)
-                ->description($activePercentage . '% of total banners')
+            Stat::make('البانرات النشطة', $activeBanners)
+                ->description($activePercentage . '% من إجمالي البانرات')
                 ->descriptionIcon('heroicon-m-arrow-trending-up')
                 ->chart([7, 4, 6, 8, 7, $activePercentage])
                 ->color('success'),
 
-            Stat::make('Total Categories', $totalCategories)
-                ->description($activeCategories . ' active categories')
+            Stat::make('إجمالي الفئات', $totalCategories)
+                ->description($activeCategories . ' فئة نشطة')
                 ->descriptionIcon('heroicon-m-folder')
                 ->color('primary'),
 
-            Stat::make('Total Impressions', number_format($totalImpressions))
-                ->description('CTR: ' . $ctr . '%')
+            Stat::make('إجمالي المشاهدات', number_format($totalImpressions))
+                ->description('معدل النقر: ' . $ctr . '%')
                 ->descriptionIcon('heroicon-m-cursor-arrow-rays')
                 ->color($ctr > 2 ? 'success' : 'warning'),
 
-            Stat::make('Scheduled', $scheduledBanners)
-                ->description($expiringBanners . ' expiring soon')
+            Stat::make('مجدولة', $scheduledBanners)
+                ->description($expiringBanners . ' تنتهي قريباً')
                 ->descriptionIcon('heroicon-m-calendar')
                 ->color($expiringBanners > 0 ? 'warning' : 'success'),
         ];
