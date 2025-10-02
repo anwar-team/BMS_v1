@@ -84,48 +84,37 @@
                         </div>
                         <!-- Content Area -->
                         <div class="flex flex-col lg:flex-row gap-4 sm:gap-6">
-                            <!-- Sidebar (Right) - Table of Contents -->
-                            <aside class="lg:w-72 flex-shrink-0 w-full order-2 lg:order-1">
+                            <!-- Sidebar (Right) -->
+                            <aside class="lg:w-72 flex-shrink-0 w-full">
                                 <div class="bg-white rounded-xl shadow-md overflow-hidden border border-[#e0d9cc] h-full">
-                                    <!-- Header -->
-                                    <div class="bg-[#5D6019] p-3 sm:p-4 sticky top-0 z-10">
-                                        <h2 class="text-white text-lg sm:text-xl font-bold font-tajawal flex items-center">
-                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 sm:h-6 sm:w-6 ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
-                                            </svg>
-                                            فهرس المحتويات
-                                        </h2>
+                                    <div class="bg-[#5D6019] p-3 sm:p-4">
+                                        <h2 class="text-white text-lg sm:text-xl font-bold font-tajawal">فهرس المحتويات</h2>
                                     </div>
-                                    
-                                    <!-- Content -->
-                                    <div class="p-3 sm:p-4 max-h-[60vh] lg:max-h-[70vh] overflow-y-auto">
+                                    <div class="p-3 sm:p-4 max-h-[70vh] overflow-y-auto">
                                         @if($tableOfContents['type'] === 'volumes_with_chapters')
-                                            {{-- عرض الأجزاء مع الفصول --}}
-                                            <ul class="space-y-3 sm:space-y-4">
+                                            <!-- عرض الأجزاء مع الفصول -->
+                                            <ul class="space-y-2">
                                                 @foreach($tableOfContents['data'] as $volume)
-                                                    <li class="volume-item">
-                                                        <div class="volume-header text-[#5D6019] font-bold flex items-center gap-2 text-base sm:text-lg mb-2 pb-2 border-b-2 border-[#e0d9cc]">
-                                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 sm:h-5 sm:w-5 text-[#957717]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+                                                    <li>
+                                                        <div class="text-[#5D6019] font-bold flex items-center text-base sm:text-lg mb-2">
+                                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3 sm:h-4 sm:w-4 ml-1 sm:ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
                                                             </svg>
-                                                            <span class="flex-1">{{ $volume->title ?: 'الجزء ' . $volume->number }}</span>
+                                                            {{ $volume->title ?: 'الجزء ' . $volume->number }}
                                                         </div>
-                                                        
-                                                        @if(isset($volume->uniqueChapters) && $volume->uniqueChapters->isNotEmpty())
-                                                            <ul class="volume-chapters mr-2 sm:mr-3 space-y-1">
-                                                                @foreach($volume->uniqueChapters as $chapter)
+                                                        @if($volume->chapters->isNotEmpty())
+                                                            <ul class="mr-3 space-y-1 border-r-2 border-[#e0d9cc] pr-2 sm:pr-3">
+                                                                @foreach($volume->chapters as $chapter)
                                                                     @include('partials.chapter-tree', ['chapter' => $chapter, 'level' => 0])
                                                                 @endforeach
                                                             </ul>
-                                                        @else
-                                                            <p class="text-gray-500 text-sm mr-2 sm:mr-3 italic">لا توجد فصول في هذا الجزء</p>
                                                         @endif
                                                     </li>
                                                 @endforeach
                                             </ul>
                                         @else
-                                            {{-- عرض الفصول فقط (بدون أجزاء) --}}
-                                            <ul class="space-y-1">
+                                            <!-- عرض الفصول فقط -->
+                                            <ul class="space-y-2">
                                                 @foreach($tableOfContents['data'] as $chapter)
                                                     @include('partials.chapter-tree', ['chapter' => $chapter, 'level' => 0])
                                                 @endforeach

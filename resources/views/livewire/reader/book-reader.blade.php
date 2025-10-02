@@ -295,7 +295,7 @@
                                                                 @endif
                                                             </span>
                                                         </div>
-                                                        @if(isset($volume->uniqueChapters) && $volume->uniqueChapters->isNotEmpty())
+                                                        @if($volume->chapters->isNotEmpty())
                                                             <button wire:click="toggleVolume({{ $volume->id }})" 
                                                                     class="toc-expand-btn p-1 rounded-full hover:bg-black/10 transition-colors">
                                                                 <svg xmlns="http://www.w3.org/2000/svg" 
@@ -307,9 +307,9 @@
                                                             </button>
                                                         @endif
                                                     </div>
-                                                    @if(isset($volume->uniqueChapters) && $volume->uniqueChapters->isNotEmpty() && in_array($volume->id, $expandedVolumes))
+                                                    @if($volume->chapters->isNotEmpty() && in_array($volume->id, $expandedVolumes))
                                                         <ul class="toc-children mr-4 mt-2 space-y-1 border-r-2 border-[#e0d9cc] pr-3">
-                                                            @foreach($volume->uniqueChapters as $chapter)
+                                                            @foreach($volume->chapters as $chapter)
                                                                 @include('livewire.reader.partials.chapter-tree', ['chapter' => $chapter, 'level' => 0])
                                                             @endforeach
                                                         </ul>
@@ -431,7 +431,7 @@
                                                                     @endif
                                                                 </span>
                                                             </div>
-                                                            @if(isset($volume->uniqueChapters) && $volume->uniqueChapters->isNotEmpty())
+                                                            @if($volume->chapters->isNotEmpty())
                                                                 <button wire:click="toggleVolume({{ $volume->id }})" 
                                                                         class="toc-expand-btn p-1 rounded-full hover:bg-black/10 transition-colors">
                                                                     <svg xmlns="http://www.w3.org/2000/svg" 
@@ -443,9 +443,9 @@
                                                                 </button>
                                                             @endif
                                                         </div>
-                                                        @if(isset($volume->uniqueChapters) && $volume->uniqueChapters->isNotEmpty() && in_array($volume->id, $expandedVolumes))
+                                                        @if($volume->chapters->isNotEmpty() && in_array($volume->id, $expandedVolumes))
                                                             <ul class="toc-children mr-4 mt-2 space-y-1 border-r-2 border-[#e0d9cc] pr-3 sm:pr-4">
-                                                                @foreach($volume->uniqueChapters as $chapter)
+                                                                @foreach($volume->chapters as $chapter)
                                                                     @include('livewire.reader.partials.chapter-tree', ['chapter' => $chapter, 'level' => 0])
                                                                 @endforeach
                                                             </ul>
