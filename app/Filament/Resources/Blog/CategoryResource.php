@@ -25,6 +25,11 @@ class CategoryResource extends Resource
 
     protected static ?int $navigationSort = -1;
     protected static ?string $navigationIcon = 'fluentui-stack-20';
+     //protected static ?string $navigationGroup = 'المنشورات';
+    protected static ?string $navigationLabel = 'الفئات';
+
+
+
 
     public static function form(Form $form): Form
     {
@@ -37,7 +42,7 @@ class CategoryResource extends Resource
                                 Forms\Components\Select::make('parent_id')
                                     ->label('الفئة الأب')
                                     ->options(function () {
-                                        // Exclude the current category if editing
+                                        // استبعاد الفئة الحالية إذا كان في وضع التحرير
                                         $query = Category::query();
                                         if (request()->route('record')) {
                                             $query->where('id', '!=', request()->route('record'));
@@ -50,6 +55,7 @@ class CategoryResource extends Resource
                                     ->columnSpan('full'),
 
                                 Forms\Components\TextInput::make('name')
+                                    ->label('الاسم')
                                     ->required()
                                     ->maxLength(255)
                                     ->live(onBlur: true)
@@ -57,58 +63,65 @@ class CategoryResource extends Resource
                                         $operation === 'create' ? $set('slug', Str::slug($state)) : null),
 
                                 Forms\Components\TextInput::make('slug')
+                                    ->label('الرابط المختصر')
                                     ->required()
                                     ->maxLength(255)
                                     ->unique(Category::class, 'slug', ignoreRecord: true)
-                                    ->helperText('URL-friendly name. Will be auto-generated from the name if left empty.'),
+                                    ->helperText('اسم مناسب للرابط. سيتم إنشاؤه تلقائياً من الاسم إذا تُرك فارغاً.'),
 
                                 Forms\Components\Select::make('locale')
+                                    ->label('اللغة')
                                     ->options([
-                                        'en' => 'English',
-                                        'id' => 'Indonesian',
-                                        'zh' => 'Chinese',
-                                        'ja' => 'Japanese',
-                                        // Add more languages as needed
+                                        'ar' => 'العربية',
+                                        'en' => 'الإنجليزية',
+                                        'id' => 'الإندونيسية',
+                                        'zh' => 'الصينية',
+                                        'ja' => 'اليابانية',
+                                        // إضافة المزيد من اللغات حسب الحاجة
                                     ])
-                                    ->default('en')
+                                    ->default('ar')
                                     ->required(),
 
                                 Forms\Components\Toggle::make('is_active')
-                                    ->label('Active')
-                                    ->helperText('Only active categories will be shown on the frontend')
+                                    ->label('نشط')
+                                    ->helperText('فقط الفئات النشطة ستظهر في الواجهة الأمامية')
                                     ->default(true),
                             ]),
 
-                        Tabs\Tab::make('Content')
+                        Tabs\Tab::make('المحتوى')
                             ->schema([
                                 Forms\Components\MarkdownEditor::make('description')
+                                    ->label('الوصف')
                                     ->columnSpan('full')
                                     ->fileAttachmentsDisk('public')
                                     ->fileAttachmentsDirectory('category-images')
                                     ->fileAttachmentsVisibility('public'),
                             ]),
 
-                        Tabs\Tab::make('SEO & Meta')
+                        Tabs\Tab::make('تحسين محركات البحث والبيانات الوصفية')
                             ->schema([
                                 Forms\Components\TextInput::make('meta_title')
+                                    ->label('عنوان البيانات الوصفية')
                                     ->maxLength(255)
-                                    ->helperText('Leave blank to use the category name'),
+                                    ->helperText('اتركه فارغاً لاستخدام اسم الفئة'),
 
                                 Forms\Components\Textarea::make('meta_description')
+                                    ->label('وصف البيانات الوصفية')
                                     ->maxLength(500)
                                     ->rows(3)
-                                    ->helperText('Brief description for search engines. Recommended length: 150-160 characters.'),
+                                    ->helperText('وصف مختصر لمحركات البحث. الطول الموصى به: 150-160 حرف.'),
                             ]),
 
-                        Tabs\Tab::make('Advanced Options')
+                        Tabs\Tab::make('الخيارات المتقدمة')
                             ->schema([
                                 Forms\Components\KeyValue::make('options')
-                                    ->keyLabel('Option Name')
-                                    ->valueLabel('Option Value')
+                                    ->label('الخيارات')
+                                    ->keyLabel('اسم الخيار')
+                                    ->valueLabel('قيمة الخيار')
                                     ->addable()
                                     ->reorderable()
                                     ->columnSpan('full')
-                                    ->helperText('Custom options for this category (JSON format)')
+                                    ->helperText('خيارات مخصصة لهذه الفئة (تنسيق JSON)')
                             ]),
                     ])
                     ->columnSpan('full'),
@@ -119,51 +132,57 @@ class CategoryResource extends Resource
     {
         return $infolist
             ->schema([
-                Infolists\Components\Section::make('Basic Information')
+                Infolists\Components\Section::make('المعلومات الأساسية')
                     ->schema([
                         Infolists\Components\TextEntry::make('name')
+                            ->label('الاسم')
                             ->size(Infolists\Components\TextEntry\TextEntrySize::Large),
                         Infolists\Components\TextEntry::make('slug')
-                            ->label('Slug (URL)'),
+                            ->label('الرابط المختصر'),
                         Infolists\Components\TextEntry::make('parent.name')
-                            ->label('Parent Category')
-                            ->default('None'),
+                            ->label('الفئة الأب')
+                            ->default('لا يوجد'),
                         Infolists\Components\IconEntry::make('is_active')
-                            ->label('Status')
+                            ->label('الحالة')
                             ->boolean(),
                         Infolists\Components\TextEntry::make('locale')
-                            ->label('Language'),
+                            ->label('اللغة'),
                     ])
                     ->columns(2),
 
-                Infolists\Components\Section::make('Description')
+                Infolists\Components\Section::make('الوصف')
                     ->schema([
                         Infolists\Components\TextEntry::make('description')
+                            ->label('الوصف')
                             ->markdown(),
                     ]),
 
-                Infolists\Components\Section::make('SEO Information')
+                Infolists\Components\Section::make('معلومات تحسين محركات البحث')
                     ->schema([
-                        Infolists\Components\TextEntry::make('meta_title'),
-                        Infolists\Components\TextEntry::make('meta_description'),
+                        Infolists\Components\TextEntry::make('meta_title')
+                            ->label('عنوان البيانات الوصفية'),
+                        Infolists\Components\TextEntry::make('meta_description')
+                            ->label('وصف البيانات الوصفية'),
                     ])
                     ->columns(2),
 
-                Infolists\Components\Section::make('Statistics')
+                Infolists\Components\Section::make('الإحصائيات')
                     ->schema([
                         Infolists\Components\TextEntry::make('posts_count')
-                            ->label('Number of Posts')
+                            ->label('عدد المقالات')
                             ->state(fn(Category $record): int => $record->posts()->count()),
                         Infolists\Components\TextEntry::make('created_at')
+                            ->label('تاريخ الإنشاء')
                             ->dateTime(),
                         Infolists\Components\TextEntry::make('updated_at')
+                            ->label('تاريخ التحديث')
                             ->dateTime(),
                         Infolists\Components\TextEntry::make('creator.name')
-                            ->label('Created By')
-                            ->default('System'),
+                            ->label('أنشأ بواسطة')
+                            ->default('النظام'),
                         Infolists\Components\TextEntry::make('updater.name')
-                            ->label('Last Updated By')
-                            ->default('System'),
+                            ->label('آخر تحديث بواسطة')
+                            ->default('النظام'),
                     ])
                     ->columns(2),
             ]);
@@ -174,104 +193,111 @@ class CategoryResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('name')
+                    ->label('الاسم')
                     ->searchable()
                     ->sortable()
-                    ->description(fn(Category $record) => $record->parent ? "Child of {$record->parent->name}" : '')
+                    ->description(fn(Category $record) => $record->parent ? "فرع من {$record->parent->name}" : '')
                     ->wrap(),
                 Tables\Columns\TextColumn::make('slug')
+                    ->label('الرابط المختصر')
                     ->searchable()
                     ->toggleable(),
                 Tables\Columns\TextColumn::make('locale')
+                    ->label('اللغة')
                     ->badge()
                     ->searchable()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: false),
                 Tables\Columns\IconColumn::make('is_active')
-                    ->label('Status')
+                    ->label('الحالة')
                     ->boolean()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true)
                     ->alignCenter(),
                 Tables\Columns\TextColumn::make('posts_count')
-                    ->label('Posts')
+                    ->label('المقالات')
                     ->counts('posts')
                     ->sortable()
                     ->alignCenter(),
                 Tables\Columns\TextColumn::make('updated_at')
+                    ->label('آخر تحديث')
                     ->since()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
                 Tables\Filters\SelectFilter::make('parent_id')
-                    ->label('Parent Category')
+                    ->label('الفئة الأب')
                     ->options(fn() => Category::pluck('name', 'id'))
                     ->searchable()
                     ->preload(),
                 Tables\Filters\SelectFilter::make('locale')
+                    ->label('اللغة')
                     ->options([
-                        'en' => 'English',
-                        'id' => 'Indonesian',
-                        'zh' => 'Chinese',
-                        'ja' => 'Japanese',
+                        'ar' => 'العربية',
+                        'en' => 'الإنجليزية',
+                        'id' => 'الإندونيسية',
+                        'zh' => 'الصينية',
+                        'ja' => 'اليابانية',
                     ]),
                 Tables\Filters\TernaryFilter::make('is_active')
-                    ->label('Active Status'),
+                    ->label('حالة النشاط'),
                 Tables\Filters\TernaryFilter::make('root')
-                    ->label('Root Categories Only')
+                    ->label('الفئات الجذرية فقط')
                     ->queries(
                         true: fn(Builder $query) => $query->whereNull('parent_id'),
                         false: fn(Builder $query) => $query->whereNotNull('parent_id'),
                     ),
             ])
             ->actions([
-                Tables\Actions\ViewAction::make()->hiddenLabel()->tooltip('View'),
-                Tables\Actions\EditAction::make()->hiddenLabel()->tooltip('Edit'),
+                Tables\Actions\ViewAction::make()->hiddenLabel()->tooltip('عرض'),
+                Tables\Actions\EditAction::make()->hiddenLabel()->tooltip('تحرير'),
                 Tables\Actions\ActionGroup::make([
                     Tables\Actions\Action::make('view_posts')
-                        ->label('View Posts')
+                        ->label('عرض المقالات')
                         ->icon('heroicon-m-photo')
                         ->url(fn(Category $record): string => PostResource::getUrl('index', [
                             'tableFilters[blog_category_id][value]' => $record->id,
                         ]))
                         ->openUrlInNewTab(),
                     Tables\Actions\Action::make('clone')
-                        ->label('Clone Category')
+                        ->label('نسخ الفئة')
                         ->icon('heroicon-m-document-duplicate')
                         ->requiresConfirmation()
                         ->action(function (Category $record) {
-                            // Get only the fillable attributes
+                            // الحصول على الخصائص القابلة للملء فقط
                             $attributes = $record->only($record->getFillable());
 
-                            // Create a new instance and fill it with the attributes
+                            // إنشاء مثيل جديد وملؤه بالخصائص
                             $clone = new Category($attributes);
 
-                            // Set the new name and slug
-                            $clone->name = "{$record->name} (Clone)";
+                            // تعيين الاسم والرابط المختصر الجديد
+                            $clone->name = "{$record->name} (نسخة)";
                             $clone->slug = Str::slug($clone->name);
 
-                            // Set the creator/updater
+                            // تعيين المنشئ/المحدث
                             $clone->created_by = auth()->id();
                             $clone->updated_by = auth()->id();
 
-                            // Save the clone
+                            // حفظ النسخة
                             $clone->save();
 
-                            // Redirect to the edit page of the new clone
+                            // إعادة التوجيه إلى صفحة تحرير النسخة الجديدة
                             return redirect()->route('filament.admin.resources.blog.categories.edit', ['record' => $clone->id]);
                         }),
                 ]),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+                    Tables\Actions\DeleteBulkAction::make()
+                        ->label('حذف'),
                     Tables\Actions\BulkAction::make('activate')
-                        ->label('Set Active')
+                        ->label('تفعيل')
                         ->icon('heroicon-m-check-circle')
                         ->requiresConfirmation()
                         ->action(fn(Category $records) => $records->each->update(['is_active' => true])),
                     Tables\Actions\BulkAction::make('deactivate')
-                        ->label('Set Inactive')
+                        ->label('إلغاء التفعيل')
                         ->icon('heroicon-m-x-circle')
                         ->requiresConfirmation()
                         ->action(fn(Category $records) => $records->each->update(['is_active' => false])),
