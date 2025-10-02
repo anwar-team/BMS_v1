@@ -71,6 +71,7 @@ class PostResource extends Resource implements HasShieldPermissions
                             ->icon('heroicon-o-document-text')
                             ->schema([
                                 Forms\Components\TextInput::make('title')
+                                    ->label('العنوان')
                                     ->required()
                                     ->live(onBlur: true)
                                     ->maxLength(255)
@@ -78,20 +79,21 @@ class PostResource extends Resource implements HasShieldPermissions
                                     ->afterStateUpdated(fn(string $operation, $state, Forms\Set $set) => $operation === 'create' ? $set('slug', Str::slug($state)) : null),
 
                                 Forms\Components\TextInput::make('slug')
+                                    ->label('الرابط المختصر')
                                     ->disabled()
                                     ->dehydrated()
                                     ->required()
                                     ->maxLength(255)
                                     ->unique(Post::class, 'slug', ignoreRecord: true)
-                                    ->helperText('URL-friendly version of the title - generated automatically')
+                                    ->helperText('نسخة مناسبة للرابط من العنوان - يتم إنشاؤها تلقائياً')
                                     ->suffixAction(function (string $operation) {
                                         if ($operation === 'edit') {
                                             return Forms\Components\Actions\Action::make('editSlug')
                                                 ->icon('heroicon-o-pencil-square')
-                                                ->modalHeading('Edit Slug')
-                                                ->modalDescription('Customize the URL slug for this post. Use lowercase letters, numbers, and hyphens only.')
+                                                ->modalHeading('تحرير الرابط المختصر')
+                                                ->modalDescription('تخصيص الرابط المختصر لهذا المقال. استخدم الأحرف الصغيرة والأرقام والشرطات فقط.')
                                                 ->modalIcon('heroicon-o-link')
-                                                ->modalSubmitActionLabel('Update Slug')
+                                                ->modalSubmitActionLabel('تحديث الرابط المختصر')
                                                 ->form([
                                                     Forms\Components\TextInput::make('new_slug')
                                                         ->hiddenLabel()
@@ -102,13 +104,13 @@ class PostResource extends Resource implements HasShieldPermissions
                                                             $set('new_slug', Str::slug($state));
                                                         })
                                                         ->unique(Post::class, 'slug', ignoreRecord: true)
-                                                        ->helperText('The slug will be automatically formatted as you type.')
+                                                        ->helperText('سيتم تنسيق الرابط المختصر تلقائياً أثناء الكتابة.')
                                                 ])
                                                 ->action(function (array $data, Forms\Set $set) {
                                                     $set('slug', $data['new_slug']);
 
                                                     Notification::make()
-                                                        ->title('Slug updated')
+                                                        ->title('تم تحديث الرابط المختصر')
                                                         ->success()
                                                         ->send();
                                                 });
@@ -117,12 +119,14 @@ class PostResource extends Resource implements HasShieldPermissions
                                     }),
 
                                 Forms\Components\Textarea::make('content_overview')
+                                    ->label('نظرة عامة على المحتوى')
                                     ->required()
-                                    ->placeholder('Provide a brief summary or excerpt of this post')
-                                    ->helperText('This will appear on the blog listing page')
+                                    ->placeholder('قدم ملخصاً مختصراً أو مقتطفاً من هذا المقال')
+                                    ->helperText('سيظهر هذا في صفحة قائمة المدونة')
                                     ->rows(5),
 
                                 Forms\Components\RichEditor::make('content_raw')
+                                    ->label('محتوى المقال')
                                     ->toolbarButtons([
                                         'attachFiles',
                                         'blockquote',
@@ -141,16 +145,16 @@ class PostResource extends Resource implements HasShieldPermissions
                                         'undo',
                                     ])
                                     ->required()
-                                    ->placeholder('Write your post content here...')
+                                    ->placeholder('اكتب محتوى مقالك هنا...')
                                     ->fileAttachmentsDisk('public')
                                     ->fileAttachmentsDirectory('blog/posts/content-uploads')
                                     ->columnSpanFull()
                                     ->maxLength(65535)
-                                    ->helperText('Format your content using the toolbar above')
+                                    ->helperText('قم بتنسيق المحتوى باستخدام شريط الأدوات أعلاه')
                                     ->hint(function (Get $get): string {
                                         $wordCount = str_word_count(strip_tags($get('content_raw')));
-                                        $readingTime = ceil($wordCount / 200); // Assuming 200 words per minute
-                                        return "{$wordCount} words | ~{$readingTime} min read";
+                                        $readingTime = ceil($wordCount / 200); // افتراض 200 كلمة في الدقيقة
+                                        return "{$wordCount} كلمة | ~{$readingTime} دقيقة قراءة";
                                     })
                                     ->extraInputAttributes(['style' => 'min-height: 500px;']),
                             ]),
@@ -181,6 +185,7 @@ class PostResource extends Resource implements HasShieldPermissions
                             ->icon('heroicon-o-eye')
                             ->schema([
                                 Forms\Components\Select::make('status')
+                                    ->label('الحالة')
                                     ->options(function (?Post $record) {
                                         $user = Auth::user();
                                         $currentStatus = $record?->status;
@@ -188,9 +193,17 @@ class PostResource extends Resource implements HasShieldPermissions
                                         $allowedStatuses = [];
 
                                         if ($user && $user->isSuperAdmin()) {
-                                            $allowedStatuses = PostStatus::class;
+                                            $allowedStatuses = [
+                                                PostStatus::DRAFT->value => PostStatus::DRAFT->getLabel(),
+                                                PostStatus::PENDING->value => PostStatus::PENDING->getLabel(),
+                                                PostStatus::PUBLISHED->value => PostStatus::PUBLISHED->getLabel(),
+                                            ];
                                         } elseif ($user && $user->hasAnyRole(['admin', 'editor'])) {
-                                            $allowedStatuses = PostStatus::class;
+                                            $allowedStatuses = [
+                                                PostStatus::DRAFT->value => PostStatus::DRAFT->getLabel(),
+                                                PostStatus::PENDING->value => PostStatus::PENDING->getLabel(),
+                                                PostStatus::PUBLISHED->value => PostStatus::PUBLISHED->getLabel(),
+                                            ];
                                         } elseif ($user && $user->hasRole('author')) {
                                             $allowedStatuses = [
                                                 PostStatus::DRAFT->value => PostStatus::DRAFT->getLabel(),
@@ -218,9 +231,9 @@ class PostResource extends Resource implements HasShieldPermissions
                                     ->helperText(function () {
                                         $user = Auth::user();
                                         if ($user && $user->hasRole('author')) {
-                                            return 'Authors can create drafts or submit for review. Only editors can publish.';
+                                            return 'يمكن للكتاب إنشاء مسودات أو تقديمها للمراجعة. المحررون فقط يمكنهم النشر.';
                                         }
-                                        return 'Control the publication status of this post.';
+                                        return 'التحكم في حالة نشر هذا المقال.';
                                     }),
 
                                 Forms\Components\DatePicker::make('published_at')
@@ -302,6 +315,7 @@ class PostResource extends Resource implements HasShieldPermissions
                                     ->preload()
                                     ->createOptionForm([
                                         Forms\Components\TextInput::make('name')
+                                            ->label('الاسم')
                                             ->required(),
                                     ])
                                     ->required(),
@@ -345,35 +359,35 @@ class PostResource extends Resource implements HasShieldPermissions
                                         if (!$user) return '';
 
                                         if ($user->isSuperAdmin()) {
-                                            return 'Super Admin can change any post author.';
+                                            return 'المدير العام يمكنه تغيير مؤلف أي مقال.';
                                         }
 
                                         if (!$user->can('change_author_blog::post')) {
-                                            return 'Only administrators can change the post author.';
+                                            return 'المديرون فقط يمكنهم تغيير مؤلف المقال.';
                                         }
-                                        return 'Select the author for this post.';
+                                        return 'اختر المؤلف لهذا المقال.';
                                     }),
 
                                 Forms\Components\Placeholder::make('audit_trail')
                                     ->label('')
                                     ->content(function (Post $record): HtmlString {
                                         if ($record->exists) {
-                                            $creatorName = $record->creator ? "{$record->creator->firstname} {$record->creator->lastname}" : 'Unknown';
-                                            $updaterName = $record->updater ? "{$record->updater->firstname} {$record->updater->lastname}" : 'Unknown';
+                                            $creatorName = $record->creator ? "{$record->creator->firstname} {$record->creator->lastname}" : 'غير معروف';
+                                            $updaterName = $record->updater ? "{$record->updater->firstname} {$record->updater->lastname}" : 'غير معروف';
                                             $createdAt = $record->created_at?->format('M d, Y \a\t h:ia');
                                             $updatedAt = $record->updated_at?->diffForHumans();
 
                                             return new HtmlString("
                                                 <div class='space-y-4'>
                                                     <div>
-                                                        <div class='text-sm font-medium text-gray-400 dark:text-gray-400'>Created by</div>
+                                                        <div class='text-sm font-medium text-gray-400 dark:text-gray-400'>أنشئ بواسطة</div>
                                                         <div class='flex items-center space-x-2'>
                                                             <span class='text-sm font-bold text-primary-600 dark:text-primary-400'>{$creatorName}</span>
-                                                            <span class='text-xs text-gray-500 dark:text-gray-400'>on {$createdAt}</span>
+                                                            <span class='text-xs text-gray-500 dark:text-gray-400'>في {$createdAt}</span>
                                                         </div>
                                                     </div>
                                                     <div>
-                                                        <div class='text-sm font-medium text-gray-400 dark:text-gray-400'>Last updated by</div>
+                                                        <div class='text-sm font-medium text-gray-400 dark:text-gray-400'>آخر تحديث بواسطة</div>
                                                         <div class='flex items-center space-x-2'>
                                                             <span class='text-sm font-bold text-primary-600 dark:text-primary-400'>{$updaterName}</span>
                                                             <span class='text-xs text-gray-500 dark:text-gray-400'>{$updatedAt}</span>
@@ -383,16 +397,16 @@ class PostResource extends Resource implements HasShieldPermissions
                                             ");
                                         }
 
-                                        return new HtmlString("<span class='text-sm text-gray-500 dark:text-gray-400'>Audit information will be available after saving</span>");
+                                        return new HtmlString("<span class='text-sm text-gray-500 dark:text-gray-400'>ستكون معلومات التدقيق متاحة بعد الحفظ</span>");
                                     })
                                     ->visible(fn(string $operation): bool => $operation === 'edit'),
                             ])
                             ->visible(function (?Post $record) {
-                                return Auth::user()->can('change_author', $record);
+                                return Auth::user()->can('changeAuthor', $record);
                             }),
 
-                        Forms\Components\Section::make('SEO')
-                            ->description('Search Engine Optimization')
+                        Forms\Components\Section::make('تحسين محركات البحث')
+                            ->description('تحسين محركات البحث (SEO)')
                             ->icon('heroicon-o-magnifying-glass')
                             ->collapsed()
                             ->visible(function (?Post $record) {
@@ -401,21 +415,23 @@ class PostResource extends Resource implements HasShieldPermissions
                             })
                             ->schema([
                                 Forms\Components\Textarea::make('meta_title')
-                                    ->placeholder('Leave empty to use post title')
+                                    ->label('عنوان الميتا')
+                                    ->placeholder('اتركه فارغاً لاستخدام عنوان المقال')
                                     ->maxLength(70)
-                                    ->helperText('Recommended: 50-60 characters')
+                                    ->helperText('موصى به: 50-60 حرف')
                                     ->rows(2),
 
                                 Forms\Components\Textarea::make('meta_description')
-                                    ->placeholder('Leave empty to use post overview')
+                                    ->label('وصف الميتا')
+                                    ->placeholder('اتركه فارغاً لاستخدام نظرة عامة على المقال')
                                     ->maxLength(160)
-                                    ->helperText('Recommended: 150-160 characters')
+                                    ->helperText('موصى به: 150-160 حرف')
                                     ->rows(5),
 
                                 Forms\Components\Section::make()
                                     ->schema([
                                         Forms\Components\Placeholder::make('seo_preview')
-                                            ->label('Google Preview')
+                                            ->label('معاينة جوجل')
                                             ->content(function (Get $get): HtmlString {
                                                 $title = $get('meta_title') ?: $get('title');
                                                 $description = $get('meta_description') ?: $get('content_overview');
@@ -432,7 +448,7 @@ class PostResource extends Resource implements HasShieldPermissions
 
                                 Forms\Components\Actions::make([
                                     Forms\Components\Actions\Action::make('generateSeoMetadata')
-                                        ->label('Generate SEO Metadata')
+                                        ->label('إنشاء بيانات تحسين محركات البحث')
                                         ->icon('heroicon-m-sparkles')
                                         ->action(function (Get $get, Set $set) {
                                             $title = $get('title');
@@ -447,7 +463,7 @@ class PostResource extends Resource implements HasShieldPermissions
                                             }
 
                                             Notification::make()
-                                                ->title('SEO metadata generated')
+                                                ->title('تم إنشاء بيانات تحسين محركات البحث')
                                                 ->success()
                                                 ->send();
                                         }),
@@ -477,6 +493,7 @@ class PostResource extends Resource implements HasShieldPermissions
             })
             ->columns([
                 Tables\Columns\TextColumn::make('title')
+                    ->label('العنوان')
                     ->searchable()
                     ->sortable()
                     ->limit(30),
@@ -503,6 +520,7 @@ class PostResource extends Resource implements HasShieldPermissions
                     ->sortable(),
 
                 Tables\Columns\TextColumn::make('status')
+                    ->label('الحالة')
                     ->badge(),
 
                 Tables\Columns\TextColumn::make('reading_time')
@@ -538,7 +556,8 @@ class PostResource extends Resource implements HasShieldPermissions
             ->defaultSort('updated_at', 'desc')
             ->filters([
                 Tables\Filters\SelectFilter::make('status')
-                    ->options(PostStatus::class),
+                    ->label('الحالة')
+                    ->options(PostStatus::options()),
 
                 Tables\Filters\SelectFilter::make('blog_category_id')
                     ->label('الفئة')
@@ -568,19 +587,21 @@ class PostResource extends Resource implements HasShieldPermissions
                     ->query(fn(Builder $query): Builder => $query->whereMonth('published_at', now()->month)),
 
                 Tables\Filters\Filter::make('pending_approval')
-                    ->label('Pending Approval')
+                    ->label('في انتظار الموافقة')
                     ->query(fn(Builder $query): Builder => $query->where('status', PostStatus::PENDING))
                     ->toggle(),
             ])
             ->actions([
                 Tables\Actions\ActionGroup::make([
-                    Tables\Actions\ViewAction::make(),
+                    Tables\Actions\ViewAction::make()
+                        ->label('عرض'),
 
                     Tables\Actions\EditAction::make()
+                        ->label('تحرير')
                         ->visible(fn(Post $record) => auth()->user()->can('update', $record)),
 
                     Tables\Actions\Action::make('publish')
-                        ->label('Publish')
+                        ->label('نشر')
                         ->icon('heroicon-o-check-circle')
                         ->color('success')
                         ->action(function (Post $record) {
@@ -591,7 +612,7 @@ class PostResource extends Resource implements HasShieldPermissions
                             ]);
 
                             Notification::make()
-                                ->title('Post published successfully')
+                                ->title('تم نشر المقال بنجاح')
                                 ->success()
                                 ->send();
                         })
@@ -602,26 +623,27 @@ class PostResource extends Resource implements HasShieldPermissions
                         ),
 
                     Tables\Actions\Action::make('feature')
-                        ->label($fn = fn(Post $record) => $record->is_featured ? 'Unfeature' : 'Feature')
+                        ->label($fn = fn(Post $record) => $record->is_featured ? 'إلغاء التمييز' : 'تمييز')
                         ->icon($fn = fn(Post $record) => $record->is_featured ? 'heroicon-o-star' : 'heroicon-o-star')
                         ->color($fn = fn(Post $record) => $record->is_featured ? 'warning' : 'success')
                         ->action(function (Post $record) {
                             $record->update(['is_featured' => !$record->is_featured]);
 
                             Notification::make()
-                                ->title($record->is_featured ? 'Post featured' : 'Post unfeatured')
+                                ->title($record->is_featured ? 'تم تمييز المقال' : 'تم إلغاء تمييز المقال')
                                 ->success()
                                 ->send();
                         })
                         ->visible(fn(Post $record) => auth()->user()->can('feature', $record)),
 
                     Tables\Actions\Action::make('duplicate')
+                        ->label('نسخ')
                         ->icon('heroicon-o-document-duplicate')
                         ->action(function (Post $record) {
                             $user = auth()->user();
 
                             $duplicate = $record->replicate();
-                            $duplicate->title = "Copy of " . $record->title;
+                            $duplicate->title = "نسخة من " . $record->title;
                             $duplicate->slug = Str::slug($duplicate->title);
                             $duplicate->status = PostStatus::DRAFT;
                             $duplicate->published_at = null;
@@ -647,7 +669,7 @@ class PostResource extends Resource implements HasShieldPermissions
                         }),
 
                     Tables\Actions\Action::make('approve')
-                        ->label('Approve')
+                        ->label('موافقة')
                         ->icon('heroicon-o-check')
                         ->color('primary')
                         ->action(function (Post $record) {
@@ -660,14 +682,14 @@ class PostResource extends Resource implements HasShieldPermissions
                             // Notify the author if available
                             if ($record->author) {
                                 Notification::make()
-                                    ->title('Your post has been approved and published!')
-                                    ->body('The post "' . $record->title . '" is now live.')
+                                    ->title('تمت الموافقة على مقالك ونشره!')
+                                    ->body('المقال "' . $record->title . '" أصبح متاحاً الآن.')
                                     ->success()
                                     ->sendToDatabase($record->author);
                             }
 
                             Notification::make()
-                                ->title('Post approved and published successfully')
+                                ->title('تمت الموافقة على المقال ونشره بنجاح')
                                 ->success()
                                 ->send();
                         })
@@ -678,16 +700,18 @@ class PostResource extends Resource implements HasShieldPermissions
                         ),
 
                     Tables\Actions\DeleteAction::make()
+                        ->label('حذف')
                         ->visible(fn(Post $record) => auth()->user()->can('delete', $record)),
                 ]),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make()
+                        ->label('حذف المحدد')
                         ->visible(fn() => auth()->user()->can('deleteAny', Post::class)),
 
                     Tables\Actions\BulkAction::make('publishSelected')
-                        ->label('Publish Selected')
+                        ->label('نشر المحدد')
                         ->icon('heroicon-o-check-circle')
                         ->color('success')
                         ->action(function ($records): void {
@@ -702,7 +726,7 @@ class PostResource extends Resource implements HasShieldPermissions
                             }
 
                             Notification::make()
-                                ->title('Selected posts published successfully')
+                                ->title('تم نشر المقالات المحددة بنجاح')
                                 ->success()
                                 ->send();
                         })
@@ -710,7 +734,7 @@ class PostResource extends Resource implements HasShieldPermissions
                         ->visible(fn() => auth()->user()->can('publish', Post::class)),
 
                     Tables\Actions\BulkAction::make('featureSelected')
-                        ->label('Feature Selected')
+                        ->label('تمييز المحدد')
                         ->icon('heroicon-o-star')
                         ->color('warning')
                         ->action(function ($records): void {
@@ -721,7 +745,7 @@ class PostResource extends Resource implements HasShieldPermissions
                             }
 
                             Notification::make()
-                                ->title('Selected posts featured successfully')
+                                ->title('تم تمييز المقالات المحددة بنجاح')
                                 ->success()
                                 ->send();
                         })
@@ -795,9 +819,9 @@ class PostResource extends Resource implements HasShieldPermissions
     public static function getGlobalSearchResultDetails(Model $record): array
     {
         return [
-            'Category' => $record->category->name,
-            'Author' => "{$record->author->firstname} {$record->author->lastname}",
-            'Status' => $record->status->getLabel(),
+            'الفئة' => $record->category->name,
+            'المؤلف' => "{$record->author->firstname} {$record->author->lastname}",
+            'الحالة' => $record->status->getLabel(),
         ];
     }
 }
