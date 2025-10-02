@@ -22,7 +22,7 @@ use Illuminate\Support\Str;
 class RoleResource extends Resource implements HasShieldPermissions
 {
     protected static ?string $recordTitleAttribute = 'name';
-    protected static ?string $navigationGroup = 'ACCESS';
+    protected static ?string $navigationGroup = 'إدارة المستخدمين';
 
     protected static $permissionsCollection;
 
