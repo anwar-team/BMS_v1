@@ -6,12 +6,14 @@ use App\Models\Book;
 use App\Models\Page;
 use App\Models\Chapter;
 use App\Models\Volume;
+use App\Traits\BuildsTableOfContents;
 use Livewire\Component;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Cache;
 
 class BookReader extends Component
 {
+    use BuildsTableOfContents;
     // Public properties for Livewire binding
     public int $bookId;
     public int $pageNumber = 1;
@@ -131,58 +133,15 @@ class BookReader extends Component
         $cacheKey = "book_toc_{$this->bookId}";
         
         $this->tableOfContents = Cache::remember($cacheKey, now()->addHours(6), function () {
-            return $this->buildTableOfContents();
+            // استخدام Trait الموحد
+            return $this->buildUniqueTableOfContents($this->bookId);
         });
     }
 
     /**
-     * Build table of contents structure
-     * 
-     * @return array
+     * ملاحظة: تم نقل منطق buildTableOfContents إلى Trait: BuildsTableOfContents
+     * الدالة المستخدمة الآن في loadTableOfContents: buildUniqueTableOfContents()
      */
-    private function buildTableOfContents(): array
-    {
-        // Load volumes with chapters
-        $volumes = Volume::where('book_id', $this->bookId)
-            ->with([
-                'chapters' => function($query) {
-                    $query->whereNull('parent_id')
-                        ->orderBy('order')
-                        ->with([
-                            'children' => function($subQuery) {
-                                $subQuery->orderBy('order')
-                                    ->with('children');
-                            }
-                        ]);
-                }
-            ])
-            ->orderBy('number')
-            ->get();
-
-        // If no volumes, load chapters directly
-        if ($volumes->isEmpty()) {
-            $chapters = Chapter::where('book_id', $this->bookId)
-                ->whereNull('parent_id')
-                ->orderBy('order')
-                ->with([
-                    'children' => function($query) {
-                        $query->orderBy('order')
-                            ->with('children');
-                    }
-                ])
-                ->get();
-
-            return [
-                'type' => 'chapters_only',
-                'data' => $chapters
-            ];
-        }
-
-        return [
-            'type' => 'volumes_with_chapters',
-            'data' => $volumes
-        ];
-    }
 
     /**
      * Load current page and set content based on source_url

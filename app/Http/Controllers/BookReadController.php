@@ -6,11 +6,13 @@ use App\Models\Book;
 use App\Models\Page;
 use App\Models\Chapter;
 use App\Models\Volume;
+use App\Traits\BuildsTableOfContents;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class BookReadController extends Controller
 {
+    use BuildsTableOfContents;
     /**
      * عرض صفحة قراءة الكتاب
      * 
@@ -57,8 +59,8 @@ class BookReadController extends Controller
             $pageNumber = $currentPage->page_number;
         }
 
-        // جلب الفهرس الشجري للكتاب
-        $tableOfContents = $this->buildTableOfContents($bookId);
+        // جلب الفهرس الشجري للكتاب (استخدام Trait موحد)
+        $tableOfContents = $this->buildUniqueTableOfContents($bookId);
 
         // جلب معلومات التنقل
         $navigationInfo = $this->getNavigationInfo($bookId, $pageNumber);
@@ -77,54 +79,13 @@ class BookReadController extends Controller
     }
 
     /**
-     * بناء الفهرس الشجري للكتاب
-     * 
-     * @param int $bookId
-     * @return array
+     * ملاحظة: تم نقل منطق buildTableOfContents إلى Trait: BuildsTableOfContents
+     * الدالة المستخدمة الآن: buildUniqueTableOfContents()
+     * المزايا:
+     * - إزالة تكرار كاملة للفصول
+     * - تمييز الفصول بنفس الصفحة
+     * - منطق موحد بين Controller و Livewire
      */
-    private function buildTableOfContents($bookId)
-    {
-        // جلب الأجزاء مع الفصول الرئيسية والفرعية
-        $volumes = Volume::where('book_id', $bookId)
-            ->with([
-                'chapters' => function($query) {
-                    $query->whereNull('parent_id')
-                        ->orderBy('order')
-                        ->with([
-                            'children' => function($subQuery) {
-                                $subQuery->orderBy('order')
-                                    ->with('children'); // للمستويات الفرعية العميقة
-                            }
-                        ]);
-                }
-            ])
-            ->orderBy('number')
-            ->get();
-
-        // إذا لم توجد أجزاء، جلب الفصول مباشرة
-        if ($volumes->isEmpty()) {
-            $chapters = Chapter::where('book_id', $bookId)
-                ->whereNull('parent_id')
-                ->orderBy('order')
-                ->with([
-                    'children' => function($query) {
-                        $query->orderBy('order')
-                            ->with('children');
-                    }
-                ])
-                ->get();
-
-            return [
-                'type' => 'chapters_only',
-                'data' => $chapters
-            ];
-        }
-
-        return [
-            'type' => 'volumes_with_chapters',
-            'data' => $volumes
-        ];
-    }
 
     /**
      * الحصول على معلومات التنقل
