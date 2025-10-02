@@ -32,6 +32,10 @@ class PostResource extends Resource implements HasShieldPermissions
     protected static ?string $navigationIcon = 'fluentui-news-20';
 
     protected static ?int $navigationSort = -2;
+        //protected static ?string $navigationGroup = 'المنشورات';
+        protected static ?string $navigationLabel = 'المقالات';
+
+
 
     public static function getPermissionPrefixes(): array
     {
