@@ -25,6 +25,11 @@ class CategoryResource extends Resource
 
     protected static ?int $navigationSort = -1;
     protected static ?string $navigationIcon = 'fluentui-stack-20';
+     //protected static ?string $navigationGroup = 'المنشورات';
+    protected static ?string $navigationLabel = 'الفئات';
+
+
+
 
     public static function form(Form $form): Form
     {
