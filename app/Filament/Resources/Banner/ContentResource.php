@@ -56,26 +56,24 @@ class ContentResource extends Resource
                                             ->preload()
                                             ->createOptionForm([
                                                 Forms\Components\TextInput::make('name')
-                                                    ->label('الاسم')
                                                     ->required()
                                                     ->maxLength(255)
                                                     ->live(onBlur: true)
                                                     ->afterStateUpdated(fn($state, Forms\Set $set) => $set('slug', Str::slug($state))),
                                                 Forms\Components\TextInput::make('slug')
-                                                    ->label('الرابط المختصر')
                                                     ->disabled()
                                                     ->dehydrated()
                                                     ->required()
                                                     ->maxLength(255)
                                                     ->unique(Category::class, 'slug', ignoreRecord: true)
-                                                    ->helperText('نسخة مناسبة للرابط من العنوان - يتم إنشاؤها تلقائياً')
+                                                    ->helperText('URL-friendly version of the title - generated automatically')
                                                     ->suffixAction(
                                                         Forms\Components\Actions\Action::make('editSlug')
                                                             ->icon('heroicon-o-pencil-square')
-                                                            ->modalHeading('تعديل الرابط المختصر')
-                                                            ->modalDescription('تخصيص الرابط المختصر لهذه الفئة. استخدم الأحرف الصغيرة والأرقام والشرطات فقط.')
+                                                            ->modalHeading('Edit Slug')
+                                                            ->modalDescription('Customize the URL slug for this Category. Use lowercase letters, numbers, and hyphens only.')
                                                             ->modalIcon('heroicon-o-link')
-                                                            ->modalSubmitActionLabel('تحديث الرابط')
+                                                            ->modalSubmitActionLabel('Update Slug')
                                                             ->form([
                                                                 Forms\Components\TextInput::make('new_slug')
                                                                     ->hiddenLabel()
@@ -86,59 +84,56 @@ class ContentResource extends Resource
                                                                         $set('new_slug', Str::slug($state));
                                                                     })
                                                                     ->unique(Category::class, 'slug', ignoreRecord: true)
-                                                                    ->helperText('سيتم تنسيق الرابط تلقائياً أثناء الكتابة.')
+                                                                    ->helperText('The slug will be automatically formatted as you type.')
                                                             ])
                                                             ->action(function (array $data, Forms\Set $set) {
                                                                 $set('slug', $data['new_slug']);
 
                                                                 Notification::make()
-                                                                    ->title('تم تحديث الرابط')
+                                                                    ->title('Slug updated')
                                                                     ->success()
                                                                     ->send();
                                                             })
                                                     ),
                                                 Forms\Components\Toggle::make('is_active')
-                                                    ->label('نشط')
+                                                    ->label('Active')
                                                     ->default(true),
                                             ])
                                             ->required(),
                                         Forms\Components\Toggle::make('is_active')
-                                            ->label('نشط')
-                                            ->helperText('التحكم في ظهور البانر')
+                                            ->label('Active')
+                                            ->helperText('Control banner visibility')
                                             ->default(true),
                                         Forms\Components\TextInput::make('title')
-                                            ->label('العنوان')
+                                            ->label('Title')
                                             ->maxLength(255)
                                             ->columnSpan(2),
                                         Forms\Components\MarkdownEditor::make('description')
-                                            ->label('الوصف')
-                                            ->helperText('قدم وصفاً للبانر')
+                                            ->label('Description')
+                                            ->helperText('Provide a description for the banner')
                                             ->maxLength(500)
                                             ->columnSpanFull(),
                                         Forms\Components\Select::make('locale')
-                                            ->label('اللغة')
                                             ->options([
-                                                'ar' => 'العربية',
-                                                'en' => 'الإنجليزية',
-                                                'id' => 'الإندونيسية',
-                                                'zh' => 'الصينية',
-                                                'ja' => 'اليابانية',
+                                                'en' => 'English',
+                                                'id' => 'Indonesian',
+                                                'zh' => 'Chinese',
+                                                'ja' => 'Japanese',
                                                 // Add more languages as needed
                                             ])
-                                            ->default('ar')
+                                            ->default('en')
                                             ->required(),
                                     ])
                                     ->compact()
                                     ->columns(2),
                             ]),
-                        Forms\Components\Tabs\Tab::make('صورة البانر')
+                        Forms\Components\Tabs\Tab::make('Banner Image')
                             ->icon('heroicon-o-photo')
                             ->schema([
-                                Forms\Components\Section::make('الصورة')
-                                    ->description('ارفع صورة البانر هنا')
+                                Forms\Components\Section::make('Image')
+                                    ->description('Upload banner image here')
                                     ->schema([
                                         SpatieMediaLibraryFileUpload::make('banners')
-                                            ->label('صورة البانر')
                                             ->collection('banners')
                                             ->multiple(false)
                                             ->maxFiles(1)
@@ -148,68 +143,68 @@ class ContentResource extends Resource
                                             ->imageResizeTargetWidth('1200')
                                             ->imageResizeTargetHeight('800')
                                             ->acceptedFileTypes(['image/*'])
-                                            ->helperText('ارفع صورة البانر. الحجم المُوصى به: 1200x800 بكسل')
+                                            ->helperText('Upload a banner image. Recommended size: 1200x800px')
                                             ->columnSpanFull(),
                                     ])
                                     ->compact(),
                             ]),
-                        Forms\Components\Tabs\Tab::make('الجدولة')
+                        Forms\Components\Tabs\Tab::make('Scheduling')
                             ->icon('heroicon-o-calendar')
                             ->schema([
-                                Forms\Components\Section::make('الجدولة')
-                                    ->description('حدد تفاصيل جدولة البانر')
+                                Forms\Components\Section::make('Schedule')
+                                    ->description('Set the scheduling details for the banner')
                                     ->schema([
                                         Forms\Components\DateTimePicker::make('start_date')
-                                            ->label('تاريخ البداية')
-                                            ->helperText('اختر تاريخ ووقت البداية')
+                                            ->label('Start Date')
+                                            ->helperText('Select the start date and time')
                                             ->nullable(),
                                         Forms\Components\DateTimePicker::make('end_date')
-                                            ->label('تاريخ النهاية')
-                                            ->helperText('اختر تاريخ ووقت النهاية')
+                                            ->label('End Date')
+                                            ->helperText('Select the end date and time')
                                             ->nullable()
                                             ->after('start_date'),
                                         Forms\Components\DateTimePicker::make('published_at')
-                                            ->label('تاريخ النشر')
-                                            ->helperText('متى يجب نشر هذا البانر؟')
+                                            ->label('Publish Date')
+                                            ->helperText('When should this banner be published?')
                                             ->nullable(),
                                     ])
                                     ->compact()
                                     ->columns(2),
                             ]),
-                        Forms\Components\Tabs\Tab::make('الرابط والتتبع')
+                        Forms\Components\Tabs\Tab::make('Link & Tracking')
                             ->icon('heroicon-o-link')
                             ->schema([
-                                Forms\Components\Section::make('إعدادات النقر')
-                                    ->description('تكوين خيارات الرابط والتتبع')
+                                Forms\Components\Section::make('Click Settings')
+                                    ->description('Configure link and tracking options')
                                     ->schema([
                                         Forms\Components\TextInput::make('click_url')
-                                            ->label('رابط النقر')
-                                            ->helperText('أدخل الرابط للانتقال إليه عند النقر على البانر')
+                                            ->label('Click URL')
+                                            ->helperText('Enter the URL to navigate to when the banner is clicked')
                                             ->url()
                                             ->maxLength(255),
                                         Forms\Components\Select::make('click_url_target')
-                                            ->label('هدف رابط النقر')
-                                            ->helperText('اختر كيفية فتح الرابط')
+                                            ->label('Click URL Target')
+                                            ->helperText('Select how the URL should be opened')
                                             ->options([
-                                                '_blank' => 'تبويب جديد',
-                                                '_self' => 'التبويب الحالي',
+                                                '_blank' => 'New Tab',
+                                                '_self' => 'Current Tab',
                                             ])
                                             ->default('_self')
                                             ->native(false),
                                     ])
                                     ->compact()
                                     ->columns(2),
-                                Forms\Components\Section::make('التتبع')
-                                    ->description('إحصائيات تتبع البانر')
+                                Forms\Components\Section::make('Tracking')
+                                    ->description('Banner tracking statistics')
                                     ->schema([
                                         Forms\Components\Placeholder::make('impression_count')
-                                            ->label('المشاهدات')
+                                            ->label('Impressions')
                                             ->content(fn(Content $record): string => number_format($record->impression_count ?? 0)),
                                         Forms\Components\Placeholder::make('click_count')
-                                            ->label('النقرات')
+                                            ->label('Clicks')
                                             ->content(fn(Content $record): string => number_format($record->click_count ?? 0)),
                                         Forms\Components\Placeholder::make('ctr')
-                                            ->label('معدل النقر (CTR)')
+                                            ->label('CTR (Click Through Rate)')
                                             ->content(function (Content $record): string {
                                                 if (($record->impression_count ?? 0) > 0) {
                                                     $ctr = ($record->click_count / $record->impression_count) * 100;
@@ -222,23 +217,22 @@ class ContentResource extends Resource
                                     ->columns(3)
                                     ->visible(fn(?Content $record) => $record !== null),
                             ]),
-                        Forms\Components\Tabs\Tab::make('الإعدادات المتقدمة')
+                        Forms\Components\Tabs\Tab::make('Advanced Settings')
                             ->icon('heroicon-o-cog')
                             ->schema([
-                                Forms\Components\Section::make('الإعدادات')
-                                    ->description('إعدادات إضافية للبانر')
+                                Forms\Components\Section::make('Settings')
+                                    ->description('Additional settings for the banner')
                                     ->schema([
                                         Forms\Components\TextInput::make('sort')
-                                            ->label('ترتيب الفرز')
-                                            ->helperText('حدد ترتيب فرز البانر')
+                                            ->label('Sort Order')
+                                            ->helperText('Set the sort order of the banner')
                                             ->required()
                                             ->numeric()
                                             ->default(static::getLastSortValue() + 1),
                                         Forms\Components\KeyValue::make('options')
-                                            ->label('الخيارات المخصصة')
-                                            ->keyLabel('اسم الخيار')
-                                            ->valueLabel('قيمة الخيار')
-                                            ->helperText('خيارات JSON مخصصة لهذا البانر')
+                                            ->keyLabel('Option Name')
+                                            ->valueLabel('Option Value')
+                                            ->helperText('Custom JSON options for this banner')
                                             ->addable()
                                             ->reorderable()
                                             ->columnSpanFull(),
@@ -255,73 +249,66 @@ class ContentResource extends Resource
         return $table
             ->columns([
                 SpatieMediaLibraryImageColumn::make('banners')
-                    ->label('الصورة')
+                    ->label('Image')
                     ->collection('banners')
                     ->conversion('thumbnail')
                     ->size(60)
                     ->circular(false)
                     ->alignCenter(),
                 Tables\Columns\TextColumn::make('title')
-                    ->label('العنوان')
                     ->description(fn(Model $record): string => Str::limit(strip_tags($record->description), 100))
                     ->searchable()
                     ->sortable()
                     ->wrap(),
                 Tables\Columns\TextColumn::make('category.name')
-                    ->label('الفئة')
+                    ->label('Category')
                     ->searchable()
                     ->sortable()
                     ->toggleable(),
                 Tables\Columns\IconColumn::make('is_active')
-                    ->label('نشط')
+                    ->label('Active')
                     ->boolean()
                     ->sortable()
                     ->alignCenter(),
                 Tables\Columns\TextColumn::make('impression_count')
-                    ->label('المشاهدات')
+                    ->label('Views')
                     ->numeric()
                     ->sortable()
                     ->toggleable(),
                 Tables\Columns\TextColumn::make('click_count')
-                    ->label('النقرات')
+                    ->label('Clicks')
                     ->numeric()
                     ->sortable()
                     ->toggleable(),
                 Tables\Columns\TextColumn::make('locale')
-                    ->label('اللغة')
                     ->badge()
                     ->searchable()
                     ->sortable()
                     ->toggleable(),
                 Tables\Columns\TextColumn::make('updated_at')
-                    ->label('آخر تحديث')
+                    ->label('Last Update')
                     ->since()
                     ->sortable(),
             ])
             ->filters([
                 Tables\Filters\SelectFilter::make('banner_category_id')
-                    ->label('الفئة')
+                    ->label('Category')
                     ->relationship('category', 'name')
                     ->searchable()
                     ->preload(),
                 Tables\Filters\TernaryFilter::make('is_active')
-                    ->label('حالة النشاط'),
+                    ->label('Active Status'),
                 Tables\Filters\SelectFilter::make('locale')
-                    ->label('اللغة')
                     ->options([
-                        'ar' => 'العربية',
-                        'en' => 'الإنجليزية',
-                        'id' => 'الإندونيسية',
-                        'zh' => 'الصينية',
-                        'ja' => 'اليابانية',
+                        'en' => 'English',
+                        'id' => 'Indonesian',
+                        'zh' => 'Chinese',
+                        'ja' => 'Japanese',
                     ]),
                 Tables\Filters\Filter::make('date_range')
-                    ->label('نطاق التاريخ')
                     ->form([
-                        Forms\Components\DatePicker::make('from')
-                            ->label('من'),
-                        Forms\Components\DatePicker::make('until')
-                            ->label('إلى'),
+                        Forms\Components\DatePicker::make('from'),
+                        Forms\Components\DatePicker::make('until'),
                     ])
                     ->query(function (Builder $query, array $data): Builder {
                         return $query
@@ -342,27 +329,27 @@ class ContentResource extends Resource
                         $indicators = [];
 
                         if ($data['from'] ?? null) {
-                            $indicators['from'] = 'نشط من ' . $data['from']->format('M j, Y');
+                            $indicators['from'] = 'Active from ' . $data['from']->format('M j, Y');
                         }
 
                         if ($data['until'] ?? null) {
-                            $indicators['until'] = 'نشط حتى ' . $data['until']->format('M j, Y');
+                            $indicators['until'] = 'Active until ' . $data['until']->format('M j, Y');
                         }
 
                         return $indicators;
                     }),
             ])
             ->actions([
-                Tables\Actions\ViewAction::make()->hiddenLabel()->tooltip('عرض'),
-                Tables\Actions\EditAction::make()->hiddenLabel()->tooltip('تعديل'),
+                Tables\Actions\ViewAction::make()->hiddenLabel()->tooltip('View'),
+                Tables\Actions\EditAction::make()->hiddenLabel()->tooltip('Edit'),
                 Tables\Actions\ActionGroup::make([
                     Tables\Actions\Action::make('preview')
-                        ->label('معاينة البانر')
+                        ->label('Preview Banner')
                         ->icon('heroicon-m-eye')
                         ->url(fn(Content $record) => $record->getImageUrl('large'))
                         ->openUrlInNewTab(),
                     Tables\Actions\Action::make('clone')
-                        ->label('نسخ البانر')
+                        ->label('Clone Banner')
                         ->icon('heroicon-m-document-duplicate')
                         ->requiresConfirmation()
                         ->action(function (Content $record) {
@@ -373,7 +360,7 @@ class ContentResource extends Resource
                             $clone = new Content($attributes);
 
                             // Set the new title
-                            $clone->title = "{$record->title} (نسخة)";
+                            $clone->title = "{$record->title} (Clone)";
 
                             // Update the sort value
                             $clone->sort = static::getLastSortValue() + 1;
@@ -398,19 +385,19 @@ class ContentResource extends Resource
                             // Redirect to the edit page of the new clone
                             return redirect()->route('filament.admin.resources.banner.contents.edit', ['record' => $clone->id]);
                         }),
-                    Tables\Actions\DeleteAction::make()->hiddenLabel()->tooltip('حذف'),
+                    Tables\Actions\DeleteAction::make()->hiddenLabel()->tooltip('Delete'),
                 ]),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
                     Tables\Actions\BulkAction::make('activate')
-                        ->label('تفعيل')
+                        ->label('Set Active')
                         ->icon('heroicon-m-check-circle')
                         ->requiresConfirmation()
                         ->action(fn(\Illuminate\Database\Eloquent\Collection $records) => $records->each->update(['is_active' => true])),
                     Tables\Actions\BulkAction::make('deactivate')
-                        ->label('إلغاء التفعيل')
+                        ->label('Set Inactive')
                         ->icon('heroicon-m-x-circle')
                         ->requiresConfirmation()
                         ->action(fn(\Illuminate\Database\Eloquent\Collection $records) => $records->each->update(['is_active' => false])),
@@ -455,8 +442,8 @@ class ContentResource extends Resource
     public static function getGlobalSearchResultDetails(Model $record): array
     {
         return [
-            'الفئة' => $record->category->name,
-            'الحالة' => $record->is_active ? 'نشط' : 'غير نشط',
+            'Category' => $record->category->name,
+            'Status' => $record->is_active ? 'Active' : 'Inactive',
         ];
     }
 
