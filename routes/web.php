@@ -27,8 +27,6 @@ use Lab404\Impersonate\Services\ImpersonateManager;
 |
 */
 
-// Language switching route
-Route::get('/language/{language}', [LanguageController::class, 'switch'])->name('language.switch');
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 

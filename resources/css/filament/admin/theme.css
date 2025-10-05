@@ -1,5 +1,4 @@
 @import '/vendor/filament/filament/resources/css/theme.css';
-@import '../../rtl-support.css';
 @config 'tailwind.config.js';
 
 /* DEF Studio Searchable Input Plugin */

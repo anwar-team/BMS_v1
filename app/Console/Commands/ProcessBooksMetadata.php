@@ -23,7 +23,8 @@ class ProcessBooksMetadata extends Command
                             {--batch-size=10 : Number of books per batch}
                             {--force : Force reprocess already processed books}
                             {--apply : Automatically apply high confidence matches}
-                            {--book-id= : Process specific book by ID}';
+                            {--book-id= : Process specific book by ID}
+                            {--without-section : Process only books without book_section_id}';
 
     /**
      * The console command description.
@@ -114,6 +115,11 @@ class ProcessBooksMetadata extends Command
         // معالجة كتاب محدد
         if ($bookId = $this->option('book-id')) {
             return $query->where('id', $bookId)->get();
+        }
+
+        // فلتر: فقط الكتب بدون أقسام
+        if ($this->option('without-section')) {
+            $query->whereNull('book_section_id');
         }
 
         // تجاهل المعالج مسبقاً إلا في حالة force
