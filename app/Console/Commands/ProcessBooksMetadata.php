@@ -6,6 +6,7 @@ use App\Models\Book;
 use App\Models\BookExtractedMetadata;
 use App\Services\AuthorExtractor;
 use App\Services\BookSectionMatcher;
+use App\Services\BookSectionClassifier;
 use App\Services\PublisherExtractor;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
@@ -34,6 +35,7 @@ class ProcessBooksMetadata extends Command
     protected $description = 'استخراج البيانات الوصفية (المؤلف، القسم، الناشر) من أوصاف الكتب';
 
     protected $sectionMatcher;
+    protected $sectionClassifier;
     protected $authorExtractor;
     protected $publisherExtractor;
 
@@ -59,6 +61,7 @@ class ProcessBooksMetadata extends Command
 
         // تهيئة الخدمات
         $this->sectionMatcher = new BookSectionMatcher();
+        $this->sectionClassifier = new BookSectionClassifier();
         $this->authorExtractor = new AuthorExtractor();
         $this->publisherExtractor = new PublisherExtractor();
 
@@ -153,12 +156,27 @@ class ProcessBooksMetadata extends Command
         try {
             // 1. استخراج القسم
             $sectionData = $this->sectionMatcher->process($book->description);
-            if ($sectionData) {
-                $metadata->extracted_section_name = $sectionData['extracted_section_name'];
-                $metadata->matched_section_id = $sectionData['matched_section_id'];
-                $metadata->section_match_confidence = $sectionData['section_match_confidence'];
+            
+            // إذا لم ينجح استخراج القسم من الوصف، استخدم المُصنِّف الذكي
+            if (!$sectionData || !isset($sectionData['matched_section_id'])) {
+                $classificationData = $this->sectionClassifier->classify($book);
                 
-                if ($sectionData['matched_section_id']) {
+                // الحد الأدنى للثقة: 0.30 (30%)
+                if ($classificationData && $classificationData['confidence'] >= 0.30) {
+                    $sectionData = [
+                        'extracted_section_name' => 'تصنيف تلقائي: ' . $classificationData['section_name'],
+                        'matched_section_id' => $classificationData['section_id'],
+                        'section_match_confidence' => $classificationData['confidence']  // قيمة من 0.00 إلى 1.00
+                    ];
+                }
+            }
+            
+            if ($sectionData) {
+                $metadata->extracted_section_name = $sectionData['extracted_section_name'] ?? null;
+                $metadata->matched_section_id = $sectionData['matched_section_id'] ?? null;
+                $metadata->section_match_confidence = $sectionData['section_match_confidence'] ?? null;
+                
+                if ($sectionData['matched_section_id'] ?? null) {
                     $this->stats['sections_extracted']++;
                 }
             }
