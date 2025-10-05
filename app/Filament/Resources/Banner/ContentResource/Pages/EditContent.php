@@ -16,12 +16,11 @@ class EditContent extends EditRecord
             Actions\ViewAction::make(),
             Actions\DeleteAction::make(),
             Actions\ForceDeleteAction::make(),
-            Actions\RestoreAction::make(),
         ];
     }
 
     public function getTitle(): string
     {
-        return __('Edit Content');
+        return ' ⁄œÌ· «·„Õ ÊÏ';
     }
 }

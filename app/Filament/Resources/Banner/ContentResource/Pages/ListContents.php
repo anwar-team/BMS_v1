@@ -32,6 +32,6 @@ class ListContents extends ListRecords
 
     public function getTitle(): string
     {
-        return __('Banner Content Management');
+        return '≈œ«—… „Õ ÊÏ «·»«‰—';
     }
 }

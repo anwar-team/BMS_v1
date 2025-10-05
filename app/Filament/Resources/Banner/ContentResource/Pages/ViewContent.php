@@ -14,12 +14,11 @@ class ViewContent extends ViewRecord
     {
         return [
             Actions\EditAction::make(),
-            Actions\DeleteAction::make(),
         ];
     }
 
     public function getTitle(): string
     {
-        return __('View Content');
+        return 'ÚÑÖ ÇáãÍÊæì';
     }
 }

@@ -14,12 +14,11 @@ class ViewCategory extends ViewRecord
     {
         return [
             Actions\EditAction::make(),
-            Actions\DeleteAction::make(),
         ];
     }
 
     public function getTitle(): string
     {
-        return __('View Banner Category');
+        return 'ÚÑÖ ÝÆÉ ÇáÈÇäÑ';
     }
 }

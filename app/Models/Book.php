@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Book extends Model
 {
@@ -101,6 +102,14 @@ class Book extends Model
     public function pages(): HasMany
     {
         return $this->hasMany(Page::class);
+    }
+
+    /**
+     * العلاقة مع البيانات المستخرجة
+     */
+    public function extractedMetadata(): HasOne
+    {
+        return $this->hasOne(BookExtractedMetadata::class);
     }
 
     /**

@@ -16,6 +16,6 @@ class CreateContent extends CreateRecord
 
     public function getTitle(): string
     {
-        return __('Create New Banner Content');
+        return 'ÅäÔÇÁ ãÍÊæì ÈÇäÑ ÌÏíÏ';
     }
 }

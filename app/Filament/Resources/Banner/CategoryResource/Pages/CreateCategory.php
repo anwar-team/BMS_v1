@@ -11,11 +11,11 @@ class CreateCategory extends CreateRecord
 
     protected function getRedirectUrl(): string
     {
-        return $this->getResource()::getUrl('index');
+        return $this->getResource()::getUrl("index");
     }
 
     public function getTitle(): string
     {
-        return __('Create Banner Category');
+        return "إنشاء فئة بانر جديدة";
     }
 }
