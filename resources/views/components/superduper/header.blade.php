@@ -23,7 +23,7 @@
             </div>
 
             <!-- Header Navigation -->
-            <div class="menu-block-wrapper lg:static order-1" dir="ltr">
+            <div class="menu-block-wrapper lg:static order-2" dir="ltr">
                 <div class="fixed inset-0 z-40 menu-overlay bg-primary-white/70 backdrop-blur-sm lg:hidden" style="display: none;"></div>
                 <nav class="menu-block fixed top-0 right-0 bottom-0 w-[280px] text-secondary-600 md:w-[320px] bg-white dark:bg-primary-800 z-50 shadow-2xl overflow-y-auto transform translate-x-full transition-transform duration-300 lg:static lg:translate-x-0 lg:w-auto lg:bg-transparent lg:shadow-none lg:overflow-visible lg:dark:bg-transparent" id="append-menu-header">
 
