@@ -106,7 +106,7 @@
                         @endforeach
                         @endif
 
-                        <!-- Admin Panel Button for Mobile -->
+                        <!-- Admin Panel Button for Mobile 
                         <li class="pt-4 mt-6 mb-4 nav-item lg:hidden">
                             <a href="admin/login" class="block w-full">
                                 <div class="relative px-4 py-3 text-sm font-medium text-center text-white transition-all duration-300 rounded-md bg-primary-600 hover:bg-secondary-700">
@@ -114,6 +114,7 @@
                                 </div>
                             </a>
                         </li>
+                        -->
                     </ul>
                 </nav>
             </div>
