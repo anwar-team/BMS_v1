@@ -11,6 +11,11 @@ use Elasticsearch\ClientBuilder;
  */
 class UltraFastSearchService
 {
+	// Search type constants
+	const SEARCH_TYPE_EXACT = 'exact_match';
+	const SEARCH_TYPE_FLEXIBLE = 'flexible_match';
+	const SEARCH_TYPE_MORPHOLOGICAL = 'morphological';
+
 	protected $elasticsearch;
 
 	public function __construct()
@@ -30,8 +35,8 @@ class UltraFastSearchService
 	public function search(string $query, array $filters = [], int $page = 1, int $perPage = 15): array
 	{
 		try {
-			// Use the largest index first, then test, then optimized as fallback
-			$indices = ['pages', 'pages_test', 'pages_optimized'];
+			// Use new search index first, then fallback to old ones
+			$indices = ['pages_new_search', 'pages', 'pages_test', 'pages_optimized'];
 			$indexToUse = null;
             
 			foreach ($indices as $index) {
@@ -78,6 +83,66 @@ class UltraFastSearchService
 	}
 
 	/**
+	 * Build exact match query - literal exact matching
+	 */
+	protected function buildExactMatchQuery(string $searchTerm): array
+	{
+		return [
+			'match_phrase' => [
+				'content.exact' => [
+					'query' => $searchTerm,
+					'slop' => 0
+				]
+			]
+		];
+	}
+
+	/**
+	 * Build flexible match query - allows prefixes without stemming
+	 */
+	protected function buildFlexibleMatchQuery(string $searchTerm): array
+	{
+		return [
+			'match' => [
+				'content.flexible' => [
+					'query' => $searchTerm,
+					'operator' => 'and'
+				]
+			]
+		];
+	}
+
+	/**
+	 * Build morphological query - root-based search with derivatives
+	 */
+	protected function buildMorphologicalQuery(string $searchTerm): array
+	{
+		return [
+			'bool' => [
+				'should' => [
+					[
+						'match' => [
+							'content.stemmed' => [
+								'query' => $searchTerm,
+								'boost' => 2.0
+							]
+						]
+					],
+					[
+						'match' => [
+							'content.flexible' => [
+								'query' => $searchTerm,
+								'boost' => 1.0
+							]
+						]
+					]
+				],
+				'minimum_should_match' => 1
+			]
+		];
+	}
+
+	/**
 	 * Build optimized query for Arabic text with advanced search options
 	 */
 	protected function buildOptimizedQuery(string $query, array $filters): array
@@ -90,10 +155,30 @@ class UltraFastSearchService
 		];
 
 		if (!empty($query)) {
-			// Get search mode from filters
-			$searchMode = $filters['search_mode'] ?? 'flexible';
-			$proximity = $filters['proximity'] ?? 'any_order';
+			// Get search type from filters (new system)
+			$searchType = $filters['search_type'] ?? self::SEARCH_TYPE_FLEXIBLE;
             
+			switch ($searchType) {
+				case self::SEARCH_TYPE_EXACT:
+					$boolQuery['bool']['must'][] = $this->buildExactMatchQuery($query);
+					break;
+
+				case self::SEARCH_TYPE_MORPHOLOGICAL:
+					$boolQuery['bool']['must'][] = $this->buildMorphologicalQuery($query);
+					break;
+
+				case self::SEARCH_TYPE_FLEXIBLE:
+				default:
+					$boolQuery['bool']['must'][] = $this->buildFlexibleMatchQuery($query);
+					break;
+			}
+		}
+
+		// Keep old search_mode for backward compatibility
+		$searchMode = $filters['search_mode'] ?? null;
+		if ($searchMode && !isset($filters['search_type'])) {
+			$proximity = $filters['proximity'] ?? 'any_order'; // تعريف المتغير
+			
 			switch ($searchMode) {
 				case 'exact_phrase':
 					// مطابقة العبارة تماماً

@@ -58,8 +58,9 @@ class SearchController extends Controller
             $filters = array_filter([
                 'author_id' => $authorId,
                 'section_id' => $sectionId,
-                'search_mode' => $request->get('search_mode', 'flexible'),
-                'proximity' => $request->get('proximity', 'any_order'),
+                'search_type' => $request->get('search_type', 'flexible_match'), // New system
+                'search_mode' => $request->get('search_mode'), // Backward compatibility
+                'proximity' => $request->get('proximity', 'any_order'), // Backward compatibility
             ]);
 
             $results = $searchService->search($query, $filters, $page, $perPage);
