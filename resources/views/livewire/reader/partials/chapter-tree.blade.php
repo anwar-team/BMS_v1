@@ -17,7 +17,7 @@
             @endif
             
             <span class="{{ $level === 0 ? 'text-base sm:text-lg font-semibold' : 'text-sm sm:text-base' }} 
-                         {{ $isCurrentChapter ? 'text-white' : ($level === 0 ? 'text-[#5D6019]' : 'text-gray-700') }} 
+                         {{ $isCurrentChapter ? 'text-white' : ($level === 0 ? 'text-[#2C6E4A]' : 'text-gray-700') }} 
                          {{ !$isCurrentChapter ? 'hover:text-[#957717]' : '' }} transition-colors">
                 @if($hasSearchTerm && $matchesSearch)
                     {!! $this->highlightSearchTerm($chapter->title) !!}
