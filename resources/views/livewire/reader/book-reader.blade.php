@@ -18,7 +18,7 @@
     </div>
     
     <div class="page-wrapper relative z-[1]" dir="rtl">
-        <main class="relative overflow-visible main-wrapper bg-[#f8f5f0]">
+        <main class="relative overflow-visible main-wrapper bg-white"> <!-- [#f8f5f0] -->
             <!-- أنماط الخلفية -->
             <div class="relative">
                 <div class="pattern-top top-24"></div>
