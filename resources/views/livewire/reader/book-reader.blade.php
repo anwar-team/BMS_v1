@@ -29,7 +29,7 @@
                         <div class="flex flex-col sm:flex-row items-center gap-3 sm:gap-4 mb-4 sm:mb-6">
                             <img src="{{ asset('images/group0.svg') }}" alt="Icon" class="w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8">
                             <div class="text-center sm:text-right">
-                                <h2 class="text-2xl sm:text-3xl md:text-4xl text-[#5D6019] font-bold font-tajawal">
+                                <h2 class="text-2xl sm:text-3xl md:text-4xl text-green-700 font-bold font-tajawal">
                                     <a href="{{ route('books.details', $book->id) }}" 
                                        class="hover:text-green-600 transition-colors duration-200 cursor-pointer underline decoration-2 underline-offset-4">
                                         {{ $book->title }}
@@ -603,8 +603,8 @@
                                                                wire:model.live.debounce.500ms="internalIndex" 
                                                                min="1" 
                                                                max="{{ $navigation['total_pages'] }}" 
-                                                               class="w-16 px-2 py-1 text-center border border-[#e0d9cc] rounded focus:outline-none focus:ring-2 focus:ring-[#957717] text-sm">
-                                                        <span class="text-sm text-gray-600">من {{ $navigation['total_pages'] }}</span>
+                                                               class="w-16 px-2 py-1 text-center border border-[#e0d9cc] rounded focus:outline-none focus:ring-2 focus:ring-[#9577]0teccxt-sm">
+                                               957717   <span class="text-sm text-gray-600">من {{ $navigation['total_pages'] }}</span>
                                                     </div>
                                                     
                                                     <!-- Next Page Button -->
@@ -643,14 +643,12 @@
                                             <div class="flex-1 max-w-md mx-4 order-1 lg:order-2">
                                                 <div class="relative">
                                                     <div class="flex items-center justify-center mb-2">
-                                                        <span class="text-xs sm:text-sm font-semibold text-[#5D6019] bg-[#f8f5f0] px-2 py-1 rounded-full border border-[#e0d9cc]">
-                                                            {{ $navigation['progress_percentage'] }}%
+                                                        <span class="text-xs sm:text-sm font-semibold text-[#5D6019] bg-[#f8f5f0] px-2 py-1 rounded-full border border-[#e0d9c5D"019          5f0                                          0 {cc{ $navigation['progress_percentage'] }}%
                                                         </span>
                                                     </div>
                                                     <div class="relative">
                                                         <div class="overflow-hidden h-2 sm:h-2.5 rounded-full bg-[#f0e9de] border border-[#e0d9cc]">
-                                                            <div class="h-full bg-gradient-to-r from-[#5D6019] to-[#957717] transition-all duration-300" style="width: {{ $navigation['progress_percentage'] }}%"></div>
-                                                        </div>
+                                0 9de                   0 <ccdiv class="h-full bg-gradient-to-r from-[#5D6019] to-[#95771    7] transition-all duration-300" style="widt5D601 $naviga957717progress_percentage'] }}%"></                                                    </div>
                                                         <input type="range" 
                                                                wire:model.live.debounce.300ms="pageNumber"
                                                                min="1" 
@@ -664,8 +662,8 @@
                                             @if($book->volumes()->count() > 0)
                                                 <div class="flex items-center space-x-1 sm:space-x-2 space-x-reverse order-3">
                                                     <span class="text-[#39100C] font-medium text-sm sm:text-base whitespace-nowrap">الأجزاء:</span>
-                                                    <select x-data x-on:change="$wire.call('gotoVolume', $event.target.value)" class="bg-white border border-[#e0d9cc] rounded-lg px-2 py-1 sm:px-3 sm:py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#957717] min-w-[80px]">
-                                                        @foreach($book->volumes()->orderBy('number')->get() as $volume)
+                                                    <select x-data x-on:change="$wire.call('gotoVolume', $event.target.value)" class="bg-white border border-[#e0d9cc] rounded-lg px-2 py-1 sm:px-3 sm:py-1.5 text-sm focus:outline-ne0focccus:ring-2 focus:ring-[#957717] min-w-[80px]">
+                                               957717   @foreach($book->volumes()->orderBy('number')->get() as $volume)
                                                             <option value="{{ $volume->id }}" {{ $currentPage && $currentPage->volume_id == $volume->id ? 'selected' : '' }}>
                                                                 {{ $volume->title ?: 'الجزء ' . $volume->number }}
                                                             </option>
