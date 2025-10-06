@@ -130,11 +130,12 @@
                     </button>
                 </div>
                 
-                <!-- Login Button for Desktop -->
+                <!-- Login Button for Desktop 
                 <a href="admin/login" class="relative z-10 hidden lg:inline-block group">
                     <div class="px-4 py-2 text-sm font-medium transition-all duration-300 btn md:text-base bg-white hover:bg-secondary-700">Login</div>
                     <div class="absolute inset-0 -z-10 translate-x-[3px] translate-y-[3px] bg-primary-700 transition-all duration-300 ease-linear group-hover:translate-x-0 group-hover:translate-y-0"></div>
                 </a>
+                -->
             </div>
         </div>
     </div>
