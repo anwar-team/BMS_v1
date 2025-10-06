@@ -343,12 +343,39 @@
                                 </div>
                             </div>
 
-                            <!-- شرح مبسط للخيارات 
-                            <div id="searchModeHelp" class="p-3 bg-blue-50 border-l-4 border-blue-400 text-sm text-blue-800 rounded">
-                                <div class="font-medium mb-1">عبارة مع تباعد مسموح (المختار حالياً):</div>
-                                <div>يبحث عن الكلمات بنفس الترتيب مع السماح بوجود كلمات أخرى بينها</div>
+                            <!-- شرح مبسط لأنواع البحث -->
+                            <div class="p-4 bg-gradient-to-r from-blue-50 to-indigo-50 border-r-4 border-blue-500 text-sm text-gray-700 rounded-lg shadow-sm">
+                                <div class="font-bold text-blue-900 mb-3 flex items-center gap-2">
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                    </svg>
+                                    <span>شرح أنواع البحث</span>
+                                </div>
+                                <div class="space-y-2 text-right">
+                                    <div class="flex items-start gap-2">
+                                        <span class="text-lg flex-shrink-0">🔄</span>
+                                        <div>
+                                            <strong class="text-emerald-700">البحث المرن:</strong>
+                                            <span class="text-gray-600">بحث ذكي مع معالجة النصوص العربية (التاء المربوطة، الألف، الهمزات)</span>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-start gap-2">
+                                        <span class="text-lg flex-shrink-0">🎯</span>
+                                        <div>
+                                            <strong class="text-blue-700">البحث المطابق:</strong>
+                                            <span class="text-gray-600">مطابقة حرفية دقيقة للنص كما كتبته بالضبط</span>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-start gap-2">
+                                        <span class="text-lg flex-shrink-0">🌳</span>
+                                        <div>
+                                            <strong class="text-purple-700">البحث الصرفي:</strong>
+                                            <span class="text-gray-600">بحث في الجذور والمشتقات (مثال: صلى → صلاة، صلوات، يصلي)</span>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                            -->
+
                             <!-- Search Stats -->
                             <div id="searchInfo" class="text-sm text-gray-600 hidden">
                                 <div class="flex justify-between items-center">
