@@ -31,7 +31,7 @@
                         
                         <div class="prose prose-lg max-w-none text-gray-700 leading-relaxed">
                             <p class="text-lg text-justify mb-4">
-                                <strong class="text-emerald-700">وقف الأقصى الشريف للمعرفة</strong> يسرنا المساهمة في مشروع الكتاب البحثي في زمن تطور المعرفة وانتشارها وشيوع كتاب بدأف بعد كثرة الطباعة الورقية ظهرت الحاجة الكبيرة للكتاب البحثي، وهو لا يغني عن الكتاب الورقي أو البدأف، وإنما هي صيغة أخرى في نشر العلم والوصول لكل النتائج؛ لذلك ينبغي للكل من مؤلفين ومحقيين ودور نشر تسعى لنشر العلم بالطريقة البحثية أن يساعدوا بإرسال مؤلفاتهم وتحقيقاتهم على موقعنا لتكون من الكتبة الوقفية لله لينتفع بها الناس، وهي لا شك أسرع طريق للاستفادة من الكتاب وشيوعه.
+                                <strong class="text-emerald-700">وقف الأقصى الشريف للمعرفة</strong>  يسرنا المساهمة في مشروع الكتاب البحثي في زمن تطور المعرفة وانتشارها وشيوع كتاب بدأف بعد كثرة الطباعة الورقية ظهرت الحاجة الكبيرة للكتاب البحثي، وهو لا يغني عن الكتاب الورقي أو البدأف، وإنما هي صيغة أخرى في نشر العلم والوصول لكل النتائج؛ لذلك ينبغي للكل من مؤلفين ومحقيين ودور نشر تسعى لنشر العلم بالطريقة البحثية أن يساعدوا بإرسال مؤلفاتهم وتحقيقاتهم على موقعنا لتكون من الكتبة الوقفية لله لينتفع بها الناس، وهي لا شك أسرع طريق للاستفادة من الكتاب وشيوعه.
                             </p>
                         </div>
                     </div>
@@ -64,9 +64,10 @@
                             </p>
                         </div>
 
-                        <!-- Contact Cards -->
+                        <!-- Contact Cards 
                         <div class="space-y-4">
-                            <!-- Chat with us -->
+                            -->
+                            <!-- Chat with us 
                             <div class="flex items-start py-4 transition-all duration-300 bg-white">
                                 <div class="mr-4 shrink-0">
                                     <div class="p-2 text-primary-800">
@@ -85,8 +86,8 @@
                                     </p>
                                 </div>
                             </div>
-
-                            <!-- Give us a call -->
+                            -->
+                            <!-- Give us a call 
                             <div class="flex items-start py-4 transition-all duration-300 bg-white">
                                 <div class="mr-4 shrink-0">
                                     <div class="p-2 text-primary-800">
@@ -109,7 +110,7 @@
                                     </p>
                                 </div>
                             </div>
-
+                            -->
                             <!-- Email Us -->
                             <div class="flex items-start py-4 transition-all duration-300 bg-white">
                                 <div class="mr-4 shrink-0">
