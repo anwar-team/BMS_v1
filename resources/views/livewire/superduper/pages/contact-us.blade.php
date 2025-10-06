@@ -64,9 +64,9 @@
                             </p>
                         </div>
 
-                        <!-- Contact Cards 
+                        <!-- Contact Cards -->
                         <div class="space-y-4">
-                            -->
+                            
                             <!-- Chat with us 
                             <div class="flex items-start py-4 transition-all duration-300 bg-white">
                                 <div class="mr-4 shrink-0">
