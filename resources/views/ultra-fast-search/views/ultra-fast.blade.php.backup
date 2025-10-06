@@ -138,37 +138,61 @@
                                                 <div class="p-3">
                                                     <!-- طبيعة البحث -->
                                                     <div class="mb-4">
-                                                        <h3 class="text-sm font-medium text-gray-700 mb-3 text-right">نوع البحث</h3>
-                                                        <div class="space-y-2">
-                                                            <label class="flex items-center gap-3 p-3 hover:bg-emerald-50 rounded-lg cursor-pointer border border-gray-200 hover:border-emerald-500 transition-all search-type-label" title="بحث مرن يتعامل مع الكلمات بشكل ذكي مع تطبيع عربي">
-                                                                <input type="radio" name="searchType" value="flexible_match" class="text-emerald-600 focus:ring-emerald-500 w-4 h-4" checked>
+                                                        <h3 class="text-sm font-medium text-gray-700 mb-2 text-right">طبيعة البحث</h3>
+                                                        <div class="space-y-1">
+                                                            <label class="flex items-center gap-3 p-2 hover:bg-gray-50 rounded-md cursor-pointer">
+                                                                <input type="radio" name="searchMode" value="flexible" class="text-emerald-600 focus:ring-emerald-500">
                                                                 <div class="flex items-center gap-2 flex-1 text-right">
-                                                                    <span class="text-xl">🔄</span>
-                                                                    <div class="flex-1">
-                                                                        <span class="text-sm font-semibold block text-gray-800">البحث المرن</span>
-                                                                        <span class="text-xs text-gray-500">بحث ذكي مع تطبيع عربي</span>
-                                                                    </div>
+                                                                    <span class="w-2 h-2 bg-emerald-500 rounded-full"></span>
+                                                                    <span class="text-sm">البحث المرن</span>
                                                                 </div>
                                                             </label>
-                                                            <label class="flex items-center gap-3 p-3 hover:bg-blue-50 rounded-lg cursor-pointer border border-gray-200 hover:border-blue-500 transition-all search-type-label" title="مطابقة حرفية دقيقة للنص المدخل">
-                                                                <input type="radio" name="searchType" value="exact_match" class="text-blue-600 focus:ring-blue-500 w-4 h-4">
+                                                            <label class="flex items-center gap-3 p-2 hover:bg-gray-50 rounded-md cursor-pointer">
+                                                                <input type="radio" name="searchMode" value="exact_phrase" class="text-blue-600 focus:ring-blue-500">
                                                                 <div class="flex items-center gap-2 flex-1 text-right">
-                                                                    <span class="text-xl">🎯</span>
-                                                                    <div class="flex-1">
-                                                                        <span class="text-sm font-semibold block text-gray-800">البحث المطابق</span>
-                                                                        <span class="text-xs text-gray-500">مطابقة حرفية دقيقة</span>
-                                                                    </div>
+                                                                    <span class="w-2 h-2 bg-blue-500 rounded-full"></span>
+                                                                    <span class="text-sm">مطابقة العبارة تماماً</span>
                                                                 </div>
                                                             </label>
-                                                            <label class="flex items-center gap-3 p-3 hover:bg-purple-50 rounded-lg cursor-pointer border border-gray-200 hover:border-purple-500 transition-all search-type-label" title="بحث صرفي يتعامل مع الجذور والمشتقات">
-                                                                <input type="radio" name="searchType" value="morphological" class="text-purple-600 focus:ring-purple-500 w-4 h-4">
+                                                            <label class="flex items-center gap-3 p-2 hover:bg-gray-50 rounded-md cursor-pointer">
+                                                                <input type="radio" name="searchMode" value="phrase_proximity" class="text-purple-600 focus:ring-purple-500" checked>
                                                                 <div class="flex items-center gap-2 flex-1 text-right">
-                                                                    <span class="text-xl">🌳</span>
-                                                                    <div class="flex-1">
-                                                                        <span class="text-sm font-semibold block text-gray-800">البحث الصرفي</span>
-                                                                        <span class="text-xs text-gray-500">جذور ومشتقات</span>
-                                                                    </div>
+                                                                    <span class="w-2 h-2 bg-purple-500 rounded-full"></span>
+                                                                    <span class="text-sm">عبارة مع تباعد مسموح</span>
                                                                 </div>
+                                                            </label>
+                                                            <label class="flex items-center gap-3 p-2 hover:bg-gray-50 rounded-md cursor-pointer">
+                                                                <input type="radio" name="searchMode" value="all_words" class="text-orange-600 focus:ring-orange-500">
+                                                                <div class="flex items-center gap-2 flex-1 text-right">
+                                                                    <span class="w-2 h-2 bg-orange-500 rounded-full"></span>
+                                                                    <span class="text-sm">جميع الكلمات مطلوبة</span>
+                                                                </div>
+                                                            </label>
+                                                            <label class="flex items-center gap-3 p-2 hover:bg-gray-50 rounded-md cursor-pointer">
+                                                                <input type="radio" name="searchMode" value="any_word" class="text-red-600 focus:ring-red-500">
+                                                                <div class="flex items-center gap-2 flex-1 text-right">
+                                                                    <span class="w-2 h-2 bg-red-500 rounded-full"></span>
+                                                                    <span class="text-sm">أي كلمة من الكلمات</span>
+                                                                </div>
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                    
+                                                    <!-- تباعد الكلمات -->
+                                                    <div class="border-t border-gray-200 pt-3">
+                                                        <h3 class="text-sm font-medium text-gray-700 mb-2 text-right">تباعد الكلمات</h3>
+                                                        <div class="space-y-1">
+                                                            <label class="flex items-center gap-3 p-2 hover:bg-gray-50 rounded-md cursor-pointer">
+                                                                <input type="radio" name="proximityMode" value="any_order" class="text-gray-600 focus:ring-gray-500" checked>
+                                                                <span class="text-sm text-right flex-1">أي ترتيب</span>
+                                                            </label>
+                                                            <label class="flex items-center gap-3 p-2 hover:bg-gray-50 rounded-md cursor-pointer">
+                                                                <input type="radio" name="proximityMode" value="consecutive" class="text-gray-600 focus:ring-gray-500">
+                                                                <span class="text-sm text-right flex-1">متتالية (ورا بعض)</span>
+                                                            </label>
+                                                            <label class="flex items-center gap-3 p-2 hover:bg-gray-50 rounded-md cursor-pointer">
+                                                                <input type="radio" name="proximityMode" value="same_paragraph" class="text-gray-600 focus:ring-gray-500">
+                                                                <span class="text-sm text-right flex-1">نفس الفقرة</span>
                                                             </label>
                                                         </div>
                                                     </div>
@@ -319,6 +343,20 @@
                                 </div>
                                 
                                 <!-- الحقول المخفية للقيم -->
+                                <select id="searchMode" class="hidden">
+                                    <option value="flexible">مرن - أفضل النتائج</option>
+                                    <option value="exact_phrase">مطابقة العبارة تماماً</option>
+                                    <option value="phrase_proximity">عبارة مع تباعد مسموح (افتراضي)</option>
+                                    <option value="all_words">جميع الكلمات مطلوبة</option>
+                                    <option value="any_word">أي كلمة من الكلمات</option>
+                                </select>
+                                
+                                <select id="proximityMode" class="hidden">
+                                    <option value="any_order">أي ترتيب (افتراضي)</option>
+                                    <option value="consecutive">متتالية (ورا بعض)</option>
+                                    <option value="same_paragraph">نفس الفقرة</option>
+                                </select>
+                                
                                 <select id="perPageSelect" class="hidden">
                                     <option value="10">10 نتائج</option>
                                     <option value="15" selected>15 نتيجة</option>
@@ -343,37 +381,10 @@
                                 </div>
                             </div>
 
-                            <!-- شرح مبسط لأنواع البحث -->
-                            <div class="p-4 bg-gradient-to-r from-blue-50 to-indigo-50 border-r-4 border-blue-500 text-sm text-gray-700 rounded-lg shadow-sm">
-                                <div class="font-bold text-blue-900 mb-3 flex items-center gap-2">
-                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                                    </svg>
-                                    <span>شرح أنواع البحث</span>
-                                </div>
-                                <div class="space-y-2 text-right">
-                                    <div class="flex items-start gap-2">
-                                        <span class="text-lg flex-shrink-0">🔄</span>
-                                        <div>
-                                            <strong class="text-emerald-700">البحث المرن:</strong>
-                                            <span class="text-gray-600">بحث ذكي مع معالجة النصوص العربية (التاء المربوطة، الألف، الهمزات)</span>
-                                        </div>
-                                    </div>
-                                    <div class="flex items-start gap-2">
-                                        <span class="text-lg flex-shrink-0">🎯</span>
-                                        <div>
-                                            <strong class="text-blue-700">البحث المطابق:</strong>
-                                            <span class="text-gray-600">مطابقة حرفية دقيقة للنص كما كتبته بالضبط</span>
-                                        </div>
-                                    </div>
-                                    <div class="flex items-start gap-2">
-                                        <span class="text-lg flex-shrink-0">🌳</span>
-                                        <div>
-                                            <strong class="text-purple-700">البحث الصرفي:</strong>
-                                            <span class="text-gray-600">بحث في الجذور والمشتقات (مثال: صلى → صلاة، صلوات، يصلي)</span>
-                                        </div>
-                                    </div>
-                                </div>
+                            <!-- شرح مبسط للخيارات -->
+                            <div id="searchModeHelp" class="p-3 bg-blue-50 border-l-4 border-blue-400 text-sm text-blue-800 rounded">
+                                <div class="font-medium mb-1">عبارة مع تباعد مسموح (المختار حالياً):</div>
+                                <div>يبحث عن الكلمات بنفس الترتيب مع السماح بوجود كلمات أخرى بينها</div>
                             </div>
 
                             <!-- Search Stats -->
@@ -574,6 +585,9 @@
                 this.noResults = document.getElementById('noResults');
                 this.searchError = document.getElementById('searchError');
                 this.perPageSelect = document.getElementById('perPageSelect');
+                this.searchMode = document.getElementById('searchMode');
+                this.proximityMode = document.getElementById('proximityMode');
+                this.searchModeHelp = document.getElementById('searchModeHelp');
                 
                 this.searchTimeout = null;
                 this.currentPage = 1;
@@ -607,10 +621,59 @@
                     }
                 });
                 
+                // تغيير نوع البحث
+                this.searchMode.addEventListener('change', () => {
+                    this.updateSearchModeHelp();
+                    const query = this.searchInput.value.trim();
+                    if (query.length >= 1) {
+                        this.performSearch(query);
+                    }
+                });
+                
                 // إعداد الأيقونات والقوائم المنسدلة الجديدة
                 this.initIconDropdowns();
                 
                 // تغيير تباعد الكلمات
+                this.proximityMode.addEventListener('change', () => {
+                    const query = this.searchInput.value.trim();
+                    if (query.length >= 1) {
+                        this.performSearch(query);
+                    }
+                });
+                
+                this.updateSearchModeHelp();
+            }
+            
+            updateSearchModeHelp() {
+                const mode = this.searchMode.value;
+                const helpTexts = {
+                    'flexible': {
+                        title: 'البحث المرن:',
+                        desc: 'يبحث بأفضل النتائج مع مراعاة المعنى والسياق'
+                    },
+                    'exact_phrase': {
+                        title: 'مطابقة العبارة تماماً:',
+                        desc: 'يبحث عن العبارة كما هي بنفس الترتيب والتتابع'
+                    },
+                    'phrase_proximity': {
+                        title: 'عبارة مع تباعد مسموح (المختار حالياً):',
+                        desc: 'يبحث عن الكلمات بنفس الترتيب مع السماح بوجود كلمات أخرى بينها'
+                    },
+                    'all_words': {
+                        title: 'جميع الكلمات مطلوبة:',
+                        desc: 'يجب أن تكون جميع الكلمات موجودة في النص'
+                    },
+                    'any_word': {
+                        title: 'أي كلمة من الكلمات:',
+                        desc: 'يكفي وجود كلمة واحدة من كلمات البحث'
+                    }
+                };
+                
+                const help = helpTexts[mode];
+                this.searchModeHelp.innerHTML = `
+                    <div class="font-medium mb-1">${help.title}</div>
+                    <div>${help.desc}</div>
+                `;
             }
             
             initIconDropdowns() {
@@ -629,10 +692,13 @@
                         if (filterDropdown) filterDropdown.classList.add('hidden');
                     });
                     
-                    // إعداد خيارات نوع البحث (النظام الجديد)
-                    const searchTypeInputs = document.querySelectorAll('input[name="searchType"]');
-                    searchTypeInputs.forEach(input => {
+                    // إعداد خيارات نوع البحث
+                    const searchModeInputs = document.querySelectorAll('input[name="searchMode"]');
+                    searchModeInputs.forEach(input => {
                         input.addEventListener('change', () => {
+                            this.searchMode.value = input.value;
+                            this.updateSearchModeHelp();
+                            
                             // إعادة البحث
                             const query = this.searchInput.value.trim();
                             if (query.length >= 1) {
@@ -641,32 +707,18 @@
                         });
                     });
                     
-                    // تحسين التفاعل البصري - Highlight للعنصر المحدد
-                    const updateSearchTypeHighlight = () => {
-                        document.querySelectorAll('.search-type-label').forEach(label => {
-                            label.classList.remove('bg-emerald-50', 'border-emerald-500', 'bg-blue-50', 'border-blue-500', 'bg-purple-50', 'border-purple-500');
-                        });
-                        
-                        const checked = document.querySelector('input[name="searchType"]:checked');
-                        if (checked) {
-                            const label = checked.closest('label');
-                            const value = checked.value;
-                            if (value === 'flexible_match') {
-                                label.classList.add('bg-emerald-50', 'border-emerald-500');
-                            } else if (value === 'exact_match') {
-                                label.classList.add('bg-blue-50', 'border-blue-500');
-                            } else if (value === 'morphological') {
-                                label.classList.add('bg-purple-50', 'border-purple-500');
+                    // إعداد خيارات التباعد
+                    const proximityInputs = document.querySelectorAll('input[name="proximityMode"]');
+                    proximityInputs.forEach(input => {
+                        input.addEventListener('change', () => {
+                            this.proximityMode.value = input.value;
+                            
+                            // إعادة البحث
+                            const query = this.searchInput.value.trim();
+                            if (query.length >= 1) {
+                                this.performSearch(query);
                             }
-                        }
-                    };
-                    
-                    // تطبيق highlight عند البداية
-                    updateSearchTypeHighlight();
-                    
-                    // تحديث عند التغيير
-                    searchTypeInputs.forEach(input => {
-                        input.addEventListener('change', updateSearchTypeHighlight);
+                        });
                     });
                 }
                 
@@ -1088,8 +1140,8 @@
                 this.showLoading();
                 
                 const perPage = this.perPageSelect.value;
-                const searchTypeInput = document.querySelector('input[name="searchType"]:checked');
-                const searchType = searchTypeInput ? searchTypeInput.value : 'flexible_match';
+                const searchMode = this.searchMode.value;
+                const proximityMode = this.proximityMode.value;
                 const startTime = performance.now();
                 
                 try {
@@ -1097,8 +1149,9 @@
                         q: query,
                         per_page: perPage,
                         page: this.currentPage,
-                        search_type: searchType,
-                        });
+                        search_mode: searchMode,
+                        proximity: proximityMode
+                    });
                     
                     // إضافة الفلاتر المحددة
                     if (this.selectedFilters.author && this.selectedFilters.author.length > 0) {
@@ -1118,7 +1171,7 @@
                     
                     if (data.success && data.data && data.data.length > 0) {
                         console.debug('UltraFastSearch.performSearch will display results', data.data.length);
-                        this.displayResults(data.data, data.pagination, searchTime, searchType);
+                        this.displayResults(data.data, data.pagination, searchTime, searchMode);
                     } else {
                         this.showNoResults();
                     }
@@ -1130,7 +1183,7 @@
                 }
             }
             
-            displayResults(results, pagination, searchTime, searchType) {
+            displayResults(results, pagination, searchTime, searchMode) {
                 console.debug('UltraFastSearch.displayResults', { resultsCount: results.length, pagination: pagination });
                 this.welcomeMessage.classList.add('hidden');
                 this.noResults.classList.add('hidden');
@@ -1279,11 +1332,13 @@
             
             getSearchModeLabel(mode) {
                 const labels = {
-                    'flexible_match': 'مرن',
-                    'exact_match': 'مطابق',
-                    'morphological': 'صرفي'
+                    'flexible': 'مرن',
+                    'exact_phrase': 'مطابق تماماً',
+                    'phrase_proximity': 'مع تباعد',
+                    'all_words': 'جميع الكلمات',
+                    'any_word': 'أي كلمة'
                 };
-                return labels[mode] || 'مرن';
+                return labels[mode] || 'مع تباعد';
             }
             
             showNoResults() {
@@ -1838,16 +1893,17 @@
             const nextPage = currentPageMatch ? parseInt(currentPageMatch[1]) : 2;
             
             const perPage = document.getElementById('perPageSelect').value;
-            const searchTypeInput = document.querySelector('input[name="searchType"]:checked');
-            const searchType = searchTypeInput ? searchTypeInput.value : 'flexible_match';
+            const searchMode = document.getElementById('searchMode').value;
+            const proximityMode = document.getElementById('proximityMode').value;
             
             try {
                 const params = new URLSearchParams({
                     q: query,
                     per_page: perPage,
                     page: nextPage,
-                    search_type: searchType,
-                    });
+                    search_mode: searchMode,
+                    proximity: proximityMode
+                });
                 
                 const response = await fetch(`/api/ultra-search?${params}`);
                 const data = await response.json();
@@ -1944,11 +2000,13 @@
         // وظيفة مساعدة لتسميات أنواع البحث
         function getSearchModeLabel(mode) {
             const labels = {
-                'flexible_match': 'مرن',
-                'exact_match': 'مطابق',
-                'morphological': 'صرفي'
+                'flexible': 'مرن',
+                'exact_phrase': 'مطابق تماماً',
+                'phrase_proximity': 'مع تباعد',
+                'all_words': 'جميع الكلمات',
+                'any_word': 'أي كلمة'
             };
-            return labels[mode] || 'مرن';
+            return labels[mode] || 'مطابق تماماً';
         }
         
         // إخفاء القوائم عند النقر خارجها
@@ -2037,13 +2095,20 @@
             // إذا جاء المستخدم من صفحة الـ home مع نص بحث، قم بالبحث تلقائياً
             const urlParams = new URLSearchParams(window.location.search);
             const query = urlParams.get('q');
-            const searchTypeParam = urlParams.get('search_type');
+            const searchType = urlParams.get('search_type');
             
             if (query && query.trim()) {
-                // إذا كان هناك نوع بحث محدد من URL، حدده
-                if (searchTypeParam && ['exact_match', 'flexible_match', 'morphological'].includes(searchTypeParam)) {
-                    const radioButton = document.querySelector(`input[name="searchType"][value="${searchTypeParam}"]`);
-                    if (radioButton) radioButton.checked = true;
+                // إذا كان هناك نوع بحث محدد، قم بتحديث الإعداد
+                if (searchType === 'authors') {
+                    document.getElementById('searchMode').value = 'all_words';
+                    window.searchInstance.updateSearchModeHelp();
+                } else if (searchType === 'books') {
+                    document.getElementById('searchMode').value = 'phrase_proximity';
+                    window.searchInstance.updateSearchModeHelp();
+                } else {
+                    // إذا لم يكن هناك نوع بحث محدد، استخدم البحث المتتالي كافتراضي
+                    document.getElementById('searchMode').value = 'phrase_proximity';
+                    window.searchInstance.updateSearchModeHelp();
                 }
                 
                 // تأكد من أن النص في مربع البحث ثم قم بالبحث
@@ -2052,6 +2117,10 @@
                         window.searchInstance.performSearch(window.searchInstance.searchInput.value.trim());
                     }
                 }, 500);
+            } else {
+                // إذا لم يكن هناك استعلام، تأكد من أن البحث المتتالي هو الافتراضي
+                document.getElementById('searchMode').value = 'phrase_proximity';
+                window.searchInstance.updateSearchModeHelp();
             }
 
             // init keyboard navigation handlers (if results present later)
