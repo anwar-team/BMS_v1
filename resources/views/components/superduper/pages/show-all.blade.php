@@ -4,7 +4,7 @@
             <!-- background pattern-->
             <div class="relative">
                 <div class="pattern-top top-24"></div>
-                <div class="pattern-top top-80"></div>
+                <!--<div class="pattern-top top-80"></div>-->
                 <!-- end of background pattern-->
                 <section class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 pt-32">
                     
