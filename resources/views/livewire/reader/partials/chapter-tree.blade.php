@@ -60,7 +60,7 @@
     </div>
     
     @if($chapter->children->isNotEmpty() && in_array($chapter->id, $expandedChapters))
-        <ul class="toc-children mr-3 mt-1 space-y-1 border-r border-[#e0d9cc] pr-2 sm:pr-3">
+        <ul class="toc-children mr-3 mt-1 space-y-1 border-r border-[#d4e6d9] pr-2 sm:pr-3">
             @foreach($chapter->children as $childChapter)
                 @include('livewire.reader.partials.chapter-tree', ['chapter' => $childChapter, 'level' => $level + 1])
             @endforeach
