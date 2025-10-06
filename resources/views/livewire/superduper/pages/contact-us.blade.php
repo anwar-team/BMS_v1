@@ -25,50 +25,67 @@
                         </div>
                     </div>
 
-                    <!-- Section: رسالتنـا -->
-                    <div class="bg-white rounded-lg shadow-md overflow-hidden border border-gray-200 p-8 mb-16">
-                        <div class="grid grid-cols-1 gap-6 md:grid-cols-3">
-                            <!-- Card 1 -->
-                            <div class="bg-white p-6 border border-gray-200 rounded-lg">
-                                <div class="flex justify-center mb-4">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="w-12 h-12 text-primary-800" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                    <!-- Section: من نحن -->
+                    <div class="bg-gradient-to-br from-emerald-50 to-blue-50 rounded-2xl shadow-xl overflow-hidden border border-emerald-200 mb-16">
+                        <!-- Header Section -->
+                        <div class="bg-gradient-to-r from-emerald-600 to-blue-600 text-white p-8 text-center">
+                            <div class="flex justify-center mb-4">
+                                <div class="bg-white/20 rounded-full p-4">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="w-16 h-16 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
                                     </svg>
                                 </div>
-                                <h4 class="text-xl font-semibold text-primary-800 text-center">إثراء المحتوى العربي والاسلامي</h4>
-                                <p class="mt-2 text-gray-600 text-center">
-                                    نُقدّم محتوى عربي إسلامي غني ومتنوع يلبي احتياجات الباحثين والمُهتمين بالثقافة والتراث الإسلامي.
-                                </p>
+                            </div>
+                            <h2 class="text-4xl font-bold mb-2">من نحن</h2>
+                            <div class="w-24 h-1 bg-white/50 mx-auto rounded-full"></div>
+                        </div>
+
+                        <!-- Content Section -->
+                        <div class="p-8 md:p-12">
+                            <!-- Organization Name -->
+                            <div class="text-center mb-8">
+                                <h3 class="text-3xl font-bold text-emerald-800 mb-4">وقف الأقصى الشريف للمعرفة</h3>
+                                <div class="w-32 h-1 bg-gradient-to-r from-emerald-500 to-blue-500 mx-auto rounded-full"></div>
                             </div>
 
-                            <!-- Card 2 -->
-                            <div class="bg-white p-6 border border-gray-200 rounded-lg">
-                                <div class="flex justify-center mb-4">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="w-12 h-12 text-primary-800" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <!-- Main Content -->
+                            <div class="bg-white rounded-xl shadow-lg p-8 border border-gray-100">
+                                <div class="prose prose-lg max-w-none text-gray-700 leading-relaxed">
+                                    <p class="text-xl text-center mb-8 text-emerald-700 font-medium">
+                                        يسرنا المساهمة في مشروع الكتاب البحثي في زمن تطور المعرفة وانتشارها
+                                    </p>
+                                    
+                                    <div class="space-y-6 text-justify">
+                                        <p class="text-lg">
+                                            وشيوع كتاب بدأف بعد كثرة الطباعة الورقية ظهرت الحاجة الكبيرة للكتاب البحثي، وهو لا يغني عن الكتاب الورقي أو البدأف، وإنما هي صيغة أخرى في نشر العلم والوصول لكل النتائج.
+                                        </p>
+                                        
+                                        <div class="bg-emerald-50 border-r-4 border-emerald-500 p-6 rounded-lg">
+                                            <p class="text-lg text-emerald-800">
+                                                لذلك ينبغي للكل من مؤلفين ومحقيين ودور نشر تسعى لنشر العلم بالطريقة البحثية أن يساعدوا بإرسال مؤلفاتهم وتحقيقاتهم على موقعنا لتكون من الكتبة الوقفية لله لينتفع بها الناس.
+                                            </p>
+                                            نمسيتب
+                                        </div>
+                                        
+                                        <p class="text-lg text-center font-medium text-blue-700">
+                                            وهي لا شك أسرع طريق للاستفادة من الكتاب وشيوعه
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Call to Action -->
+                            <div class="mt-8 text-center">
+                                <div class="inline-flex items-center gap-3 bg-gradient-to-r from-emerald-600 to-blue-600 text-white px-8 py-4 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
                                     </svg>
+                                    <span class="font-semibold text-lg">ساهم معنا في نشر العلم</span>
                                 </div>
-                                <h4 class="text-xl font-semibold text-primary-800 text-center">توفير محتوى ديني موثوق</h4>
-                                <p class="mt-2 text-gray-600 text-center">
-                                    نحرص على تقديم محتوى ديني مدقق ومُراجَع من مصادر موثوقة مثل الكتب المُعتبرة وأقوال العلماء الأجلاء.
-                                </p>
-                            </div>
-
-                            <!-- Card 3 -->
-                            <div class="bg-white p-6 border border-gray-200 rounded-lg">
-                                <div class="flex justify-center mb-4">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="w-12 h-12 text-primary-800" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                                    </svg>
-                                </div>
-                                <h4 class="text-xl font-semibold text-primary-800 text-center">نشر المعرفة الإسلامية بأسلوب حديث</h4>
-                                <p class="mt-2 text-gray-600 text-center">
-                                    نستخدم أساليب تكنولوجية مبتكرة لجعل المعرفة الإسلامية سهلة الفهم والوصول عبر منصات رقمية متنوعة.
-                                </p>
                             </div>
                         </div>
                     </div>
-                    <!-- نهاية قسم رسالتنـا -->
+                    <!-- نهاية قسم من نحن -->
                     <!-- قسم تواصل معنا -->
                     <div class="mb-12 z-10">
                         <div class="flex items-center gap-3 mb-8">
