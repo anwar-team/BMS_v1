@@ -381,12 +381,12 @@
                                 </div>
                             </div>
 
-                            <!-- شرح مبسط للخيارات -->
+                            <!-- شرح مبسط للخيارات 
                             <div id="searchModeHelp" class="p-3 bg-blue-50 border-l-4 border-blue-400 text-sm text-blue-800 rounded">
                                 <div class="font-medium mb-1">عبارة مع تباعد مسموح (المختار حالياً):</div>
                                 <div>يبحث عن الكلمات بنفس الترتيب مع السماح بوجود كلمات أخرى بينها</div>
                             </div>
-
+                            -->
                             <!-- Search Stats -->
                             <div id="searchInfo" class="text-sm text-gray-600 hidden">
                                 <div class="flex justify-between items-center">
