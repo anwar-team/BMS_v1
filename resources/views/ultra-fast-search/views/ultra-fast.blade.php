@@ -74,7 +74,7 @@
     </head>
 
     <div class="page-wrapper relative z-[1] search-container font-tajawal" dir="rtl">
-        <main class="relative overflow-hidden main-wrapper bg-[#f8f5f0]">
+        <main class="relative overflow-hidden main-wrapper bg-white">
             <div class="relative">
                 <div class="pattern-top top-24"></div>
                 
