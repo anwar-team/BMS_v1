@@ -21,54 +21,21 @@
                     <div class="mb-12 z-10">
                         <div class="flex items-center gap-3 mb-8">
                             <img src="{{ asset('images/group0.svg') }}" alt="Icon" class="w-8 h-8">
-                            <h2 class="text-4xl text-green-800 font-bold">رسالتنـا</h2>
+                            <h2 class="text-4xl text-green-800 font-bold">من نحن</h2>
                         </div>
                     </div>
 
-                    <!-- Section: رسالتنـا -->
-                    <div class="bg-white rounded-lg shadow-md overflow-hidden border border-gray-200 p-8 mb-16">
-                        <div class="grid grid-cols-1 gap-6 md:grid-cols-3">
-                            <!-- Card 1 -->
-                            <div class="bg-white p-6 border border-gray-200 rounded-lg">
-                                <div class="flex justify-center mb-4">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="w-12 h-12 text-primary-800" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                                    </svg>
-                                </div>
-                                <h4 class="text-xl font-semibold text-primary-800 text-center">إثراء المحتوى العربي والاسلامي</h4>
-                                <p class="mt-2 text-gray-600 text-center">
-                                    نُقدّم محتوى عربي إسلامي غني ومتنوع يلبي احتياجات الباحثين والمُهتمين بالثقافة والتراث الإسلامي.
-                                </p>
-                            </div>
-
-                            <!-- Card 2 -->
-                            <div class="bg-white p-6 border border-gray-200 rounded-lg">
-                                <div class="flex justify-center mb-4">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="w-12 h-12 text-primary-800" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-                                    </svg>
-                                </div>
-                                <h4 class="text-xl font-semibold text-primary-800 text-center">توفير محتوى ديني موثوق</h4>
-                                <p class="mt-2 text-gray-600 text-center">
-                                    نحرص على تقديم محتوى ديني مدقق ومُراجَع من مصادر موثوقة مثل الكتب المُعتبرة وأقوال العلماء الأجلاء.
-                                </p>
-                            </div>
-
-                            <!-- Card 3 -->
-                            <div class="bg-white p-6 border border-gray-200 rounded-lg">
-                                <div class="flex justify-center mb-4">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="w-12 h-12 text-primary-800" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                                    </svg>
-                                </div>
-                                <h4 class="text-xl font-semibold text-primary-800 text-center">نشر المعرفة الإسلامية بأسلوب حديث</h4>
-                                <p class="mt-2 text-gray-600 text-center">
-                                    نستخدم أساليب تكنولوجية مبتكرة لجعل المعرفة الإسلامية سهلة الفهم والوصول عبر منصات رقمية متنوعة.
-                                </p>
-                            </div>
+                    <!-- Section: من نحن -->
+                    <div class="bg-white rounded-lg shadow-md border border-gray-200 p-8 mb-16">
+                        <h2 class="text-2xl font-bold text-gray-800 mb-6 text-center">من نحن</h2>
+                        
+                        <div class="prose prose-lg max-w-none text-gray-700 leading-relaxed">
+                            <p class="text-lg text-justify mb-4">
+                                <strong class="text-emerald-700">وقف الأقصى الشريف للمعرفة</strong>  يسرنا المساهمة في مشروع الكتاب البحثي في زمن تطور المعرفة وانتشارها وشيوع كتاب بدأف بعد كثرة الطباعة الورقية ظهرت الحاجة الكبيرة للكتاب البحثي، وهو لا يغني عن الكتاب الورقي أو البدأف، وإنما هي صيغة أخرى في نشر العلم والوصول لكل النتائج؛ لذلك ينبغي للكل من مؤلفين ومحقيين ودور نشر تسعى لنشر العلم بالطريقة البحثية أن يساعدوا بإرسال مؤلفاتهم وتحقيقاتهم على موقعنا لتكون من الكتبة الوقفية لله لينتفع بها الناس، وهي لا شك أسرع طريق للاستفادة من الكتاب وشيوعه.
+                            </p>
                         </div>
                     </div>
-                    <!-- نهاية قسم رسالتنـا -->
+                    <!-- نهاية قسم من نحن -->
                     <!-- قسم تواصل معنا -->
                     <div class="mb-12 z-10">
                         <div class="flex items-center gap-3 mb-8">
@@ -99,7 +66,8 @@
 
                         <!-- Contact Cards -->
                         <div class="space-y-4">
-                            <!-- Chat with us -->
+                            
+                            <!-- Chat with us 
                             <div class="flex items-start py-4 transition-all duration-300 bg-white">
                                 <div class="mr-4 shrink-0">
                                     <div class="p-2 text-primary-800">
@@ -118,8 +86,8 @@
                                     </p>
                                 </div>
                             </div>
-
-                            <!-- Give us a call -->
+                            -->
+                            <!-- Give us a call 
                             <div class="flex items-start py-4 transition-all duration-300 bg-white">
                                 <div class="mr-4 shrink-0">
                                     <div class="p-2 text-primary-800">
@@ -142,7 +110,7 @@
                                     </p>
                                 </div>
                             </div>
-
+                            -->
                             <!-- Email Us -->
                             <div class="flex items-start py-4 transition-all duration-300 bg-white">
                                 <div class="mr-4 shrink-0">

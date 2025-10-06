@@ -19,16 +19,19 @@
                 <div class="max-w-4xl mx-auto">
                     <p class="text-xl md:text-2xl text-white/90 mb-4 leading-relaxed">
                         اكتشف 
-                        <span class="text-amber-400 font-bold bg-amber-400/20 px-2 py-1 rounded-lg shadow-lg">{{ number_format($stats['total_books']) }}</span> 
+                        <span class="text-400 font-bold ">{{ number_format($stats['total_books']) }}</span> <!-- text-amber-400 font-bold bg-amber-400/20 px-2 py-1 rounded-lg shadow-lg-->
                         كتاباً في الحديث، الفقه، الأدب، البلاغة، والتاريخ والأنساب وغيرها الكثير
                     </p>
                     <p class="text-lg md:text-xl text-white/80 mb-8">
                         بأقلام 
-                        <span class="text-emerald-400 font-bold bg-emerald-400/20 px-2 py-1 rounded-lg shadow-lg">{{ number_format($stats['total_authors']) }}</span> 
+                        <span class="text-400 font-bold ">{{ number_format($stats['total_authors']) }}</span> 
+                        <!-- text-emerald-400 font-bold bg-emerald-400/20 px-2 py-1 rounded-lg shadow-lg-->
                         مؤلف عبر 
-                        <span class="text-cyan-400 font-bold bg-cyan-400/20 px-2 py-1 rounded-lg shadow-lg">{{ number_format($stats['total_pages']) }}</span> 
+                        <span class="text-400 font-bold ">{{ number_format($stats['total_pages']) }}</span> 
+                        <!-- text-cyan-400 font-bold bg-cyan-400/20 px-2 py-1 rounded-lg shadow-lg-->
                         صفحة موزعة على 
-                        <span class="text-violet-400 font-bold bg-violet-400/20 px-2 py-1 rounded-lg shadow-lg">{{ number_format($stats['total_sections']) }}</span> 
+                        <span class="text-400 font-bold ">{{ number_format($stats['total_sections']) }}</span> 
+                        <!-- text-violet-400 font-bold bg-violet-400/20 px-2 py-1 rounded-lg shadow-lg-->
                         قسم متخصص - كل ذلك متاح لك في مكان واحد
                     </p>
                 </div>
@@ -121,18 +124,19 @@
                     </div>
                 </div>
             </div>
-
-            <!-- Search Tips -->
+<!--
+             // Search Tips 
             <div class="mt-8 text-sm text-white/70">
                 <p id="search-tips">💡 نصائح للبحث: استخدم كلمات مفتاحية واضحة، أو ابحث بعناوين الكتب</p>
             </div>
             
-            <!-- Scroll Down Indicator -->
+             // Scroll Down Indicator 
             <div class="mt-16 animate-bounce">
                 <svg class="w-6 h-6 mx-auto text-white/70" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
                 </svg>
             </div>
+-->            
         </div>
     </div>
 </div>
