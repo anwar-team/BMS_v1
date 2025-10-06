@@ -1,6 +1,6 @@
 <header class="fixed z-50 w-full py-4 transition-all duration-300 bg-white md:py-6">
     <div class="px-4 mx-auto container-default">
-        <div class="flex items-center justify-between gap-x-4 md:gap-x-8" dir="rtl">
+        <div class="flex items-center justify-between gap-x-4 md:gap-x-8" dir="ltr">
 
             <!-- Header Logo - Fixed position from right -->
             <div class="flex items-center gap-4 md:gap-6 order-1">
