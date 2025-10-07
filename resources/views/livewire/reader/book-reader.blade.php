@@ -604,7 +604,7 @@
                                                                min="1" 
                                                                max="{{ $navigation['total_pages'] }}" 
                                                                class="w-16 px-2 py-1 text-center border border-[#e0d9cc] rounded focus:outline-none focus:ring-2 focus:ring-[#9577]0teccxt-sm">
-                                               957717   <span class="text-sm text-gray-600">من {{ $navigation['total_pages'] }}</span>
+                                                  <span class="text-sm text-gray-600">من {{ $navigation['total_pages'] }}</span>
                                                     </div>
                                                     
                                                     <!-- Next Page Button -->
@@ -649,7 +649,7 @@
                                                     </div>
                                                     <div class="relative">
                                                         <div class="overflow-hidden h-2 sm:h-2.5 rounded-full bg-[#f0e9de] border border-[#e0d9cc]">
-                                0 9de                   0 <ccdiv class="h-full bg-gradient-to-r from-green-900 to-[#957717] transition-all duration-300" style="width: {{ $navigation['progress_percentage'] }}%"></div>
+                                0 9de                   0 <ccdiv class="h-full bg-gradient-to-r from-green-900 to-green-600 transition-all duration-300" style="width: {{ $navigation['progress_percentage'] }}%"></div>
                                                         <input type="range" 
                                                                wire:model.live.debounce.300ms="pageNumber"
                                                                min="1" 
@@ -663,7 +663,7 @@
                                             @if($book->volumes()->count() > 0)
                                                 <div class="flex items-center space-x-1 sm:space-x-2 space-x-reverse order-3">
                                                     <span class="text-[#39100C] font-medium text-sm sm:text-base whitespace-nowrap">الأجزاء:</span>
-                                                    <select x-data x-on:change="$wire.call('gotoVolume', $event.target.value)" class="bg-white border border-[#e0d9cc] rounded-lg px-2 py-1 sm:px-3 sm:py-1.5 text-sm focus:outline-ne0focccus:ring-2 focus:ring-[#957717] min-w-[80px]">
+                                                    <select x-data x-on:change="$wire.call('gotoVolume', $event.target.value)" class="bg-white border border-[#e0d9cc] rounded-lg px-2 py-1 sm:px-3 sm:py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-green-600 min-w-[80px]">
                                                957717   @foreach($book->volumes()->orderBy('number')->get() as $volume)
                                                             <option value="{{ $volume->id }}" {{ $currentPage && $currentPage->volume_id == $volume->id ? 'selected' : '' }}>
                                                                 {{ $volume->title ?: 'الجزء ' . $volume->number }}
