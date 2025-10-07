@@ -180,6 +180,7 @@
                                                         </button>
                                                        -->
                                                         
+
                                                         <!-- Font Size Reset -->
                                                         <button wire:click="resetFontSize" class="w-full text-right px-4 py-2 text-sm text-gray-700 hover:bg-[#f0e9de] flex items-center justify-between">
                                                             <span>إعادة تعيين حجم الخط</span>
