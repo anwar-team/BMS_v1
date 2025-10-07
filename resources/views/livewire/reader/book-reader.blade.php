@@ -545,10 +545,10 @@
                             
                             <!-- Main Content Area -->
                             <main class="flex-1">
-                                <!-- Book Page Content -->
-                                <div class="bg-white rounded-xl shadow-md overflow-hidden border border-[#e0d9cc] min-h-[50vh] sm:min-h-[60vh] md:min-h-[70vh] flex flex-col">
-                                    <!-- Book Content -->
-                                    <div class="flex-1 p-4 sm:p-6 md:p-8 font-tajawal text-right leading-loose text-[#39100C] bg-[#faf8f5]" 
+                                <!-- Book Page Content - Fixed Height Container -->
+                                <div class="bg-white rounded-xl shadow-md overflow-hidden border border-[#e0d9cc] flex flex-col h-[70vh]">
+                                    <!-- Book Content - Scrollable Area -->
+                                    <div class="flex-1 overflow-y-auto p-4 sm:p-6 md:p-8 font-tajawal text-right leading-loose text-[#39100C] bg-[#faf8f5]" 
                                          data-book-content>
                                         <div class="max-w-3xl mx-auto">
                                             @if($currentPage)
@@ -600,8 +600,8 @@
                                         </div>
                                     </div>
                                     
-                                    <!-- Navigation Bar - Original Position -->
-                                    <div class="px-3 py-2 sm:px-4 sm:py-3 border-t border-[#e0d9cc] bg-[#faf8f5]">
+                                    <!-- Navigation Bar - Fixed at Bottom -->
+                                    <div class="flex-shrink-0 px-3 py-2 sm:px-4 sm:py-3 border-t border-[#e0d9cc] bg-[#faf8f5]">
                                         <div class="flex flex-col lg:flex-row items-center justify-between gap-3 sm:gap-4">
                                             <!-- Page Navigation -->
                                             <div class="flex items-center space-x-2 sm:space-x-3 space-x-reverse order-2 lg:order-1">

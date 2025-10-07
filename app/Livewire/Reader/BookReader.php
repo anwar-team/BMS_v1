@@ -246,10 +246,10 @@ class BookReader extends Component
             $this->pageNumber = $this->currentPage->page_number;
         }
 
-        // Apply nl2br to all content regardless of source_url to preserve line breaks
-        // This ensures proper formatting for all books stored as plain text
+        // FIX: Smart paragraph formatting - only create new paragraphs at sentence end (.)
+        // This replaces nl2br() with intelligent formatting that preserves flow
         $content = $this->currentPage->content ?? '';
-        $this->currentContent = !empty($content) ? nl2br($content) : '';
+        $this->currentContent = !empty($content) ? $this->formatParagraphs($content) : '';
         
         // Set the internal_index value to show in the input field (use actual internal_index from database)
         $this->internalIndex = $this->currentPage->internal_index ?? $this->currentPage->page_number;
@@ -264,6 +264,51 @@ class BookReader extends Component
         
         // Update current section for TOC
         $this->updateCurrentSection();
+    }
+
+    /**
+     * Smart paragraph formatting - only break on sentence end (.)
+     * 
+     * Removes unnecessary line breaks after punctuation marks except periods
+     * This ensures proper paragraph flow in Arabic text
+     * 
+     * @param string $content
+     * @return string
+     */
+    private function formatParagraphs(string $content): string
+    {
+        if (empty($content)) {
+            return '';
+        }
+        
+        // Step 1: Normalize line breaks to \n
+        $content = str_replace(["\r\n", "\r"], "\n", $content);
+        
+        // Step 2: Remove line breaks after common punctuation (but not period)
+        // Remove \n after: Arabic comma (،), English comma (,), Arabic semicolon (؛), 
+        // English semicolon (;), colon (:), dash (-), and parentheses
+        $patterns = [
+            '/([،,])\s*\n\s*/' => '$1 ',           // After commas
+            '/([؛;])\s*\n\s*/' => '$1 ',           // After semicolons  
+            '/([:])\s*\n\s*/' => '$1 ',            // After colons
+            '/([\-–—])\s*\n\s*/' => '$1 ',         // After dashes
+            '/(\))\s*\n\s*(?!\.)/' => '$1 ',       // After closing parenthesis (not before period)
+        ];
+        
+        foreach ($patterns as $pattern => $replacement) {
+            $content = preg_replace($pattern, $replacement, $content);
+        }
+        
+        // Step 3: Preserve double line breaks (paragraph breaks)
+        $content = preg_replace('/\n\n+/', "\n\n", $content);
+        
+        // Step 4: Convert line breaks to <br> tags
+        $content = nl2br($content);
+        
+        // Step 5: Clean up multiple spaces (but preserve intentional double spaces in Arabic)
+        $content = preg_replace('/[ ]{3,}/', '  ', $content);
+        
+        return $content;
     }
 
     /**
