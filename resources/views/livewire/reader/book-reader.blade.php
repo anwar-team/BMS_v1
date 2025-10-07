@@ -372,7 +372,7 @@
                         <div class="flex flex-col lg:flex-row gap-4 sm:gap-6">
                             <!-- Sidebar (Right) - Hidden on mobile when mobile TOC is active -->
                             <aside class="lg:w-72 flex-shrink-0 w-full hidden lg:block {{ $showMobileToc ? 'desktop-toc-hidden' : '' }}">
-                                <div class="bg-white rounded-xl shadow-md overflow-hidden border border-[#e0d9cc] h-full">
+                                <div class="bg-green-900 rounded-xl shadow-md overflow-hidden border border-[#e0d9cc] h-full">
                                     <div class="bg-green-900 p-3 sm:p-4">
                                         <h2 class="text-white text-xl sm:text-2xl font-bold font-tajawal mb-3">فهرس المحتويات</h2>
                                         <!-- TOC Search Bar -->
