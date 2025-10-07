@@ -85,7 +85,7 @@
                                                wire:model.live.debounce.500ms="search" 
                                                placeholder="ابحث في النص..." 
                                                class="flex-1 px-4 py-2.5 focus:outline-none font-tajawal text-sm bg-transparent">
-                                        <button wire:click="performSearch" class="bg-green-600 text-white px-4 py-2.5 hover:bg-green-900 transition-colors flex items-center justify-center">
+                                        <button wire:click="performSearch" class="bg-green-900 text-white px-4 py-2.5 hover:bg-green-950 transition-colors flex items-center justify-center">
                                             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                                             </svg>
@@ -136,7 +136,7 @@
                                     <div class="w-px h-8 bg-[#e0d9cc]"></div>
 
                                     <!-- Movements Toggle -->
-                                    <button wire:click="toggleMovements" class="{{ $showMovements ? 'bg-green-600 text-white shadow-md' : 'bg-[#f0e9de] text-green-900' }} px-3 py-2 sm:px-4 sm:py-2.5 rounded-lg hover:bg-[#e8e0d0] transition-all duration-200 font-tajawal text-xs sm:text-sm whitespace-nowrap border border-[#e0d9cc]">
+                                    <button wire:click="toggleMovements" class="{{ $showMovements ? 'bg-green-900 text-white shadow-md' : 'bg-[#f0e9de] text-green-900' }} px-3 py-2 sm:px-4 sm:py-2.5 rounded-lg hover:bg-green-950 transition-all duration-200 font-tajawal text-xs sm:text-sm whitespace-nowrap border border-[#e0d9cc]">
                                         <span class="hidden sm:inline">{{ $showMovements ? 'إخفاء الحركات' : 'إظهار الحركات' }}</span>
                                         <span class="sm:hidden">{{ $showMovements ? 'إخفاء' : 'إظهار' }}</span>
                                     </button>
@@ -147,7 +147,7 @@
                                     <!-- Action Buttons Group -->
                                     <div class="flex items-center gap-1">
                                         <!-- Share Button -->
-                                        <button class="text-gray-600 hover:text-green-900 p-2 sm:p-2.5 rounded-lg hover:bg-[#f0e9de] transition-all duration-200 flex items-center justify-center border border-transparent hover:border-[#e0d9cc]">
+                                        <button class="text-gray-600 hover:text-green-950 p-2 sm:p-2.5 rounded-lg hover:bg-[#f0e9de] transition-all duration-200 flex items-center justify-center border border-transparent hover:border-[#e0d9cc]">
                                             <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 sm:h-5 sm:w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6.632L15.316 9m-4.065 8.814a5.97 5.97 0 001.23.247m-1.23-.247A5.97 5.97 0 015 12c0-.95.23-1.84-.632-2.684m0 2.684a3 3 0 110-2.684m0 2.684L8.684 13.342m0-2.684l6.632-3.316m-4.065-1.186a5.97 5.97 0 711.23-.247m-1.23.247A5.97 5.97 0 005 12c0-.95.23-1.84-.632-2.684m0 2.684a3 3 0 110-2.684" />
                                             </svg>
