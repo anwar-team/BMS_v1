@@ -145,10 +145,10 @@ class BookReader extends Component
         // Load volumes with ONLY top-level chapters (parent_id = null)
         $volumes = Volume::where('book_id', $this->bookId)
             ->with([
-                'chapters' => function($query) {
-                    // Only get chapters that belong directly to this volume (parent_id = null)
-                    $query->whereNull('parent_id')
-                        ->orderBy('order');
+                'topLevelChapters' => function($query) {
+                    // The relationship already filters by parent_id = null
+                    // Just ensure ordering
+                    $query->orderBy('order');
                 }
             ])
             ->orderBy('number')
@@ -156,7 +156,7 @@ class BookReader extends Component
         
         // Now load nested children for each top-level chapter recursively
         foreach ($volumes as $volume) {
-            foreach ($volume->chapters as $chapter) {
+            foreach ($volume->topLevelChapters as $chapter) {
                 $this->loadChapterChildren($chapter);
             }
         }

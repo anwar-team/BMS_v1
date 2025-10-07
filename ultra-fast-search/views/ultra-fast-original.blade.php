@@ -549,7 +549,7 @@
         
         function goToBook(bookId) {
             if (bookId) {
-                window.location.href = `/books/${bookId}/details`;
+                window.location.href = `/book/${bookId}`;
             } else {
                 alert('معلومات الكتاب غير متاحة');
             }

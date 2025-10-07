@@ -56,7 +56,7 @@
                             </td>
                             <td class="px-6 py-4 w-2/5">
                                 <div class="text-base font-medium text-gray-900">
-                                    <a href="{{ route('books.details', $book->id) }}" 
+                                    <a href="{{ route('book.read', $book->id) }}" 
                                        class="text-green-700 hover:text-green-900 hover:underline transition-colors duration-200">
                                         {!! $this->highlightText($book->title, $search) !!}
                                     </a>
