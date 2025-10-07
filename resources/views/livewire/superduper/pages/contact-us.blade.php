@@ -67,7 +67,7 @@
                         <!-- Contact Cards -->
                         <div class="space-y-4">
                             
-                            <!-- Chat with us  -->
+                            <!-- Chat with us  
                             <div class="flex items-start py-4 transition-all duration-300 bg-white">
                                 <div class="mr-4 shrink-0">
                                     <div class="p-2 text-primary-800">
@@ -86,8 +86,8 @@
                                     </p>
                                 </div>
                             </div>
-                           
-                            <!-- Give us a call -->
+                           -->
+                            <!-- Give us a call 
                             <div class="flex items-start py-4 transition-all duration-300 bg-white">
                                 <div class="mr-4 shrink-0">
                                     <div class="p-2 text-primary-800">
@@ -110,7 +110,7 @@
                                     </p>
                                 </div>
                             </div>
-                            
+                            -->
                             <!-- Email Us -->
                             <div class="flex items-start py-4 transition-all duration-300 bg-white">
                                 <div class="mr-4 shrink-0">
