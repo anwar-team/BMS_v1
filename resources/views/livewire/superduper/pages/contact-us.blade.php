@@ -316,7 +316,7 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div> 
                     </div>
                     </div> <!-- إغلاق div الـ pattern لقسم تواصل معنا -->
                 </section>
