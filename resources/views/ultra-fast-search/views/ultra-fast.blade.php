@@ -678,6 +678,18 @@
                         });
                     });
                     
+                    // إعداد خيارات ترتيب الكلمات
+                    const wordOrderInputs = document.querySelectorAll('input[name="wordOrder"]');
+                    wordOrderInputs.forEach(input => {
+                        input.addEventListener('change', () => {
+                            // إعادة البحث عند تغيير الترتيب
+                            const query = this.searchInput.value.trim();
+                            if (query.length >= 1) {
+                                this.performSearch(query);
+                            }
+                        });
+                    });
+                    
                     // تحسين التفاعل البصري - Highlight للعنصر المحدد
                     const updateSearchTypeHighlight = () => {
                         document.querySelectorAll('.search-type-label').forEach(label => {
