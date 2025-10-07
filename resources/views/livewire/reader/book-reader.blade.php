@@ -235,7 +235,7 @@
                                 <div class="bg-gradient-to-r from-green-900 to-[#4a4d13] p-4 flex items-center justify-between shadow-lg">
                                     <div class="flex items-center gap-3">
                                         <div class="w-2 h-2 bg-white rounded-full animate-pulse"></div>
-                                        <h2 class="text-white text-xl font-bold font-tajawal">فهرس المحتويات</h2>
+                                        <h2 class="text-green-900 text-xl font-bold font-tajawal">فهرس المحتويات</h2>
                                     </div>
                                     <button wire:click="closeMobileToc" class="text-white hover:text-gray-200 p-2 rounded-full hover:bg-white/10 transition-all duration-200">
                                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -396,7 +396,7 @@
                             <aside class="lg:w-72 flex-shrink-0 w-full hidden lg:block {{ $showMobileToc ? 'desktop-toc-hidden' : '' }}">
                                 <div class="bg-white rounded-xl shadow-md overflow-hidden border border-[#e0d9cc] h-full">
                                     <div class="bg-green-900 p-3 sm:p-4">
-                                        <h2 class="text-white text-xl sm:text-2xl font-bold font-tajawal mb-3">فهرس المحتويات</h2>
+                                        <h2 class="text-green-900 text-xl sm:text-2xl font-bold font-tajawal mb-3">فهرس المحتويات</h2>
                                         <!-- TOC Search Bar -->
                                         <div class="relative">
                                             <input type="text" 
