@@ -21,7 +21,7 @@
                     <div class="mb-12 z-10">
                         <div class="flex items-center gap-3 mb-8">
                             <img src="{{ asset('images/group0.svg') }}" alt="Icon" class="w-8 h-8">
-                            <h2 class="text-4xl text-green-800 font-bold">من نحن</h2>
+                            <h2 class="text-4xl text-green-800 font-bold">من نحــــن</h2>
                         </div>
                     </div>
 
@@ -40,7 +40,7 @@
                     <div class="mb-12 z-10">
                         <div class="flex items-center gap-3 mb-8">
                             <img src="{{ asset('images/group0.svg') }}" alt="Icon" class="w-8 h-8">
-                            <h2 class="text-4xl text-green-800 font-bold">تواصل معنا</h2>
+                            <h2 class="text-4xl text-green-800 font-bold">تـواصــل معنـــــا</h2>
                         </div>
                     </div>
 
