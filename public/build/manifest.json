@@ -6,21 +6,15 @@
   "resources/css/app.css": {
     "file": "assets/app-DSapUHwT.css",
     "src": "resources/css/app.css",
-    "isEntry": true,
-    "names": [
-      "app.css"
-    ]
+    "isEntry": true
   },
   "resources/css/filament/admin/theme.css": {
-    "file": "assets/theme-Cv4YMFOG.css",
+    "file": "assets/theme-BXpE8-VH.css",
     "src": "resources/css/filament/admin/theme.css",
-    "isEntry": true,
-    "names": [
-      "theme.css"
-    ]
+    "isEntry": true
   },
   "resources/js/app.js": {
-    "file": "assets/app-Bj43h_rG.js",
+    "file": "assets/app-T1DpEqax.js",
     "name": "app",
     "src": "resources/js/app.js",
     "isEntry": true

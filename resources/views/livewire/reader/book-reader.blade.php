@@ -66,7 +66,7 @@
                                     <!-- Enhanced Mobile Hamburger Menu Button -->
                                     <button id="book-reader-hamburger" 
                                             wire:click="toggleMobileToc" 
-                                            class="lg:hidden flex items-center justify-center w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-[#f0e9de] hover:bg-green-900 text-green-900 transition-all duration-200 {{ $showMobileToc ? 'bg-green-900 text-white shadow-lg scale-105' : 'hover:scale-105' }}"
+                                            class="lg:hidden flex items-center justify-center w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-[#f0e9de] hover:bg-green-900 text-[#f0e9de] transition-all duration-200 {{ $showMobileToc ? 'bg-green-900 text-white shadow-lg scale-105' : 'hover:scale-105' }}"
                                             aria-label="{{ $showMobileToc ? 'إغلاق الفهرس' : 'فتح الفهرس' }}"
                                             aria-expanded="{{ $showMobileToc ? 'true' : 'false' }}">
                                         <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 sm:h-5 sm:w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
@@ -151,7 +151,7 @@
                                     <!-- Action Buttons Group -->
                                     <div class="flex items-center gap-1 bg-gradient-to-r from-white/50 to-[#f8f5f0]/50 rounded-xl p-1 border border-[#e8e0d0] shadow-md">
                                         <!-- Share Button -->
-                                        <button class="text-gray-600 hover:text-white p-2 sm:p-2.5 rounded-lg bg-gradient-to-br from-white to-[#f8f5f0] hover:from-blue-500 hover:to-blue-600 transition-all duration-300 flex items-center justify-center border border-[#e8e0d0] hover:border-blue-400 shadow-sm hover:shadow-lg transform hover:scale-105"
+                                        <button class="text-gray-600 hover:text-white p-2 sm:p-2.5 rounded-lg bg-gradient-to-br from-white to-[#f8f5f0] hover:from-red-800 hover:to-red-900 transition-all duration-300 flex items-center justify-center border border-[#e8e0d0] hover:border-red-600 shadow-sm hover:shadow-lg transform hover:scale-105"
                                                 aria-label="مشاركة">
                                             <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 sm:h-5 sm:w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7.217 10.907a2.25 2.25 0 100 2.186m0-2.186c.18.324.283.696.283 1.093s-.103.77-.283 1.093m0-2.186l9.566-5.314m-9.566 7.5l9.566 5.314m0 0a2.25 2.25 0 103.935 2.186 2.25 2.25 0 00-3.935-2.186zm0-12.814a2.25 2.25 0 103.933-2.185 2.25 2.25 0 00-3.933 2.185z" />
@@ -159,7 +159,7 @@
                                         </button>
                                         <!-- Fullscreen Button -->
                                         <button onclick="toggleFullscreen()" 
-                                                class="text-gray-600 hover:text-white p-2 sm:p-2.5 rounded-lg bg-gradient-to-br from-white to-[#f8f5f0] hover:from-purple-500 hover:to-purple-600 transition-all duration-300 flex items-center justify-center border border-[#e8e0d0] hover:border-purple-400 shadow-sm hover:shadow-lg transform hover:scale-105"
+                                                class="text-gray-600 hover:text-white p-2 sm:p-2.5 rounded-lg bg-gradient-to-br from-white to-[#f8f5f0] hover:from-red-800 hover:to-red-800 transition-all duration-300 flex items-center justify-center border border-[#e8e0d0] hover:border-purple-400 shadow-sm hover:shadow-lg transform hover:scale-105"
                                                 aria-label="ملء الشاشة">
                                             <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 sm:h-5 sm:w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16h4m0 0v4m-4 0l5-5m11-1h-4m4 0v4m-4 0l5-5" />
@@ -168,7 +168,7 @@
                                         <!-- Options Menu Button -->
                                         <div class="relative">
                                             <button wire:click="toggleOptionsMenu" 
-                                                    class="text-gray-600 hover:text-white p-2 sm:p-2.5 rounded-lg bg-gradient-to-br from-white to-[#f8f5f0] hover:from-orange-500 hover:to-orange-600 transition-all duration-300 flex items-center justify-center border border-[#e8e0d0] hover:border-orange-400 shadow-sm hover:shadow-lg transform hover:scale-105 {{ $showOptionsMenu ? 'from-orange-500 to-orange-600 text-white border-orange-400 shadow-lg' : '' }}"
+                                                    class="text-gray-600 hover:text-white p-2 sm:p-2.5 rounded-lg bg-gradient-to-br from-white to-[#f8f5f0] hover:from-red-800 hover:to-red-800 transition-all duration-300 flex items-center justify-center border border-[#e8e0d0] hover:border-orange-400 shadow-sm hover:shadow-lg transform hover:scale-105 {{ $showOptionsMenu ? 'from-orange-500 to-orange-600 text-white border-orange-400 shadow-lg' : '' }}"
                                                     aria-label="الخيارات"
                                                     aria-expanded="{{ $showOptionsMenu ? 'true' : 'false' }}">
                                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 sm:h-5 sm:w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
@@ -624,7 +624,7 @@
                                                     <!-- Previous Page Button -->
                                                     @if($navigation['previous_page'])
                                                         <button wire:click="previousPage" 
-                                                                class="bg-gradient-to-br from-[#f0e9de] to-[#e8e0d0] hover:from-blue-500 hover:to-blue-600 p-1.5 sm:p-2 rounded-xl transition-all duration-300 shadow-md hover:shadow-lg transform hover:scale-105 border border-[#e0d9cc] hover:border-blue-400"
+                                                                class="bg-gradient-to-br from-[#f0e9de] to-[#e8e0d0] hover:from-red-800 hover:to-red-900 p-1.5 sm:p-2 rounded-xl transition-all duration-300 shadow-md hover:shadow-lg transform hover:scale-105 border border-[#e0d9cc] hover:border-blue-400"
                                                                 aria-label="الصفحة السابقة">
                                                             <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 sm:h-5 sm:w-5 text-green-900 hover:text-white transition-colors duration-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
                                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
@@ -654,7 +654,7 @@
                                                     <!-- Next Page Button -->
                                                     @if($navigation['next_page'])
                                                         <button wire:click="nextPage" 
-                                                                class="bg-gradient-to-br from-[#f0e9de] to-[#e8e0d0] hover:from-blue-500 hover:to-blue-600 p-1.5 sm:p-2 rounded-xl transition-all duration-300 shadow-md hover:shadow-lg transform hover:scale-105 border border-[#e0d9cc] hover:border-blue-400"
+                                                                class="bg-gradient-to-br from-[#f0e9de] to-[#e8e0d0] hover:from-red-800 hover:to-red-900 p-1.5 sm:p-2 rounded-xl transition-all duration-300 shadow-md hover:shadow-lg transform hover:scale-105 border border-[#e0d9cc] hover:border-blue-400"
                                                                 aria-label="الصفحة التالية">
                                                             <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 sm:h-5 sm:w-5 text-green-900 hover:text-white transition-colors duration-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
                                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
@@ -673,7 +673,7 @@
 
                                                     <!-- Last Page Button -->
                                                     @if($navigation['current_page_number'] < $navigation['total_pages'])
-                                                        <button wire:click="gotoPage({{ $navigation['total_pages'] }})" class="bg-gradient-to-br from-[#f0e9de] to-[#e8e0d0] hover:from-green-500 hover:to-green-600 p-1.5 sm:p-2 rounded-xl transition-all duration-300 shadow-md hover:shadow-lg transform hover:scale-105 border border-[#e0d9cc] hover:border-green-400" title="الصفحة الأخيرة">
+                                                        <button wire:click="gotoPage({{ $navigation['total_pages'] }})" class="bg-gradient-to-br from-[#f0e9de] to-[#e8e0d0] hover:from-red-800 hover:to-red-900 p-1.5 sm:p-2 rounded-xl transition-all duration-300 shadow-md hover:shadow-lg transform hover:scale-105 border border-[#e0d9cc] hover:border-red-600" title="الصفحة الأخيرة">
                                                             <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 sm:h-5 sm:w-5 text-green-900" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 19l-7-7 7-7m8 14l-7-7 7-7" />
                                                             </svg>
