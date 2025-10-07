@@ -288,11 +288,11 @@ class BookReader extends Component
         // Remove \n after: Arabic comma (،), English comma (,), Arabic semicolon (؛), 
         // English semicolon (;), colon (:), dash (-), and parentheses
         $patterns = [
-            '/([،,])[\s]*\n[\s]*/' => '$1 ',      // After commas
-            '/([؛;])[\s]*\n[\s]*/' => '$1 ',      // After semicolons
-            '/([:])[\s]*\n[\s]*/' => '$1 ',       // After colons
-            '/([\-–—])[\s]*\n[\s]*/' => '$1 ',    // After dashes
-            '/([)][\s]*\n[\s]*(?![.])/' => '$1 ', // After closing parenthesis (not before period)
+            '/([،,])\s*\n\s*/' => '$1 ',           // After commas
+            '/([؛;])\s*\n\s*/' => '$1 ',           // After semicolons  
+            '/([:])\s*\n\s*/' => '$1 ',            // After colons
+            '/([\-–—])\s*\n\s*/' => '$1 ',         // After dashes
+            '/(\))\s*\n\s*(?!\.)/' => '$1 ',       // After closing parenthesis (not before period)
         ];
         
         foreach ($patterns as $pattern => $replacement) {
