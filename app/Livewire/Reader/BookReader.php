@@ -246,10 +246,10 @@ class BookReader extends Component
             $this->pageNumber = $this->currentPage->page_number;
         }
 
-        // Apply nl2br to all content regardless of source_url to preserve line breaks
-        // This ensures proper formatting for all books stored as plain text
+        // FIX: Smart paragraph formatting - only create new paragraphs at sentence end (.)
+        // This replaces nl2br() with intelligent formatting that preserves flow
         $content = $this->currentPage->content ?? '';
-        $this->currentContent = !empty($content) ? nl2br($content) : '';
+        $this->currentContent = !empty($content) ? $this->formatParagraphs($content) : '';
         
         // Set the internal_index value to show in the input field (use actual internal_index from database)
         $this->internalIndex = $this->currentPage->internal_index ?? $this->currentPage->page_number;
