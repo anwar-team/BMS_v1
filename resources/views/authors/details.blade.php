@@ -63,44 +63,6 @@
         </main>
     </div>
 
-    <!-- JavaScript for View Toggle -->
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const tableViewBtn = document.getElementById('tableViewBtn');
-            const cardViewBtn = document.getElementById('cardViewBtn');
-            const tableView = document.getElementById('tableView');
-            const cardView = document.getElementById('cardView');
-
-            if (tableViewBtn && cardViewBtn && tableView && cardView) {
-                // Table View Button Click
-                tableViewBtn.addEventListener('click', function() {
-                    // Show table view
-                    tableView.classList.remove('hidden');
-                    cardView.classList.add('hidden');
-                    
-                    // Update button styles
-                    tableViewBtn.classList.add('bg-white', 'text-green-700', 'shadow-sm');
-                    tableViewBtn.classList.remove('text-gray-600');
-                    cardViewBtn.classList.remove('bg-white', 'text-green-700', 'shadow-sm');
-                    cardViewBtn.classList.add('text-gray-600');
-                });
-
-                // Card View Button Click
-                cardViewBtn.addEventListener('click', function() {
-                    // Show card view
-                    cardView.classList.remove('hidden');
-                    tableView.classList.add('hidden');
-                    
-                    // Update button styles
-                    cardViewBtn.classList.add('bg-white', 'text-green-700', 'shadow-sm');
-                    cardViewBtn.classList.remove('text-gray-600');
-                    tableViewBtn.classList.remove('bg-white', 'text-green-700', 'shadow-sm');
-                    tableViewBtn.classList.add('text-gray-600');
-                });
-            }
-        });
-    </script>
-
     <!-- Custom Styles -->
     <style>
         .line-clamp-2 {
