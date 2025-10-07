@@ -59,6 +59,7 @@ class SearchController extends Controller
                 'author_id' => $authorId,
                 'section_id' => $sectionId,
                 'search_type' => $request->get('search_type', 'flexible_match'), // New system
+                'word_order' => $request->get('word_order', 'any_order'), // ✅ خيار ترتيب الكلمات
                 'search_mode' => $request->get('search_mode'), // Backward compatibility
                 'proximity' => $request->get('proximity', 'any_order'), // Backward compatibility
             ]);
