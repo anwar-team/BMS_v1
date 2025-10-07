@@ -32,7 +32,7 @@
                     <div class="mb-12">
                         <div class="flex items-center gap-3 mb-6">
                             <img src="{{ asset('images/group0.svg') }}" alt="Icon" class="w-8 h-8">
-                            <h3 class="text-2xl font-semibold text-[#5D6019]">كتب المؤلف</h3>
+                            <h3 class="text-2xl font-semibold text-green-900">كتب المؤلف</h3>
                         </div>
                         
                         {{-- استخدام Livewire Component للكتب --}}
