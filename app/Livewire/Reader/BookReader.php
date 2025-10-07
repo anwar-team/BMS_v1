@@ -9,6 +9,7 @@ use App\Models\Volume;
 use Livewire\Component;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Cache;
+use Mews\Purifier\Facades\Purifier;
 
 class BookReader extends Component
 {
@@ -45,6 +46,9 @@ class BookReader extends Component
     
     // Mobile TOC properties
     public bool $showMobileToc = false;
+    
+    // Cache volumes to avoid N+1 queries
+    public $volumes;
 
     // URL parameters for routing
     protected $queryString = [
