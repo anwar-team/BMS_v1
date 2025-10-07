@@ -691,7 +691,7 @@
                                                     </div>
                                                     <div class="relative">
                                                         <div class="overflow-hidden h-2 sm:h-2.5 rounded-full bg-[#f0e9de] border border-[#e0d9cc]">
-                                0 9de                   0 <ccdiv class="h-full bg-gradient-to-r from-green-900 to-green-600 transition-all duration-300" style="width: {{ $navigation['progress_percentage'] }}%"></div>
+                                                 <ccdiv class="h-full bg-gradient-to-r from-green-900 to-green-600 transition-all duration-300" style="width: {{ $navigation['progress_percentage'] }}%"></div>
                                                         <input type="range" 
                                                                wire:model.live.debounce.300ms="pageNumber"
                                                                min="1" 

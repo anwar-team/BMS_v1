@@ -142,35 +142,37 @@ class BookReader extends Component
      */
     private function buildTableOfContents(): array
     {
-        // Load volumes with chapters
+        // Load volumes with ONLY top-level chapters (parent_id = null)
         $volumes = Volume::where('book_id', $this->bookId)
             ->with([
                 'chapters' => function($query) {
+                    // Only get chapters that belong directly to this volume (parent_id = null)
                     $query->whereNull('parent_id')
-                        ->orderBy('order')
-                        ->with([
-                            'children' => function($subQuery) {
-                                $subQuery->orderBy('order')
-                                    ->with('children');
-                            }
-                        ]);
+                        ->orderBy('order');
                 }
             ])
             ->orderBy('number')
             ->get();
+        
+        // Now load nested children for each top-level chapter recursively
+        foreach ($volumes as $volume) {
+            foreach ($volume->chapters as $chapter) {
+                $this->loadChapterChildren($chapter);
+            }
+        }
 
         // If no volumes, load chapters directly
         if ($volumes->isEmpty()) {
+            // Get only top-level chapters (parent_id = null)
             $chapters = Chapter::where('book_id', $this->bookId)
                 ->whereNull('parent_id')
                 ->orderBy('order')
-                ->with([
-                    'children' => function($query) {
-                        $query->orderBy('order')
-                            ->with('children');
-                    }
-                ])
                 ->get();
+            
+            // Load nested children recursively for each top-level chapter
+            foreach ($chapters as $chapter) {
+                $this->loadChapterChildren($chapter);
+            }
 
             return [
                 'type' => 'chapters_only',
@@ -182,6 +184,29 @@ class BookReader extends Component
             'type' => 'volumes_with_chapters',
             'data' => $volumes
         ];
+    }
+
+    /**
+     * Recursively load children for a chapter
+     * 
+     * @param object $chapter
+     * @return void
+     */
+    private function loadChapterChildren($chapter): void
+    {
+        // Load direct children only (not grandchildren yet)
+        $chapter->load([
+            'children' => function($query) {
+                $query->orderBy('order');
+            }
+        ]);
+        
+        // Recursively load children for each child
+        if ($chapter->children && $chapter->children->isNotEmpty()) {
+            foreach ($chapter->children as $child) {
+                $this->loadChapterChildren($child);
+            }
+        }
     }
 
     /**
