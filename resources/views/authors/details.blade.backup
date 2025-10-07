@@ -13,13 +13,85 @@
                         </div>
                     </div>
 
+                    <!-- Main Author Details Section -->
+                    <div class="bg-white rounded-lg shadow-md overflow-hidden border border-gray-200 p-8 mb-8">
+                        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                            <!-- Author Image -->
+                            <div class="lg:col-span-1">
+                                @if($author->image)
+                                    <img src="{{ asset('storage/' . $author->image) }}" 
+                                         alt="{{ $author->full_name }}" 
+                                         class="w-full h-auto rounded-lg shadow-md">
+                                @else
+                                    <div class="w-full h-80 bg-gray-200 rounded-lg flex items-center justify-center">
+                                        <svg class="w-20 h-20 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+                                        </svg>
+                                    </div>
+                                @endif
+                            </div>
 
+                            <!-- Author Information Card -->
+                            <div class="lg:col-span-2">
+                                <div class="bg-gray-50 rounded-lg p-6">
+                                    <!-- Card Title with Icon -->
+                                    <div class="flex items-center gap-3 mb-6">
+                                        <img src="{{ asset('images/group0.svg') }}" alt="Icon" class="w-6 h-6">
+                                        <h3 class="text-xl font-semibold text-green-800">{{ $author->full_name }}</h3>
+                                    </div>
+                                    
+                                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                        <div class="flex items-center gap-2">
+                                            <span class="font-semibold text-gray-700">عدد الكتب:</span>
+                                            <span class="text-gray-600">{{ $author->books->count() }} كتاب</span>
+                                        </div>
+                                        
+                                        @if($author->madhhab)
+                                            <div class="flex items-center gap-2">
+                                                <span class="font-semibold text-gray-700">المذهب:</span>
+                                                <span class="text-gray-600">{{ $author->madhhab }}</span>
+                                            </div>
+                                        @endif
+                                        
+                                        @if($author->birth_date)
+                                            <div class="flex items-center gap-2">
+                                                <span class="font-semibold text-gray-700">تاريخ الميلاد:</span>
+                                                <span class="text-gray-600">{{ $author->birth_date->format('Y-m-d') }}</span>
+                                            </div>
+                                        @endif
+                                        
+                                        @if($author->death_date)
+                                            <div class="flex items-center gap-2">
+                                                <span class="font-semibold text-gray-700">تاريخ الوفاة:</span>
+                                                <span class="text-gray-600">{{ $author->death_date->format('Y-m-d') }}</span>
+                                            </div>
+                                        @endif
+                                        
+                                        <div class="flex items-center gap-2">
+                                            <span class="font-semibold text-gray-700">الحالة:</span>
+                                            <span class="px-2 py-1 rounded text-sm
+                                                @if($author->is_living) bg-green-100 text-green-800
+                                                @else bg-gray-100 text-gray-800
+                                                @endif
+                                            ">
+                                                @if($author->is_living) على قيد الحياة
+                                                @else متوفى
+                                                @endif
+                                            </span>
+                                        </div>
+                                    </div>
+                                    
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
                     <!-- Author Biography Section -->
                     @if($author->biography)
                         <div class="bg-white rounded-lg shadow-md overflow-hidden border border-gray-200 p-8 mb-8">
                             <div class="flex items-center gap-3 mb-6">
-                                
+                                <img src="{{ asset('images/group0.svg') }}" alt="Icon" class="w-8 h-8">
                                 <h3 class="text-2xl font-semibold text-[#5D6019]">السيرة الذاتية</h3>
                             </div>
                             <div class="text-lg text-gray-700 leading-relaxed whitespace-pre-line">
