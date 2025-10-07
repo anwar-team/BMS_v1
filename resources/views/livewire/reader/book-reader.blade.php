@@ -217,7 +217,16 @@
                                 </div>
                             </div>
                         </div>
-                        
+    <!-------------------------------------------------------------------------------------------------------------------------------------------------->
+    <!-------------------------------------------------------------------------------------------------------------------------------------------------->
+    <!-------------------------------------------------------------------------------------------------------------------------------------------------->
+    <!-------------------------------------------------------------------------------------------------------------------------------------------------->
+    <!-------------------------------------------------------------------------------------------------------------------------------------------------->
+    <!-------------------------------------------------------------------------------------------------------------------------------------------------->   
+                        <!-- Page Content -->
+                        <div class="page-content relative z-20 w-full h-full overflow-y-auto">
+                            <div class="relative z-10 flex items-center justify-between">
+                                <div class
                         <!-- Mobile TOC Overlay -->
                         @if($showMobileToc)
                             <div id="book-reader-backdrop" class="fixed inset-0 bg-black bg-opacity-50 z-40 lg:hidden mobile-toc-backdrop" wire:click="closeMobileToc"></div>
@@ -279,8 +288,20 @@
                                                     $hasSearchTerm = !empty(trim($tocSearch ?? ''));
                                                     $volumeTitle = $volume->title ?: 'الجزء ' . $volume->number;
                                                     $volumeMatchesSearch = $hasSearchTerm ? stripos($volumeTitle, trim($tocSearch)) !== false : false;
+                                                    
+                                                    // Check if any chapter in this volume matches search
+                                                    $volumeOrItsChaptersMatch = $volumeMatchesSearch;
+                                                    if ($hasSearchTerm && !$volumeMatchesSearch && $volume->chapters->isNotEmpty()) {
+                                                        foreach ($volume->chapters as $chapter) {
+                                                            if ($this->chapterMatchesCurrentSearch($chapter)) {
+                                                                $volumeOrItsChaptersMatch = true;
+                                                                break;
+                                                            }
+                                                        }
+                                                    }
+                                                    
                                                     $isCurrentVolume = $currentVolumeId === $volume->id;
-                                                    $shouldDimVolume = $hasSearchTerm && !$volumeMatchesSearch && !$isCurrentVolume;
+                                                    $shouldDimVolume = $hasSearchTerm && !$volumeOrItsChaptersMatch && !$isCurrentVolume;
                                                 @endphp
                                                 <li class="{{ $shouldDimVolume ? 'toc-item-dimmed' : '' }}">
                                                     <div class="toc-item mobile-toc-item flex items-center justify-between p-2 rounded-lg transition-all duration-300
@@ -375,7 +396,7 @@
                             <aside class="lg:w-72 flex-shrink-0 w-full hidden lg:block {{ $showMobileToc ? 'desktop-toc-hidden' : '' }}">
                                 <div class="bg-white rounded-xl shadow-md overflow-hidden border border-[#e0d9cc] h-full">
                                     <div class="bg-green-900 p-3 sm:p-4">
-                                        <h2 class="text-green-900 text-xl sm:text-2xl font-bold font-tajawal mb-3">فهرس المحتويات</h2>
+                                        <h2 class="text-white text-xl sm:text-2xl font-bold font-tajawal mb-3">فهرس المحتويات</h2>
                                         <!-- TOC Search Bar -->
                                         <div class="relative">
                                             <input type="text" 
@@ -414,21 +435,35 @@
                                             <ul class="space-y-3">
                                                 @foreach($filteredTableOfContents['data'] as $volume)
                                                     @php
-                                                        $hasSearchTerm = !empty($tocSearch);
-                                                        $volumeMatches = $hasSearchTerm && stripos($volume->title ?: 'الجزء ' . $volume->number, $tocSearch) !== false;
+                                                        $hasSearchTerm = !empty(trim($tocSearch ?? ''));
+                                                        $volumeTitle = $volume->title ?: 'الجزء ' . $volume->number;
+                                                        $volumeMatchesSearch = $hasSearchTerm ? stripos($volumeTitle, trim($tocSearch)) !== false : false;
+                                                        
+                                                        // Check if any chapter in this volume matches search
+                                                        $volumeOrItsChaptersMatch = $volumeMatchesSearch;
+                                                        if ($hasSearchTerm && !$volumeMatchesSearch && $volume->chapters->isNotEmpty()) {
+                                                            foreach ($volume->chapters as $chapter) {
+                                                                if ($this->chapterMatchesCurrentSearch($chapter)) {
+                                                                    $volumeOrItsChaptersMatch = true;
+                                                                    break;
+                                                                }
+                                                            }
+                                                        }
+                                                        
                                                         $isCurrentVolume = $currentVolumeId === $volume->id;
-                                                        $shouldDim = $hasSearchTerm && !$volumeMatches && !$isCurrentVolume;
+                                                        $shouldDimVolume = $hasSearchTerm && !$volumeOrItsChaptersMatch && !$isCurrentVolume;
                                                     @endphp
-                                                    <li class="{{ $shouldDim ? 'toc-item-dimmed' : '' }} {{ $volumeMatches ? 'toc-search-match' : '' }}">
-                                                        <div class="toc-item flex items-center justify-between p-2 rounded-lg 
-                                                                    {{ $currentVolumeId === $volume->id ? 'bg-green-900 text-white shadow-md active' : 'hover:bg-[#f0e9de]' }}">
+                                                    <li class="{{ $shouldDimVolume ? 'toc-item-dimmed' : '' }}">
+                                                        <div class="toc-item flex items-center justify-between p-2 rounded-lg transition-all duration-300
+                                                                    {{ $isCurrentVolume ? 'bg-green-900 text-white shadow-md active' : 'hover:bg-[#f0e9de]' }}
+                                                                    {{ $volumeMatchesSearch ? 'toc-search-match' : '' }}">
                                                             <div class="flex items-center cursor-pointer flex-1" 
                                                                  wire:click="gotoVolume({{ $volume->id }})">
-                                                                <span class="font-bold text-lg sm:text-xl {{ $currentVolumeId === $volume->id ? 'text-white' : 'text-green-900' }}">
-                                                                    @if($volumeMatches)
-                                                                        {!! $this->highlightSearchTerm($volume->title ?: 'الجزء ' . $volume->number, $tocSearch) !!}
+                                                                <span class="font-bold text-lg sm:text-xl {{ $isCurrentVolume ? 'text-white' : 'text-green-900' }}">
+                                                                    @if($hasSearchTerm && $volumeMatchesSearch)
+                                                                        {!! $this->highlightSearchTerm($volumeTitle) !!}
                                                                     @else
-                                                                        {{ $volume->title ?: 'الجزء ' . $volume->number }}
+                                                                        {{ $volumeTitle }}
                                                                     @endif
                                                                 </span>
                                                             </div>
@@ -459,19 +494,20 @@
                                             <ul class="space-y-3">
                                                 @foreach($filteredTableOfContents['data'] as $chapter)
                                                     @php
-                                                        $hasSearchTerm = !empty($tocSearch);
-                                                        $chapterMatches = $hasSearchTerm && $this->chapterMatchesCurrentSearch($chapter);
+                                                        $hasSearchTerm = !empty(trim($tocSearch ?? ''));
+                                                        $chapterMatchesSearch = $hasSearchTerm ? $this->chapterMatchesCurrentSearch($chapter) : false;
                                                         $isCurrentChapter = $currentChapterId === $chapter->id;
-                                                        $shouldDim = $hasSearchTerm && !$chapterMatches && !$isCurrentChapter;
+                                                        $shouldDimChapter = $hasSearchTerm && !$chapterMatchesSearch && !$isCurrentChapter;
                                                     @endphp
-                                                    <li class="{{ $shouldDim ? 'toc-item-dimmed' : '' }} {{ $chapterMatches ? 'toc-search-match' : '' }}">
-                                                        <div class="toc-item flex items-center justify-between p-2 rounded-lg 
-                                                                     {{ $currentChapterId === $chapter->id ? 'bg-green-900 text-white shadow-md active' : 'hover:bg-[#f0e9de]' }}">
+                                                    <li class="{{ $shouldDimChapter ? 'toc-item-dimmed' : '' }}">
+                                                        <div class="toc-item flex items-center justify-between p-2 rounded-lg transition-all duration-300
+                                                                     {{ $isCurrentChapter ? 'bg-green-900 text-white shadow-md active' : 'hover:bg-[#f0e9de]' }}
+                                                                     {{ $chapterMatchesSearch ? 'toc-search-match' : '' }}">
                                                             <div class="flex items-center cursor-pointer flex-1" 
                                                                  wire:click="gotoChapter({{ $chapter->id }})">
-                                                                <span class="font-bold text-lg sm:text-xl {{ $currentChapterId === $chapter->id ? 'text-white' : 'text-green-900' }}">
-                                                                    @if($chapterMatches && stripos($chapter->title, $tocSearch) !== false)
-                                                                        {!! $this->highlightSearchTerm($chapter->title, $tocSearch) !!}
+                                                                <span class="font-bold text-lg sm:text-xl {{ $isCurrentChapter ? 'text-white' : 'text-green-900' }}">
+                                                                    @if($hasSearchTerm && $chapterMatchesSearch)
+                                                                        {!! $this->highlightSearchTerm($chapter->title) !!}
                                                                     @else
                                                                         {{ $chapter->title }}
                                                                     @endif
@@ -503,6 +539,11 @@
                                     </div>
                                 </div>
                             </aside>
+                            <!-------------------------------------------------------------------------------------------------------------------------------------------------->
+                            <!-------------------------------------------------------------------------------------------------------------------------------------------------->
+                            <!-------------------------------------------------------------------------------------------------------------------------------------------------->
+                            <!-------------------------------------------------------------------------------------------------------------------------------------------------->
+                            <!-------------------------------------------------------------------------------------------------------------------------------------------------->
                             
                             <!-- Main Content Area -->
                             <main class="flex-1">
