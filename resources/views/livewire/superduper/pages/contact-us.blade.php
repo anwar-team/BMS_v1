@@ -27,7 +27,7 @@
 
                     <!-- Section: من نحن -->
                     <div class="bg-white rounded-lg shadow-md border border-gray-200 p-8 mb-16">
-                        <h2 class="text-2xl font-bold text-gray-800 mb-6 text-center">من نحن</h2>
+                        <!--<h2 class="text-2xl font-bold text-gray-800 mb-6 text-center">من نحن</h2>-->
                         
                         <div class="prose prose-lg max-w-none text-gray-700 leading-relaxed">
                             <p class="text-lg text-justify mb-4">
