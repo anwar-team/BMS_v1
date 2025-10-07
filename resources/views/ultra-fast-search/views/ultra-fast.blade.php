@@ -907,10 +907,20 @@
                         });
                     });
                     
-                    // تطبيق الفلتر
-                    applyFilterModal.addEventListener('click', () => {
-                        window.ultraFastSearch.applyCurrentFilter();
-                        filterModal.classList.add('hidden');
+                    // تطبيق الفلتر - Context7 Enhanced with debugging
+                    applyFilterModal.addEventListener('click', (e) => {
+                        console.log('Apply filter button clicked!', {
+                            currentFilterType: currentFilterType,
+                            selectedCheckboxes: document.querySelectorAll('.filter-option-checkbox:checked').length
+                        });
+                        
+                        try {
+                            window.ultraFastSearch.applyCurrentFilter();
+                            filterModal.classList.add('hidden');
+                            console.log('Filter applied successfully');
+                        } catch (error) {
+                            console.error('Error applying filter:', error);
+                        }
                     });
                     
                     // مسح التحديد
@@ -1032,6 +1042,11 @@
             }
             
             applyCurrentFilter() {
+                console.log('applyCurrentFilter called', {
+                    currentFilterType: currentFilterType,
+                    selectedFilters: this.selectedFilters
+                });
+                
                 if (currentFilterType === 'death_date') {
                     const from = document.getElementById('deathYearFrom').value;
                     const to = document.getElementById('deathYearTo').value;
@@ -1043,21 +1058,40 @@
                 } else {
                     const checkboxes = document.querySelectorAll('.filter-option-checkbox:checked');
                     const selected = Array.from(checkboxes).map(cb => cb.value);
+                    
+                    console.log('Processing checkboxes', {
+                        filterType: currentFilterType,
+                        checkboxCount: checkboxes.length,
+                        selectedValues: selected
+                    });
+                    
                     this.selectedFilters[currentFilterType] = selected;
                     
                     checkboxes.forEach(checkbox => {
                         const id = checkbox.value;
                         const name = checkbox.getAttribute('data-name');
+                        console.log('Adding filter tag', { id, name, type: currentFilterType });
                         this.addFilterTag(currentFilterType, name, id);
                     });
                 }
                 
                 this.updateFiltersDisplay();
                 
-                // إعادة البحث مع الفلاتر الجديدة
+                // Context7 Fix: إعادة البحث مع الفلاتر الجديدة - حتى بدون نص بحث
                 const query = this.searchInput.value.trim();
-                if (query.length >= 1) {
+                
+                // البحث يجب أن يحدث إذا كان هناك استعلام أو فلاتر مطبقة
+                const hasAppliedFilters = this.getAppliedFiltersCount() > 0;
+                
+                if (query.length >= 1 || hasAppliedFilters) {
+                    console.log('Applying filters and performing search', {
+                        query: query,
+                        hasFilters: hasAppliedFilters,
+                        filters: this.selectedFilters
+                    });
                     this.performSearch(query);
+                } else {
+                    console.warn('No query or filters to apply');
                 }
             }
             

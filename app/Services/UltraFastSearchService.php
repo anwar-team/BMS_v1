@@ -45,6 +45,7 @@ class UltraFastSearchService
 					'last_page' => 1,
 					'per_page' => $perPage,
 					'total' => 0,
+					'success' => false,
 					'error' => $validationResult['error'],
 					'filter_metadata' => []
 				];
@@ -130,6 +131,12 @@ class UltraFastSearchService
 	 */
 	private function validateSearchInputs(string $query, array $filters, int $page, int $perPage): array
 	{
+		// Check if we have either a query or valid filters
+		$hasValidFilters = $this->hasValidFilters($filters);
+		if (empty(trim($query)) && !$hasValidFilters) {
+			return ['valid' => false, 'error' => 'Either query or valid filters required'];
+		}
+
 		// Check query length
 		if (strlen($query) > 500) {
 			return ['valid' => false, 'error' => 'Query too long (max 500 characters)'];
@@ -173,6 +180,25 @@ class UltraFastSearchService
 		}
 
 		return ['valid' => true, 'error' => null];
+	}
+
+	/**
+	 * Context7: Check if filters contain valid values
+	 */
+	private function hasValidFilters(array $filters): bool
+	{
+		$validFilterKeys = ['book_id', 'section_id', 'author_id'];
+		
+		foreach ($validFilterKeys as $key) {
+			if (!empty($filters[$key])) {
+				$values = is_array($filters[$key]) ? $filters[$key] : [$filters[$key]];
+				if (count(array_filter($values)) > 0) {
+					return true;
+				}
+			}
+		}
+		
+		return false;
 	}
 
 	/**

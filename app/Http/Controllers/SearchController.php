@@ -106,28 +106,34 @@ class SearchController extends Controller
             $bookId = array_map('intval', array_filter(explode(',', $bookId)));
         }
         
-        // التحقق من وجود استعلام أو فلاتر صالحة
-        $hasValidFilters = false;
-        if ($authorId) {
-            $hasValidFilters = is_array($authorId) ? count($authorId) > 0 : !empty($authorId);
-        }
-        if ($sectionId && !$hasValidFilters) {
-            $hasValidFilters = is_array($sectionId) ? count($sectionId) > 0 : !empty($sectionId);
-        }
-        if ($bookId && !$hasValidFilters) {
-            $hasValidFilters = is_array($bookId) ? count($bookId) > 0 : !empty($bookId);
-        }
-        
-        if (empty($query) && !$hasValidFilters) {
-            return response()->json([
-                'success' => false,
-                'message' => 'يرجى توفير كلمة بحث أو مرشح',
-                'data' => [],
-                'search_time' => 0
-            ], 422); // Context7: Use 422 for validation errors
-        }
-
-        try {
+		// Context7: Enhanced validation for query and filters
+		$hasValidFilters = false;
+		if ($authorId) {
+			$hasValidFilters = is_array($authorId) ? count($authorId) > 0 : !empty($authorId);
+		}
+		if ($sectionId && !$hasValidFilters) {
+			$hasValidFilters = is_array($sectionId) ? count($sectionId) > 0 : !empty($sectionId);
+		}
+		if ($bookId && !$hasValidFilters) {
+			$hasValidFilters = is_array($bookId) ? count($bookId) > 0 : !empty($bookId);
+		}
+		
+		// Require either a query OR valid filters
+		if (empty($query) && !$hasValidFilters) {
+			return response()->json([
+				'success' => false,
+				'message' => 'يرجى توفير كلمة بحث أو اختيار فلتر صحيح',
+				'data' => [],
+				'pagination' => [
+					'current_page' => 1,
+					'last_page' => 1,
+					'per_page' => $perPage,
+					'total' => 0
+				],
+				'search_time' => 0,
+				'error' => 'Missing query or valid filters'
+			], 422); // Context7: Use 422 for validation errors
+		}        try {
             $filters = array_filter([
                 'author_id' => $authorId,
                 'section_id' => $sectionId,

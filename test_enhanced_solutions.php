@@ -50,7 +50,7 @@ class ComprehensiveSearchTester
         // Test 1: Valid inputs
         try {
             $result = $this->searchService->search('الله', [], 1, 10);
-            echo $result['error'] ? "❌ خطأ غير متوقع: {$result['error']}\n" : "✅ المدخلات الصحيحة تعمل\n";
+            echo isset($result['error']) ? "❌ خطأ غير متوقع: {$result['error']}\n" : "✅ المدخلات الصحيحة تعمل\n";
         } catch (Exception $e) {
             echo "❌ خطأ في المدخلات الصحيحة: {$e->getMessage()}\n";
         }
