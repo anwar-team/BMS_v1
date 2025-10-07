@@ -54,6 +54,7 @@ Route::get('/search', function() {
 
 Route::get('/api/ultra-search', [\App\Http\Controllers\SearchController::class, 'apiSearch'])->name('api.ultra-search');
 Route::get('/api/filter-options', [\App\Http\Controllers\SearchController::class, 'getFilterOptions'])->name('api.filter-options');
+Route::get('/api/available-filters', [\App\Http\Controllers\SearchController::class, 'getAvailableFilters'])->name('api.available-filters');
 
 // Search All API Routes - Advanced Search
 Route::prefix('api/search-all')->group(function () {

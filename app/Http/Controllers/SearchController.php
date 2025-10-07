@@ -13,6 +13,57 @@ use Illuminate\Support\Facades\Log;
 class SearchController extends Controller
 {
     /**
+     * Context7 Enhanced: Get available filter options with real data
+     * 
+     * @param UltraFastSearchService $searchService
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function getAvailableFilters(Request $request, UltraFastSearchService $searchService)
+    {
+        $validated = $request->validate([
+            'type' => 'nullable|in:all,books,sections',
+            'limit' => 'nullable|integer|min:10|max:200'
+        ]);
+
+        $filterType = $validated['type'] ?? 'all';
+        $limit = $validated['limit'] ?? 50;
+
+        try {
+            $filters = $searchService->getAvailableFilters($filterType, $limit);
+            
+            if (isset($filters['error'])) {
+                return response()->json([
+                    'success' => false,
+                    'message' => $filters['error'],
+                    'data' => []
+                ], 500);
+            }
+
+            return response()->json([
+                'success' => true,
+                'data' => $filters,
+                'metadata' => [
+                    'type' => $filterType,
+                    'limit' => $limit,
+                    'generated_at' => now()->toISOString()
+                ]
+            ]);
+
+        } catch (\Exception $e) {
+            Log::error('Failed to get available filters', [
+                'error' => $e->getMessage(),
+                'type' => $filterType
+            ]);
+
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to load filter options',
+                'data' => []
+            ], 500);
+        }
+    }
+
+    /**
      * API endpoint for search (returns JSON) - Ultra Fast version
      * Context7 Enhanced: Proper validation and filter metadata in response
      * 

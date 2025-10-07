@@ -942,25 +942,49 @@
             async loadFilterOptions(filterType) {
                 const filterOptionsList = document.getElementById('filterOptionsList');
                 
-                // عرض مؤشر التحميل
+                // عرض مؤشر التحميل - Context7 Enhanced
                 filterOptionsList.innerHTML = `
-                    <div class="flex items-center justify-center p-4">
-                        <div class="animate-spin rounded-full h-6 w-6 border-b-2 border-blue-600"></div>
-                        <span class="mr-2 text-sm text-gray-600">جاري التحميل...</span>
+                    <div class="flex items-center justify-center p-6">
+                        <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+                        <span class="mr-3 text-sm text-gray-600">جاري تحميل البيانات الحقيقية...</span>
                     </div>
                 `;
                 
                 try {
-                    const response = await fetch(`/api/filter-options?type=${filterType}`);
+                    // Context7: Use new endpoint for real data
+                    const endpoint = filterType === 'book' ? 'books' : 
+                                   filterType === 'section' ? 'sections' : filterType;
+                    
+                    const response = await fetch(`/api/available-filters?type=${endpoint}&limit=100`);
                     const result = await response.json();
                     
                     if (result.success && result.data) {
-                        const options = result.data;
+                        const filterData = result.data[endpoint] || result.data;
                         
-                        filterOptionsList.innerHTML = options.map(option => `
-                            <label class="flex items-center gap-3 p-2 hover:bg-gray-50 rounded-md cursor-pointer">
-                                <input type="checkbox" value="${option.id}" data-name="${option.name}" class="text-blue-600 focus:ring-blue-500 filter-option-checkbox">
-                                <span class="text-sm flex-1 text-right">${option.name}</span>
+                        if (filterData.length === 0) {
+                            filterOptionsList.innerHTML = `
+                                <div class="p-4 text-center text-gray-500">
+                                    <div class="mb-2">📭</div>
+                                    <div class="text-sm">لا توجد خيارات متاحة</div>
+                                </div>
+                            `;
+                            return;
+                        }
+                        
+                        // Context7: Enhanced display with counts
+                        filterOptionsList.innerHTML = filterData.map(option => `
+                            <label class="flex items-center justify-between gap-3 p-3 hover:bg-blue-50 rounded-lg cursor-pointer border border-transparent hover:border-blue-200 transition-all">
+                                <div class="flex items-center gap-3 flex-1">
+                                    <input type="checkbox" value="${option.id}" data-name="${option.name}" 
+                                           class="text-blue-600 focus:ring-blue-500 filter-option-checkbox rounded">
+                                    <div class="flex-1 text-right">
+                                        <div class="text-sm font-medium text-gray-900">${option.name}</div>
+                                        <div class="text-xs text-gray-500">ID: ${option.id}</div>
+                                    </div>
+                                </div>
+                                <div class="bg-blue-100 text-blue-800 text-xs font-medium px-2 py-1 rounded-full">
+                                    ${option.count ? option.count.toLocaleString() : '0'}
+                                </div>
                             </label>
                         `).join('');
                         
@@ -977,13 +1001,19 @@
                 } catch (error) {
                     console.error('Error loading filter options:', error);
                     
-                    // عرض رسالة خطأ مع إمكانية إعادة المحاولة
+                    // Context7: Enhanced error handling with retry
                     filterOptionsList.innerHTML = `
-                        <div class="text-center p-4">
-                            <p class="text-red-600 text-sm mb-2">فشل في تحميل الخيارات</p>
-                            <button onclick="ultraFastSearch.loadFilterOptions('${filterType}')" 
-                                    class="text-blue-600 text-sm hover:underline">
-                                إعادة المحاولة
+                        <div class="text-center p-6 bg-red-50 border border-red-200 rounded-lg">
+                            <div class="text-red-600 mb-3">
+                                <svg class="w-8 h-8 mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                </svg>
+                                <p class="text-sm font-medium">فشل في تحميل خيارات الفلاتر</p>
+                                <p class="text-xs mt-1 text-red-500">${error.message}</p>
+                            </div>
+                            <button onclick="window.ultraFastSearch.loadFilterOptions('${filterType}')" 
+                                    class="bg-red-600 hover:bg-red-700 text-white text-sm px-4 py-2 rounded-lg transition-colors">
+                                🔄 إعادة المحاولة
                             </button>
                         </div>
                     `;
@@ -1214,9 +1244,21 @@
                     
                     if (data.success && data.data && data.data.length > 0) {
                         console.debug('UltraFastSearch.performSearch will display results', data.data.length);
-                        this.displayResults(data.data, data.pagination, searchTime, searchType);
+                        this.displayResults(data.data, data.pagination, searchTime, searchType, data.search_metadata);
                     } else {
-                        this.showNoResults();
+                        // Context7: Enhanced no results with debugging info
+                        console.warn('No results found:', {
+                            query: query,
+                            filters: this.selectedFilters,
+                            response: data
+                        });
+                        
+                        this.showNoResults(query);
+                        
+                        // Show debug info if there's metadata
+                        if (data.search_metadata) {
+                            console.info('Search metadata:', data.search_metadata);
+                        }
                     }
                     
                 } catch (error) {
@@ -1382,12 +1424,74 @@
                 return labels[mode] || 'مرن';
             }
             
-            showNoResults() {
+            showNoResults(query = '') {
                 this.welcomeMessage.classList.add('hidden');
                 this.resultsContainer.classList.add('hidden');
                 this.searchError.classList.add('hidden');
                 this.noResults.classList.remove('hidden');
                 this.searchInfo.classList.add('hidden');
+                
+                // Context7: Enhanced no results message with troubleshooting
+                const appliedFilters = this.getAppliedFiltersCount();
+                const filterSuggestion = appliedFilters > 0 ? 
+                    `<div class="mt-4 p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
+                        <div class="flex items-center gap-2 text-yellow-800">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16c-.77.833.192 2.5 1.732 2.5z"/>
+                            </svg>
+                            <span class="font-medium">اقتراح:</span>
+                        </div>
+                        <p class="text-sm text-yellow-700 mt-2">
+                            لديك ${appliedFilters} فلتر مطبق. جرب إزالة بعض الفلاتر أو استخدم كلمات بحث أوسع.
+                        </p>
+                        <button onclick="window.ultraFastSearch.clearAllFilters()" 
+                                class="mt-2 text-yellow-800 hover:text-yellow-900 underline text-sm">
+                            🗑️ مسح جميع الفلاتر
+                        </button>
+                    </div>` : '';
+                
+                // Update no results content with suggestions
+                const noResultsDiv = document.querySelector('.no-results');
+                if (noResultsDiv) {
+                    const originalContent = noResultsDiv.innerHTML;
+                    if (!originalContent.includes('اقتراح:')) {
+                        noResultsDiv.innerHTML = originalContent + filterSuggestion;
+                    }
+                }
+            }
+            
+            getAppliedFiltersCount() {
+                let count = 0;
+                Object.values(this.selectedFilters).forEach(filter => {
+                    if (Array.isArray(filter)) {
+                        count += filter.length;
+                    } else if (filter && typeof filter === 'object' && (filter.from || filter.to)) {
+                        count += 1;
+                    }
+                });
+                return count;
+            }
+            
+            clearAllFilters() {
+                const container = document.getElementById('selectedFiltersContainer');
+                const tagsContainer = document.getElementById('selectedFiltersTags');
+                const badge = document.getElementById('activeFiltersCount');
+                
+                if (tagsContainer) tagsContainer.innerHTML = '';
+                this.selectedFilters = {
+                    section: [],
+                    book: [],
+                    author: [],
+                    death_date: { from: '', to: '' }
+                };
+                if (container) container.classList.add('hidden');
+                if (badge) badge.classList.add('hidden');
+                
+                // إعادة البحث
+                const query = this.searchInput.value.trim();
+                if (query.length >= 1) {
+                    this.performSearch(query);
+                }
             }
             
             showError() {

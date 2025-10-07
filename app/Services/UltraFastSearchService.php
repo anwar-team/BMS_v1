@@ -31,11 +31,25 @@ class UltraFastSearchService
 
 	/**
 	 * Ultra-fast search with direct Elasticsearch queries
-	 * Context7 Enhanced: Added aggregations for filter counts
+	 * Context7 Enhanced: Added validation, error handling, and aggregations
 	 */
 	public function search(string $query, array $filters = [], int $page = 1, int $perPage = 15): array
 	{
 		try {
+			// Context7: Validate inputs first
+			$validationResult = $this->validateSearchInputs($query, $filters, $page, $perPage);
+			if (!$validationResult['valid']) {
+				return [
+					'results' => [],
+					'current_page' => $page,
+					'last_page' => 1,
+					'per_page' => $perPage,
+					'total' => 0,
+					'error' => $validationResult['error'],
+					'filter_metadata' => []
+				];
+			}
+
 			// Use new search index first, then fallback to old ones
 			$indices = ['pages_new_search', 'pages', 'pages_test', 'pages_optimized'];
 			$indexToUse = null;
@@ -54,6 +68,14 @@ class UltraFastSearchService
 			if (!$indexToUse) {
 				return $this->scoutFallback($query, $filters, $page, $perPage);
 			}
+
+			// Context7: Log search attempt for debugging
+			\Illuminate\Support\Facades\Log::info('UltraFastSearch attempt', [
+				'query' => $query,
+				'filters' => $filters,
+				'page' => $page,
+				'index' => $indexToUse
+			]);
 
 			$params = [
 				'index' => $indexToUse,
@@ -77,12 +99,80 @@ class UltraFastSearchService
 
 			$response = $this->elasticsearch->search($params);
             
-			return $this->transformResults($response, $query, $page, $perPage, $filters);
+			$results = $this->transformResults($response, $query, $page, $perPage, $filters);
+			
+			// Context7: Add search metadata for frontend debugging
+			$results['search_metadata'] = [
+				'index_used' => $indexToUse,
+				'query_time' => $response['took'] ?? 0,
+				'total_results' => $response['hits']['total']['value'] ?? 0,
+				'filters_applied' => count(array_filter($filters))
+			];
+
+			return $results;
 
 		} catch (\Exception $e) {
+			// Context7: Enhanced error logging
+			\Illuminate\Support\Facades\Log::error('UltraFastSearch failed', [
+				'query' => $query,
+				'filters' => $filters,
+				'error' => $e->getMessage(),
+				'trace' => $e->getTraceAsString()
+			]);
+			
 			// Fallback to Scout if direct fails
 			return $this->scoutFallback($query, $filters, $page, $perPage);
 		}
+	}
+
+	/**
+	 * Context7 Best Practice: Input validation before processing
+	 */
+	private function validateSearchInputs(string $query, array $filters, int $page, int $perPage): array
+	{
+		// Check query length
+		if (strlen($query) > 500) {
+			return ['valid' => false, 'error' => 'Query too long (max 500 characters)'];
+		}
+
+		// Check pagination bounds
+		if ($page < 1 || $page > 1000) {
+			return ['valid' => false, 'error' => 'Invalid page number'];
+		}
+
+		if ($perPage < 1 || $perPage > 100) {
+			return ['valid' => false, 'error' => 'Invalid per page value (1-100)'];
+		}
+
+		// Validate filter types and values
+		$allowedFilters = ['book_id', 'section_id', 'author_id', 'search_type', 'word_order'];
+		foreach ($filters as $key => $value) {
+			if (!in_array($key, $allowedFilters)) {
+				continue; // Skip unknown filters instead of failing
+			}
+
+			// Validate book_id filter
+			if ($key === 'book_id' && !empty($value)) {
+				$bookIds = is_array($value) ? $value : [$value];
+				foreach ($bookIds as $id) {
+					if (!is_numeric($id) || $id < 1) {
+						return ['valid' => false, 'error' => 'Invalid book_id value'];
+					}
+				}
+			}
+
+			// Validate section_id filter
+			if ($key === 'section_id' && !empty($value)) {
+				$sectionIds = is_array($value) ? $value : [$value];
+				foreach ($sectionIds as $id) {
+					if (!is_numeric($id) || $id < 1) {
+						return ['valid' => false, 'error' => 'Invalid section_id value'];
+					}
+				}
+			}
+		}
+
+		return ['valid' => true, 'error' => null];
 	}
 
 	/**
@@ -404,6 +494,138 @@ class UltraFastSearchService
 			],
 			'encoder' => 'html',
 		];
+	}
+
+	/**
+	 * Context7 Enhanced: Get available filter options with real data
+	 */
+	public function getAvailableFilters(string $filterType = 'all', int $limit = 100): array
+	{
+		try {
+			$indexToUse = $this->getActiveIndex();
+			if (!$indexToUse) {
+				return ['error' => 'No active index found'];
+			}
+
+			$aggregations = [];
+
+			if ($filterType === 'all' || $filterType === 'books') {
+				$aggregations['books'] = [
+					'terms' => [
+						'field' => 'book_id',
+						'size' => $limit,
+						'order' => ['_count' => 'desc']
+					],
+					'aggs' => [
+						'sample_title' => [
+							'top_hits' => [
+								'size' => 1,
+								'_source' => ['book_title']
+							]
+						]
+					]
+				];
+			}
+
+			if ($filterType === 'all' || $filterType === 'sections') {
+				$aggregations['sections'] = [
+					'terms' => [
+						'field' => 'book_section_id',
+						'size' => $limit,
+						'order' => ['_count' => 'desc']
+					]
+				];
+			}
+
+			$params = [
+				'index' => $indexToUse,
+				'body' => [
+					'query' => ['match_all' => new \stdClass()],
+					'aggs' => $aggregations,
+					'size' => 0 // Only aggregations, no hits
+				]
+			];
+
+			$response = $this->elasticsearch->search($params);
+			
+			return $this->formatAvailableFilters($response['aggregations'] ?? []);
+
+		} catch (\Exception $e) {
+			return ['error' => $e->getMessage()];
+		}
+	}
+
+	/**
+	 * Context7: Format aggregations into user-friendly filter options
+	 */
+	private function formatAvailableFilters(array $aggregations): array
+	{
+		$formatted = [
+			'books' => [],
+			'sections' => []
+		];
+
+		// Format book filters
+		if (isset($aggregations['books']['buckets'])) {
+			foreach ($aggregations['books']['buckets'] as $bucket) {
+				$title = 'Unknown Book';
+				if (isset($bucket['sample_title']['hits']['hits'][0]['_source']['book_title'])) {
+					$title = $bucket['sample_title']['hits']['hits'][0]['_source']['book_title'];
+				}
+
+				$formatted['books'][] = [
+					'id' => $bucket['key'],
+					'name' => $title,
+					'count' => $bucket['doc_count']
+				];
+			}
+		}
+
+		// Format section filters
+		if (isset($aggregations['sections']['buckets'])) {
+			foreach ($aggregations['sections']['buckets'] as $bucket) {
+				$formatted['sections'][] = [
+					'id' => $bucket['key'],
+					'name' => $this->getSectionName($bucket['key']),
+					'count' => $bucket['doc_count']
+				];
+			}
+		}
+
+		return $formatted;
+	}
+
+	/**
+	 * Context7: Get section name from database
+	 */
+	private function getSectionName(string $sectionId): string
+	{
+		try {
+			$section = \App\Models\BookSection::find($sectionId);
+			return $section ? $section->name : "قسم {$sectionId}";
+		} catch (\Exception $e) {
+			return "قسم {$sectionId}";
+		}
+	}
+
+	/**
+	 * Context7: Get active index helper
+	 */
+	private function getActiveIndex(): ?string
+	{
+		$indices = ['pages_new_search', 'pages', 'pages_test', 'pages_optimized'];
+		
+		foreach ($indices as $index) {
+			try {
+				if ($this->elasticsearch->indices()->exists(['index' => $index])) {
+					return $index;
+				}
+			} catch (\Exception $e) {
+				continue;
+			}
+		}
+		
+		return null;
 	}
 
 	/**
