@@ -64,7 +64,7 @@
                                 <!-- Left Side: Mobile Menu -->
                                 <div class="flex items-center">
                                     <!-- Enhanced Mobile Hamburger Menu Button -->
-                                    <button id="book-reader-hamburger" wire:click="toggleMobileToc" class="lg:hidden flex items-center justify-center w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-[#f0e9de] hover:bg-green-600 text-green-900 transition-all duration-200 {{ $showMobileToc ? 'bg-green-600 text-white shadow-lg scale-105' : 'hover:scale-105' }}">
+                                    <button id="book-reader-hamburger" wire:click="toggleMobileToc" class="lg:hidden flex items-center justify-center w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-[#f0e9de] hover:bg-green-900 text-green-900 transition-all duration-200 {{ $showMobileToc ? 'bg-green-900 text-white shadow-lg scale-105' : 'hover:scale-105' }}">
                                         <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 sm:h-5 sm:w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                             @if($showMobileToc)
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
@@ -119,12 +119,12 @@
                                 <!-- Right Side: All Action Buttons with Clear Separation -->
                                 <div class="flex items-center gap-2 sm:gap-3">
                                     <!-- Font Controls Group -->
-                                    <div class="flex items-center gap-1 bg-[#f8f5f0] rounded-lg p-1 border border-[#e8e0d0]">
-                                        <button id="decrease-font-btn" wire:click="decreaseFontSize" class="w-8 h-8 sm:w-9 sm:h-9 flex items-center justify-center rounded-md bg-white hover:bg-[#f0e9de] text-green-900 font-bold transition-colors text-xs sm:text-sm shadow-sm">
+                                    <div class="flex items-center gap-1 bg-gradient-to-r from-[#f8f5f0] to-[#f0e9de] rounded-xl p-1.5 border border-[#e8e0d0] shadow-lg">
+                                        <button id="decrease-font-btn" wire:click="decreaseFontSize" class="w-8 h-8 sm:w-9 sm:h-9 flex items-center justify-center rounded-lg bg-gradient-to-br from-white to-[#f8f5f0] hover:from-[#f0e9de] hover:to-[#e8e0d0] text-green-900 font-bold transition-all duration-300 text-xs sm:text-sm shadow-md hover:shadow-lg transform hover:scale-105 border border-[#e8e0d0]">
                                             A-
                                         </button>
-                                        <span id="font-percent-display" class="px-2 text-[#39100C] font-medium text-xs sm:text-sm min-w-[40px] text-center">{{ $fontPercent }}%</span>
-                                        <button id="increase-font-btn" wire:click="increaseFontSize" class="w-8 h-8 sm:w-9 sm:h-9 flex items-center justify-center rounded-md bg-white hover:bg-[#f0e9de] text-green-900 font-bold transition-colors text-xs sm:text-sm shadow-sm">
+                                        <span id="font-percent-display" class="px-2 text-[#39100C] font-semibold text-xs sm:text-sm min-w-[40px] text-center bg-white/50 rounded-md py-1">{{ $fontPercent }}%</span>
+                                        <button id="increase-font-btn" wire:click="increaseFontSize" class="w-8 h-8 sm:w-9 sm:h-9 flex items-center justify-center rounded-lg bg-gradient-to-br from-white to-[#f8f5f0] hover:from-[#f0e9de] hover:to-[#e8e0d0] text-green-900 font-bold transition-all duration-300 text-xs sm:text-sm shadow-md hover:shadow-lg transform hover:scale-105 border border-[#e8e0d0]">
                                             A+
                                         </button>
                                     </div>
@@ -133,8 +133,21 @@
                                     <div class="w-px h-8 bg-[#e0d9cc]"></div>
 
                                     <!-- Movements Toggle -->
-                                    <button wire:click="toggleMovements" class="{{ $showMovements ? 'bg-green-900 text-white shadow-md' : 'bg-[#f0e9de] text-red-800' }} px-3 py-2 sm:px-4 sm:py-2.5 rounded-lg hover:bg-[#e8e0d0] transition-all duration-200 font-tajawal text-xs sm:text-sm whitespace-nowrap border border-[#e0d9cc]">
-                                        <span class="hidden sm:inline">{{ $showMovements ? 'إخفاء الحركات' : 'إظهار الحركات' }}</span>
+                                    <button wire:click="toggleMovements" class="{{ $showMovements ? 'bg-gradient-to-r from-green-900 to-green-800 text-white shadow-lg border-green-700' : 'bg-gradient-to-r from-[#f0e9de] to-[#e8e0d0] text-red-800 shadow-md border-[#e0d9cc]' }} px-3 py-2 sm:px-4 sm:py-2.5 rounded-xl hover:shadow-lg transition-all duration-300 font-tajawal text-xs sm:text-sm whitespace-nowrap border transform hover:scale-105 {{ $showMovements ? 'hover:from-green-800 hover:to-green-700' : 'hover:from-[#e8e0d0] hover:to-[#ddd5c8]' }}">
+                                        <span class="hidden sm:inline flex items-center gap-1">
+                                            @if($showMovements)
+                                                <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
+                                                    <path fill-rule="evenodd" d="M3.707 2.293a1 1 0 00-1.414 1.414l14 14a1 1 0 001.414-1.414l-14-14z" clip-rule="evenodd"/>
+                                                </svg>
+                                                إخفاء الحركات
+                                            @else
+                                                <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
+                                                    <path d="M10 12a2 2 0 100-4 2 2 0 000 4z"/>
+                                                    <path fill-rule="evenodd" d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z" clip-rule="evenodd"/>
+                                                </svg>
+                                                إظهار الحركات
+                                            @endif
+                                        </span>
                                         <span class="sm:hidden">{{ $showMovements ? 'إخفاء' : 'إظهار' }}</span>
                                     </button>
 
@@ -146,7 +159,7 @@
                                         <!-- Share Button -->
                                         <button class="text-gray-600 hover:text-green-900 p-2 sm:p-2.5 rounded-lg hover:bg-[#f0e9de] transition-all duration-200 flex items-center justify-center border border-transparent hover:border-[#e0d9cc]">
                                             <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 sm:h-5 sm:w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6.632L15.316 9m-4.065 8.814a5.97 5.97 0 001.23.247m-1.23-.247A5.97 5.97 0 015 12c0-.95.23-1.84-.632-2.684m0 2.684a3 3 0 110-2.684m0 2.684L8.684 13.342m0-2.684l6.632-3.316m-4.065-1.186a5.97 5.97 0 711.23-.247m-1.23.247A5.97 5.97 0 005 12c0-.95.23-1.84-.632-2.684m0 2.684a3 3 0 110-2.684" />
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7.217 10.907a2.25 2.25 0 100 2.186m0-2.186c.18.324.283.696.283 1.093s-.103.77-.283 1.093m0-2.186l9.566-5.314m-9.566 7.5l9.566 5.314m0 0a2.25 2.25 0 103.935 2.186 2.25 2.25 0 00-3.935-2.186zm0-12.814a2.25 2.25 0 103.933-2.185 2.25 2.25 0 00-3.933 2.185z" />
                                             </svg>
                                         </button>
                                         <!-- Fullscreen Button -->
