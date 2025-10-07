@@ -14,6 +14,7 @@ class SearchController extends Controller
 {
     /**
      * API endpoint for search (returns JSON) - Ultra Fast version
+     * Context7 Enhanced: Proper validation and filter metadata in response
      * 
      * @param UltraFastSearchService $searchService
      * @return \Illuminate\Http\JsonResponse
@@ -22,18 +23,36 @@ class SearchController extends Controller
     {
         $startTime = microtime(true);
         
-        $query = trim($request->get('q', ''));
-        $authorId = $request->get('author_id');
-        $sectionId = $request->get('section_id');
-        $page = max(1, (int) $request->get('page', 1));
-        $perPage = min(max((int) $request->get('per_page', 15), 5), 50);
+        // Context7: Validate request parameters
+        $validated = $request->validate([
+            'q' => 'nullable|string|max:500',
+            'author_id' => 'nullable', // Can be int or comma-separated string
+            'section_id' => 'nullable', // Can be int or comma-separated string
+            'book_id' => 'nullable', // Can be int or comma-separated string
+            'page' => 'nullable|integer|min:1',
+            'per_page' => 'nullable|integer|min:5|max:50',
+            'search_type' => 'nullable|in:exact_match,flexible_match,morphological',
+            'word_order' => 'nullable|in:consecutive,same_paragraph,any_order',
+            'search_mode' => 'nullable|string', // Backward compatibility
+            'proximity' => 'nullable|string', // Backward compatibility
+        ]);
+        
+        $query = trim($validated['q'] ?? '');
+        $authorId = $validated['author_id'] ?? null;
+        $sectionId = $validated['section_id'] ?? null;
+        $bookId = $validated['book_id'] ?? null;
+        $page = max(1, (int) ($validated['page'] ?? 1));
+        $perPage = (int) ($validated['per_page'] ?? 15);
         
         // تحويل الفلاتر المتعددة إلى arrays إذا لزم الأمر
         if ($authorId && is_string($authorId) && strpos($authorId, ',') !== false) {
-            $authorId = array_filter(explode(',', $authorId));
+            $authorId = array_map('intval', array_filter(explode(',', $authorId)));
         }
         if ($sectionId && is_string($sectionId) && strpos($sectionId, ',') !== false) {
-            $sectionId = array_filter(explode(',', $sectionId));
+            $sectionId = array_map('intval', array_filter(explode(',', $sectionId)));
+        }
+        if ($bookId && is_string($bookId) && strpos($bookId, ',') !== false) {
+            $bookId = array_map('intval', array_filter(explode(',', $bookId)));
         }
         
         // التحقق من وجود استعلام أو فلاتر صالحة
@@ -44,6 +63,9 @@ class SearchController extends Controller
         if ($sectionId && !$hasValidFilters) {
             $hasValidFilters = is_array($sectionId) ? count($sectionId) > 0 : !empty($sectionId);
         }
+        if ($bookId && !$hasValidFilters) {
+            $hasValidFilters = is_array($bookId) ? count($bookId) > 0 : !empty($bookId);
+        }
         
         if (empty($query) && !$hasValidFilters) {
             return response()->json([
@@ -51,23 +73,25 @@ class SearchController extends Controller
                 'message' => 'يرجى توفير كلمة بحث أو مرشح',
                 'data' => [],
                 'search_time' => 0
-            ], 400);
+            ], 422); // Context7: Use 422 for validation errors
         }
 
         try {
             $filters = array_filter([
                 'author_id' => $authorId,
                 'section_id' => $sectionId,
-                'search_type' => $request->get('search_type', 'flexible_match'), // New system
-                'word_order' => $request->get('word_order', 'any_order'), // ✅ خيار ترتيب الكلمات
-                'search_mode' => $request->get('search_mode'), // Backward compatibility
-                'proximity' => $request->get('proximity', 'any_order'), // Backward compatibility
+                'book_id' => $bookId, // Context7: Added book_id filter
+                'search_type' => $validated['search_type'] ?? 'flexible_match',
+                'word_order' => $validated['word_order'] ?? 'any_order',
+                'search_mode' => $validated['search_mode'] ?? null, // Backward compatibility
+                'proximity' => $validated['proximity'] ?? 'any_order', // Backward compatibility
             ]);
 
             $results = $searchService->search($query, $filters, $page, $perPage);
             
             $searchTime = round((microtime(true) - $startTime) * 1000, 2);
 
+            // Context7: Enhanced response with filter metadata
             return response()->json([
                 'success' => true,
                 'data' => $results['results'],
@@ -79,6 +103,7 @@ class SearchController extends Controller
                     'from' => (($page - 1) * $perPage) + 1,
                     'to' => min($page * $perPage, $results['total'] ?? 0)
                 ],
+                'filters' => $results['filters'] ?? [], // Context7: Add filter counts
                 'search_time' => $searchTime . 'ms'
             ]);
 
