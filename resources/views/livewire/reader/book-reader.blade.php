@@ -455,7 +455,7 @@
                                                     @endphp
                                                     <li class="{{ $shouldDimVolume ? 'toc-item-dimmed' : '' }}">
                                                         <div class="toc-item flex items-center justify-between p-2 rounded-lg transition-all duration-300
-                                                                    {{ $isCurrentVolume ? 'bg-green-900 text-white shadow-md active' : 'hover:bg-[#f0e9de]' }}
+                                                                    {{ $isCurrentVolume ? 'bg-green-900 text-white shadow-md active' : 'hover:bg-green-600' }}
                                                                     {{ $volumeMatchesSearch ? 'toc-search-match' : '' }}">
                                                             <div class="flex items-center cursor-pointer flex-1" 
                                                                  wire:click="gotoVolume({{ $volume->id }})">
@@ -480,7 +480,7 @@
                                                             @endif
                                                         </div>
                                                         @if($volume->chapters->isNotEmpty() && in_array($volume->id, $expandedVolumes))
-                                                            <ul class="toc-children mr-4 mt-2 space-y-1 border-r-2 border-[#e0d9cc] pr-3 sm:pr-4">
+                                                            <ul class="toc-children mr-4 mt-2 space-y-1 border-r-2 border-green-600 pr-3 sm:pr-4">
                                                                 @foreach($volume->chapters as $chapter)
                                                                     @include('livewire.reader.partials.chapter-tree', ['chapter' => $chapter, 'level' => 0])
                                                                 @endforeach
@@ -501,7 +501,7 @@
                                                     @endphp
                                                     <li class="{{ $shouldDimChapter ? 'toc-item-dimmed' : '' }}">
                                                         <div class="toc-item flex items-center justify-between p-2 rounded-lg transition-all duration-300
-                                                                     {{ $isCurrentChapter ? 'bg-green-900 text-white shadow-md active' : 'hover:bg-[#f0e9de]' }}
+                                                                     {{ $isCurrentChapter ? 'bg-green-900 text-white shadow-md active' : 'hover:bg-green-600' }}
                                                                      {{ $chapterMatchesSearch ? 'toc-search-match' : '' }}">
                                                             <div class="flex items-center cursor-pointer flex-1" 
                                                                  wire:click="gotoChapter({{ $chapter->id }})">
