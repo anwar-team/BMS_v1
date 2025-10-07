@@ -14,6 +14,8 @@ use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Toggle;
 use Filament\Forms\Components\Grid;
 use Filament\Forms\Components\FileUpload;
+use Filament\Forms\Components\DatePicker;
+use Filament\Forms\Get;
 use DefStudio\FilamentSearchableInput\Components\SearchableInput;
 use Filament\Resources\Resource;
 use Filament\Tables;
@@ -63,8 +65,7 @@ class AuthorResource extends Resource
                     ->required()
                     ->maxLength(255)
                     ->columnSpanFull()
-                    ->searchable()
-                    ->placeholder('ابحث عن اسم المؤلف أو أدخل اسماً جديداً'),
+                    ->placeholder('أدخل اسم المؤلف الكامل'),
 
                 FileUpload::make('image')
                     ->label('صورة المؤلف')
