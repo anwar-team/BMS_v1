@@ -40,14 +40,14 @@
                                         <span class="font-medium">المؤلف: </span>
                                         @foreach($book->mainAuthors as $author)
                                             <a href="{{ route('authors.details', $author->id) }}" 
-                                               class="text-green-600 hover:text-green-800 hover:underline transition-colors duration-200 font-medium">
+                                               class="text-green-600 hover:text-green-900 hover:underline transition-colors duration-200 font-medium">
                                                 {{ $author->full_name }}
                                             </a>@if(!$loop->last), @endif
                                         @endforeach
                                         @if($book->mainAuthors->count() == 0)
                                             @foreach($book->authors->take(1) as $author)
                                                 <a href="{{ route('authors.details', $author->id) }}" 
-                                                   class="text-green-600 hover:text-green-800 hover:underline transition-colors duration-200 font-medium">
+                                                   class="text-green-600 hover:text-green-900 hover:underline transition-colors duration-200 font-medium">
                                                     {{ $author->full_name }}
                                                 </a>
                                             @endforeach
@@ -67,7 +67,7 @@
                                 <!-- Left Side: Mobile Menu -->
                                 <div class="flex items-center">
                                     <!-- Enhanced Mobile Hamburger Menu Button -->
-                                    <button id="book-reader-hamburger" wire:click="toggleMobileToc" class="lg:hidden flex items-center justify-center w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-[#f0e9de] hover:bg-[#e8e0d0] text-[#5D6019] transition-all duration-200 {{ $showMobileToc ? 'bg-[#5D6019] text-white shadow-lg scale-105' : 'hover:scale-105' }}">
+                                    <button id="book-reader-hamburger" wire:click="toggleMobileToc" class="lg:hidden flex items-center justify-center w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-[#f0e9de] hover:bg-green-600 text-green-900 transition-all duration-200 {{ $showMobileToc ? 'bg-green-600 text-white shadow-lg scale-105' : 'hover:scale-105' }}">
                                         <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 sm:h-5 sm:w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                             @if($showMobileToc)
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
@@ -85,7 +85,7 @@
                                                wire:model.live.debounce.500ms="search" 
                                                placeholder="ابحث في النص..." 
                                                class="flex-1 px-4 py-2.5 focus:outline-none font-tajawal text-sm bg-transparent">
-                                        <button wire:click="performSearch" class="bg-[#5D6019] text-white px-4 py-2.5 hover:bg-[#4a4d13] transition-colors flex items-center justify-center">
+                                        <button wire:click="performSearch" class="bg-green-600 text-white px-4 py-2.5 hover:bg-green-900 transition-colors flex items-center justify-center">
                                             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                                             </svg>
@@ -97,7 +97,7 @@
                                         <div class="absolute top-full left-0 right-0 bg-white border border-[#e0d9cc] rounded-lg shadow-2xl mt-1 max-h-80 overflow-y-auto z-[80] min-w-full search-dropdown">
                                             @foreach($searchResults as $result)
                                                 <div wire:click="gotoPage({{ $result['page_number'] }})" class="p-3 border-b border-gray-100 hover:bg-[#f0e9de] cursor-pointer last:border-b-0 transition-colors duration-200">
-                                                    <div class="text-sm text-[#5D6019] font-medium mb-1">
+                                                    <div class="text-sm text-green-900 font-medium mb-1">
                                                         الصفحة {{ $result['page_number'] }}
                                                         @if($result['internal_index'])
                                                             <span class="text-gray-500">({{ $result['internal_index'] }})</span>
@@ -123,11 +123,11 @@
                                 <div class="flex items-center gap-2 sm:gap-3">
                                     <!-- Font Controls Group -->
                                     <div class="flex items-center gap-1 bg-[#f8f5f0] rounded-lg p-1 border border-[#e8e0d0]">
-                                        <button id="decrease-font-btn" wire:click="decreaseFontSize" class="w-8 h-8 sm:w-9 sm:h-9 flex items-center justify-center rounded-md bg-white hover:bg-[#f0e9de] text-[#5D6019] font-bold transition-colors text-xs sm:text-sm shadow-sm">
+                                        <button id="decrease-font-btn" wire:click="decreaseFontSize" class="w-8 h-8 sm:w-9 sm:h-9 flex items-center justify-center rounded-md bg-white hover:bg-[#f0e9de] text-green-900 font-bold transition-colors text-xs sm:text-sm shadow-sm">
                                             A-
                                         </button>
                                         <span id="font-percent-display" class="px-2 text-[#39100C] font-medium text-xs sm:text-sm min-w-[40px] text-center">{{ $fontPercent }}%</span>
-                                        <button id="increase-font-btn" wire:click="increaseFontSize" class="w-8 h-8 sm:w-9 sm:h-9 flex items-center justify-center rounded-md bg-white hover:bg-[#f0e9de] text-[#5D6019] font-bold transition-colors text-xs sm:text-sm shadow-sm">
+                                        <button id="increase-font-btn" wire:click="increaseFontSize" class="w-8 h-8 sm:w-9 sm:h-9 flex items-center justify-center rounded-md bg-white hover:bg-[#f0e9de] text-green-900 font-bold transition-colors text-xs sm:text-sm shadow-sm">
                                             A+
                                         </button>
                                     </div>
