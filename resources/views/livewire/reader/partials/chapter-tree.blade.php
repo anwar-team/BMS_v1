@@ -7,7 +7,7 @@
 
 <li class="{{ $level > 0 ? 'mr-' . ($level * 3) : '' }} {{ $shouldDim ? 'toc-item-dimmed' : '' }}">
     <div class="toc-item flex items-center justify-between p-2 rounded-lg transition-all duration-300
-              {{ $isCurrentChapter ? 'bg-[#957717] text-white shadow-sm active' : 'hover:bg-[#f0e9de]' }}
+              {{ $isCurrentChapter ? 'bg-green-900 text-white shadow-sm active' : 'hover:bg-[#f0e9de]' }}
               {{ $matchesSearch ? 'toc-search-match' : '' }}">
         <div class="flex items-center cursor-pointer flex-1" wire:click="gotoChapter({{ $chapter->id }})">
             @if($chapter->children->isNotEmpty())
@@ -18,7 +18,7 @@
             
             <span class="{{ $level === 0 ? 'text-base sm:text-lg font-semibold' : 'text-sm sm:text-base' }} 
                          {{ $isCurrentChapter ? 'text-white' : ($level === 0 ? 'text-[#2C6E4A]' : 'text-gray-700') }} 
-                         {{ !$isCurrentChapter ? 'hover:text-[#957717]' : '' }} transition-colors">
+                         {{ !$isCurrentChapter ? 'hover:text-green-900' : '' }} transition-colors">
                 @if($hasSearchTerm && $matchesSearch)
                     {!! $this->highlightSearchTerm($chapter->title) !!}
                 @else

@@ -42,7 +42,7 @@
                                     </button>
                                 </div>
                                 <div class="flex items-center flex-1 min-w-[150px] w-full sm:w-auto relative">
-                                    <input type="text" id="searchInput" placeholder="ابحث في النص..." class="flex-1 px-3 py-1.5 sm:px-4 sm:py-2 border border-[#e0d9cc] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#957717] font-tajawal text-sm">
+                                    <input type="text" id="searchInput" placeholder="ابحث في النص..." class="flex-1 px-3 py-1.5 sm:px-4 sm:py-2 border border-[#e0d9cc] rounded-lg focus:outline-none focus:ring-2 focus:ring-green-900 font-tajawal text-sm">
                                     <button id="searchButton" class="mr-1 sm:mr-2 bg-[#5D6019] text-white p-1.5 sm:p-2 rounded-lg hover:bg-[#4a4d13] transition-colors">
                                         <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 sm:h-5 sm:w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
@@ -199,7 +199,7 @@
                                                 min="1"
                                                 max="{{ $navigationInfo['total_pages'] }}"
                                                 value="{{ $navigationInfo['current_page_number'] }}"
-                                                class="w-12 sm:w-16 px-2 py-1 border border-[#e0d9cc] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#957717] text-center text-sm"
+                                                class="w-12 sm:w-16 px-2 py-1 border border-[#e0d9cc] rounded-lg focus:outline-none focus:ring-2 focus:ring-green-900 text-center text-sm"
                                                 onchange="goToPageFromInput(event)">
                                         </form>
                                                         <span class="text-[#39100C] font-medium text-sm sm:text-base">/ {{ $navigationInfo['total_pages'] }}</span>
@@ -230,7 +230,7 @@
                                                     </div>
                                                     <div class="relative">
                                                         <div class="overflow-hidden h-2 sm:h-2.5 rounded-full bg-[#f0e9de] border border-[#e0d9cc]">
-                                                            <div id="progressBar" class="h-full bg-gradient-to-r from-[#5D6019] to-[#957717] transition-all duration-300" style="width: {{ number_format(($navigationInfo['current_page_number'] / $navigationInfo['total_pages']) * 100, 1) }}%"></div>
+                                                            <div id="progressBar" class="h-full bg-gradient-to-r from-[#5D6019] to-green-900 transition-all duration-300" style="width: {{ number_format(($navigationInfo['current_page_number'] / $navigationInfo['total_pages']) * 100, 1) }}%"></div>
                                                         </div>
                                                         <input
                                                             type="range"
@@ -247,7 +247,7 @@
                             @if($book->volumes()->count() > 0)
                                 <div class="flex items-center space-x-1 sm:space-x-2 space-x-reverse order-3">
                                     <span class="text-[#39100C] font-medium text-sm sm:text-base whitespace-nowrap">الأجزاء:</span>
-                                    <select id="volumeSelect" class="bg-white border border-[#e0d9cc] rounded-lg px-2 py-1 sm:px-3 sm:py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#957717] min-w-[80px]" onchange="goToVolume(this.value)">
+                                    <select id="volumeSelect" class="bg-white border border-[#e0d9cc] rounded-lg px-2 py-1 sm:px-3 sm:py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-green-900 min-w-[80px]" onchange="goToVolume(this.value)">
                                         @foreach($book->volumes()->orderBy('number')->get() as $volume)
                                             <option value="{{ $volume->id }}" {{ $currentPage && $currentPage->volume_id == $volume->id ? 'selected' : '' }}>
                                                 {{ $volume->title ?: 'الجزء ' . $volume->number }}
