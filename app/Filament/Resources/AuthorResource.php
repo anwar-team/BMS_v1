@@ -63,8 +63,7 @@ class AuthorResource extends Resource
                     ->required()
                     ->maxLength(255)
                     ->columnSpanFull()
-                    ->searchable()
-                    ->placeholder('ابحث عن اسم المؤلف أو أدخل اسماً جديداً'),
+                    ->placeholder('أدخل اسم المؤلف الكامل'),
 
                 FileUpload::make('image')
                     ->label('صورة المؤلف')
