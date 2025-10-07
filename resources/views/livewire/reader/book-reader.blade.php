@@ -193,21 +193,22 @@
                                                         <!-- Separator -->
                                                         <div class="border-t border-gray-200 my-1"></div>
                                                         
-                                                        <!-- Print Page -->
+                                                        <!-- Print Page 
                                                         <button class="w-full text-right px-4 py-2 text-sm text-gray-700 hover:bg-[#f0e9de] flex items-center justify-between" onclick="window.print()">
                                                             <span>طباعة الصفحة</span>
                                                             <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
                                                             </svg>
                                                         </button>
-                                                        
-                                                        <!-- Add to Favorites -->
+                                                        -->
+                                                        <!-- Add to Favorites 
                                                         <button class="w-full text-right px-4 py-2 text-sm text-gray-700 hover:bg-[#f0e9de] flex items-center justify-between">
                                                             <span>إضافة إلى المفضلة</span>
                                                             <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
                                                             </svg>
                                                         </button>
+                                                        -->
                                                     </div>
                                                 </div>
                                             @endif
