@@ -37,7 +37,7 @@
                                         <span class="font-medium">المؤلف: </span>
                                         @foreach($book->mainAuthors as $author)
                                             <a href="{{ route('authors.details', $author->id) }}" 
-                                               class="text-green-900 hover:text-green-900 hover:underline transition-colors duration-200 font-medium">
+                                               class="text-red-800 hover:text-green-900 hover:underline transition-colors duration-200 font-medium">
                                                 {{ $author->full_name }}
                                             </a>@if(!$loop->last), @endif
                                         @endforeach
