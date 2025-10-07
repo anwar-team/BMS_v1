@@ -41,6 +41,14 @@ class Volume extends Model
     }
 
     /**
+     * العلاقة مع الفصول الرئيسية فقط (parent_id = null)
+     */
+    public function topLevelChapters(): HasMany
+    {
+        return $this->hasMany(Chapter::class)->whereNull('parent_id')->orderBy('order');
+    }
+
+    /**
      * العلاقة مع الصفحات
      */
     public function pages(): HasMany
@@ -69,5 +77,33 @@ class Volume extends Model
             $title .= " - {$this->title}";
         }
         return $title;
+    }
+
+    /**
+     * Override the chapters attribute to return only top-level chapters when accessed directly
+     * This prevents duplicates in the TOC
+     */
+    public function getChaptersAttribute()
+    {
+        // If topLevelChapters is already loaded, return it
+        if ($this->relationLoaded('topLevelChapters')) {
+            return $this->getRelation('topLevelChapters');
+        }
+        
+        // If chapters is loaded with constraints (from eager loading), return it
+        if ($this->relationLoaded('chapters')) {
+            $chapters = $this->getRelation('chapters');
+            // Filter to only top-level chapters if not already filtered
+            if ($chapters && $chapters->count() > 0) {
+                $topLevel = $chapters->filter(fn($ch) => $ch->parent_id === null);
+                if ($topLevel->count() > 0) {
+                    return $topLevel;
+                }
+            }
+            return $chapters;
+        }
+        
+        // Default: load and return top-level chapters only
+        return $this->topLevelChapters;
     }
 }

@@ -21,13 +21,13 @@
                     <div class="mb-12 z-10">
                         <div class="flex items-center gap-3 mb-8">
                             <img src="{{ asset('images/group0.svg') }}" alt="Icon" class="w-8 h-8">
-                            <h2 class="text-4xl text-green-800 font-bold">من نحن</h2>
+                            <h2 class="text-4xl text-green-800 font-bold">من نحــــن</h2>
                         </div>
                     </div>
 
                     <!-- Section: من نحن -->
                     <div class="bg-white rounded-lg shadow-md border border-gray-200 p-8 mb-16">
-                        <h2 class="text-2xl font-bold text-gray-800 mb-6 text-center">من نحن</h2>
+                        <!--<h2 class="text-2xl font-bold text-gray-800 mb-6 text-center">من نحن</h2>-->
                         
                         <div class="prose prose-lg max-w-none text-gray-700 leading-relaxed">
                             <p class="text-lg text-justify mb-4">
@@ -40,7 +40,7 @@
                     <div class="mb-12 z-10">
                         <div class="flex items-center gap-3 mb-8">
                             <img src="{{ asset('images/group0.svg') }}" alt="Icon" class="w-8 h-8">
-                            <h2 class="text-4xl text-green-800 font-bold">تواصل معنا</h2>
+                            <h2 class="text-4xl text-green-800 font-bold">تـواصــل معنـــــا</h2>
                         </div>
                     </div>
 
@@ -67,7 +67,7 @@
                         <!-- Contact Cards -->
                         <div class="space-y-4">
                             
-                            <!-- Chat with us 
+                            <!-- Chat with us  
                             <div class="flex items-start py-4 transition-all duration-300 bg-white">
                                 <div class="mr-4 shrink-0">
                                     <div class="p-2 text-primary-800">
@@ -86,7 +86,7 @@
                                     </p>
                                 </div>
                             </div>
-                            -->
+                           -->
                             <!-- Give us a call 
                             <div class="flex items-start py-4 transition-all duration-300 bg-white">
                                 <div class="mr-4 shrink-0">
@@ -317,7 +317,7 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div> 
                     </div>
                     </div> <!-- إغلاق div الـ pattern لقسم تواصل معنا -->
                 </section>

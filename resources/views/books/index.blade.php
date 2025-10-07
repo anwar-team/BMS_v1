@@ -44,7 +44,7 @@
 
                                         <!-- Book Title -->
                                         <h3 class="text-lg font-bold text-gray-900 mb-2 line-clamp-2 hover:text-green-700">
-                                            <a href="{{ route('books.details', $book->id) }}" class="cursor-pointer">
+                                            <a href="{{ route('book.read', $book->id) }}" class="cursor-pointer">
                                                 {{ $book->title }}
                                             </a>
                                         </h3>
@@ -126,9 +126,9 @@
 
                                         <!-- Action Buttons -->
                                         <div class="flex gap-2 mt-4">
-                                            <a href="{{ route('books.details', $book->id) }}" 
+                                            <a href="{{ route('book.read', $book->id) }}" 
                                                class="flex-1 bg-green-600 hover:bg-green-700 text-white text-xs font-medium py-2 px-3 rounded-md text-center transition-colors duration-200">
-                                                التفاصيل
+                                                قراءة
                                             </a>
                                             
                                             @if($book->pages()->count() > 0)

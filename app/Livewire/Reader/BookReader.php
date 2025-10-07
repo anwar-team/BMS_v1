@@ -9,6 +9,7 @@ use App\Models\Volume;
 use Livewire\Component;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Cache;
+use Mews\Purifier\Facades\Purifier;
 
 class BookReader extends Component
 {
@@ -45,6 +46,9 @@ class BookReader extends Component
     
     // Mobile TOC properties
     public bool $showMobileToc = false;
+    
+    // Cache volumes to avoid N+1 queries
+    public $volumes;
 
     // URL parameters for routing
     protected $queryString = [
@@ -101,6 +105,8 @@ class BookReader extends Component
     /**
      * Load book with required relationships
      * 
+     * FIX #3: N+1 Query Problem - Eager load volumes
+     * 
      * @return void
      */
     private function loadBook(): void
@@ -114,6 +120,10 @@ class BookReader extends Component
                 $query->orderBy('number');
             }
         ])->findOrFail($this->bookId);
+        
+        // FIX #3: Cache volumes in property to avoid repeated queries
+        // This prevents N+1 query problem in Blade
+        $this->volumes = $this->book->volumes;
 
         // Check if book is published and visible
         if ($this->book->status !== 'published' || $this->book->visibility !== 'public') {
@@ -142,35 +152,37 @@ class BookReader extends Component
      */
     private function buildTableOfContents(): array
     {
-        // Load volumes with chapters
+        // Load volumes with ONLY top-level chapters (parent_id = null)
         $volumes = Volume::where('book_id', $this->bookId)
             ->with([
-                'chapters' => function($query) {
-                    $query->whereNull('parent_id')
-                        ->orderBy('order')
-                        ->with([
-                            'children' => function($subQuery) {
-                                $subQuery->orderBy('order')
-                                    ->with('children');
-                            }
-                        ]);
+                'topLevelChapters' => function($query) {
+                    // The relationship already filters by parent_id = null
+                    // Just ensure ordering
+                    $query->orderBy('order');
                 }
             ])
             ->orderBy('number')
             ->get();
+        
+        // Now load nested children for each top-level chapter recursively
+        foreach ($volumes as $volume) {
+            foreach ($volume->topLevelChapters as $chapter) {
+                $this->loadChapterChildren($chapter);
+            }
+        }
 
         // If no volumes, load chapters directly
         if ($volumes->isEmpty()) {
+            // Get only top-level chapters (parent_id = null)
             $chapters = Chapter::where('book_id', $this->bookId)
                 ->whereNull('parent_id')
                 ->orderBy('order')
-                ->with([
-                    'children' => function($query) {
-                        $query->orderBy('order')
-                            ->with('children');
-                    }
-                ])
                 ->get();
+            
+            // Load nested children recursively for each top-level chapter
+            foreach ($chapters as $chapter) {
+                $this->loadChapterChildren($chapter);
+            }
 
             return [
                 'type' => 'chapters_only',
@@ -182,6 +194,29 @@ class BookReader extends Component
             'type' => 'volumes_with_chapters',
             'data' => $volumes
         ];
+    }
+
+    /**
+     * Recursively load children for a chapter
+     * 
+     * @param object $chapter
+     * @return void
+     */
+    private function loadChapterChildren($chapter): void
+    {
+        // Load direct children only (not grandchildren yet)
+        $chapter->load([
+            'children' => function($query) {
+                $query->orderBy('order');
+            }
+        ]);
+        
+        // Recursively load children for each child
+        if ($chapter->children && $chapter->children->isNotEmpty()) {
+            foreach ($chapter->children as $child) {
+                $this->loadChapterChildren($child);
+            }
+        }
     }
 
     /**
@@ -262,6 +297,81 @@ class BookReader extends Component
             'current_page_number' => $this->pageNumber,
             'progress_percentage' => $progressPercentage
         ];
+    }
+
+    /**
+     * Get safe content (XSS protected using HTML Purifier)
+     *
+     * FIX #1: XSS Vulnerability Protection
+     * This prevents malicious JavaScript from being executed
+     *
+     * @return string
+     */
+    public function getSafeContentProperty(): string
+    {
+        // FIX: Use isset() for better performance (microseconds faster)
+        if (!isset($this->currentContent) || trim($this->currentContent) === '') {
+            return '';
+        }
+
+        // Clean content from any malicious code
+        // Allows only safe HTML tags commonly used in book content
+        $cleaned = Purifier::clean($this->currentContent, [
+            'HTML.Allowed' => 'p,br,strong,em,u,b,i,h1,h2,h3,h4,h5,h6,ul,ol,li,blockquote,div,span,a[href|target],img[src|alt|width|height],sub,sup,table,thead,tbody,tr,td,th',
+            'HTML.AllowedAttributes' => 'class,id,style,href,title,src,alt,width,height,target,colspan,rowspan',
+            'CSS.AllowedProperties' => 'color,font-size,font-weight,text-align,margin,padding,text-decoration,display,width,height,border,background-color',
+            'AutoFormat.RemoveEmpty' => false,
+            'AutoFormat.AutoParagraph' => false,
+            'Attr.AllowedFrameTargets' => ['_blank', '_self', '_parent', '_top'],
+        ]);
+
+        return $cleaned;
+    }    /**
+     * Get content without diacritics (cached for performance)
+     * 
+     * FIX #2: preg_replace Performance Optimization
+     * Uses caching to avoid repeated regex operations
+     * 
+     * @return string
+     */
+    public function getContentWithoutMovementsProperty(): string
+    {
+        // FIX: Use isset() for better performance
+        if (!isset($this->currentPage) || !isset($this->currentContent) || trim($this->currentContent) === '') {
+            return '';
+        }
+        
+        // Cache key unique to each page
+        $cacheKey = "page_no_movements_{$this->currentPage->id}";
+        
+        // Get from cache or execute once and cache for 24 hours
+        return Cache::remember($cacheKey, now()->addDay(), function() {
+            // This expensive regex will only run once per page!
+            return preg_replace(
+                '/[\x{064B}-\x{065F}\x{0670}\x{06D6}-\x{06ED}]/u', 
+                '', 
+                $this->safeContent
+            );
+        });
+    }
+    
+    /**
+     * Get processed content (with/without movements and XSS protected)
+     * 
+     * COMBINES FIX #1 and FIX #2
+     * Returns safe, properly formatted content
+     * 
+     * @return string
+     */
+    public function getProcessedContentProperty(): string
+    {
+        if ($this->showMovements) {
+            // Return safe content with diacritics
+            return $this->safeContent;
+        }
+        
+        // Return cached content without diacritics
+        return $this->contentWithoutMovements;
     }
 
     /**

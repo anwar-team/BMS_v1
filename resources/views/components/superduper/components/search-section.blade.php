@@ -540,7 +540,7 @@ document.addEventListener('DOMContentLoaded', function() {
             `;
             
             div.addEventListener('click', () => {
-                window.location.href = `/books/${result.id}/details`;
+                window.location.href = `/book/${result.id}`;
             });
         }
         
