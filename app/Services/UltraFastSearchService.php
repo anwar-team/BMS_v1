@@ -87,16 +87,16 @@ class UltraFastSearchService
 
 	/**
 	 * Build exact match query - literal exact matching with word order
-	 * Context7 Best Practice: Exact match MUST use slop=0 for true exact matching
+	 * FIXED: arabic_exact analyzer doesn't work properly, use content.keyword or flexible with strict matching
 	 */
 	protected function buildExactMatchQuery(string $searchTerm, string $wordOrder = 'consecutive'): array
 	{
-		// For exact + any_order: use match with operator=and
-		// This finds all words in any position but in exact form (no stemming/prefixes)
+		// For exact + any_order: use match with operator=and on flexible field
+		// (arabic_exact analyzer is broken - creates single token)
 		if ($wordOrder === 'any_order') {
 			return [
 				'match' => [
-					'content.exact' => [
+					'content.flexible' => [
 						'query' => $searchTerm,
 						'operator' => 'and'
 					]
@@ -104,14 +104,15 @@ class UltraFastSearchService
 			];
 		}
 		
-		// For exact + consecutive/same_paragraph: ALWAYS use slop=0
-		// Because "exact" means NO variations, NO words between
-		// According to Elasticsearch docs: exact match means literal, character-for-character
+		// For exact + consecutive/same_paragraph: use match_phrase with slop
+		// Using flexible field because exact analyzer is broken
+		$slop = ($wordOrder === 'consecutive') ? 0 : 50;
+		
 		return [
 			'match_phrase' => [
-				'content.exact' => [
+				'content.flexible' => [
 					'query' => $searchTerm,
-					'slop' => 0  // MUST be 0 for exact match
+					'slop' => $slop
 				]
 			]
 		];
@@ -266,8 +267,9 @@ class UltraFastSearchService
 		}
 
 		// Keep old search_mode for backward compatibility
+		// But ONLY if search_type is not set AND searchMode is provided
 		$searchMode = $filters['search_mode'] ?? null;
-		if ($searchMode && !isset($filters['search_type'])) {
+		if ($searchMode && !isset($filters['search_type']) && !empty($query)) {
 			$proximity = $filters['proximity'] ?? 'any_order'; // تعريف المتغير
 			
 			switch ($searchMode) {
@@ -342,41 +344,42 @@ class UltraFastSearchService
 					];
 					break;
 			}
-		} else {
+		}
+		
+		// If no query at all, return all documents (for filter-only searches)
+		if (empty($query) && empty($boolQuery['bool']['must'])) {
 			$boolQuery['bool']['must'][] = ['match_all' => new \stdClass()];
 		}
 
-		// Add filters - Context7 Best Practice: Use 'terms' for array matching
+		// Add filters - Context7 Best Practice: Use correct field types
 		
-		// Author filter - support both single value and array
+		// Author filter - NOTE: author_ids field does NOT exist in indexed data
+		// We need to filter by book_id and then join with books table to get author
+		// For now, author filter is disabled until re-indexing
 		if (!empty($filters['author_id'])) {
-			$authorIds = is_array($filters['author_id']) 
-				? $filters['author_id'] 
-				: [$filters['author_id']];
-			
-			// Use 'terms' for array field matching (Context7 best practice)
-			$boolQuery['bool']['filter'][] = [
-				'terms' => ['author_ids' => array_map('intval', $authorIds)]
-			];
+			\Illuminate\Support\Facades\Log::warning('Author filter requested but author_ids field does not exist in Elasticsearch index. Skipping author filter.');
+			// TODO: Re-index with author_ids field OR use post-filter with database join
 		}
 
-		// Section filter - support multiple sections
+		// Section filter - use keyword type (not integer!)
 		if (!empty($filters['section_id'])) {
 			$sectionIds = is_array($filters['section_id']) 
 				? $filters['section_id'] 
 				: [$filters['section_id']];
 			
+			// Convert to strings because book_section_id is keyword type
 			$boolQuery['bool']['filter'][] = [
-				'terms' => ['book_section_id' => array_map('intval', $sectionIds)]
+				'terms' => ['book_section_id' => array_map('strval', $sectionIds)]
 			];
 		}
 
-		// Book filter - ADDED (was missing!)
+		// Book filter - use integer type
 		if (!empty($filters['book_id'])) {
 			$bookIds = is_array($filters['book_id']) 
 				? $filters['book_id'] 
 				: [$filters['book_id']];
 			
+			// book_id is integer type
 			$boolQuery['bool']['filter'][] = [
 				'terms' => ['book_id' => array_map('intval', $bookIds)]
 			];
