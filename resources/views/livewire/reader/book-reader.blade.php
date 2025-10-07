@@ -136,7 +136,7 @@
                                     <div class="w-px h-8 bg-[#e0d9cc]"></div>
 
                                     <!-- Movements Toggle -->
-                                    <button wire:click="toggleMovements" class="{{ $showMovements ? 'bg-[#5D6019] text-white shadow-md' : 'bg-[#f0e9de] text-[#5D6019]' }} px-3 py-2 sm:px-4 sm:py-2.5 rounded-lg hover:bg-[#e8e0d0] transition-all duration-200 font-tajawal text-xs sm:text-sm whitespace-nowrap border border-[#e0d9cc]">
+                                    <button wire:click="toggleMovements" class="{{ $showMovements ? 'bg-green-600 text-white shadow-md' : 'bg-[#f0e9de] text-green-900' }} px-3 py-2 sm:px-4 sm:py-2.5 rounded-lg hover:bg-[#e8e0d0] transition-all duration-200 font-tajawal text-xs sm:text-sm whitespace-nowrap border border-[#e0d9cc]">
                                         <span class="hidden sm:inline">{{ $showMovements ? 'إخفاء الحركات' : 'إظهار الحركات' }}</span>
                                         <span class="sm:hidden">{{ $showMovements ? 'إخفاء' : 'إظهار' }}</span>
                                     </button>
@@ -147,20 +147,20 @@
                                     <!-- Action Buttons Group -->
                                     <div class="flex items-center gap-1">
                                         <!-- Share Button -->
-                                        <button class="text-gray-600 hover:text-[#5D6019] p-2 sm:p-2.5 rounded-lg hover:bg-[#f0e9de] transition-all duration-200 flex items-center justify-center border border-transparent hover:border-[#e0d9cc]">
+                                        <button class="text-gray-600 hover:text-green-900 p-2 sm:p-2.5 rounded-lg hover:bg-[#f0e9de] transition-all duration-200 flex items-center justify-center border border-transparent hover:border-[#e0d9cc]">
                                             <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 sm:h-5 sm:w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6.632L15.316 9m-4.065 8.814a5.97 5.97 0 001.23.247m-1.23-.247A5.97 5.97 0 015 12c0-.95.23-1.84-.632-2.684m0 2.684a3 3 0 110-2.684m0 2.684L8.684 13.342m0-2.684l6.632-3.316m-4.065-1.186a5.97 5.97 0 711.23-.247m-1.23.247A5.97 5.97 0 005 12c0-.95.23-1.84-.632-2.684m0 2.684a3 3 0 110-2.684" />
                                             </svg>
                                         </button>
                                         <!-- Fullscreen Button -->
-                                        <button onclick="toggleFullscreen()" class="text-gray-600 hover:text-[#5D6019] p-2 sm:p-2.5 rounded-lg hover:bg-[#f0e9de] transition-all duration-200 flex items-center justify-center border border-transparent hover:border-[#e0d9cc]">
+                                        <button onclick="toggleFullscreen()" class="text-gray-600 hover:text-green-900 p-2 sm:p-2.5 rounded-lg hover:bg-[#f0e9de] transition-all duration-200 flex items-center justify-center border border-transparent hover:border-[#e0d9cc]">
                                             <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 sm:h-5 sm:w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16h4m0 0v4m-4 0l5-5m11-1h-4m4 0v4m-4 0l5-5" />
                                             </svg>
                                         </button>
                                         <!-- Options Menu Button -->
                                         <div class="relative">
-                                            <button wire:click="toggleOptionsMenu" class="text-gray-600 hover:text-[#5D6019] p-2 sm:p-2.5 rounded-lg hover:bg-[#f0e9de] transition-all duration-200 flex items-center justify-center border border-transparent hover:border-[#e0d9cc] {{ $showOptionsMenu ? 'bg-[#f0e9de] text-[#5D6019] border-[#e0d9cc]' : '' }}">
+                                            <button wire:click="toggleOptionsMenu" class="text-gray-600 hover:text-green-900 p-2 sm:p-2.5 rounded-lg hover:bg-[#f0e9de] transition-all duration-200 flex items-center justify-center border border-transparent hover:border-[#e0d9cc] {{ $showOptionsMenu ? 'bg-[#f0e9de] text-green-900 border-[#e0d9cc]' : '' }}">
                                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 sm:h-5 sm:w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z" />
                                                 </svg>
@@ -222,7 +222,7 @@
                             <div id="book-reader-backdrop" class="fixed inset-0 bg-black bg-opacity-50 z-40 lg:hidden mobile-toc-backdrop" wire:click="closeMobileToc"></div>
                             <div id="book-reader-mobile-toc" class="fixed top-0 right-0 h-full w-80 max-w-[85vw] bg-white shadow-2xl z-50 lg:hidden mobile-toc-sidebar mobile-toc-active">
                                 <!-- Enhanced Mobile TOC Header -->
-                                <div class="bg-gradient-to-r from-[#5D6019] to-[#4a4d13] p-4 flex items-center justify-between shadow-lg">
+                                <div class="bg-gradient-to-r from-green-900 to-[#4a4d13] p-4 flex items-center justify-between shadow-lg">
                                     <div class="flex items-center gap-3">
                                         <div class="w-2 h-2 bg-white rounded-full animate-pulse"></div>
                                         <h2 class="text-white text-xl font-bold font-tajawal">فهرس المحتويات</h2>
@@ -240,7 +240,7 @@
                                         <input type="text" 
                                                wire:model.live.debounce.300ms="tocSearch" 
                                                placeholder="ابحث في الفهرس..." 
-                                               class="w-full px-3 py-2 pr-10 border border-[#e0d9cc] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#5D6019] focus:border-[#5D6019] bg-white text-[#5D6019] placeholder-gray-500 text-sm">
+                                               class="w-full px-3 py-2 pr-10 border border-[#e0d9cc] rounded-lg focus:outline-none focus:ring-2 focus:ring-green-900 focus:border-green-900 bg-white text-green-900 placeholder-gray-500 text-sm">
                                         <div class="absolute inset-y-0 right-0 flex items-center pr-3">
                                             @if($tocSearch)
                                                 <button wire:click="clearTocSearch" class="text-gray-400 hover:text-gray-600">
@@ -283,11 +283,11 @@
                                                 @endphp
                                                 <li class="{{ $shouldDimVolume ? 'toc-item-dimmed' : '' }}">
                                                     <div class="toc-item mobile-toc-item flex items-center justify-between p-2 rounded-lg transition-all duration-300
-                                                                {{ $isCurrentVolume ? 'bg-[#5D6019] text-white shadow-md active' : 'hover:bg-[#f0e9de]' }}
+                                                                {{ $isCurrentVolume ? 'bg-green-900 text-white shadow-md active' : 'hover:bg-[#f0e9de]' }}
                                                                 {{ $volumeMatchesSearch ? 'toc-search-match' : '' }}">
                                                         <div class="flex items-center cursor-pointer flex-1" 
                                                              wire:click="gotoVolume({{ $volume->id }})">
-                                                            <span class="font-bold text-lg {{ $isCurrentVolume ? 'text-white' : 'text-[#5D6019]' }}">
+                                                            <span class="font-bold text-lg {{ $isCurrentVolume ? 'text-white' : 'text-green-900' }}">
                                                                 @if($hasSearchTerm && $volumeMatchesSearch)
                                                                     {!! $this->highlightSearchTerm($volumeTitle) !!}
                                                                 @else
@@ -329,11 +329,11 @@
                                                 @endphp
                                                 <li class="{{ $shouldDimChapter ? 'toc-item-dimmed' : '' }}">
                                                     <div class="toc-item mobile-toc-item flex items-center justify-between p-2 rounded-lg transition-all duration-300
-                                                                 {{ $isCurrentChapter ? 'bg-[#5D6019] text-white shadow-md active' : 'hover:bg-[#f0e9de]' }}
+                                                                 {{ $isCurrentChapter ? 'bg-green-900 text-white shadow-md active' : 'hover:bg-[#f0e9de]' }}
                                                                  {{ $chapterMatchesSearch ? 'toc-search-match' : '' }}">
                                                         <div class="flex items-center cursor-pointer flex-1" 
                                                              wire:click="gotoChapter({{ $chapter->id }})">
-                                                            <span class="font-bold text-lg {{ $isCurrentChapter ? 'text-white' : 'text-[#5D6019]' }}">
+                                                            <span class="font-bold text-lg {{ $isCurrentChapter ? 'text-white' : 'text-green-900' }}">
                                                                 @if($hasSearchTerm && $chapterMatchesSearch)
                                                                     {!! $this->highlightSearchTerm($chapter->title) !!}
                                                                 @else
@@ -373,14 +373,14 @@
                             <!-- Sidebar (Right) - Hidden on mobile when mobile TOC is active -->
                             <aside class="lg:w-72 flex-shrink-0 w-full hidden lg:block {{ $showMobileToc ? 'desktop-toc-hidden' : '' }}">
                                 <div class="bg-white rounded-xl shadow-md overflow-hidden border border-[#e0d9cc] h-full">
-                                    <div class="bg-[#5D6019] p-3 sm:p-4">
+                                    <div class="bg-green-900 p-3 sm:p-4">
                                         <h2 class="text-white text-xl sm:text-2xl font-bold font-tajawal mb-3">فهرس المحتويات</h2>
                                         <!-- TOC Search Bar -->
                                         <div class="relative">
                                             <input type="text" 
                                                    wire:model.live.debounce.300ms="tocSearch" 
                                                    placeholder="ابحث في الفهرس..." 
-                                                   class="w-full px-3 py-2 pr-10 border border-[#e0d9cc] rounded-lg focus:outline-none focus:ring-2 focus:ring-white focus:border-white bg-white text-[#5D6019] placeholder-gray-500 text-sm">
+                                                   class="w-full px-3 py-2 pr-10 border border-[#e0d9cc] rounded-lg focus:outline-none focus:ring-2 focus:ring-white focus:border-white bg-white text-green-900 placeholder-gray-500 text-sm">
                                             <div class="absolute inset-y-0 right-0 flex items-center pr-3">
                                                 @if($tocSearch)
                                                     <button wire:click="clearTocSearch" class="text-gray-400 hover:text-gray-600">
@@ -420,10 +420,10 @@
                                                     @endphp
                                                     <li class="{{ $shouldDim ? 'toc-item-dimmed' : '' }} {{ $volumeMatches ? 'toc-search-match' : '' }}">
                                                         <div class="toc-item flex items-center justify-between p-2 rounded-lg 
-                                                                    {{ $currentVolumeId === $volume->id ? 'bg-[#5D6019] text-white shadow-md active' : 'hover:bg-[#f0e9de]' }}">
+                                                                    {{ $currentVolumeId === $volume->id ? 'bg-green-900 text-white shadow-md active' : 'hover:bg-[#f0e9de]' }}">
                                                             <div class="flex items-center cursor-pointer flex-1" 
                                                                  wire:click="gotoVolume({{ $volume->id }})">
-                                                                <span class="font-bold text-lg sm:text-xl {{ $currentVolumeId === $volume->id ? 'text-white' : 'text-[#5D6019]' }}">
+                                                                <span class="font-bold text-lg sm:text-xl {{ $currentVolumeId === $volume->id ? 'text-white' : 'text-green-900' }}">
                                                                     @if($volumeMatches)
                                                                         {!! $this->highlightSearchTerm($volume->title ?: 'الجزء ' . $volume->number, $tocSearch) !!}
                                                                     @else
@@ -465,10 +465,10 @@
                                                     @endphp
                                                     <li class="{{ $shouldDim ? 'toc-item-dimmed' : '' }} {{ $chapterMatches ? 'toc-search-match' : '' }}">
                                                         <div class="toc-item flex items-center justify-between p-2 rounded-lg 
-                                                                     {{ $currentChapterId === $chapter->id ? 'bg-[#5D6019] text-white shadow-md active' : 'hover:bg-[#f0e9de]' }}">
+                                                                     {{ $currentChapterId === $chapter->id ? 'bg-green-900 text-white shadow-md active' : 'hover:bg-[#f0e9de]' }}">
                                                             <div class="flex items-center cursor-pointer flex-1" 
                                                                  wire:click="gotoChapter({{ $chapter->id }})">
-                                                                <span class="font-bold text-lg sm:text-xl {{ $currentChapterId === $chapter->id ? 'text-white' : 'text-[#5D6019]' }}">
+                                                                <span class="font-bold text-lg sm:text-xl {{ $currentChapterId === $chapter->id ? 'text-white' : 'text-green-900' }}">
                                                                     @if($chapterMatches && stripos($chapter->title, $tocSearch) !== false)
                                                                         {!! $this->highlightSearchTerm($chapter->title, $tocSearch) !!}
                                                                     @else
@@ -514,7 +514,7 @@
                                         <div class="max-w-3xl mx-auto">
                                             @if($currentPage)
                                                 @if($currentPage->chapter)
-                                                    <h2 class="text-xl sm:text-2xl font-bold text-[#5D6019] mb-4 sm:mb-6 border-b border-[#e0d9cc] pb-3 sm:pb-4">
+                                                    <h2 class="text-xl sm:text-2xl font-bold text-green-900 mb-4 sm:mb-6 border-b border-[#e0d9cc] pb-3 sm:pb-4">
                                                         {{ $currentPage->chapter->title }}
                                                         @if($currentPage->volume)
                                                             <span class="text-sm text-gray-600 font-normal block mt-1">
@@ -570,7 +570,7 @@
                                                     <!-- First Page Button -->
                                                     @if($navigation['current_page_number'] > 1)
                                                         <button wire:click="gotoPage(1)" class="bg-[#f0e9de] hover:bg-[#e8e0d0] p-1.5 sm:p-2 rounded-full transition-colors" title="الصفحة الأولى">
-                                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 sm:h-5 sm:w-5 text-[#5D6019]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 sm:h-5 sm:w-5 text-green-900" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 5l7 7-7 7M5 5l7 7-7 7" />
                                                             </svg>
                                                         </button>
@@ -585,7 +585,7 @@
                                                     <!-- Previous Page Button -->
                                                     @if($navigation['previous_page'])
                                                         <button wire:click="previousPage" class="bg-[#f0e9de] hover:bg-[#e8e0d0] p-1.5 sm:p-2 rounded-full transition-colors">
-                                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 sm:h-5 sm:w-5 text-[#5D6019]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 sm:h-5 sm:w-5 text-green-900" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
                                                             </svg>
                                                         </button>
@@ -610,7 +610,7 @@
                                                     <!-- Next Page Button -->
                                                     @if($navigation['next_page'])
                                                         <button wire:click="nextPage" class="bg-[#f0e9de] hover:bg-[#e8e0d0] p-1.5 sm:p-2 rounded-full transition-colors">
-                                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 sm:h-5 sm:w-5 text-[#5D6019]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 sm:h-5 sm:w-5 text-green-900" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
                                                             </svg>
                                                         </button>
@@ -625,7 +625,7 @@
                                                     <!-- Last Page Button -->
                                                     @if($navigation['current_page_number'] < $navigation['total_pages'])
                                                         <button wire:click="gotoPage({{ $navigation['total_pages'] }})" class="bg-[#f0e9de] hover:bg-[#e8e0d0] p-1.5 sm:p-2 rounded-full transition-colors" title="الصفحة الأخيرة">
-                                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 sm:h-5 sm:w-5 text-[#5D6019]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 sm:h-5 sm:w-5 text-green-900" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 19l-7-7 7-7m8 14l-7-7 7-7" />
                                                             </svg>
                                                         </button>
@@ -643,12 +643,13 @@
                                             <div class="flex-1 max-w-md mx-4 order-1 lg:order-2">
                                                 <div class="relative">
                                                     <div class="flex items-center justify-center mb-2">
-                                                        <span class="text-xs sm:text-sm font-semibold text-[#5D6019] bg-[#f8f5f0] px-2 py-1 rounded-full border border-[#e0d9c5D"019          5f0                                          0 {cc{ $navigation['progress_percentage'] }}%
+                                                        <span class="text-xs sm:text-sm font-semibold text-green-900 bg-[#f8f5f0] px-2 py-1 rounded-full border border-[#e0d9c5]">
+                                                            {{ $navigation['progress_percentage'] }}%
                                                         </span>
                                                     </div>
                                                     <div class="relative">
                                                         <div class="overflow-hidden h-2 sm:h-2.5 rounded-full bg-[#f0e9de] border border-[#e0d9cc]">
-                                0 9de                   0 <ccdiv class="h-full bg-gradient-to-r from-[#5D6019] to-[#95771    7] transition-all duration-300" style="widt5D601 $naviga957717progress_percentage'] }}%"></                                                    </div>
+                                0 9de                   0 <ccdiv class="h-full bg-gradient-to-r from-green-900 to-[#957717] transition-all duration-300" style="width: {{ $navigation['progress_percentage'] }}%"></div>
                                                         <input type="range" 
                                                                wire:model.live.debounce.300ms="pageNumber"
                                                                min="1" 
@@ -1098,7 +1099,7 @@
             color: #f9fafb !important;
         }
         
-        .dark .text-\[\#5D6019\] {
+        .dark .text-green-900 {
             color: #a3a3a3 !important;
         }
         
@@ -1110,7 +1111,7 @@
             border-color: #4b5563 !important;
         }
         
-        .dark .bg-\[\#5D6019\] {
+        .dark .bg-green-900 {
             background-color: #4b5563 !important;
         }
         
@@ -1338,7 +1339,7 @@
         }
         
         .toc-container::-webkit-scrollbar-thumb {
-            background: #5D6019;
+            background: #4b5563;
             border-radius: 3px;
         }
         
