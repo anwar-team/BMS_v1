@@ -29,30 +29,10 @@
                     @endif
 
                     <!-- Author Books Section -->
-                    <div class="bg-white rounded-lg shadow-md overflow-hidden border border-gray-200 p-8">
-                        <div class="flex items-center justify-between mb-6">
-                            <div class="flex items-center gap-3">
-                                <img src="{{ asset('images/group0.svg') }}" alt="Icon" class="w-8 h-8">
-                                <h3 class="text-2xl font-semibold text-[#5D6019]">كتب المؤلف</h3>
-                            </div>
-                            
-                            @if($books->count() > 0)
-                                <!-- View Toggle Buttons -->
-                                <div class="flex bg-gray-100 rounded-lg p-1">
-                                    <button id="tableViewBtn" class="px-4 py-2 text-sm font-medium rounded-md bg-white text-green-700 shadow-sm transition-all duration-200">
-                                        <svg class="w-4 h-4 inline-block ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M3 6h18m-9 8h9"></path>
-                                        </svg>
-                                        عرض جدول
-                                    </button>
-                                    <button id="cardViewBtn" class="px-4 py-2 text-sm font-medium rounded-md text-gray-600 hover:text-green-700 transition-all duration-200">
-                                        <svg class="w-4 h-4 inline-block ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14-7H5a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2V6a2 2 0 00-2-2z"></path>
-                                        </svg>
-                                        عرض بطاقات
-                                    </button>
-                                </div>
-                            @endif
+                    <div class="mb-12">
+                        <div class="flex items-center gap-3 mb-6">
+                            <img src="{{ asset('images/group0.svg') }}" alt="Icon" class="w-8 h-8">
+                            <h3 class="text-2xl font-semibold text-[#5D6019]">كتب المؤلف</h3>
                         </div>
                         
                         {{-- استخدام Livewire Component للكتب --}}
@@ -67,7 +47,7 @@
                                 'showPerPageSelector' => true
                             ])
                         @else
-                            <div class="text-center py-8">
+                            <div class="text-center py-8 bg-white rounded-lg shadow-md border border-gray-200">
                                 <div class="text-gray-400 mb-2">
                                     <svg class="w-16 h-16 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
