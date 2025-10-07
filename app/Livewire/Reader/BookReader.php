@@ -285,14 +285,19 @@ class BookReader extends Component
         $content = str_replace(["\r\n", "\r"], "\n", $content);
         
         // Step 2: Remove line breaks after common punctuation (but not period)
-        // Remove \n after: Arabic comma (،), English comma (,), Arabic semicolon (؛), 
-        // English semicolon (;), colon (:), dash (-), and parentheses
+        // Remove \n after: commas, semicolons, colons, dashes, quotes, and parentheses
         $patterns = [
-            '/([،,])\s*\n\s*/' => '$1 ',           // After commas
-            '/([؛;])\s*\n\s*/' => '$1 ',           // After semicolons  
-            '/([:])\s*\n\s*/' => '$1 ',            // After colons
-            '/([\-–—])\s*\n\s*/' => '$1 ',         // After dashes
-            '/(\))\s*\n\s*(?!\.)/' => '$1 ',       // After closing parenthesis (not before period)
+            '/([،,])\s*\n\s*/' => '$1 ',                    // After commas (Arabic & English)
+            '/([؛;])\s*\n\s*/' => '$1 ',                    // After semicolons (Arabic & English)
+            '/([:])\s*\n\s*/' => '$1 ',                     // After colons
+            '/([\-–—])\s*\n\s*/' => '$1 ',                  // After dashes (all types)
+            '/(\()\s*\n\s*/' => '$1',                       // After opening parenthesis (
+            '/(\))\s*\n\s*(?!\.)/' => '$1 ',                // After closing parenthesis ) (not before period)
+            '/(«)\s*\n\s*/' => '$1 ',                       // After opening quote «
+            '/(»)\s*\n\s*(?!\.)/' => '$1 ',                 // After closing quote » (not before period)
+            '/(["\'\'])\s*\n\s*(?!\.)/' => '$1 ',           // After quotes (not before period)
+            '/(\[)\s*\n\s*/' => '$1',                       // After opening bracket [
+            '/(\])\s*\n\s*(?!\.)/' => '$1 ',                // After closing bracket ] (not before period)
         ];
         
         foreach ($patterns as $pattern => $replacement) {
