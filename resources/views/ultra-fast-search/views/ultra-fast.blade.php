@@ -1152,12 +1152,15 @@
                         word_order: wordOrder,
                         });
                     
-                    // إضافة الفلاتر المحددة
+                    // إضافة الفلاتر المحددة (Context7: Add book_id support)
                     if (this.selectedFilters.author && this.selectedFilters.author.length > 0) {
                         params.append('author_id', this.selectedFilters.author.join(','));
                     }
                     if (this.selectedFilters.section && this.selectedFilters.section.length > 0) {
                         params.append('section_id', this.selectedFilters.section.join(','));
+                    }
+                    if (this.selectedFilters.book && this.selectedFilters.book.length > 0) {
+                        params.append('book_id', this.selectedFilters.book.join(','));
                     }
                     
                     const response = await fetch(`/api/ultra-search?${params}`);

@@ -31,6 +31,7 @@ class UltraFastSearchService
 
 	/**
 	 * Ultra-fast search with direct Elasticsearch queries
+	 * Context7 Enhanced: Added aggregations for filter counts
 	 */
 	public function search(string $query, array $filters = [], int $page = 1, int $perPage = 15): array
 	{
@@ -59,9 +60,11 @@ class UltraFastSearchService
 				'body' => [
 					'query' => $this->buildOptimizedQuery($query, $filters),
 					'highlight' => $this->buildHighlight(),
+					'aggs' => $this->buildAggregations(), // Context7: Add aggregations for filter counts
 					'_source' => [
 						'id', 'content', 'page_number', 'book_id', 
-						'book_title', 'author_names', 'book_section_id'
+						'book_title', 'author_names', 'author_ids',
+						'book_section_id'
 					],
 					'from' => ($page - 1) * $perPage,
 					'size' => $perPage,
@@ -74,7 +77,7 @@ class UltraFastSearchService
 
 			$response = $this->elasticsearch->search($params);
             
-			return $this->transformResults($response, $query, $page, $perPage);
+			return $this->transformResults($response, $query, $page, $perPage, $filters);
 
 		} catch (\Exception $e) {
 			// Fallback to Scout if direct fails
@@ -84,17 +87,31 @@ class UltraFastSearchService
 
 	/**
 	 * Build exact match query - literal exact matching with word order
+	 * Context7 Best Practice: Exact match MUST use slop=0 for true exact matching
 	 */
 	protected function buildExactMatchQuery(string $searchTerm, string $wordOrder = 'consecutive'): array
 	{
-		// Exact match always uses match_phrase with varying slop
-		$slop = $this->getSlop($wordOrder);
+		// For exact + any_order: use match with operator=and
+		// This finds all words in any position but in exact form (no stemming/prefixes)
+		if ($wordOrder === 'any_order') {
+			return [
+				'match' => [
+					'content.exact' => [
+						'query' => $searchTerm,
+						'operator' => 'and'
+					]
+				]
+			];
+		}
 		
+		// For exact + consecutive/same_paragraph: ALWAYS use slop=0
+		// Because "exact" means NO variations, NO words between
+		// According to Elasticsearch docs: exact match means literal, character-for-character
 		return [
 			'match_phrase' => [
 				'content.exact' => [
 					'query' => $searchTerm,
-					'slop' => $slop
+					'slop' => 0  // MUST be 0 for exact match
 				]
 			]
 		];
@@ -102,6 +119,7 @@ class UltraFastSearchService
 
 	/**
 	 * Build flexible match query - allows prefixes without stemming
+	 * Context7 Best Practice: Use match for any_order, match_phrase for consecutive/paragraph
 	 */
 	protected function buildFlexibleMatchQuery(string $searchTerm, string $wordOrder = 'any_order'): array
 	{
@@ -117,8 +135,9 @@ class UltraFastSearchService
 			];
 		}
 		
-		// Otherwise use match_phrase with slop
-		$slop = $this->getSlop($wordOrder);
+		// For consecutive: slop=0 (words must be adjacent)
+		// For same_paragraph: slop=50 (words can have up to 50 words between them)
+		$slop = ($wordOrder === 'consecutive') ? 0 : 50;
 		
 		return [
 			'match_phrase' => [
@@ -132,40 +151,77 @@ class UltraFastSearchService
 
 	/**
 	 * Get slop value based on word order
+	 * Context7 Note: This function should NOT be called for any_order
 	 */
 	protected function getSlop(string $wordOrder): int
 	{
 		switch ($wordOrder) {
 			case 'consecutive':
-				return 0; // No words between
+				return 0; // No words between (adjacent terms)
 			case 'same_paragraph':
-				return 50; // Allow words between
-			case 'any_order':
+				return 50; // Allow up to 50 words between terms
 			default:
-				return 100; // Maximum flexibility
+				// Should never reach here for any_order
+				// any_order uses match with operator=and instead
+				return 0;
 		}
 	}
 
 	/**
 	 * Build morphological query - root-based search with derivatives
+	 * Context7 Best Practice: Apply word_order logic to morphological search too
 	 */
 	protected function buildMorphologicalQuery(string $searchTerm, string $wordOrder = 'any_order'): array
 	{
+		// For any_order: use match with operator=and
+		if ($wordOrder === 'any_order') {
+			return [
+				'bool' => [
+					'should' => [
+						[
+							'match' => [
+								'content.stemmed' => [
+									'query' => $searchTerm,
+									'boost' => 2.0,
+									'operator' => 'and'
+								]
+							]
+						],
+						[
+							'match' => [
+								'content.flexible' => [
+									'query' => $searchTerm,
+									'boost' => 1.0,
+									'operator' => 'and'
+								]
+							]
+						]
+					],
+					'minimum_should_match' => 1
+				]
+			];
+		}
+		
+		// For consecutive/same_paragraph: use match_phrase with appropriate slop
+		$slop = ($wordOrder === 'consecutive') ? 0 : 50;
+		
 		return [
 			'bool' => [
 				'should' => [
 					[
-						'match' => [
+						'match_phrase' => [
 							'content.stemmed' => [
 								'query' => $searchTerm,
+								'slop' => $slop,
 								'boost' => 2.0
 							]
 						]
 					],
 					[
-						'match' => [
+						'match_phrase' => [
 							'content.flexible' => [
 								'query' => $searchTerm,
+								'slop' => $slop,
 								'boost' => 1.0
 							]
 						]
@@ -290,16 +346,39 @@ class UltraFastSearchService
 			$boolQuery['bool']['must'][] = ['match_all' => new \stdClass()];
 		}
 
-		// Add existing filters
+		// Add filters - Context7 Best Practice: Use 'terms' for array matching
+		
+		// Author filter - support both single value and array
 		if (!empty($filters['author_id'])) {
+			$authorIds = is_array($filters['author_id']) 
+				? $filters['author_id'] 
+				: [$filters['author_id']];
+			
+			// Use 'terms' for array field matching (Context7 best practice)
 			$boolQuery['bool']['filter'][] = [
-				'term' => ['author_ids' => $filters['author_id']]
+				'terms' => ['author_ids' => array_map('intval', $authorIds)]
 			];
 		}
 
+		// Section filter - support multiple sections
 		if (!empty($filters['section_id'])) {
+			$sectionIds = is_array($filters['section_id']) 
+				? $filters['section_id'] 
+				: [$filters['section_id']];
+			
 			$boolQuery['bool']['filter'][] = [
-				'term' => ['book_section_id' => $filters['section_id']]
+				'terms' => ['book_section_id' => array_map('intval', $sectionIds)]
+			];
+		}
+
+		// Book filter - ADDED (was missing!)
+		if (!empty($filters['book_id'])) {
+			$bookIds = is_array($filters['book_id']) 
+				? $filters['book_id'] 
+				: [$filters['book_id']];
+			
+			$boolQuery['bool']['filter'][] = [
+				'terms' => ['book_id' => array_map('intval', $bookIds)]
 			];
 		}
 
@@ -325,12 +404,48 @@ class UltraFastSearchService
 	}
 
 	/**
-	 * Transform Elasticsearch results
+	 * Build aggregations for filter counts
+	 * Context7 Best Practice: Use terms aggregation for faceted search
 	 */
-	protected function transformResults(array $response, string $query, int $page = 1, int $perPage = 15): array
+	protected function buildAggregations(): array
+	{
+		return [
+			// Author aggregation - get top authors with document counts
+			'authors' => [
+				'terms' => [
+					'field' => 'author_ids',
+					'size' => 100, // Top 100 authors
+					'order' => ['_count' => 'desc']
+				]
+			],
+			// Section aggregation - get all sections with document counts
+			'sections' => [
+				'terms' => [
+					'field' => 'book_section_id',
+					'size' => 50, // Top 50 sections
+					'order' => ['_count' => 'desc']
+				]
+			],
+			// Book aggregation - get top books with document counts
+			'books' => [
+				'terms' => [
+					'field' => 'book_id',
+					'size' => 100, // Top 100 books
+					'order' => ['_count' => 'desc']
+				]
+			]
+		];
+	}
+
+	/**
+	 * Transform Elasticsearch results
+	 * Context7 Enhanced: Added aggregations data for filter counts
+	 */
+	protected function transformResults(array $response, string $query, int $page = 1, int $perPage = 15, array $filters = []): array
 	{
 		$hits = $response['hits']['hits'] ?? [];
 		$total = $response['hits']['total']['value'] ?? 0;
+		$aggregations = $response['aggregations'] ?? [];
 
 		$results = collect($hits)->map(function ($hit) use ($query) {
 			$source = $hit['_source'] ?? [];
@@ -349,13 +464,62 @@ class UltraFastSearchService
 			];
 		});
 
+		// Process aggregations for filter metadata
+		$filterMetadata = $this->processAggregations($aggregations);
+
 		return [
 			'results' => $results,
 			'total' => $total,
 			'current_page' => $page,
 			'per_page' => $perPage,
 			'last_page' => max(1, ceil($total / $perPage)),
+			'filters' => $filterMetadata, // Context7: Add filter counts
 		];
+	}
+
+	/**
+	 * Process aggregations to extract filter metadata
+	 * Context7 Best Practice: Transform aggregations for frontend consumption
+	 */
+	protected function processAggregations(array $aggregations): array
+	{
+		$metadata = [
+			'authors' => [],
+			'sections' => [],
+			'books' => []
+		];
+
+		// Process author aggregation
+		if (isset($aggregations['authors']['buckets'])) {
+			foreach ($aggregations['authors']['buckets'] as $bucket) {
+				$metadata['authors'][] = [
+					'id' => $bucket['key'],
+					'count' => $bucket['doc_count']
+				];
+			}
+		}
+
+		// Process section aggregation
+		if (isset($aggregations['sections']['buckets'])) {
+			foreach ($aggregations['sections']['buckets'] as $bucket) {
+				$metadata['sections'][] = [
+					'id' => $bucket['key'],
+					'count' => $bucket['doc_count']
+				];
+			}
+		}
+
+		// Process book aggregation
+		if (isset($aggregations['books']['buckets'])) {
+			foreach ($aggregations['books']['buckets'] as $bucket) {
+				$metadata['books'][] = [
+					'id' => $bucket['key'],
+					'count' => $bucket['doc_count']
+				];
+			}
+		}
+
+		return $metadata;
 	}
 
 	/**
