@@ -66,7 +66,7 @@
                                     <!-- Enhanced Mobile Hamburger Menu Button -->
                                     <button id="book-reader-hamburger" 
                                             wire:click="toggleMobileToc" 
-                                            class="lg:hidden flex items-center justify-center w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-[#f0e9de] hover:bg-green-900 text-[#f0e9de] transition-all duration-200 {{ $showMobileToc ? 'bg-green-900 text-white shadow-lg scale-105' : 'hover:scale-105' }}"
+                                            class="lg:hidden flex items-center justify-center w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-[#f0e9de] text-green-900 hover:bg-green-900 text-[#f0e9de] transition-all duration-200 {{ $showMobileToc ? 'bg-green-900 text-white shadow-lg scale-105' : 'hover:scale-105' }}"
                                             aria-label="{{ $showMobileToc ? 'إغلاق الفهرس' : 'فتح الفهرس' }}"
                                             aria-expanded="{{ $showMobileToc ? 'true' : 'false' }}">
                                         <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 sm:h-5 sm:w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
