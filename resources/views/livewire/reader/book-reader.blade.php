@@ -167,7 +167,7 @@
                                             @if($showOptionsMenu)
                                                 <div class="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-xl border border-[#e0d9cc] z-[70] options-menu transition-all" x-data x-on:click.away="$wire.set('showOptionsMenu', false)">
                                                     <div class="py-2">
-                                                        <!-- Dark Mode Toggle -->
+                                                        <!-- Dark Mode Toggle 
                                                         <button wire:click="toggleDarkMode" class="w-full text-right px-4 py-2 text-sm text-gray-700 hover:bg-[#f0e9de] flex items-center justify-between">
                                                             <span>{{ $darkMode ? 'الوضع الفاتح' : 'الوضع المظلم' }}</span>
                                                             <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -178,6 +178,7 @@
                                                                 @endif
                                                             </svg>
                                                         </button>
+                                                       -->
                                                         
                                                         <!-- Font Size Reset -->
                                                         <button wire:click="resetFontSize" class="w-full text-right px-4 py-2 text-sm text-gray-700 hover:bg-[#f0e9de] flex items-center justify-between">
@@ -688,7 +689,7 @@
                                                     </div>
                                                     <div class="relative">
                                                         <div class="overflow-hidden h-2 sm:h-2.5 rounded-full bg-[#f0e9de] border border-[#e0d9cc]">
-                                0 9de                   0 <ccdiv class="h-full bg-gradient-to-r from-green-900 to-green-600 transition-all duration-300" style="width: {{ $navigation['progress_percentage'] }}%"></div>
+                                                            <ccdiv class="h-full bg-gradient-to-r from-green-900 to-green-600 transition-all duration-300" style="width: {{ $navigation['progress_percentage'] }}%"></div>
                                                         <input type="range" 
                                                                wire:model.live.debounce.300ms="pageNumber"
                                                                min="1" 
