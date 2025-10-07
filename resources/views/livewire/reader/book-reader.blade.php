@@ -455,7 +455,7 @@
                                                     @endphp
                                                     <li class="{{ $shouldDimVolume ? 'toc-item-dimmed' : '' }}">
                                                         <div class="toc-item flex items-center justify-between p-2 rounded-lg transition-all duration-300
-                                                                    {{ $isCurrentVolume ? 'bg-green-900 text-white shadow-md active' : 'hover:bg-green-600' }}
+                                                                    {{ $isCurrentVolume ? 'bg-green-900 text-white shadow-md active' : 'hover:bg-green-600 text-white' }}
                                                                     {{ $volumeMatchesSearch ? 'toc-search-match' : '' }}">
                                                             <div class="flex items-center cursor-pointer flex-1" 
                                                                  wire:click="gotoVolume({{ $volume->id }})">
