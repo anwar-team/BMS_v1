@@ -5,6 +5,30 @@
         .font-tajawal {
             font-family: 'Tajawal', sans-serif;
         }
+        
+        /* إضافة خطوط فاصلة بين الفقرات */
+        #book-content p {
+            position: relative;
+            margin-bottom: 0.5rem;
+            padding-bottom: 0.5rem;
+        }
+        
+        #book-content p:not(:last-child):after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80%;
+            height: 1px;
+            background: linear-gradient(to right, transparent, #e0d9cc, transparent);
+            opacity: 0.6;
+        }
+        
+        /* تحسين المسافات للفقرات */
+        #book-content p + p {
+            margin-top: 0.5rem;
+        }
     </style>
     
     <!-- Loading indicator -->
