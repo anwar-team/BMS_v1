@@ -608,7 +608,7 @@
                                                 <div class="flex items-center space-x-1 sm:space-x-2 space-x-reverse">
                                                     <!-- First Page Button -->
                                                     @if($navigation['current_page_number'] > 1)
-                                                        <button wire:click="gotoPage(1)" class="bg-gradient-to-br from-[#f0e9de] to-[#e8e0d0] hover:from-green-500 hover:to-green-600 p-1.5 sm:p-2 rounded-xl transition-all duration-300 shadow-md hover:shadow-lg transform hover:scale-105 border border-[#e0d9cc] hover:border-green-400" title="الصفحة الأولى">
+                                                        <button wire:click="gotoPage(1)" class="bg-gradient-to-br from-[#f0e9de] to-[#e8e0d0] hover:from-red-800 hover:to-red-800 text-white p-1.5 sm:p-2 rounded-xl transition-all duration-300 shadow-md hover:shadow-lg transform hover:scale-105 border border-[#e0d9cc] hover:border-green-400" title="الصفحة الأولى">
                                                             <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 sm:h-5 sm:w-5 text-green-900 hover:text-white transition-colors duration-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 5l7 7-7 7M5 5l7 7-7 7" />
                                                             </svg>
@@ -624,7 +624,7 @@
                                                     <!-- Previous Page Button -->
                                                     @if($navigation['previous_page'])
                                                         <button wire:click="previousPage" 
-                                                                class="bg-gradient-to-br from-[#f0e9de] to-[#e8e0d0] hover:from-red-800 hover:to-red-900 p-1.5 sm:p-2 rounded-xl transition-all duration-300 shadow-md hover:shadow-lg transform hover:scale-105 border border-[#e0d9cc] hover:border-blue-400"
+                                                                class="bg-gradient-to-br from-[#f0e9de] to-[#e8e0d0] hover:from-red-800 hover:to-red-900 text-white p-1.5 sm:p-2 rounded-xl transition-all duration-300 shadow-md hover:shadow-lg transform hover:scale-105 border border-[#e0d9cc] hover:border-blue-400"
                                                                 aria-label="الصفحة السابقة">
                                                             <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 sm:h-5 sm:w-5 text-green-900 hover:text-white transition-colors duration-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
                                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
@@ -654,7 +654,7 @@
                                                     <!-- Next Page Button -->
                                                     @if($navigation['next_page'])
                                                         <button wire:click="nextPage" 
-                                                                class="bg-gradient-to-br from-[#f0e9de] to-[#e8e0d0] hover:from-red-800 hover:to-red-900 p-1.5 sm:p-2 rounded-xl transition-all duration-300 shadow-md hover:shadow-lg transform hover:scale-105 border border-[#e0d9cc] hover:border-blue-400"
+                                                                class="bg-gradient-to-br from-[#f0e9de] to-[#e8e0d0] hover:from-red-800 hover:to-red-900 text-white p-1.5 sm:p-2 rounded-xl transition-all duration-300 shadow-md hover:shadow-lg transform hover:scale-105 border border-[#e0d9cc] hover:border-blue-400"
                                                                 aria-label="الصفحة التالية">
                                                             <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 sm:h-5 sm:w-5 text-green-900 hover:text-white transition-colors duration-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
                                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
@@ -673,7 +673,7 @@
 
                                                     <!-- Last Page Button -->
                                                     @if($navigation['current_page_number'] < $navigation['total_pages'])
-                                                        <button wire:click="gotoPage({{ $navigation['total_pages'] }})" class="bg-gradient-to-br from-[#f0e9de] to-[#e8e0d0] hover:from-red-800 hover:to-red-900 p-1.5 sm:p-2 rounded-xl transition-all duration-300 shadow-md hover:shadow-lg transform hover:scale-105 border border-[#e0d9cc] hover:border-red-600" title="الصفحة الأخيرة">
+                                                        <button wire:click="gotoPage({{ $navigation['total_pages'] }})" class="bg-gradient-to-br from-[#f0e9de] to-[#e8e0d0] hover:from-red-800 hover:to-red-900 text-white p-1.5 sm:p-2 rounded-xl transition-all duration-300 shadow-md hover:shadow-lg transform hover:scale-105 border border-[#e0d9cc] hover:border-red-600" title="الصفحة الأخيرة">
                                                             <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 sm:h-5 sm:w-5 text-green-900" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 19l-7-7 7-7m8 14l-7-7 7-7" />
                                                             </svg>
