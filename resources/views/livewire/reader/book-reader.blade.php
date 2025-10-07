@@ -133,21 +133,8 @@
                                     <div class="w-px h-8 bg-[#e0d9cc]"></div>
 
                                     <!-- Movements Toggle -->
-                                    <button wire:click="toggleMovements" class="{{ $showMovements ? 'bg-gradient-to-r from-green-900 to-green-800 text-white shadow-lg border-green-700' : 'bg-gradient-to-r from-[#f0e9de] to-[#e8e0d0] text-red-800 shadow-md border-[#e0d9cc]' }} px-3 py-2 sm:px-4 sm:py-2.5 rounded-xl hover:shadow-lg transition-all duration-300 font-tajawal text-xs sm:text-sm whitespace-nowrap border transform hover:scale-105 {{ $showMovements ? 'hover:from-green-800 hover:to-green-700' : 'hover:from-[#e8e0d0] hover:to-[#ddd5c8]' }}">
-                                        <span class="hidden sm:inline flex items-center gap-1">
-                                            @if($showMovements)
-                                                <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
-                                                    <path fill-rule="evenodd" d="M3.707 2.293a1 1 0 00-1.414 1.414l14 14a1 1 0 001.414-1.414l-14-14z" clip-rule="evenodd"/>
-                                                </svg>
-                                                إخفاء الحركات
-                                            @else
-                                                <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
-                                                    <path d="M10 12a2 2 0 100-4 2 2 0 000 4z"/>
-                                                    <path fill-rule="evenodd" d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z" clip-rule="evenodd"/>
-                                                </svg>
-                                                إظهار الحركات
-                                            @endif
-                                        </span>
+                                    <button wire:click="toggleMovements" class="{{ $showMovements ? 'bg-green-900 text-white shadow-md' : 'bg-[#f0e9de] text-red-800' }} px-3 py-2 sm:px-4 sm:py-2.5 rounded-lg hover:bg-[#e8e0d0] transition-all duration-200 font-tajawal text-xs sm:text-sm whitespace-nowrap border border-[#e0d9cc]">
+                                        <span class="hidden sm:inline">{{ $showMovements ? 'إخفاء الحركات' : 'إظهار الحركات' }}</span>
                                         <span class="sm:hidden">{{ $showMovements ? 'إخفاء' : 'إظهار' }}</span>
                                     </button>
 
@@ -155,22 +142,22 @@
                                     <div class="w-px h-8 bg-[#e0d9cc]"></div>
 
                                     <!-- Action Buttons Group -->
-                                    <div class="flex items-center gap-1">
+                                    <div class="flex items-center gap-1 bg-gradient-to-r from-white/50 to-[#f8f5f0]/50 rounded-xl p-1 border border-[#e8e0d0] shadow-md">
                                         <!-- Share Button -->
-                                        <button class="text-gray-600 hover:text-green-900 p-2 sm:p-2.5 rounded-lg hover:bg-[#f0e9de] transition-all duration-200 flex items-center justify-center border border-transparent hover:border-[#e0d9cc]">
+                                        <button class="text-gray-600 hover:text-white p-2 sm:p-2.5 rounded-lg bg-gradient-to-br from-white to-[#f8f5f0] hover:from-blue-500 hover:to-blue-600 transition-all duration-300 flex items-center justify-center border border-[#e8e0d0] hover:border-blue-400 shadow-sm hover:shadow-lg transform hover:scale-105">
                                             <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 sm:h-5 sm:w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7.217 10.907a2.25 2.25 0 100 2.186m0-2.186c.18.324.283.696.283 1.093s-.103.77-.283 1.093m0-2.186l9.566-5.314m-9.566 7.5l9.566 5.314m0 0a2.25 2.25 0 103.935 2.186 2.25 2.25 0 00-3.935-2.186zm0-12.814a2.25 2.25 0 103.933-2.185 2.25 2.25 0 00-3.933 2.185z" />
                                             </svg>
                                         </button>
                                         <!-- Fullscreen Button -->
-                                        <button onclick="toggleFullscreen()" class="text-gray-600 hover:text-green-900 p-2 sm:p-2.5 rounded-lg hover:bg-[#f0e9de] transition-all duration-200 flex items-center justify-center border border-transparent hover:border-[#e0d9cc]">
+                                        <button onclick="toggleFullscreen()" class="text-gray-600 hover:text-white p-2 sm:p-2.5 rounded-lg bg-gradient-to-br from-white to-[#f8f5f0] hover:from-purple-500 hover:to-purple-600 transition-all duration-300 flex items-center justify-center border border-[#e8e0d0] hover:border-purple-400 shadow-sm hover:shadow-lg transform hover:scale-105">
                                             <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 sm:h-5 sm:w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16h4m0 0v4m-4 0l5-5m11-1h-4m4 0v4m-4 0l5-5" />
                                             </svg>
                                         </button>
                                         <!-- Options Menu Button -->
                                         <div class="relative">
-                                            <button wire:click="toggleOptionsMenu" class="text-gray-600 hover:text-green-900 p-2 sm:p-2.5 rounded-lg hover:bg-[#f0e9de] transition-all duration-200 flex items-center justify-center border border-transparent hover:border-[#e0d9cc] {{ $showOptionsMenu ? 'bg-[#f0e9de] text-green-900 border-[#e0d9cc]' : '' }}">
+                                            <button wire:click="toggleOptionsMenu" class="text-gray-600 hover:text-white p-2 sm:p-2.5 rounded-lg bg-gradient-to-br from-white to-[#f8f5f0] hover:from-orange-500 hover:to-orange-600 transition-all duration-300 flex items-center justify-center border border-[#e8e0d0] hover:border-orange-400 shadow-sm hover:shadow-lg transform hover:scale-105 {{ $showOptionsMenu ? 'from-orange-500 to-orange-600 text-white border-orange-400 shadow-lg' : '' }}">
                                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 sm:h-5 sm:w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z" />
                                                 </svg>
@@ -621,13 +608,13 @@
                                                 <div class="flex items-center space-x-1 sm:space-x-2 space-x-reverse">
                                                     <!-- First Page Button -->
                                                     @if($navigation['current_page_number'] > 1)
-                                                        <button wire:click="gotoPage(1)" class="bg-[#f0e9de] hover:bg-[#e8e0d0] p-1.5 sm:p-2 rounded-full transition-colors" title="الصفحة الأولى">
-                                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 sm:h-5 sm:w-5 text-green-900" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                        <button wire:click="gotoPage(1)" class="bg-gradient-to-br from-[#f0e9de] to-[#e8e0d0] hover:from-green-500 hover:to-green-600 p-1.5 sm:p-2 rounded-xl transition-all duration-300 shadow-md hover:shadow-lg transform hover:scale-105 border border-[#e0d9cc] hover:border-green-400" title="الصفحة الأولى">
+                                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 sm:h-5 sm:w-5 text-green-900 hover:text-white transition-colors duration-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 5l7 7-7 7M5 5l7 7-7 7" />
                                                             </svg>
                                                         </button>
                                                     @else
-                                                        <button disabled class="bg-gray-200 p-1.5 sm:p-2 rounded-full cursor-not-allowed" title="الصفحة الأولى">
+                                                        <button disabled class="bg-gradient-to-br from-gray-200 to-gray-300 p-1.5 sm:p-2 rounded-xl cursor-not-allowed shadow-sm border border-gray-300" title="الصفحة الأولى">
                                                             <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 sm:h-5 sm:w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 5l7 7-7 7M5 5l7 7-7 7" />
                                                             </svg>
@@ -636,13 +623,13 @@
 
                                                     <!-- Previous Page Button -->
                                                     @if($navigation['previous_page'])
-                                                        <button wire:click="previousPage" class="bg-[#f0e9de] hover:bg-[#e8e0d0] p-1.5 sm:p-2 rounded-full transition-colors">
-                                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 sm:h-5 sm:w-5 text-green-900" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                        <button wire:click="previousPage" class="bg-gradient-to-br from-[#f0e9de] to-[#e8e0d0] hover:from-blue-500 hover:to-blue-600 p-1.5 sm:p-2 rounded-xl transition-all duration-300 shadow-md hover:shadow-lg transform hover:scale-105 border border-[#e0d9cc] hover:border-blue-400">
+                                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 sm:h-5 sm:w-5 text-green-900 hover:text-white transition-colors duration-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
                                                             </svg>
                                                         </button>
                                                     @else
-                                                        <button disabled class="bg-gray-200 p-1.5 sm:p-2 rounded-full cursor-not-allowed">
+                                                        <button disabled class="bg-gradient-to-br from-gray-200 to-gray-300 p-1.5 sm:p-2 rounded-xl cursor-not-allowed shadow-sm border border-gray-300">
                                                             <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 sm:h-5 sm:w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
                                                             </svg>
@@ -650,24 +637,24 @@
                                                     @endif
                                                     
                                                     <!-- Page Input -->
-                                                    <div class="flex items-center space-x-1 mx-2">
+                                                    <div class="flex items-center space-x-1 mx-2 bg-gradient-to-r from-[#f8f5f0] to-[#f0e9de] px-3 py-1.5 rounded-xl shadow-md border border-[#e0d9cc]">
                                                         <input type="number" 
                                                                wire:model.live.debounce.500ms="internalIndex" 
                                                                min="1" 
                                                                max="{{ $navigation['total_pages'] }}" 
-                                                               class="w-16 px-2 py-1 text-center border border-[#e0d9cc] rounded focus:outline-none focus:ring-2 focus:ring-[#9577]0teccxt-sm">
-                                                  <span class="text-sm text-gray-600">من {{ $navigation['total_pages'] }}</span>
+                                                               class="w-16 px-2 py-1.5 text-center border border-[#e0d9cc] rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500 text-sm bg-white shadow-sm transition-all duration-300 hover:shadow-md">
+                                                        <span class="text-sm text-green-800 font-medium">من {{ $navigation['total_pages'] }}</span>
                                                     </div>
                                                     
                                                     <!-- Next Page Button -->
                                                     @if($navigation['next_page'])
-                                                        <button wire:click="nextPage" class="bg-[#f0e9de] hover:bg-[#e8e0d0] p-1.5 sm:p-2 rounded-full transition-colors">
-                                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 sm:h-5 sm:w-5 text-green-900" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                        <button wire:click="nextPage" class="bg-gradient-to-br from-[#f0e9de] to-[#e8e0d0] hover:from-blue-500 hover:to-blue-600 p-1.5 sm:p-2 rounded-xl transition-all duration-300 shadow-md hover:shadow-lg transform hover:scale-105 border border-[#e0d9cc] hover:border-blue-400">
+                                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 sm:h-5 sm:w-5 text-green-900 hover:text-white transition-colors duration-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
                                                             </svg>
                                                         </button>
                                                     @else
-                                                        <button disabled class="bg-gray-200 p-1.5 sm:p-2 rounded-full cursor-not-allowed">
+                                                        <button disabled class="bg-gradient-to-br from-gray-200 to-gray-300 p-1.5 sm:p-2 rounded-xl cursor-not-allowed shadow-sm border border-gray-300">
                                                             <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 sm:h-5 sm:w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
                                                             </svg>
@@ -676,13 +663,13 @@
 
                                                     <!-- Last Page Button -->
                                                     @if($navigation['current_page_number'] < $navigation['total_pages'])
-                                                        <button wire:click="gotoPage({{ $navigation['total_pages'] }})" class="bg-[#f0e9de] hover:bg-[#e8e0d0] p-1.5 sm:p-2 rounded-full transition-colors" title="الصفحة الأخيرة">
+                                                        <button wire:click="gotoPage({{ $navigation['total_pages'] }})" class="bg-gradient-to-br from-[#f0e9de] to-[#e8e0d0] hover:from-green-500 hover:to-green-600 p-1.5 sm:p-2 rounded-xl transition-all duration-300 shadow-md hover:shadow-lg transform hover:scale-105 border border-[#e0d9cc] hover:border-green-400" title="الصفحة الأخيرة">
                                                             <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 sm:h-5 sm:w-5 text-green-900" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 19l-7-7 7-7m8 14l-7-7 7-7" />
                                                             </svg>
                                                         </button>
                                                     @else
-                                                        <button disabled class="bg-gray-200 p-1.5 sm:p-2 rounded-full cursor-not-allowed" title="الصفحة الأخيرة">
+                                                        <button disabled class="bg-gradient-to-br from-gray-200 to-gray-300 p-1.5 sm:p-2 rounded-xl cursor-not-allowed shadow-sm border border-gray-300" title="الصفحة الأخيرة">
                                                             <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 sm:h-5 sm:w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 19l-7-7 7-7m8 14l-7-7 7-7" />
                                                             </svg>
