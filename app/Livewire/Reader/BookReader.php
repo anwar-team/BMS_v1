@@ -301,10 +301,10 @@ class BookReader extends Component
 
     /**
      * Get safe content (XSS protected using HTML Purifier)
-     * 
+     *
      * FIX #1: XSS Vulnerability Protection
      * This prevents malicious JavaScript from being executed
-     * 
+     *
      * @return string
      */
     public function getSafeContentProperty(): string
@@ -312,21 +312,20 @@ class BookReader extends Component
         if (!$this->currentContent) {
             return '';
         }
-        
+
         // Clean content from any malicious code
         // Allows only safe HTML tags commonly used in book content
         $cleaned = Purifier::clean($this->currentContent, [
-            'HTML.Allowed' => 'p,br,strong,em,u,b,i,h1,h2,h3,h4,h5,h6,ul,ol,li,blockquote,div,span,a[href],sub,sup',
-            'HTML.AllowedAttributes' => 'class,id,style,href,title',
-            'CSS.AllowedProperties' => 'color,font-size,font-weight,text-align,margin,padding,text-decoration',
+            'HTML.Allowed' => 'p,br,strong,em,u,b,i,h1,h2,h3,h4,h5,h6,ul,ol,li,blockquote,div,span,a[href|target],img[src|alt|width|height],sub,sup,table,thead,tbody,tr,td,th',
+            'HTML.AllowedAttributes' => 'class,id,style,href,title,src,alt,width,height,target,colspan,rowspan',
+            'CSS.AllowedProperties' => 'color,font-size,font-weight,text-align,margin,padding,text-decoration,display,width,height,border,background-color',
             'AutoFormat.RemoveEmpty' => false,
             'AutoFormat.AutoParagraph' => false,
+            'Attr.AllowedFrameTargets' => ['_blank', '_self', '_parent', '_top'],
         ]);
-        
+
         return $cleaned;
-    }
-    
-    /**
+    }    /**
      * Get content without diacritics (cached for performance)
      * 
      * FIX #2: preg_replace Performance Optimization
