@@ -351,7 +351,7 @@
                                                 @endphp
                                                 <li class="{{ $shouldDimChapter ? 'toc-item-dimmed' : '' }}">
                                                     <div class="toc-item mobile-toc-item flex items-center justify-between p-2 rounded-lg transition-all duration-300
-                                                                 {{ $isCurrentChapter ? 'bg-green-900 text-white shadow-md active' : 'hover:bg-[#f0e9de]' }}
+                                                                 {{ $isCurrentChapter ? 'bg-green-900 text-white shadow-md active' : 'hover:bg-green-300' }}
                                                                  {{ $chapterMatchesSearch ? 'toc-search-match' : '' }}">
                                                         <div class="flex items-center cursor-pointer flex-1" 
                                                              wire:click="gotoChapter({{ $chapter->id }})">
