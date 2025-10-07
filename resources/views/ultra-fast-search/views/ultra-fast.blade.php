@@ -172,6 +172,43 @@
                                                             </label>
                                                         </div>
                                                     </div>
+
+                                                    <!-- ترتيب الكلمات في البحث -->
+                                                    <div class="mb-4 border-t pt-4">
+                                                        <h3 class="text-sm font-medium text-gray-700 mb-3 text-right">ترتيب الكلمات</h3>
+                                                        <div class="space-y-2">
+                                                            <label class="flex items-center gap-3 p-2 hover:bg-gray-50 rounded-lg cursor-pointer transition-all" title="الكلمات متتالية بدون فاصل">
+                                                                <input type="radio" name="wordOrder" value="consecutive" class="text-blue-600 focus:ring-blue-500 w-4 h-4">
+                                                                <div class="flex items-center gap-2 flex-1 text-right">
+                                                                    <span class="text-lg">📏</span>
+                                                                    <div class="flex-1">
+                                                                        <span class="text-sm font-medium text-gray-800">متتالية</span>
+                                                                        <span class="text-xs text-gray-500 block">بدون كلمات بينها</span>
+                                                                    </div>
+                                                                </div>
+                                                            </label>
+                                                            <label class="flex items-center gap-3 p-2 hover:bg-gray-50 rounded-lg cursor-pointer transition-all" title="الكلمات في نفس الفقرة">
+                                                                <input type="radio" name="wordOrder" value="same_paragraph" class="text-emerald-600 focus:ring-emerald-500 w-4 h-4">
+                                                                <div class="flex items-center gap-2 flex-1 text-right">
+                                                                    <span class="text-lg">📄</span>
+                                                                    <div class="flex-1">
+                                                                        <span class="text-sm font-medium text-gray-800">نفس الفقرة</span>
+                                                                        <span class="text-xs text-gray-500 block">مع كلمات بينها</span>
+                                                                    </div>
+                                                                </div>
+                                                            </label>
+                                                            <label class="flex items-center gap-3 p-2 hover:bg-gray-50 rounded-lg cursor-pointer transition-all" title="الكلمات في أي مكان من الصفحة" checked>
+                                                                <input type="radio" name="wordOrder" value="any_order" class="text-gray-600 focus:ring-gray-500 w-4 h-4" checked>
+                                                                <div class="flex items-center gap-2 flex-1 text-right">
+                                                                    <span class="text-lg">🔀</span>
+                                                                    <div class="flex-1">
+                                                                        <span class="text-sm font-medium text-gray-800">أي ترتيب</span>
+                                                                        <span class="text-xs text-gray-500 block">في أي مكان</span>
+                                                                    </div>
+                                                                </div>
+                                                            </label>
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -1090,6 +1127,8 @@
                 const perPage = this.perPageSelect.value;
                 const searchTypeInput = document.querySelector('input[name="searchType"]:checked');
                 const searchType = searchTypeInput ? searchTypeInput.value : 'flexible_match';
+                const wordOrderInput = document.querySelector('input[name="wordOrder"]:checked');
+                const wordOrder = wordOrderInput ? wordOrderInput.value : 'any_order';
                 const startTime = performance.now();
                 
                 try {
@@ -1098,6 +1137,7 @@
                         per_page: perPage,
                         page: this.currentPage,
                         search_type: searchType,
+                        word_order: wordOrder,
                         });
                     
                     // إضافة الفلاتر المحددة

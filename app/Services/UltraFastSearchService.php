@@ -83,15 +83,18 @@ class UltraFastSearchService
 	}
 
 	/**
-	 * Build exact match query - literal exact matching
+	 * Build exact match query - literal exact matching with word order
 	 */
-	protected function buildExactMatchQuery(string $searchTerm): array
+	protected function buildExactMatchQuery(string $searchTerm, string $wordOrder = 'consecutive'): array
 	{
+		// Exact match always uses match_phrase with varying slop
+		$slop = $this->getSlop($wordOrder);
+		
 		return [
 			'match_phrase' => [
 				'content.exact' => [
 					'query' => $searchTerm,
-					'slop' => 0
+					'slop' => $slop
 				]
 			]
 		];
@@ -100,22 +103,53 @@ class UltraFastSearchService
 	/**
 	 * Build flexible match query - allows prefixes without stemming
 	 */
-	protected function buildFlexibleMatchQuery(string $searchTerm): array
+	protected function buildFlexibleMatchQuery(string $searchTerm, string $wordOrder = 'any_order'): array
 	{
+		// If any_order, use match with operator AND
+		if ($wordOrder === 'any_order') {
+			return [
+				'match' => [
+					'content.flexible' => [
+						'query' => $searchTerm,
+						'operator' => 'and'
+					]
+				]
+			];
+		}
+		
+		// Otherwise use match_phrase with slop
+		$slop = $this->getSlop($wordOrder);
+		
 		return [
-			'match' => [
+			'match_phrase' => [
 				'content.flexible' => [
 					'query' => $searchTerm,
-					'operator' => 'and'
+					'slop' => $slop
 				]
 			]
 		];
 	}
 
 	/**
+	 * Get slop value based on word order
+	 */
+	protected function getSlop(string $wordOrder): int
+	{
+		switch ($wordOrder) {
+			case 'consecutive':
+				return 0; // No words between
+			case 'same_paragraph':
+				return 50; // Allow words between
+			case 'any_order':
+			default:
+				return 100; // Maximum flexibility
+		}
+	}
+
+	/**
 	 * Build morphological query - root-based search with derivatives
 	 */
-	protected function buildMorphologicalQuery(string $searchTerm): array
+	protected function buildMorphologicalQuery(string $searchTerm, string $wordOrder = 'any_order'): array
 	{
 		return [
 			'bool' => [
@@ -157,19 +191,20 @@ class UltraFastSearchService
 		if (!empty($query)) {
 			// Get search type from filters (new system)
 			$searchType = $filters['search_type'] ?? self::SEARCH_TYPE_FLEXIBLE;
+			$wordOrder = $filters['word_order'] ?? 'any_order';
             
 			switch ($searchType) {
 				case self::SEARCH_TYPE_EXACT:
-					$boolQuery['bool']['must'][] = $this->buildExactMatchQuery($query);
+					$boolQuery['bool']['must'][] = $this->buildExactMatchQuery($query, $wordOrder);
 					break;
 
 				case self::SEARCH_TYPE_MORPHOLOGICAL:
-					$boolQuery['bool']['must'][] = $this->buildMorphologicalQuery($query);
+					$boolQuery['bool']['must'][] = $this->buildMorphologicalQuery($query, $wordOrder);
 					break;
 
 				case self::SEARCH_TYPE_FLEXIBLE:
 				default:
-					$boolQuery['bool']['must'][] = $this->buildFlexibleMatchQuery($query);
+					$boolQuery['bool']['must'][] = $this->buildFlexibleMatchQuery($query, $wordOrder);
 					break;
 			}
 		}
