@@ -29,18 +29,15 @@
                         <div class="flex flex-col sm:flex-row items-center gap-3 sm:gap-4 mb-4 sm:mb-6">
                             <img src="{{ asset('images/group0.svg') }}" alt="Icon" class="w-16 h-16 sm:w-17 sm:h-17 md:w-18 md:h-18">
                             <div class="text-center sm:text-right">
-                                <h2 class="text-2xl sm:text-3xl md:text-4xl text-green-700 font-bold font-tajawal">
-                                    <a href="{{ route('books.details', $book->id) }}" 
-                                       class="hover:text-green-600 transition-colors duration-200 cursor-pointer underline decoration-2 underline-offset-4">
-                                        {{ $book->title }}
-                                    </a>
+                                <h2 class="text-2xl sm:text-3xl md:text-4xl text-green-900 font-bold font-tajawal">
+                                    {{ $book->title }}
                                 </h2>
                                 @if($book->authors->count() > 0)
-                                    <div class="mt-2 text-lg sm:text-xl text-gray-600">
+                                    <div class="mt-2 text-lg sm:text-xl text-red-800">
                                         <span class="font-medium">المؤلف: </span>
                                         @foreach($book->mainAuthors as $author)
                                             <a href="{{ route('authors.details', $author->id) }}" 
-                                               class="text-green-600 hover:text-green-900 hover:underline transition-colors duration-200 font-medium">
+                                               class="text-green-900 hover:text-green-900 hover:underline transition-colors duration-200 font-medium">
                                                 {{ $author->full_name }}
                                             </a>@if(!$loop->last), @endif
                                         @endforeach
