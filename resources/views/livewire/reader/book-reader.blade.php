@@ -551,11 +551,8 @@
                                                 @endif
                                                 
                                                 <div class="prose prose-lg max-w-none {{ $showMovements ? '' : 'no-movements' }}" style="font-size: {{ $fontPercent / 100 }}em !important;" id="book-content">
-                                                    @if($showMovements)
-                                                        {!! $currentContent !!}
-                                                    @else
-                                                        {!! preg_replace('/[\x{064B}-\x{065F}\x{0670}\x{06D6}-\x{06ED}]/u', '', $currentContent) !!}
-                                                    @endif
+                                                    {{-- FIX #1 & #2: Use processedContent (XSS protected + cached) --}}
+                                                    {!! $this->processedContent !!}
                                                 </div>
                                                 
                                                 @if(!$currentContent || trim(strip_tags($currentContent)) === '')
@@ -691,7 +688,8 @@
                                                 <div class="flex items-center space-x-1 sm:space-x-2 space-x-reverse order-3">
                                                     <span class="text-[#39100C] font-medium text-sm sm:text-base whitespace-nowrap">الأجزاء:</span>
                                                     <select x-data x-on:change="$wire.call('gotoVolume', $event.target.value)" class="bg-white border border-[#e0d9cc] rounded-lg px-2 py-1 sm:px-3 sm:py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-green-600 min-w-[80px]">
-                                                  @foreach($book->volumes()->orderBy('number')->get() as $volume)
+                                                        {{-- FIX #3: Use cached volumes property instead of query --}}
+                                                        @foreach($volumes as $volume)
                                                             <option value="{{ $volume->id }}" {{ $currentPage && $currentPage->volume_id == $volume->id ? 'selected' : '' }}>
                                                                 {{ $volume->title ?: 'الجزء ' . $volume->number }}
                                                             </option>
