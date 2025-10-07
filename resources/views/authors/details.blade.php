@@ -20,7 +20,7 @@
                         <div class="bg-white rounded-lg shadow-md overflow-hidden border border-gray-200 p-8 mb-8">
                             <div class="flex items-center gap-3 mb-6">
                                 
-                                <h3 class="text-2xl font-semibold text-[#5D6019]">السيرة الذاتية</h3>
+                                <h3 class="text-2xl font-semibold text-green-900">السيرة الذاتية</h3>
                             </div>
                             <div class="text-lg text-gray-700 leading-relaxed whitespace-pre-line">
                                 {{ $author->biography }}
