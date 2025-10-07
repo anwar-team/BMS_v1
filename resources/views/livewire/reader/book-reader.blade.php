@@ -394,7 +394,7 @@
                         <div class="flex flex-col lg:flex-row gap-4 sm:gap-6">
                             <!-- Sidebar (Right) - Hidden on mobile when mobile TOC is active -->
                             <aside class="lg:w-72 flex-shrink-0 w-full hidden lg:block {{ $showMobileToc ? 'desktop-toc-hidden' : '' }}">
-                                <div class="bg-white rounded-xl shadow-md overflow-hidden border border-green-600 h-full">
+                                <div class="bg-white rounded-xl shadow-md overflow-hidden border border-[#e0d9cc] h-full">
                                     <div class="bg-green-900 p-3 sm:p-4">
                                         <h2 class="text-green-900 text-xl sm:text-2xl font-bold font-tajawal mb-3">فهرس المحتويات</h2>
                                         <!-- TOC Search Bar -->
@@ -402,7 +402,7 @@
                                             <input type="text" 
                                                    wire:model.live.debounce.300ms="tocSearch" 
                                                    placeholder="ابحث في الفهرس..." 
-                                                   class="w-full px-3 py-2 pr-10 border border-green-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-white focus:border-green-600 bg-green-600 text-green-900 placeholder-green-600 text-sm">
+                                                   class="w-full px-3 py-2 pr-10 border border-green-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-white focus:border-white bg-white text-green-900 placeholder-gray-500 text-sm">
                                             <div class="absolute inset-y-0 right-0 flex items-center pr-3">
                                                 @if($tocSearch)
                                                     <button wire:click="clearTocSearch" class="text-gray-400 hover:text-gray-600">
