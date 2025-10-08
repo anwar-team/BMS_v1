@@ -31,6 +31,16 @@ class Chapter extends Model
 
 protected static function booted()
 {
+    static::creating(function ($chapter) {
+        // تلقائياً تعبئة book_id من الـ volume
+        if (!$chapter->book_id && $chapter->volume_id) {
+            $volume = Volume::find($chapter->volume_id);
+            if ($volume) {
+                $chapter->book_id = $volume->book_id;
+            }
+        }
+    });
+
     static::saving(function ($chapter) {
         $pages = $chapter->pages()->orderBy('page_number')->pluck('page_number');
         $chapter->page_start = $pages->first();
