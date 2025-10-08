@@ -373,7 +373,7 @@
                                         <span class="text-sm font-bold text-green-900">الفلاتر المطبقة:</span>
                                         <span id="filterSummaryText" class="text-xs font-semibold text-green-700 bg-white px-3 py-1 rounded-full shadow-sm border border-green-200"></span>
                                     </div>
-                                    <button type="button" id="clearAllFilters" class="flex items-center gap-1 text-xs font-bold text-white bg-gradient-to-r from-red-900  hover:from-red-600  px-4 py-2 rounded-full transition-all shadow-md hover:shadow-lg transform hover:scale-105">
+                                    <button type="button" id="clearAllFilters" class="flex items-center gap-1 text-xs font-bold text-white bg-gradient-to-r from-red-900  hover:from-red-600  px-4 py-2 rounded-full transition-all shadow-md  transform hover:scale-105">
                                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
                                         </svg>
@@ -1107,7 +1107,7 @@
                 
                 const tag = document.createElement('div');
                 tag.id = tagId;
-                tag.className = 'inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-blue-500 to-indigo-600 text-white text-sm font-medium rounded-full shadow-md hover:shadow-lg transform hover:scale-105 transition-all duration-200';
+                tag.className = 'inline-flex items-center gap-2 px-4 py-2 bg-green-900 text-white text-sm font-medium rounded-full shadow-md hover:shadow-lg transform hover:scale-105 transition-all duration-200';
                 tag.innerHTML = `
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"></path>
