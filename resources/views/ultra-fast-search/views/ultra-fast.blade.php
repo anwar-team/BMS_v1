@@ -1870,8 +1870,8 @@
         // إظهار نافذة الشرح
         function showHelpModal() {
             const helpModal = `
-                <div id="help-modal" class="modal-overlay fixed inset-0 bg-black bg-opacity-60 z-50 flex items-center justify-center p-4">
-                    <div class="modal-content bg-white rounded-lg max-w-4xl w-full max-h-[90vh] overflow-hidden shadow-xl">
+                <div id="help-modal" class="modal-overlay fixed inset-0 bg-black bg-opacity-60 z-50 flex items-center justify-center p-4" dir="rtl">
+                    <div class="modal-content bg-white rounded-lg max-w-4xl w-full max-h-[90vh] overflow-y-auto  shadow-xl">
                         <!-- Header -->
                         <div class="bg-green-900 text-white p-6">
                             <div class="flex justify-between items-center">
