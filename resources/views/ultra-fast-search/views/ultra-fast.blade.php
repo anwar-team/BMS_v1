@@ -619,6 +619,7 @@
                 
                 this.searchTimeout = null;
                 this.currentPage = 1;
+                this.currentFilterType = ''; // Fix: Added as class property for filter scope
                 
                 this.init();
             }
@@ -850,7 +851,7 @@
                 const dateRangeContainer = document.getElementById('dateRangeContainer');
                 const filterSearchContainer = document.getElementById('filterSearchContainer');
                 
-                let currentFilterType = '';
+                // Removed: let currentFilterType = ''; (now using this.currentFilterType)
                 let selectedFilters = {
                     section: [],
                     book: [],
@@ -866,7 +867,7 @@
                     
                     filterCategoryBtns.forEach(btn => {
                         btn.addEventListener('click', () => {
-                            currentFilterType = btn.dataset.filter;
+                            this.currentFilterType = btn.dataset.filter;
                             filterDropdown.classList.add('hidden');
                             
                             // تحديث عنوان المودال
@@ -876,10 +877,10 @@
                                 author: 'فلترة حسب المؤلف',
                                 death_date: 'فلترة حسب تاريخ الوفاة'
                             };
-                            filterModalTitle.textContent = titles[currentFilterType];
+                            filterModalTitle.textContent = titles[this.currentFilterType];
                             
                             // إظهار/إخفاء عناصر حسب نوع الفلتر
-                            if (currentFilterType === 'death_date') {
+                            if (this.currentFilterType === 'death_date') {
                                 dateRangeContainer.classList.remove('hidden');
                                 filterSearchContainer.classList.add('hidden');
                                 filterOptionsList.classList.add('hidden');
@@ -887,7 +888,7 @@
                                 dateRangeContainer.classList.add('hidden');
                                 filterSearchContainer.classList.remove('hidden');
                                 filterOptionsList.classList.remove('hidden');
-                                window.ultraFastSearch.loadFilterOptions(currentFilterType);
+                                window.ultraFastSearch.loadFilterOptions(this.currentFilterType);
                             }
                             
                             filterModal.classList.remove('hidden');
@@ -904,7 +905,7 @@
                     // تطبيق الفلتر - Context7 Enhanced with debugging
                     applyFilterModal.addEventListener('click', (e) => {
                         console.log('Apply filter button clicked!', {
-                            currentFilterType: currentFilterType,
+                            currentFilterType: this.currentFilterType,
                             selectedCheckboxes: document.querySelectorAll('.filter-option-checkbox:checked').length
                         });
                         
@@ -1037,11 +1038,11 @@
             
             applyCurrentFilter() {
                 console.log('applyCurrentFilter called', {
-                    currentFilterType: currentFilterType,
+                    currentFilterType: this.currentFilterType,
                     selectedFilters: this.selectedFilters
                 });
                 
-                if (currentFilterType === 'death_date') {
+                if (this.currentFilterType === 'death_date') {
                     const from = document.getElementById('deathYearFrom').value;
                     const to = document.getElementById('deathYearTo').value;
                     this.selectedFilters.death_date = { from, to };
@@ -1054,18 +1055,18 @@
                     const selected = Array.from(checkboxes).map(cb => cb.value);
                     
                     console.log('Processing checkboxes', {
-                        filterType: currentFilterType,
+                        filterType: this.currentFilterType,
                         checkboxCount: checkboxes.length,
                         selectedValues: selected
                     });
                     
-                    this.selectedFilters[currentFilterType] = selected;
+                    this.selectedFilters[this.currentFilterType] = selected;
                     
                     checkboxes.forEach(checkbox => {
                         const id = checkbox.value;
                         const name = checkbox.getAttribute('data-name');
-                        console.log('Adding filter tag', { id, name, type: currentFilterType });
-                        this.addFilterTag(currentFilterType, name, id);
+                        console.log('Adding filter tag', { id, name, type: this.currentFilterType });
+                        this.addFilterTag(this.currentFilterType, name, id);
                     });
                 }
                 
@@ -1090,7 +1091,7 @@
             }
             
             clearCurrentFilterSelection() {
-                if (currentFilterType === 'death_date') {
+                if (this.currentFilterType === 'death_date') {
                     document.getElementById('deathYearFrom').value = '';
                     document.getElementById('deathYearTo').value = '';
                 } else {
