@@ -145,7 +145,7 @@
                                                                 <div class="flex items-center gap-2 flex-1 text-right">
                                                                     <div class="flex-1">
                                                                         <span class="text-sm font-semibold block text-gray-800">البحث الغير مطابق</span>
-                                                                        <span class="text-xs text-gray-500">يتجاهل (ال، و، ف)، علامات الترقيم، والهمزات</span>
+                                                                        <span class="text-xs text-gray-500">يتجاهل (ال، و، ف)والهمزات وعلامات الترقيم </span>
                                                                     </div>
                                                                 </div>
                                                             </label>
