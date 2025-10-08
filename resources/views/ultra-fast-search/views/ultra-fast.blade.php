@@ -1870,188 +1870,135 @@
         // إظهار نافذة الشرح
         function showHelpModal() {
             const helpModal = `
-                <div id="help-modal" class="modal-overlay fixed inset-0 bg-black bg-opacity-60 z-50 flex items-center justify-center p-4 backdrop-blur-sm">
-                    <div class="modal-content bg-white rounded-2xl max-w-6xl w-full max-h-[90vh] overflow-hidden shadow-2xl border border-gray-100 transform transition-all duration-300">
+                <div id="help-modal" class="modal-overlay fixed inset-0 bg-black bg-opacity-60 z-50 flex items-center justify-center p-4">
+                    <div class="modal-content bg-white rounded-lg max-w-4xl w-full max-h-[90vh] overflow-hidden shadow-xl">
                         <!-- Header -->
-                        <div class="bg-gradient-to-r from-blue-600 via-blue-700 to-indigo-700 text-white p-6 relative overflow-hidden">
-                            <div class="absolute inset-0 bg-gradient-to-r from-blue-600/20 to-transparent"></div>
-                            <div class="relative z-10 flex justify-between items-center">
-                                <div>
-                                    <h3 class="text-2xl font-bold flex items-center gap-3">
-                                        <span class="text-3xl">📚</span>
-                                        دليل البحث الفوري المتقدم
-                                    </h3>
-                                    <p class="text-blue-100 mt-2 text-lg">اكتشف قوة البحث الذكي والمتطور</p>
-                                </div>
-                                <button onclick="closeModal('help-modal')" class="text-white hover:text-red-200 text-3xl font-bold transition-colors duration-200 hover:scale-110 transform">✕</button>
+                        <div class="bg-green-900 text-white p-6">
+                            <div class="flex justify-between items-center">
+                                <h3 class="text-2xl font-bold">دليل البحث المتقدم</h3>
+                                <button onclick="closeModal('help-modal')" class="text-white hover:text-red-800 text-2xl font-bold">✕</button>
                             </div>
                         </div>
                         
                         <!-- Content -->
-                        <div class="p-8 overflow-y-auto max-h-[calc(90vh-200px)] custom-scrollbar">
-                            <div class="space-y-8">
-                                <!-- أنواع البحث -->
-                                <section class="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-xl p-6 border border-blue-100">
-                                    <h4 class="text-2xl font-bold text-gray-800 mb-6 flex items-center gap-3">
-                                        <span class="text-2xl">🔍</span>
-                                        أنواع البحث المتاحة
-                                    </h4>
-                                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                                        <div class="bg-white p-6 rounded-xl shadow-sm border border-blue-100 hover:shadow-md transition-shadow duration-200">
-                                            <div class="flex items-center gap-3 mb-3">
-                                                <span class="w-3 h-3 bg-blue-500 rounded-full"></span>
-                                                <h5 class="font-bold text-blue-700 text-lg">البحث المرن</h5>
-                                            </div>
-                                            <p class="text-gray-700 leading-relaxed">يبحث بأفضل النتائج مع مراعاة المعنى والسياق. يفهم المترادفات والمعاني المختلفة للكلمات ويقدم نتائج ذكية.</p>
+                        <div class="p-6 overflow-y-auto max-h-[calc(90vh-140px)]">
+                            <!-- أنواع البحث الثلاثة -->
+                            <section class="mb-8">
+                                <h4 class="text-xl font-bold text-black mb-4 border-b-2 border-green-900 pb-2">أنواع البحث</h4>
+                                <div class="space-y-4">
+                                    <!-- البحث المطابق -->
+                                    <div class="border border-gray-300 rounded-lg p-4 bg-white">
+                                        <div class="flex items-center gap-3 mb-2">
+                                            <div class="w-4 h-4 bg-red-800 rounded-full"></div>
+                                            <h5 class="font-bold text-black text-lg">البحث المطابق (Exact)</h5>
                                         </div>
-                                        <div class="bg-white p-6 rounded-xl shadow-sm border border-green-100 hover:shadow-md transition-shadow duration-200">
-                                            <div class="flex items-center gap-3 mb-3">
-                                                <span class="w-3 h-3 bg-green-500 rounded-full"></span>
-                                                <h5 class="font-bold text-green-700 text-lg">مطابقة العبارة تماماً</h5>
-                                            </div>
-                                            <p class="text-gray-700 leading-relaxed">يبحث عن العبارة كما هي بنفس الترتيب والتتابع. مثالي للبحث عن نصوص محددة أو اقتباسات دقيقة.</p>
-                                        </div>
-                                        <div class="bg-white p-6 rounded-xl shadow-sm border border-purple-100 hover:shadow-md transition-shadow duration-200">
-                                            <div class="flex items-center gap-3 mb-3">
-                                                <span class="w-3 h-3 bg-purple-500 rounded-full"></span>
-                                                <h5 class="font-bold text-purple-700 text-lg">عبارة مع تباعد مسموح <span class="text-sm bg-purple-100 text-purple-800 px-2 py-1 rounded-full">افتراضي</span></h5>
-                                            </div>
-                                            <p class="text-gray-700 leading-relaxed">يبحث عن الكلمات بنفس الترتيب مع السماح بوجود كلمات أخرى بينها. يوازن بين الدقة والمرونة.</p>
-                                        </div>
-                                        <div class="bg-white p-6 rounded-xl shadow-sm border border-orange-100 hover:shadow-md transition-shadow duration-200">
-                                            <div class="flex items-center gap-3 mb-3">
-                                                <span class="w-3 h-3 bg-orange-500 rounded-full"></span>
-                                                <h5 class="font-bold text-orange-700 text-lg">جميع الكلمات مطلوبة</h5>
-                                            </div>
-                                            <p class="text-gray-700 leading-relaxed">يجب وجود جميع الكلمات في النص، لكن يمكن أن تكون في أي ترتيب أو مكان. مفيد للبحث الشامل.</p>
-                                        </div>
-                                        <div class="bg-white p-6 rounded-xl shadow-sm border border-red-100 hover:shadow-md transition-shadow duration-200 lg:col-span-2">
-                                            <div class="flex items-center gap-3 mb-3">
-                                                <span class="w-3 h-3 bg-red-500 rounded-full"></span>
-                                                <h5 class="font-bold text-red-700 text-lg">أي كلمة من الكلمات</h5>
-                                            </div>
-                                            <p class="text-gray-700 leading-relaxed">يكفي وجود كلمة واحدة من كلمات البحث. مثالي للبحث الواسع والاستكشافي للحصول على أكبر عدد من النتائج.</p>
+                                        <p class="text-gray-700">مطابقة حرفية دقيقة للنص كما كتبته بالضبط، بدون أي تغيير أو تعديل.</p>
+                                        <div class="mt-2 text-sm text-gray-600">
+                                            <strong>مثال:</strong> البحث عن "الصلاة" سيجد فقط كلمة "الصلاة" بالضبط
                                         </div>
                                     </div>
-                                </section>
-                                
-                                <!-- إعدادات التباعد -->
-                                <section class="bg-gradient-to-br from-green-50 to-emerald-50 rounded-xl p-6 border border-green-100">
-                                    <h4 class="text-2xl font-bold text-gray-800 mb-6 flex items-center gap-3">
-                                        <span class="text-2xl">⚙️</span>
-                                        إعدادات التباعد والمسافة
-                                    </h4>
-                                    <div class="space-y-4">
-                                        <div class="bg-white p-5 rounded-xl shadow-sm border border-green-100 flex items-start gap-4 hover:shadow-md transition-shadow duration-200">
-                                            <span class="bg-blue-100 text-blue-800 px-3 py-2 rounded-lg text-sm font-bold whitespace-nowrap">أي ترتيب</span>
-                                            <p class="text-gray-700 leading-relaxed">الكلمات يمكن أن تكون في أي مكان من النص، بأي ترتيب وبأي مسافة بينها. يعطي أوسع نطاق من النتائج.</p>
+
+                                    <!-- البحث المرن -->
+                                    <div class="border border-gray-300 rounded-lg p-4 bg-white">
+                                        <div class="flex items-center gap-3 mb-2">
+                                            <div class="w-4 h-4 bg-green-900 rounded-full"></div>
+                                            <h5 class="font-bold text-black text-lg">البحث المرن (Flexible)</h5>
                                         </div>
-                                        <div class="bg-white p-5 rounded-xl shadow-sm border border-green-100 flex items-start gap-4 hover:shadow-md transition-shadow duration-200">
-                                            <span class="bg-green-100 text-green-800 px-3 py-2 rounded-lg text-sm font-bold whitespace-nowrap">متتالية</span>
-                                            <p class="text-gray-700 leading-relaxed">الكلمات يجب أن تكون متتالية بلا فواصل أو كلمات أخرى بينها. للبحث الدقيق جداً.</p>
-                                        </div>
-                                        <div class="bg-white p-5 rounded-xl shadow-sm border border-green-100 flex items-start gap-4 hover:shadow-md transition-shadow duration-200">
-                                            <span class="bg-purple-100 text-purple-800 px-3 py-2 rounded-lg text-sm font-bold whitespace-nowrap">نفس الفقرة</span>
-                                            <p class="text-gray-700 leading-relaxed">الكلمات يجب أن تكون في نفس الفقرة من النص، مما يحافظ على السياق والمعنى المترابط.</p>
+                                        <p class="text-gray-700">يتجاهل أدوات التعريف (ال)، حروف العطف (و، ف)، علامات الترقيم، والهمزات المختلفة.</p>
+                                        <div class="mt-2 text-sm text-gray-600">
+                                            <strong>مثال:</strong> البحث عن "صلاة" سيجد: "الصلاة"، "وصلاة"، "فصلاة"، "صلاه"، "صلاة،"
                                         </div>
                                     </div>
-                                </section>
-                                
-                                <!-- الميزات المتقدمة -->
-                                <section class="bg-gradient-to-br from-purple-50 to-pink-50 rounded-xl p-6 border border-purple-100">
-                                    <h4 class="text-2xl font-bold text-gray-800 mb-6 flex items-center gap-3">
-                                        <span class="text-2xl">✨</span>
-                                        الميزات والخصائص المتقدمة
-                                    </h4>
-                                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                                        <div class="bg-white p-5 rounded-xl shadow-sm border border-purple-100 hover:shadow-md transition-all duration-200 hover:scale-105">
-                                            <div class="text-center mb-4">
-                                                <span class="text-4xl">🔍</span>
-                                                <h5 class="font-bold text-purple-700 text-lg mt-2">البحث الفوري</h5>
-                                            </div>
-                                            <p class="text-gray-700 text-center leading-relaxed">النتائج تظهر فوراً أثناء الكتابة من أول حرف مع تحديث مستمر.</p>
+
+                                    <!-- البحث الصرفي -->
+                                    <div class="border border-gray-300 rounded-lg p-4 bg-white">
+                                        <div class="flex items-center gap-3 mb-2">
+                                            <div class="w-4 h-4 bg-black rounded-full"></div>
+                                            <h5 class="font-bold text-black text-lg">البحث الصرفي (Morphological)</h5>
                                         </div>
-                                        <div class="bg-white p-5 rounded-xl shadow-sm border border-purple-100 hover:shadow-md transition-all duration-200 hover:scale-105">
-                                            <div class="text-center mb-4">
-                                                <span class="text-4xl">⚡</span>
-                                                <h5 class="font-bold text-purple-700 text-lg mt-2">سرعة فائقة</h5>
-                                            </div>
-                                            <p class="text-gray-700 text-center leading-relaxed">استجابات سريعة ضمن مئات المللي ثواني مع تقنية متطورة.</p>
-                                        </div>
-                                        <div class="bg-white p-5 rounded-xl shadow-sm border border-purple-100 hover:shadow-md transition-all duration-200 hover:scale-105">
-                                            <div class="text-center mb-4">
-                                                <span class="text-4xl">🎯</span>
-                                                <h5 class="font-bold text-purple-700 text-lg mt-2">دقة عالية</h5>
-                                            </div>
-                                            <p class="text-gray-700 text-center leading-relaxed">نظام تسجيل النقاط المتقدم لترتيب النتائج حسب الصلة.</p>
-                                        </div>
-                                        <div class="bg-white p-5 rounded-xl shadow-sm border border-purple-100 hover:shadow-md transition-all duration-200 hover:scale-105">
-                                            <div class="text-center mb-4">
-                                                <span class="text-4xl">📱</span>
-                                                <h5 class="font-bold text-purple-700 text-lg mt-2">متجاوب</h5>
-                                            </div>
-                                            <p class="text-gray-700 text-center leading-relaxed">يعمل بكفاءة على جميع الأجهزة مع واجهة متجاوبة.</p>
-                                        </div>
-                                        <div class="bg-white p-5 rounded-xl shadow-sm border border-purple-100 hover:shadow-md transition-all duration-200 hover:scale-105">
-                                            <div class="text-center mb-4">
-                                                <span class="text-4xl">📄</span>
-                                                <h5 class="font-bold text-purple-700 text-lg mt-2">عرض شامل</h5>
-                                            </div>
-                                            <p class="text-gray-700 text-center leading-relaxed">إمكانية عرض النص الكامل والصفحات المشابهة.</p>
-                                        </div>
-                                        <div class="bg-white p-5 rounded-xl shadow-sm border border-purple-100 hover:shadow-md transition-all duration-200 hover:scale-105">
-                                            <div class="text-center mb-4">
-                                                <span class="text-4xl">🔗</span>
-                                                <h5 class="font-bold text-purple-700 text-lg mt-2">مشاركة سهلة</h5>
-                                            </div>
-                                            <p class="text-gray-700 text-center leading-relaxed">نسخ ومشاركة وطباعة النتائج بسهولة تامة.</p>
+                                        <p class="text-gray-700">بحث بالجذر الصرفي للكلمة، يجد جميع المشتقات والتصريفات.</p>
+                                        <div class="mt-2 text-sm text-gray-600">
+                                            <strong>مثال:</strong> البحث عن "صلى" سيجد: "صلاة"، "صلوات"، "يصلي"، "مصلى"، "صالح"
                                         </div>
                                     </div>
-                                </section>
-                            </div>
+                                </div>
+                            </section>
+
+                            <!-- ترتيب الكلمات -->
+                            <section class="mb-8">
+                                <h4 class="text-xl font-bold text-black mb-4 border-b-2 border-green-900 pb-2">ترتيب الكلمات</h4>
+                                <div class="space-y-3">
+                                    <div class="flex items-start gap-3 p-3 bg-gray-50 rounded-lg">
+                                        <div class="w-3 h-3 bg-red-800 rounded-full mt-1"></div>
+                                        <div>
+                                            <strong class="text-black">متتالية:</strong>
+                                            <span class="text-gray-700">الكلمات يجب أن تكون متتابعة بدون فواصل</span>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-start gap-3 p-3 bg-gray-50 rounded-lg">
+                                        <div class="w-3 h-3 bg-green-900 rounded-full mt-1"></div>
+                                        <div>
+                                            <strong class="text-black">نفس الفقرة:</strong>
+                                            <span class="text-gray-700">الكلمات في نفس الفقرة مع الحفاظ على السياق</span>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-start gap-3 p-3 bg-gray-50 rounded-lg">
+                                        <div class="w-3 h-3 bg-black rounded-full mt-1"></div>
+                                        <div>
+                                            <strong class="text-black">أي ترتيب:</strong>
+                                            <span class="text-gray-700">الكلمات في أي مكان من النص بأي ترتيب</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </section>
+
+                            <!-- ترتيب النتائج -->
+                            <section class="mb-8">
+                                <h4 class="text-xl font-bold text-black mb-4 border-b-2 border-green-900 pb-2">ترتيب النتائج</h4>
+                                <div class="space-y-3">
+                                    <div class="p-3 bg-gray-50 rounded-lg">
+                                        <strong class="text-black">حسب الصلة:</strong>
+                                        <span class="text-gray-700">النتائج الأكثر صلة بكلمات البحث تظهر أولاً</span>
+                                    </div>
+                                    <div class="p-3 bg-gray-50 rounded-lg">
+                                        <strong class="text-black">حسب التاريخ:</strong>
+                                        <span class="text-gray-700">ترتيب النتائج حسب تاريخ النص أو المؤلف</span>
+                                    </div>
+                                </div>
+                            </section>
+
+                            <!-- الفلاتر -->
+                            <section class="mb-6">
+                                <h4 class="text-xl font-bold text-black mb-4 border-b-2 border-green-900 pb-2">الفلاتر المتاحة</h4>
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    <div class="p-3 bg-gray-50 rounded-lg">
+                                        <strong class="text-black">القسم:</strong>
+                                        <span class="text-gray-700">تصفية حسب قسم الكتاب</span>
+                                    </div>
+                                    <div class="p-3 bg-gray-50 rounded-lg">
+                                        <strong class="text-black">الكتاب:</strong>
+                                        <span class="text-gray-700">تصفية حسب اسم الكتاب</span>
+                                    </div>
+                                    <div class="p-3 bg-gray-50 rounded-lg">
+                                        <strong class="text-black">المؤلف:</strong>
+                                        <span class="text-gray-700">تصفية حسب اسم المؤلف</span>
+                                    </div>
+                                    <div class="p-3 bg-gray-50 rounded-lg">
+                                        <strong class="text-black">تاريخ الوفاة:</strong>
+                                        <span class="text-gray-700">تصفية حسب فترة زمنية</span>
+                                    </div>
+                                </div>
+                            </section>
                         </div>
                         
                         <!-- Footer -->
-                        <div class="bg-gradient-to-r from-gray-50 to-blue-50 px-8 py-6 border-t border-gray-200">
-                            <div class="text-center">
-                                <div class="inline-flex items-center gap-3 bg-white px-6 py-3 rounded-full shadow-sm border border-gray-200">
-                                    <span class="text-2xl">🚀</span>
-                                    <span class="text-gray-700 font-medium">مدعوم بتقنية Elasticsearch المتطورة</span>
-                                </div>
+                        <div class="bg-gray-100 px-6 py-4 border-t">
+                            <div class="text-center text-sm text-gray-600">
+                                نظام البحث المتقدم - مدعوم بتقنية Elasticsearch
                             </div>
                         </div>
                     </div>
                 </div>
-                
-                <style>
-                    .custom-scrollbar::-webkit-scrollbar {
-                        width: 8px;
-                    }
-                    .custom-scrollbar::-webkit-scrollbar-track {
-                        background: #f1f5f9;
-                        border-radius: 4px;
-                    }
-                    .custom-scrollbar::-webkit-scrollbar-thumb {
-                        background: #cbd5e1;
-                        border-radius: 4px;
-                    }
-                    .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-                        background: #94a3b8;
-                    }
-                    @keyframes modalSlideIn {
-                        from {
-                            opacity: 0;
-                            transform: scale(0.9) translateY(-20px);
-                        }
-                        to {
-                            opacity: 1;
-                            transform: scale(1) translateY(0);
-                        }
-                    }
-                    .modal-content {
-                        animation: modalSlideIn 0.3s ease-out;
-                    }
-                </style>
             `;
             document.body.insertAdjacentHTML('beforeend', helpModal);
         }

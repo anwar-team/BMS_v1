@@ -365,6 +365,17 @@ class BookResource extends Resource
                     ->columnSpanFull(),
 
                 self::getChaptersRepeater(),
+                
+                // إضافة صفحات خارج الفصول (على مستوى المجلد)
+                Section::make('صفحات خارج الفصول')
+                    ->description('صفحات على مستوى المجلد (غير تابعة لأي فصل)')
+                    ->icon('heroicon-o-document-text')
+                    ->schema([
+                        self::getPagesRepeater('صفحات المجلد'),
+                    ])
+                    ->collapsible()
+                    ->collapsed()
+                    ->columnSpanFull(),
             ])
             ->addActionLabel('إضافة مجلد جديد')
             ->reorderableWithButtons()
@@ -390,6 +401,9 @@ class BookResource extends Resource
                     ->maxLength(255)
                     ->placeholder('مثال: المقدمة')
                     ->columnSpanFull(),
+                
+                // إضافة صفحات داخل الفصل
+                self::getPagesRepeater('صفحات هذا الفصل'),
             ])
             ->addActionLabel('إضافة فصل جديد')
             ->reorderableWithButtons()
@@ -399,6 +413,74 @@ class BookResource extends Resource
             )
             ->maxItems(200)
             ->defaultItems(0);
+    }
+
+    private static function getPagesRepeater(string $label = 'الصفحات'): Repeater
+    {
+        return Repeater::make('pages')
+            ->label($label)
+            ->relationship('pages')
+            ->schema([
+                Grid::make(3)->schema([
+                    TextInput::make('page_number')
+                        ->label('رقم الصفحة')
+                        ->required()
+                        ->numeric()
+                        ->minValue(1)
+                        ->placeholder('1')
+                        ->helperText('رقم الصفحة في الكتاب المطبوع'),
+                    
+                    TextInput::make('page_order')
+                        ->label('ترتيب الصفحة')
+                        ->numeric()
+                        ->minValue(0)
+                        ->default(0)
+                        ->placeholder('0')
+                        ->helperText('ترتيب ظهور الصفحة'),
+                    
+                    Toggle::make('is_indexed')
+                        ->label('مفهرسة')
+                        ->default(false)
+                        ->helperText('هل تم فهرسة الصفحة في البحث؟'),
+                ]),
+                
+                RichEditor::make('content')
+                    ->label('محتوى الصفحة')
+                    ->required()
+                    ->toolbarButtons([
+                        'bold',
+                        'italic',
+                        'underline',
+                        'strike',
+                        'bulletList',
+                        'orderedList',
+                        'h2',
+                        'h3',
+                        'redo',
+                        'undo',
+                    ])
+                    ->placeholder('أدخل محتوى الصفحة هنا...')
+                    ->columnSpanFull(),
+                
+                Textarea::make('notes')
+                    ->label('ملاحظات')
+                    ->rows(2)
+                    ->placeholder('ملاحظات إضافية عن الصفحة (اختياري)')
+                    ->columnSpanFull(),
+            ])
+            ->addActionLabel('إضافة صفحة جديدة')
+            ->reorderableWithButtons()
+            ->collapsible()
+            ->collapsed()
+            ->itemLabel(fn (array $state): ?string => 
+                'صفحة ' . ($state['page_number'] ?? 'جديدة') . 
+                (isset($state['content']) && strlen($state['content']) > 50 
+                    ? ' - ' . Str::limit(strip_tags($state['content']), 30) 
+                    : '')
+            )
+            ->maxItems(500)
+            ->defaultItems(0)
+            ->columnSpanFull();
     }
 
     private static function getAuthorForm(): array
