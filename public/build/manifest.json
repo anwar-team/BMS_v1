@@ -4,7 +4,7 @@
     "src": "public/images/main-pattern.svg"
   },
   "resources/css/app.css": {
-    "file": "assets/app-C7NZl0YV.css",
+    "file": "assets/app-DiX66Bsl.css",
     "src": "resources/css/app.css",
     "isEntry": true,
     "names": [
@@ -20,7 +20,7 @@
     ]
   },
   "resources/js/app.js": {
-    "file": "assets/app-Bj43h_rG.js",
+    "file": "assets/app-DZS1kJSr.js",
     "name": "app",
     "src": "resources/js/app.js",
     "isEntry": true
