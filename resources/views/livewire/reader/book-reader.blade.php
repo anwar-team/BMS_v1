@@ -673,7 +673,7 @@
                             <!-- Main Content Area -->
                             <main class="flex-1">
                                 <!-- Book Page Content - Fixed Height Container -->
-                                <div class="bg-white rounded-xl shadow-md overflow-hidden border border-[#e0d9cc] flex flex-col h-[70vh]">
+                                <div class="bg-white rounded-xl shadow-md overflow-hidden border border-[#e0d9cc] flex flex-col h-[74vh]">
                                     <!-- Book Content - Scrollable Area -->
                                     <div class="flex-1 overflow-y-auto p-4 sm:p-6 md:p-8 font-tajawal text-right leading-loose text-[#39100C] bg-[#faf8f5]" 
                                          data-book-content>
