@@ -393,7 +393,7 @@
                                 </div>
                                 
                                 <!-- Mobile TOC Content -->
-                                <div class="flex-1 overflow-y-auto p-4 max-h-[calc(100vh-140px)]">
+                                <div class="flex-1 overflow-y-auto p-4 sm:p-5 max-h-[70vh] toc-container">
                                     @if($tocSearch && empty($filteredTableOfContents['data']))
                                         <!-- No search results message -->
                                         <div class="text-center py-8">
