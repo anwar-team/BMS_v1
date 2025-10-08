@@ -143,27 +143,24 @@
                                                             <label class="flex items-center gap-3 p-3 hover:bg-emerald-50 rounded-lg cursor-pointer border border-gray-200 hover:border-emerald-500 transition-all search-type-label" title="بحث مرن يتعامل مع الكلمات بشكل ذكي مع تطبيع عربي">
                                                                 <input type="radio" name="searchType" value="flexible_match" class="text-emerald-600 focus:ring-emerald-500 w-4 h-4" checked>
                                                                 <div class="flex items-center gap-2 flex-1 text-right">
-                                                                    <span class="text-xl">🔄</span>
                                                                     <div class="flex-1">
-                                                                        <span class="text-sm font-semibold block text-gray-800">البحث المرن</span>
-                                                                        <span class="text-xs text-gray-500">بحث ذكي مع تطبيع عربي</span>
+                                                                        <span class="text-sm font-semibold block text-gray-800">البحث الغير مطابق</span>
+                                                                        <span class="text-xs text-gray-500">يتجاهل أدوات التعريف (ال)، حروف العطف (و، ف)، علامات الترقيم، والهمزات المختلفة.</span>
                                                                     </div>
                                                                 </div>
                                                             </label>
                                                             <label class="flex items-center gap-3 p-3 hover:bg-blue-50 rounded-lg cursor-pointer border border-gray-200 hover:border-blue-500 transition-all search-type-label" title="مطابقة حرفية دقيقة للنص المدخل">
                                                                 <input type="radio" name="searchType" value="exact_match" class="text-blue-600 focus:ring-blue-500 w-4 h-4">
                                                                 <div class="flex items-center gap-2 flex-1 text-right">
-                                                                    <span class="text-xl">🎯</span>
                                                                     <div class="flex-1">
                                                                         <span class="text-sm font-semibold block text-gray-800">البحث المطابق</span>
-                                                                        <span class="text-xs text-gray-500">مطابقة حرفية دقيقة</span>
+                                                                        <span class="text-xs text-gray-500">مطابقة حرفية دقيقة للنص</span>
                                                                     </div>
                                                                 </div>
                                                             </label>
                                                             <label class="flex items-center gap-3 p-3 hover:bg-purple-50 rounded-lg cursor-pointer border border-gray-200 hover:border-purple-500 transition-all search-type-label" title="بحث صرفي يتعامل مع الجذور والمشتقات">
                                                                 <input type="radio" name="searchType" value="morphological" class="text-purple-600 focus:ring-purple-500 w-4 h-4">
                                                                 <div class="flex items-center gap-2 flex-1 text-right">
-                                                                    <span class="text-xl">🌳</span>
                                                                     <div class="flex-1">
                                                                         <span class="text-sm font-semibold block text-gray-800">البحث الصرفي</span>
                                                                         <span class="text-xs text-gray-500">جذور ومشتقات</span>
@@ -180,7 +177,6 @@
                                                             <label class="flex items-center gap-3 p-2 hover:bg-gray-50 rounded-lg cursor-pointer transition-all" title="الكلمات متتالية بدون فاصل">
                                                                 <input type="radio" name="wordOrder" value="consecutive" class="text-blue-600 focus:ring-blue-500 w-4 h-4">
                                                                 <div class="flex items-center gap-2 flex-1 text-right">
-                                                                    <span class="text-lg">📏</span>
                                                                     <div class="flex-1">
                                                                         <span class="text-sm font-medium text-gray-800">متتالية</span>
                                                                         <span class="text-xs text-gray-500 block">بدون كلمات بينها</span>
@@ -190,7 +186,6 @@
                                                             <label class="flex items-center gap-3 p-2 hover:bg-gray-50 rounded-lg cursor-pointer transition-all" title="الكلمات في نفس الفقرة">
                                                                 <input type="radio" name="wordOrder" value="same_paragraph" class="text-emerald-600 focus:ring-emerald-500 w-4 h-4">
                                                                 <div class="flex items-center gap-2 flex-1 text-right">
-                                                                    <span class="text-lg">📄</span>
                                                                     <div class="flex-1">
                                                                         <span class="text-sm font-medium text-gray-800">نفس الفقرة</span>
                                                                         <span class="text-xs text-gray-500 block">مع كلمات بينها</span>
@@ -200,7 +195,6 @@
                                                             <label class="flex items-center gap-3 p-2 hover:bg-gray-50 rounded-lg cursor-pointer transition-all" title="الكلمات في أي مكان من الصفحة" checked>
                                                                 <input type="radio" name="wordOrder" value="any_order" class="text-gray-600 focus:ring-gray-500 w-4 h-4" checked>
                                                                 <div class="flex items-center gap-2 flex-1 text-right">
-                                                                    <span class="text-lg">🔀</span>
                                                                     <div class="flex-1">
                                                                         <span class="text-sm font-medium text-gray-800">أي ترتيب</span>
                                                                         <span class="text-xs text-gray-500 block">في أي مكان</span>
