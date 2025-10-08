@@ -1875,7 +1875,7 @@
                         <!-- Header -->
                         <div class="bg-green-900 text-white p-6">
                             <div class="flex justify-between items-center">
-                                <h3 class="text-2xl font-bold">دليل البحث المتقدم</h3>
+                                <h3 class="text-2xl font-bold">دليل البحث </h3>
                                 <button onclick="closeModal('help-modal')" class="text-white hover:text-red-800 text-2xl font-bold">✕</button>
                             </div>
                         </div>
@@ -1890,7 +1890,7 @@
                                     <div class="border border-gray-300 rounded-lg p-4 bg-white">
                                         <div class="flex items-center gap-3 mb-2">
                                             <div class="w-4 h-4 bg-red-800 rounded-full"></div>
-                                            <h5 class="font-bold text-black text-lg">البحث المطابق (Exact)</h5>
+                                            <h5 class="font-bold text-black text-lg">البحث المطابق </h5>
                                         </div>
                                         <p class="text-gray-700">مطابقة حرفية دقيقة للنص كما كتبته بالضبط، بدون أي تغيير أو تعديل.</p>
                                         <div class="mt-2 text-sm text-gray-600">
@@ -1902,7 +1902,7 @@
                                     <div class="border border-gray-300 rounded-lg p-4 bg-white">
                                         <div class="flex items-center gap-3 mb-2">
                                             <div class="w-4 h-4 bg-green-900 rounded-full"></div>
-                                            <h5 class="font-bold text-black text-lg">البحث المرن (Flexible)</h5>
+                                            <h5 class="font-bold text-black text-lg">البحث الغير مطابق </h5>
                                         </div>
                                         <p class="text-gray-700">يتجاهل أدوات التعريف (ال)، حروف العطف (و، ف)، علامات الترقيم، والهمزات المختلفة.</p>
                                         <div class="mt-2 text-sm text-gray-600">
@@ -1914,7 +1914,7 @@
                                     <div class="border border-gray-300 rounded-lg p-4 bg-white">
                                         <div class="flex items-center gap-3 mb-2">
                                             <div class="w-4 h-4 bg-black rounded-full"></div>
-                                            <h5 class="font-bold text-black text-lg">البحث الصرفي (Morphological)</h5>
+                                            <h5 class="font-bold text-black text-lg"> البحث الجذر الصرفي </h5>
                                         </div>
                                         <p class="text-gray-700">بحث بالجذر الصرفي للكلمة، يجد جميع المشتقات والتصريفات.</p>
                                         <div class="mt-2 text-sm text-gray-600">
