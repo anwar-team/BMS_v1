@@ -889,6 +889,67 @@
             }
         }
         
+        // Share functionality
+        function shareBook() {
+            const bookTitle = '{{ $book->title ?? "كتاب" }}';
+            const bookUrl = window.location.href;
+            
+            if (navigator.share) {
+                navigator.share({
+                    title: bookTitle,
+                    text: 'لقد وجدت هذا الكتاب مثيرًا للاهتمام',
+                    url: bookUrl
+                }).catch((error) => {
+                    console.log('Error sharing:', error);
+                    // Fallback to clipboard
+                    copyToClipboard(bookUrl);
+                });
+            } else {
+                // Fallback to clipboard
+                copyToClipboard(bookUrl);
+            }
+        }
+        
+        // Copy to clipboard functionality
+        function copyToClipboard(text) {
+            if (navigator.clipboard) {
+                navigator.clipboard.writeText(text).then(function() {
+                    alert('تم نسخ الرابط إلى الحافظة');
+                }).catch(function() {
+                    // Fallback for older browsers
+                    fallbackCopyTextToClipboard(text);
+                });
+            } else {
+                // Fallback for older browsers
+                fallbackCopyTextToClipboard(text);
+            }
+        }
+        
+        // Fallback copy function for older browsers
+        function fallbackCopyTextToClipboard(text) {
+            const textArea = document.createElement("textarea");
+            textArea.value = text;
+            textArea.style.position = "fixed";
+            textArea.style.left = "-999999px";
+            textArea.style.top = "-999999px";
+            document.body.appendChild(textArea);
+            textArea.focus();
+            textArea.select();
+            
+            try {
+                const successful = document.execCommand('copy');
+                if (successful) {
+                    alert('تم نسخ الرابط إلى الحافظة');
+                } else {
+                    alert('فشل في نسخ الرابط. يرجى نسخه يدوياً: ' + text);
+                }
+            } catch (err) {
+                alert('فشل في نسخ الرابط. يرجى نسخه يدوياً: ' + text);
+            }
+            
+            document.body.removeChild(textArea);
+        }
+        
         // Hide search results when clicking outside
         document.addEventListener('click', function(e) {
             const searchContainer = e.target.closest('.relative');
