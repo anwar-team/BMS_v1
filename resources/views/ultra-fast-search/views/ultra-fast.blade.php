@@ -984,11 +984,7 @@
                                            class="text-blue-600 focus:ring-blue-500 filter-option-checkbox rounded">
                                     <div class="flex-1 text-right">
                                         <div class="text-sm font-medium text-gray-900">${option.name}</div>
-                                        <div class="text-xs text-gray-500">ID: ${option.id}</div>
                                     </div>
-                                </div>
-                                <div class="bg-blue-100 text-blue-800 text-xs font-medium px-2 py-1 rounded-full">
-                                    ${option.count ? option.count.toLocaleString() : '0'}
                                 </div>
                             </label>
                         `).join('');
