@@ -282,7 +282,7 @@
                                                 </svg>
                                                 <span id="filterToggleLabel" class="font-medium">فلترة</span>
                                                 <!-- عداد الفلاتر النشطة - محسّن -->
-                                                <span id="activeFiltersCount" class="hidden absolute -top-2 -right-2 bg-gradient-to-r from-red-500 to-pink-500 text-white text-xs rounded-full min-w-[22px] h-[22px] px-1.5 flex items-center justify-center font-bold shadow-lg border-2 border-white animate-bounce">0</span>
+                                                <span id="activeFiltersCount" class="hidden absolute -top-2 -right-2 bg-gradient-to-r from-red-900 text-white text-xs rounded-full min-w-[22px] h-[22px] px-1.5 flex items-center justify-center font-bold shadow-lg border-2 border-white animate-bounce">0</span>
                                                 <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
                                                 </svg>
@@ -365,15 +365,15 @@
                             <div id="selectedFiltersContainer" class="hidden mt-4 p-4 bg-gradient-to-r from-blue-50 via-indigo-50 to-purple-50 rounded-xl border-2 border-blue-400 shadow-lg">
                                 <div class="flex items-center justify-between mb-3">
                                     <div class="flex items-center gap-2">
-                                        <div class="bg-blue-600 rounded-full p-1.5">
+                                        <div class="bg-green-800 rounded-full p-1.5">
                                             <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"></path>
                                             </svg>
                                         </div>
-                                        <span class="text-sm font-bold text-blue-900">الفلاتر المطبقة:</span>
-                                        <span id="filterSummaryText" class="text-xs font-semibold text-blue-700 bg-white px-3 py-1 rounded-full shadow-sm border border-blue-200"></span>
+                                        <span class="text-sm font-bold text-green-900">الفلاتر المطبقة:</span>
+                                        <span id="filterSummaryText" class="text-xs font-semibold text-green-700 bg-white px-3 py-1 rounded-full shadow-sm border border-green-200"></span>
                                     </div>
-                                    <button type="button" id="clearAllFilters" class="flex items-center gap-1 text-xs font-bold text-white bg-gradient-to-r from-red-500 to-pink-600 hover:from-red-600 hover:to-pink-700 px-4 py-2 rounded-full transition-all shadow-md hover:shadow-lg transform hover:scale-105">
+                                    <button type="button" id="clearAllFilters" class="flex items-center gap-1 text-xs font-bold text-white bg-gradient-to-r from-red-900  hover:from-red-600  px-4 py-2 rounded-full transition-all shadow-md hover:shadow-lg transform hover:scale-105">
                                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
                                         </svg>
