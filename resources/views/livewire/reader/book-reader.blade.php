@@ -266,7 +266,7 @@
                                                                         <button wire:click="decreaseFontSize" class="w-8 h-8 bg-[#8B4513] text-white rounded-full flex items-center justify-center text-sm font-bold hover:bg-[#A0522D] transition-colors">
                                                                             A-
                                                                         </button>
-                                                                        <span class="text-sm text-gray-600 min-w-[3rem] text-center">{{ $fontSize }}%</span>
+                                                                        <span class="text-sm text-gray-600 min-w-[3rem] text-center">{{ $fontPercent }}%</span>
                                                                         <button wire:click="increaseFontSize" class="w-8 h-8 bg-[#8B4513] text-white rounded-full flex items-center justify-center text-sm font-bold hover:bg-[#A0522D] transition-colors">
                                                                             A+
                                                                         </button>
