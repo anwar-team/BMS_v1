@@ -391,7 +391,7 @@
                                 </div>
                             </div>
 
-                            <!-- شرح مبسط لأنواع البحث -->
+                            <!-- شرح مبسط لأنواع البحث 
                             <div class="p-4 bg-gradient-to-r from-blue-50 to-indigo-50 border-r-4 border-blue-500 text-sm text-gray-700 rounded-lg shadow-sm">
                                 <div class="font-bold text-blue-900 mb-3 flex items-center gap-2">
                                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -423,7 +423,7 @@
                                     </div>
                                 </div>
                             </div>
-
+                            -->
                             <!-- Search Stats -->
                             <div id="searchInfo" class="text-sm text-gray-600 hidden">
                                 <div class="flex justify-between items-center">
