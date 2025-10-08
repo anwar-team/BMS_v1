@@ -149,8 +149,8 @@
                                                                     </div>
                                                                 </div>
                                                             </label>
-                                                            <label class="flex items-center gap-3 p-3 hover:bg-blue-50 rounded-lg cursor-pointer border border-gray-200 hover:border-blue-500 transition-all search-type-label" title="مطابقة حرفية دقيقة للنص المدخل">
-                                                                <input type="radio" name="searchType" value="exact_match" class="text-blue-600 focus:ring-blue-500 w-4 h-4">
+                                                            <label class="flex items-center gap-3 p-3 hover:bg-green-50 rounded-lg cursor-pointer border border-gray-200 hover:border-green-800 transition-all search-type-label" title="مطابقة حرفية دقيقة للنص المدخل">
+                                                                <input type="radio" name="searchType" value="exact_match" class="text-green-800 focus:ring-green-800 w-4 h-4">
                                                                 <div class="flex items-center gap-2 flex-1 text-right">
                                                                     <div class="flex-1">
                                                                         <span class="text-sm font-semibold block text-gray-800">البحث المطابق</span>
@@ -175,7 +175,7 @@
                                                         <h3 class="text-sm font-medium text-gray-700 mb-3 text-right">ترتيب الكلمات</h3>
                                                         <div class="space-y-2">
                                                             <label class="flex items-center gap-3 p-2 hover:bg-gray-50 rounded-lg cursor-pointer transition-all" title="الكلمات متتالية بدون فاصل">
-                                                                <input type="radio" name="wordOrder" value="consecutive" class="text-blue-600 focus:ring-blue-500 w-4 h-4">
+                                                                <input type="radio" name="wordOrder" value="consecutive" class="text-green-800 focus:ring-green-800 w-4 h-4">
                                                                 <div class="flex items-center gap-2 flex-1 text-right">
                                                                     <div class="flex-1">
                                                                         <span class="text-sm font-medium text-gray-800">متتالية</span>
@@ -238,9 +238,9 @@
                                                             </div>
                                                         </label>
                                                         <label class="flex items-center gap-3 p-2 hover:bg-gray-50 rounded-md cursor-pointer">
-                                                            <input type="radio" name="sortOrder" value="death_year_asc" class="text-blue-600 focus:ring-blue-500">
+                                                            <input type="radio" name="sortOrder" value="death_year_asc" class="text-green-800 focus:ring-green-800">
                                                             <div class="flex items-center gap-2 flex-1 text-right">
-                                                                <svg class="w-4 h-4 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                                <svg class="w-4 h-4 text-green-800" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
                                                                 </svg>
                                                                 <span class="text-sm">سنة الوفاة (الأقدم أولاً)</span>
@@ -274,7 +274,7 @@
                                             <button 
                                                 type="button" 
                                                 id="filterToggle"
-                                                class="flex items-center gap-1 px-3 py-2 text-sm text-gray-600 hover:text-blue-600 hover:bg-blue-50 rounded-md transition-all relative"
+                                                class="flex items-center gap-1 px-3 py-2 text-sm text-gray-600 hover:text-green-800 hover:bg-green-50 rounded-md transition-all relative"
                                                 title="خيارات الفلترة"
                                             >
                                                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -362,7 +362,7 @@
 
                             <!-- منطقة عرض Tags المختارة -->
                             <!-- الفلاتر المختارة - منطقة محسنة بصرياً -->
-                            <div id="selectedFiltersContainer" class="hidden mt-4 p-4 bg-gradient-to-r from-blue-50 via-indigo-50 to-purple-50 rounded-xl border-2 border-blue-400 shadow-lg">
+                            <div id="selectedFiltersContainer" class="hidden mt-4 p-4 bg-gradient-to-r from-green-50 via-emerald-50 to-green-100 rounded-xl border-2 border-green-800 shadow-lg">
                                 <div class="flex items-center justify-between mb-3">
                                     <div class="flex items-center gap-2">
                                         <div class="bg-green-800 rounded-full p-1.5">
@@ -386,8 +386,8 @@
                             </div>
 
                             <!-- شرح مبسط لأنواع البحث 
-                            <div class="p-4 bg-gradient-to-r from-blue-50 to-indigo-50 border-r-4 border-blue-500 text-sm text-gray-700 rounded-lg shadow-sm">
-                                <div class="font-bold text-blue-900 mb-3 flex items-center gap-2">
+                            <div class="p-4 bg-gradient-to-r from-green-50 to-green-100 border-r-4 border-green-800 text-sm text-gray-700 rounded-lg shadow-sm">
+                                <div class="font-bold text-green-900 mb-3 flex items-center gap-2">
                                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                                     </svg>
@@ -404,7 +404,7 @@
                                     <div class="flex items-start gap-2">
                                         <span class="text-lg flex-shrink-0">🎯</span>
                                         <div>
-                                            <strong class="text-blue-700">البحث المطابق:</strong>
+                                            <strong class="text-green-800">البحث المطابق:</strong>
                                             <span class="text-gray-600">مطابقة حرفية دقيقة للنص كما كتبته بالضبط</span>
                                         </div>
                                     </div>
@@ -699,7 +699,7 @@
                     // تحسين التفاعل البصري - Highlight للعنصر المحدد
                     const updateSearchTypeHighlight = () => {
                         document.querySelectorAll('.search-type-label').forEach(label => {
-                            label.classList.remove('bg-emerald-50', 'border-emerald-500', 'bg-blue-50', 'border-blue-500', 'bg-purple-50', 'border-purple-500');
+                            label.classList.remove('bg-emerald-50', 'border-emerald-500', 'bg-green-50', 'border-green-800', 'bg-purple-50', 'border-purple-500');
                         });
                         
                         const checked = document.querySelector('input[name="searchType"]:checked');
@@ -709,7 +709,7 @@
                             if (value === 'flexible_match') {
                                 label.classList.add('bg-emerald-50', 'border-emerald-500');
                             } else if (value === 'exact_match') {
-                                label.classList.add('bg-blue-50', 'border-blue-500');
+                                label.classList.add('bg-green-50', 'border-green-800');
                             } else if (value === 'morphological') {
                                 label.classList.add('bg-purple-50', 'border-purple-500');
                             }
@@ -950,7 +950,7 @@
                 // عرض مؤشر التحميل - Context7 Enhanced
                 filterOptionsList.innerHTML = `
                     <div class="flex items-center justify-center p-6">
-                        <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+                        <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-green-800"></div>
                         <span class="mr-3 text-sm text-gray-600">جاري تحميل البيانات الحقيقية...</span>
                     </div>
                 `;
@@ -978,10 +978,10 @@
                         
                         // Context7: Enhanced display with counts
                         filterOptionsList.innerHTML = filterData.map(option => `
-                            <label class="flex items-center justify-between gap-3 p-3 hover:bg-blue-50 rounded-lg cursor-pointer border border-transparent hover:border-blue-200 transition-all">
+                            <label class="flex items-center justify-between gap-3 p-3 hover:bg-green-50 rounded-lg cursor-pointer border border-transparent hover:border-green-800 transition-all">
                                 <div class="flex items-center gap-3 flex-1">
                                     <input type="checkbox" value="${option.id}" data-name="${option.name}" 
-                                           class="text-blue-600 focus:ring-blue-500 filter-option-checkbox rounded">
+                                           class="text-green-800 focus:ring-green-800 filter-option-checkbox rounded">
                                     <div class="flex-1 text-right">
                                         <div class="text-sm font-medium text-gray-900">${option.name}</div>
                                     </div>
@@ -1349,7 +1349,7 @@
 
                         <div class="flex items-center justify-between gap-3 pt-3 border-t border-gray-100">
                             <div class="flex items-center gap-6 text-sm text-gray-600">
-                                ${result.author_name && result.author_name !== 'غير محدد' && result.author_name !== 'مؤلف' ? `<div class="flex items-center gap-2"><span class="font-medium text-gray-700">👤 المؤلف:</span> ${result.author_id ? `<a href="/authors/${result.author_id}/details" class="text-blue-600 hover:text-blue-800 hover:underline transition-colors">${result.author_name}</a>` : `<span class="text-gray-600">${result.author_name}</span>`}</div>` : result.author_name ? `<div class="flex items-center gap-2"><span class="font-medium text-gray-700">👤 المؤلف:</span> <span class="text-gray-600">غير محدد</span></div>` : ''}
+                                ${result.author_name && result.author_name !== 'غير محدد' && result.author_name !== 'مؤلف' ? `<div class="flex items-center gap-2"><span class="font-medium text-gray-700">👤 المؤلف:</span> ${result.author_id ? `<a href="/authors/${result.author_id}/details" class="text-green-800 hover:text-green-900 hover:underline transition-colors">${result.author_name}</a>` : `<span class="text-gray-600">${result.author_name}</span>`}</div>` : result.author_name ? `<div class="flex items-center gap-2"><span class="font-medium text-gray-700"> المؤلف:</span> <span class="text-gray-600">غير محدد</span></div>` : ''}
                                 <div class="flex items-center gap-2">
                                     <span class="font-medium text-gray-700">📄 الصفحة:</span>
                                     <span class="bg-gray-100 text-gray-700 px-2 py-1 rounded text-xs font-medium">${result.page_number || 'غير محدد'}</span>
@@ -1592,19 +1592,19 @@
                             <div class="text-gray-700 leading-relaxed mb-6" dir="rtl">
                                 <div style="white-space: pre-wrap; word-wrap: break-word;">${highlighted}</div>
                             </div>
-                            <div class="flex justify-between items-center mt-6 pt-4 border-t border-gray-200 bg-gradient-to-r from-gray-50 to-blue-50 rounded-lg p-4 shadow-lg">
+                            <div class="flex justify-between items-center mt-6 pt-4 border-t border-gray-200 bg-gradient-to-r from-gray-50 to-green-50 rounded-lg p-4 shadow-lg">
                                 <button onclick="navigateToPage(${data.page.book_id}, ${data.page.page_number - 1})" 
-                                        class="flex items-center gap-2 px-5 py-3 bg-white hover:bg-blue-50 disabled:bg-gray-100 disabled:text-gray-400 disabled:cursor-not-allowed rounded-lg text-sm font-medium transition-all duration-300 shadow-md hover:shadow-lg border border-gray-200 hover:border-blue-300 ${data.page.page_number <= 1 ? 'opacity-50' : ''}"
+                                        class="flex items-center gap-2 px-5 py-3 bg-white hover:bg-green-50 disabled:bg-gray-100 disabled:text-gray-400 disabled:cursor-not-allowed rounded-lg text-sm font-medium transition-all duration-300 shadow-md hover:shadow-lg border border-gray-200 hover:border-green-800 ${data.page.page_number <= 1 ? 'opacity-50' : ''}"
                                         ${data.page.page_number <= 1 ? 'disabled' : ''}>
                                     <span class="text-lg">→</span>
                                     <span>الصفحة السابقة</span>
                                 </button>
                                 <div class="flex items-center gap-2 bg-white px-4 py-2 rounded-full shadow-md border border-gray-200">
-                                    <span class="text-blue-600 font-bold">📄</span>
+                                    <span class="text-green-800 font-bold">📄</span>
                                     <span class="text-sm font-bold text-gray-700">صفحة ${data.page.page_number}</span>
                                 </div>
                                 <button onclick="navigateToPage(${data.page.book_id}, ${data.page.page_number + 1})" 
-                                        class="flex items-center gap-2 px-5 py-3 bg-white hover:bg-blue-50 rounded-lg text-sm font-medium transition-all duration-300 shadow-md hover:shadow-lg border border-gray-200 hover:border-blue-300">
+                                        class="flex items-center gap-2 px-5 py-3 bg-white hover:bg-green-50 rounded-lg text-sm font-medium transition-all duration-300 shadow-md hover:shadow-lg border border-gray-200 hover:border-green-800">
                                     <span>الصفحة التالية</span>
                                     <span class="text-lg">←</span>
                                 </button>
@@ -1688,19 +1688,19 @@
                             <div class="text-gray-700 leading-relaxed mb-6" dir="rtl">
                                 <div style="white-space: pre-wrap; word-wrap: break-word;">${highlighted}</div>
                             </div>
-                            <div class="flex justify-between items-center mt-6 pt-4 border-t border-gray-200 bg-gradient-to-r from-gray-50 to-blue-50 rounded-lg p-4 shadow-lg">
+                            <div class="flex justify-between items-center mt-6 pt-4 border-t border-gray-200 bg-gradient-to-r from-gray-50 to-green-50 rounded-lg p-4 shadow-lg">
                                 <button onclick="navigateToPage(${data.page.book_id}, ${data.page.page_number - 1})" 
-                                        class="flex items-center gap-2 px-5 py-3 bg-white hover:bg-blue-50 disabled:bg-gray-100 disabled:text-gray-400 disabled:cursor-not-allowed rounded-lg text-sm font-medium transition-all duration-300 shadow-md hover:shadow-lg border border-gray-200 hover:border-blue-300 ${data.page.page_number <= 1 ? 'opacity-50' : ''}"
+                                        class="flex items-center gap-2 px-5 py-3 bg-white hover:bg-green-50 disabled:bg-gray-100 disabled:text-gray-400 disabled:cursor-not-allowed rounded-lg text-sm font-medium transition-all duration-300 shadow-md hover:shadow-lg border border-gray-200 hover:border-green-800 ${data.page.page_number <= 1 ? 'opacity-50' : ''}"
                                         ${data.page.page_number <= 1 ? 'disabled' : ''}>
                                     <span class="text-lg">→</span>
                                     <span>الصفحة السابقة</span>
                                 </button>
                                 <div class="flex items-center gap-2 bg-white px-4 py-2 rounded-full shadow-md border border-gray-200">
-                                    <span class="text-blue-600 font-bold">📄</span>
+                                    <span class="text-green-800 font-bold">📄</span>
                                     <span class="text-sm font-bold text-gray-700">صفحة ${data.page.page_number}</span>
                                 </div>
                                 <button onclick="navigateToPage(${data.page.book_id}, ${data.page.page_number + 1})" 
-                                        class="flex items-center gap-2 px-5 py-3 bg-white hover:bg-blue-50 rounded-lg text-sm font-medium transition-all duration-300 shadow-md hover:shadow-lg border border-gray-200 hover:border-blue-300">
+                                        class="flex items-center gap-2 px-5 py-3 bg-white hover:bg-green-50 rounded-lg text-sm font-medium transition-all duration-300 shadow-md hover:shadow-lg border border-gray-200 hover:border-green-800">
                                     <span>الصفحة التالية</span>
                                     <span class="text-lg">←</span>
                                 </button>
@@ -1744,7 +1744,7 @@
                     const pagesHtml = data.pages.map(page => `
                         <div class="border-b border-gray-200 pb-2 mb-2">
                             <button onclick="goToPage(${bookId}, ${page.page_number})" 
-                                    class="text-blue-600 hover:text-blue-800 font-medium">
+                                    class="text-green-800 hover:text-green-900 font-medium">
                                 صفحة ${page.page_number}
                             </button>
                             <div class="text-sm text-gray-600 mt-1">${page.content_preview}</div>
@@ -1754,20 +1754,20 @@
                     const modal = `
                         <div id="pages-modal" class="modal-overlay fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
                             <div class="modal-content bg-white rounded-lg max-w-2xl w-full max-h-96 overflow-hidden shadow-lg">
-                                <div class="bg-blue-600 text-white p-6">
+                                <div class="bg-green-800 text-white p-6">
                                     <div class="flex justify-between items-center">
                                         <h3 class="text-lg font-bold">📚 صفحات من نفس الكتاب</h3>
                                         <button onclick="closeModal('pages-modal')" class="text-white hover:text-gray-200 text-xl font-bold">✕</button>
                                     </div>
-                                    <p class="text-blue-100 mt-2">اختر صفحة للانتقال إليها</p>
+                                    <p class="text-green-100 mt-2">اختر صفحة للانتقال إليها</p>
                                 </div>
                                 <div class="p-6 overflow-y-auto max-h-80">
                                     <div class="space-y-3">
                                         ${data.pages.map(page => `
-                                            <div class="border border-gray-200 rounded-lg p-3 hover:border-blue-300 hover:bg-gray-50 transition-colors">
+                                            <div class="border border-gray-200 rounded-lg p-3 hover:border-green-800 hover:bg-gray-50 transition-colors">
                                                 <button onclick="goToPage(${bookId}, ${page.page_number})" 
                                                         class="w-full text-right">
-                                                    <div class="font-medium text-blue-600 mb-1">
+                                                    <div class="font-medium text-green-800 mb-1">
                                                         📄 صفحة ${page.page_number}
                                                     </div>
                                                     <div class="text-sm text-gray-600">
@@ -1866,7 +1866,7 @@
                         <!-- Header -->
                         <div class="bg-green-900 text-white p-6">
                             <div class="flex justify-between items-center">
-                                <h3 class="text-2xl font-bold">دليل البحث </h3>
+                                <h3 class="text-white text-2xl font-bold">دليل البحث </h3>
                                 <button onclick="closeModal('help-modal')" class="text-white hover:text-red-800 text-2xl font-bold">✕</button>
                             </div>
                         </div>
@@ -2044,7 +2044,7 @@
                                     ${result.section ? `<div class="mt-2"><span class="inline-block bg-gray-100 text-gray-700 px-2 py-1 rounded text-xs">${result.section}</span></div>` : ''}
                                         <div class="text-sm text-gray-600 flex items-center gap-3">
                                         <span class="inline-flex items-center gap-1 bg-gray-100 px-2 py-1 rounded text-xs">الصفحة ${result.page_number || ''}</span>
-                                        ${result.author_name && result.author_name !== 'غير محدد' && result.author_name !== 'مؤلف' ? (result.author_id ? `<a href="/authors/${result.author_id}/details" class="inline-flex items-center gap-1 bg-blue-50 hover:bg-blue-100 px-2 py-1 rounded text-xs text-blue-700 hover:text-blue-800 transition-colors">✍️ ${result.author_name}</a>` : `<span class="inline-flex items-center gap-1 bg-gray-100 px-2 py-1 rounded text-xs text-gray-600">✍️ ${result.author_name}</span>`) : (result.author_name ? `<span class="inline-flex items-center gap-1 bg-gray-100 px-2 py-1 rounded text-xs text-gray-600">✍️ غير محدد</span>` : '')}
+                                        ${result.author_name && result.author_name !== 'غير محدد' && result.author_name !== 'مؤلف' ? (result.author_id ? `<a href="/authors/${result.author_id}/details" class="inline-flex items-center gap-1 bg-green-50 hover:bg-green-100 px-2 py-1 rounded text-xs text-green-800 hover:text-green-900 transition-colors">✍️ ${result.author_name}</a>` : `<span class="inline-flex items-center gap-1 bg-gray-100 px-2 py-1 rounded text-xs text-gray-600">✍️ ${result.author_name}</span>`) : (result.author_name ? `<span class="inline-flex items-center gap-1 bg-gray-100 px-2 py-1 rounded text-xs text-gray-600">✍️ غير محدد</span>` : '')}
                                         ${result.section ? `<span class="inline-flex items-center gap-1 bg-gray-100 px-2 py-1 rounded text-xs">${result.section}</span>` : ''}
                                         ${result.chapter_title ? `<span class="inline-flex items-center gap-1 bg-gray-100 px-2 py-1 rounded text-xs">${result.chapter_title}</span>` : ''}
                                         ${result.volume_title ? `<span class="inline-flex items-center gap-1 bg-gray-100 px-2 py-1 rounded text-xs">${result.volume_title}</span>` : ''}
@@ -2321,7 +2321,7 @@
                     <button type="button" id="cancelFilterModal" class="px-4 py-2 text-sm text-gray-600 hover:text-gray-800">
                         إلغاء
                     </button>
-                    <button type="button" id="applyFilterModal" class="px-4 py-2 bg-blue-600 text-white text-sm rounded-md hover:bg-blue-700">
+                    <button type="button" id="applyFilterModal" class="px-4 py-2 bg-green-800 text-white text-sm rounded-md hover:bg-green-900">
                         تطبيق
                     </button>
                 </div>
