@@ -365,17 +365,6 @@ class BookResource extends Resource
                     ->columnSpanFull(),
 
                 self::getChaptersRepeater(),
-                
-                // إضافة صفحات خارج الفصول (على مستوى المجلد)
-                Section::make('صفحات خارج الفصول')
-                    ->description('صفحات على مستوى المجلد (غير تابعة لأي فصل)')
-                    ->icon('heroicon-o-document-text')
-                    ->schema([
-                        self::getPagesRepeater('صفحات المجلد'),
-                    ])
-                    ->collapsible()
-                    ->collapsed()
-                    ->columnSpanFull(),
             ])
             ->addActionLabel('إضافة مجلد جديد')
             ->reorderableWithButtons()
