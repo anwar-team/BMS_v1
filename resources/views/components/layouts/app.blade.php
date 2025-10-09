@@ -32,6 +32,12 @@
     <body class="antialiased">
         {{ $slot }}
 
+        {{-- رسالة الترحيب --}}
+        @include('partials.welcome-modal')
+
+        {{-- الزر العائم ونموذج الملاحظات --}}
+        @include('partials.feedback-panel')
+
         @livewire('notifications')
 
         @filamentScripts

@@ -12,6 +12,7 @@ use App\Http\Controllers\BookController;
 use App\Http\Controllers\PublisherController;
 use App\Http\Controllers\LanguageController;
 use App\Http\Controllers\SearchAllController;
+use App\Http\Controllers\FeedbackComplaintController;
 use App\Livewire\Reader\BookReader;
 use Illuminate\Support\Facades\Route;
 use Lab404\Impersonate\Services\ImpersonateManager;
@@ -29,6 +30,9 @@ use Lab404\Impersonate\Services\ImpersonateManager;
 
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
+
+// Feedback & Complaints Routes (Public)
+Route::post('/feedback', [FeedbackComplaintController::class, 'store'])->name('feedback.store');
 
 Route::get('/blog', BlogList::class)->name('blog');
 
@@ -170,6 +174,11 @@ Route::post('/contact', [App\Http\Controllers\ContactController::class, 'submit'
 Route::get('/admin/shamela-import', App\Livewire\ShamelaScraper::class)
     ->name('shamela.import')
     ->middleware('auth');
+
+// Admin: Feedback & Complaints Routes
+Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () {
+    Route::resource('feedback', FeedbackComplaintController::class)->except(['create', 'store']);
+});
 
 // TODO: Create actual blog preview component
 Route::post('/blog-preview', function () {
