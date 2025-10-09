@@ -1,5 +1,5 @@
 {{-- إشعار الإصدار التجريبي البسيط --}}
-<div class="bg-green-800 text-white py-3 shadow-lg" dir="rtl">
+<div class="fixed top-0 left-0 right-0 z-60 bg-green-800 text-white py-3 shadow-lg" dir="rtl">
     <div class="container mx-auto px-4">
         <div class="flex items-center justify-between gap-4">
             {{-- المحتوى الرئيسي --}}
@@ -11,7 +11,7 @@
                 
                 {{-- النص الرئيسي --}}
                 <div class="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-3">
-                    <h3 class="font-bold text-lg">🚀 الإصدار التجريبي الأولي للمكتبة الكاملة</h3>
+                    <h3 class="font-bold text-lg"> الإصدار التجريبي الأولي للمكتبة الكاملة</h3>
                     <span class="text-sm opacity-90">
                         • نعمل على تطوير تجربتك باستمرار - شاركنا آرائك لنحسن الخدمة
                     </span>
@@ -40,6 +40,16 @@
     /* تحسين الرسوم المتحركة للإشعار البسيط */
     .bg-green-800 {
         background: linear-gradient(135deg, #166534 0%, #15803d 50%, #166534 100%);
+    }
+    
+    /* تعديل موضع الـ Header ليكون تحت الإشعار */
+    header.fixed {
+        top: 64px !important; /* ارتفاع الإشعار تقريباً */
+    }
+    
+    /* إضافة مساحة علوية للـ main content */
+    body {
+        padding-top: 128px !important; /* ارتفاع الإشعار + Header */
     }
     
     /* تأثير بسيط للحركة */
