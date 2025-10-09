@@ -57,7 +57,6 @@
                     <div class="flex flex-col">
                         <!-- Section Title -->
                         <div class="mb-4 md:mb-16">
-                            <h2 class="mb-3 text-3xl font-bold text-primary-800">تواصل معنا</h2>
                             <p class="max-w-xl text-gray-600">
                                 هل لديك أسئلة حول خدماتنا أو تحتاج إلى مساعدة؟ نحن هنا لمساعدتك!
                                 تواصل معنا من خلال أي من القنوات أدناه.

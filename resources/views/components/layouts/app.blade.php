@@ -31,7 +31,7 @@
 
     <body class="antialiased">
         {{-- إشعار الإصدار التجريبي المُحسن --}}
-        @include('partials.beta-notice-enhanced')
+        {{-- @include('partials.beta-notice-enhanced') --}}
         
         {{ $slot }}
 
