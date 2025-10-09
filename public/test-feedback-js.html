@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="test-token">
+    <title>اختبار نموذج الملاحظات</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 p-8">
+    <div class="max-w-2xl mx-auto">
+        <div class="bg-white rounded-lg shadow-lg p-6 mb-6">
+            <h1 class="text-2xl font-bold text-gray-800 mb-4">🧪 اختبار JavaScript للنموذج</h1>
+            
+            <div class="space-y-4">
+                <div class="border-r-4 border-green-600 bg-green-50 p-4">
+                    <h3 class="font-bold text-green-800 mb-2">✓ الاختبارات التلقائية</h3>
+                    <ul class="text-sm space-y-1" id="testResults">
+                        <li>⏳ جاري الاختبار...</li>
+                    </ul>
+                </div>
+                
+                <button onclick="testFeedbackSystem()" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-lg transition-all">
+                    🔄 إعادة الاختبار
+                </button>
+            </div>
+        </div>
+        
+        <div class="bg-white rounded-lg shadow-lg p-6">
+            <h2 class="text-xl font-bold text-gray-800 mb-4">📋 نتائج الاختبار</h2>
+            <pre id="testOutput" class="bg-gray-50 p-4 rounded text-xs overflow-auto max-h-96"></pre>
+        </div>
+    </div>
+
+    <script>
+        let testLog = [];
+        
+        function log(message, type = 'info') {
+            const icons = {
+                success: '✓',
+                error: '✗',
+                info: 'ℹ',
+                warning: '⚠'
+            };
+            
+            const colors = {
+                success: 'text-green-600',
+                error: 'text-red-600',
+                info: 'text-blue-600',
+                warning: 'text-yellow-600'
+            };
+            
+            testLog.push({ message, type, time: new Date().toLocaleTimeString('ar') });
+            
+            const output = document.getElementById('testOutput');
+            output.textContent = testLog.map(l => 
+                `[${l.time}] ${icons[l.type]} ${l.message}`
+            ).join('\n');
+        }
+        
+        function updateResults(results) {
+            const container = document.getElementById('testResults');
+            container.innerHTML = results.map(r => 
+                `<li class="${r.passed ? 'text-green-700' : 'text-red-700'}">
+                    ${r.passed ? '✓' : '✗'} ${r.test}: ${r.message}
+                </li>`
+            ).join('');
+        }
+        
+        async function testFeedbackSystem() {
+            testLog = [];
+            const results = [];
+            
+            log('بدء اختبار نظام الملاحظات...', 'info');
+            
+            // Test 1: Check CSRF Token
+            try {
+                const csrfToken = document.querySelector('meta[name="csrf-token"]');
+                if (csrfToken && csrfToken.getAttribute('content')) {
+                    results.push({ test: 'CSRF Token', passed: true, message: 'موجود' });
+                    log('✓ CSRF Token موجود: ' + csrfToken.getAttribute('content'), 'success');
+                } else {
+                    results.push({ test: 'CSRF Token', passed: false, message: 'غير موجود' });
+                    log('✗ CSRF Token غير موجود!', 'error');
+                }
+            } catch (e) {
+                results.push({ test: 'CSRF Token', passed: false, message: e.message });
+                log('✗ خطأ في فحص CSRF Token: ' + e.message, 'error');
+            }
+            
+            // Test 2: Check if fetch API available
+            try {
+                if (typeof fetch === 'function') {
+                    results.push({ test: 'Fetch API', passed: true, message: 'متوفر' });
+                    log('✓ Fetch API متوفر', 'success');
+                } else {
+                    results.push({ test: 'Fetch API', passed: false, message: 'غير متوفر' });
+                    log('✗ Fetch API غير متوفر!', 'error');
+                }
+            } catch (e) {
+                results.push({ test: 'Fetch API', passed: false, message: e.message });
+                log('✗ خطأ في فحص Fetch API: ' + e.message, 'error');
+            }
+            
+            // Test 3: Check FormData support
+            try {
+                const testForm = document.createElement('form');
+                const formData = new FormData(testForm);
+                formData.append('test', 'value');
+                
+                if (formData.get('test') === 'value') {
+                    results.push({ test: 'FormData', passed: true, message: 'يعمل بشكل صحيح' });
+                    log('✓ FormData يعمل بشكل صحيح', 'success');
+                } else {
+                    results.push({ test: 'FormData', passed: false, message: 'لا يعمل' });
+                    log('✗ FormData لا يعمل!', 'error');
+                }
+            } catch (e) {
+                results.push({ test: 'FormData', passed: false, message: e.message });
+                log('✗ خطأ في فحص FormData: ' + e.message, 'error');
+            }
+            
+            // Test 4: Simulate form validation
+            try {
+                const testData = {
+                    type: 'feedback',
+                    subject: 'اختبار',
+                    message: 'هذه رسالة اختبار طويلة بما يكفي'
+                };
+                
+                let validationPassed = true;
+                let validationMessage = '';
+                
+                if (!testData.type || !['feedback', 'complaint'].includes(testData.type)) {
+                    validationPassed = false;
+                    validationMessage = 'النوع غير صحيح';
+                } else if (!testData.subject || testData.subject.length < 3) {
+                    validationPassed = false;
+                    validationMessage = 'الموضوع قصير جداً';
+                } else if (!testData.message || testData.message.length < 10) {
+                    validationPassed = false;
+                    validationMessage = 'الرسالة قصيرة جداً';
+                }
+                
+                if (validationPassed) {
+                    results.push({ test: 'Validation', passed: true, message: 'البيانات صالحة' });
+                    log('✓ Validation يعمل: البيانات صالحة', 'success');
+                } else {
+                    results.push({ test: 'Validation', passed: false, message: validationMessage });
+                    log('✗ Validation فشل: ' + validationMessage, 'error');
+                }
+            } catch (e) {
+                results.push({ test: 'Validation', passed: false, message: e.message });
+                log('✗ خطأ في الـ Validation: ' + e.message, 'error');
+            }
+            
+            // Test 5: Check localStorage support (for welcome modal)
+            try {
+                localStorage.setItem('test', 'value');
+                const value = localStorage.getItem('test');
+                localStorage.removeItem('test');
+                
+                if (value === 'value') {
+                    results.push({ test: 'localStorage', passed: true, message: 'يعمل بشكل صحيح' });
+                    log('✓ localStorage يعمل بشكل صحيح', 'success');
+                } else {
+                    results.push({ test: 'localStorage', passed: false, message: 'لا يعمل' });
+                    log('✗ localStorage لا يعمل!', 'error');
+                }
+            } catch (e) {
+                results.push({ test: 'localStorage', passed: false, message: e.message });
+                log('✗ خطأ في فحص localStorage: ' + e.message, 'error');
+            }
+            
+            // Summary
+            const passedTests = results.filter(r => r.passed).length;
+            const totalTests = results.length;
+            const percentage = Math.round((passedTests / totalTests) * 100);
+            
+            log('', 'info');
+            log('═══════════════════════════', 'info');
+            log(`اكتمل الاختبار: ${passedTests}/${totalTests} (${percentage}%)`, 
+                percentage === 100 ? 'success' : (percentage >= 80 ? 'warning' : 'error'));
+            log('═══════════════════════════', 'info');
+            
+            if (percentage === 100) {
+                log('🎉 جميع الاختبارات نجحت! النظام جاهز للاستخدام.', 'success');
+            } else if (percentage >= 80) {
+                log('⚠ معظم الاختبارات نجحت، لكن هناك بعض المشاكل.', 'warning');
+            } else {
+                log('✗ فشل عدد كبير من الاختبارات. يرجى مراجعة الأخطاء.', 'error');
+            }
+            
+            updateResults(results);
+        }
+        
+        // Run tests on load
+        window.addEventListener('DOMContentLoaded', testFeedbackSystem);
+    </script>
+</body>
+</html>

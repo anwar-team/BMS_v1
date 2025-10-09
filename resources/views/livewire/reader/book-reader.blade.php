@@ -197,11 +197,11 @@
                                         </button>
                                     </div>
 
-                                    <!-- Separator -->
-                                    <div class="w-px h-8 bg-[#e0d9cc]"></div>
+                                    <!-- Separator - Hidden on desktop -->
+                                    <div class="lg:hidden w-px h-8 bg-[#e0d9cc]"></div>
 
-                                    <!-- Movements Toggle -->
-                                    <button wire:click="toggleMovements" class="{{ $showMovements ? 'bg-green-900 text-white shadow-md' : 'bg-[#f0e9de] text-red-800' }} px-3 py-2 sm:px-4 sm:py-2.5 rounded-lg hover:bg-[#e8e0d0] transition-all duration-200 font-tajawal text-xs sm:text-sm whitespace-nowrap border border-[#e0d9cc]">
+                                    <!-- Movements Toggle - Hidden on desktop -->
+                                    <button wire:click="toggleMovements" class="lg:hidden {{ $showMovements ? 'bg-green-900 text-white shadow-md' : 'bg-[#f0e9de] text-red-800' }} px-3 py-2 sm:px-4 sm:py-2.5 rounded-lg hover:bg-[#e8e0d0] transition-all duration-200 font-tajawal text-xs sm:text-sm whitespace-nowrap border border-[#e0d9cc]">
                                         <span class="hidden sm:inline">{{ $showMovements ? 'إخفاء الحركات' : 'إظهار الحركات' }}</span>
                                         <span class="sm:hidden">{{ $showMovements ? 'إخفاء' : 'إظهار' }}</span>
                                     </button>
