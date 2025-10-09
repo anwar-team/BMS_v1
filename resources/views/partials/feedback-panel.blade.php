@@ -202,13 +202,17 @@
         
         const formData = new FormData(this);
         
+        // الحصول على CSRF token
+        const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
+        
         try {
             const response = await fetch('{{ route("feedback.store") }}', {
                 method: 'POST',
                 body: formData,
                 headers: {
                     'X-Requested-With': 'XMLHttpRequest',
-                    'Accept': 'application/json'
+                    'Accept': 'application/json',
+                    'X-CSRF-TOKEN': csrfToken
                 }
             });
             
