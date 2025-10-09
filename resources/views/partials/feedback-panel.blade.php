@@ -14,7 +14,7 @@
         {{-- Header --}}
         <div class="bg-gradient-to-r from-green-800 to-green-900 text-white p-6">
             <div class="flex items-center justify-between mb-2">
-                <h3 class="text-2xl font-bold flex items-center gap-2">
+                <h3 class="text-white text-2xl font-bold flex items-center gap-2">
                     <span class="text-3xl">💬</span>
                     <span>ملاحظاتك تهمنا</span>
                 </h3>
@@ -86,16 +86,7 @@
                     <div class="text-red-500 text-sm mt-1 hidden" id="messageError"></div>
                 </div>
 
-                {{-- ملاحظة الخصوصية --}}
-                <div class="bg-blue-50 border-r-4 border-blue-400 p-4 rounded-lg">
-                    <div class="flex items-start gap-2">
-                        <span class="text-xl">🔒</span>
-                        <div class="text-xs text-gray-700">
-                            <p class="font-bold mb-1">رسالتك مجهولة المصدر</p>
-                            <p>لا نطلب منك الاسم أو البريد الإلكتروني. جميع الرسائل سرية.</p>
-                        </div>
-                    </div>
-                </div>
+                
             </form>
         </div>
 
