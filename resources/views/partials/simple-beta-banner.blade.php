@@ -26,10 +26,7 @@
             </div>
         </div>
         
-        {{-- شريط متحرك صغير --}}
-        <div class="mt-2 h-1 bg-white bg-opacity-20 rounded-full overflow-hidden">
-            <div class="h-full bg-white opacity-60 w-1/3 rounded-full animate-pulse"></div>
-        </div>
+       
     </div>
 </div>
 
