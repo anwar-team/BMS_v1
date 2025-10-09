@@ -32,19 +32,19 @@
             <table class="min-w-full divide-y divide-gray-200">
                 <thead class="bg-gray-50">
                     <tr>
-                        <th scope="col" class="px-6 py-3 text-right text-sm font-semibold text-gray-900 uppercase tracking-wider">
+                        <th scope="col" class="px-6 py-3 text-right font-semibold text-gray-900 uppercase tracking-wider" style="font-size: 1.1rem;">
                             #
                         </th>
-                        <th scope="col" class="px-6 py-3 text-right text-sm font-semibold text-gray-900 uppercase tracking-wider">
+                        <th scope="col" class="px-6 py-3 text-right font-semibold text-gray-900 uppercase tracking-wider" style="font-size: 1.1rem;">
                             اسم المؤلف
                         </th>
-                        <th scope="col" class="px-6 py-3 text-right text-sm font-semibold text-gray-900 uppercase tracking-wider">
+                        <th scope="col" class="px-6 py-3 text-right font-semibold text-gray-900 uppercase tracking-wider" style="font-size: 1.1rem;">
                             عدد الكتب
                         </th>
-                        <th scope="col" class="px-6 py-3 text-right text-sm font-semibold text-gray-900 uppercase tracking-wider">
+                        <th scope="col" class="px-6 py-3 text-right font-semibold text-gray-900 uppercase tracking-wider" style="font-size: 1.1rem;">
                             المذهب
                         </th>
-                        <th scope="col" class="px-6 py-3 text-right text-sm font-semibold text-gray-900 uppercase tracking-wider">
+                        <th scope="col" class="px-6 py-3 text-right font-semibold text-gray-900 uppercase tracking-wider" style="font-size: 1.1rem;">
                             تاريخ الميلاد
                         </th>
                     </tr>
@@ -52,33 +52,33 @@
                 <tbody class="divide-y divide-gray-200">
                     @forelse ($authors as $index => $author)
                         <tr class="hover:bg-gray-50 transition-colors duration-150">
-                            <td class="px-6 py-4 whitespace-nowrap text-base text-gray-900">
+                            <td class="px-6 py-4 whitespace-nowrap text-gray-900" style="font-size: 1.3rem;">
                                 {{ ($authors->currentPage() - 1) * $authors->perPage() + $index + 1 }}
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap">
-                                <div class="text-base font-medium text-gray-900">
+                                <div class="font-medium text-gray-900" style="font-size: 1.3rem;">
                                     <a href="{{ route('authors.details', $author->id) }}" 
                                        class="text-green-700 hover:text-green-900 hover:underline transition-colors duration-200">
                                         {!! $this->highlightText($author->full_name, $search) !!}
                                     </a>
                                 </div>
                                 @if($author->biography)
-                                    <div class="text-sm text-gray-500 truncate max-w-xs">{!! $this->highlightText(Str::limit($author->biography, 50), $search) !!}</div>
+                                    <div class="text-gray-500 truncate max-w-xs" style="font-size: 1.1rem;">{!! $this->highlightText(Str::limit($author->biography, 50), $search) !!}</div>
                                 @endif
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap">
-                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-sm font-medium bg-green-100 text-green-800">
+                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full font-medium bg-green-100 text-green-800" style="font-size: 1.1rem;">
                                     {{ $author->books_count }} كتاب
                                 </span>
                             </td>
-                            <td class="px-6 py-4 whitespace-nowrap text-base text-gray-900">
+                            <td class="px-6 py-4 whitespace-nowrap text-gray-900" style="font-size: 1.3rem;">
                                 @if($author->madhhab)
                                     {!! $this->highlightText($author->madhhab, $search) !!}
                                 @else
                                     <span class="text-gray-400">غير محدد</span>
                                 @endif
                             </td>
-                            <td class="px-6 py-4 whitespace-nowrap text-base text-gray-900">
+                            <td class="px-6 py-4 whitespace-nowrap text-gray-900" style="font-size: 1.3rem;">
                                 {{ $author->birth_date ? $author->birth_date->format('Y/m/d') : 'غير محدد' }}
                             </td>
                         </tr>
