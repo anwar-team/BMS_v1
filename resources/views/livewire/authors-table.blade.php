@@ -89,8 +89,8 @@
                                     <svg class="mx-auto h-12 w-12 text-gray-400 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                                     </svg>
-                                    <p class="text-lg font-medium text-gray-900 mb-1">لا يوجد مؤلفون متوفرون</p>
-                                    <p class="text-sm text-gray-500">
+                                    <p class="font-medium text-gray-900 mb-1" style="font-size: 1.3rem;">لا يوجد مؤلفون متوفرون</p>
+                                    <p class="text-gray-500" style="font-size: 1.1rem;">
                                         {{ $search ? 'جرب البحث بكلمات أخرى' : 'سيتم إضافة المؤلفين قريباً' }}
                                     </p>
                                 </div>
@@ -121,7 +121,7 @@
                             </button>
                         @endif
                         
-                        <span class="text-sm text-gray-600 mx-2">
+                        <span class="text-gray-600 mx-2" style="font-size: 1.1rem;">
                             {{ $authors->firstItem() ?: 0 }}-{{ $authors->lastItem() ?: 0 }} من {{ $authors->total() }}
                         </span>
 
@@ -144,9 +144,9 @@
                 {{-- Items per page selector --}}
                 @if($showPerPageSelector)
                     <div class="flex items-center gap-2 absolute right-6">
-                        <span class="text-sm text-gray-600">نتيجة</span>
+                        <span class="text-gray-600" style="font-size: 1.1rem;">نتيجة</span>
                         <select wire:model.live="perPage" 
-                                class="border border-gray-300 rounded-md px-2 py-1 text-sm focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500">
+                                class="border border-gray-300 rounded-md px-2 py-1 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500" style="font-size: 1.1rem;">
                             <option value="5">5</option>
                             <option value="10">10</option>
                             <option value="25">25</option>

@@ -1,4 +1,4 @@
-<header class="fixed z-50 w-full py-4 transition-all duration-300 bg-white md:py-6">
+<header class="fixed z-50 w-full py-4 transition-all duration-300 bg-white md:py-5">
     <div class="px-4 mx-auto container-default">
         <div class="flex items-center justify-between gap-x-4 md:gap-x-8" dir="rtl">
 
