@@ -253,6 +253,9 @@
             </div>
         </div>
     @else
+        {{-- إشعار الإصدار التجريبي - فوق الـ Header --}}
+        @include('partials.top-beta-notice')
+        
         <x-superduper.header />
 
         <main>
@@ -292,6 +295,9 @@
     <script src="{{ asset('superduper/js/main.js') }}"></script>
 
     @livewireScripts
+
+    {{-- الزر العائم ونموذج الملاحظات --}}
+    @include('partials.feedback-panel')
 
     <!-- Custom JS -->
     @if(isset($scriptSettings->custom_js))
