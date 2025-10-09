@@ -34,16 +34,16 @@
             <table class="min-w-full divide-y divide-gray-200">
                 <thead class="bg-green-50">
                     <tr>
-                        <th scope="col" class="px-4 py-3 text-right text-sm font-semibold text-gray-900 uppercase tracking-wider w-16">
+                        <th scope="col" class="px-4 py-3 text-right font-medium text-gray-900 uppercase tracking-wider w-16" style="font-size: 1.1rem;">
                             #
                         </th>
-                        <th scope="col" class="px-6 py-3 text-right text-sm font-semibold text-gray-900 uppercase tracking-wider w-2/5">
+                        <th scope="col" class="px-6 py-3 text-right font-medium text-gray-900 uppercase tracking-wider w-2/5" style="font-size: 1.1rem;">
                             اسم الكتاب
                         </th>
-                        <th scope="col" class="px-6 py-3 text-right text-sm font-semibold text-gray-900 uppercase tracking-wider w-1/4">
+                        <th scope="col" class="px-6 py-3 text-right font-medium text-gray-900 uppercase tracking-wider w-1/4" style="font-size: 1.1rem;">
                             المؤلف
                         </th>
-                        <th scope="col" class="px-6 py-3 text-right text-sm font-semibold text-gray-900 uppercase tracking-wider w-1/4">
+                        <th scope="col" class="px-6 py-3 text-right font-medium text-gray-900 uppercase tracking-wider w-1/4" style="font-size: 1.1rem;">
                             القسم
                         </th>
                     </tr>
@@ -51,22 +51,22 @@
                 <tbody class="divide-y divide-gray-200">
                     @forelse ($books as $index => $book)
                         <tr class="hover:bg-gray-50 transition-colors duration-150">
-                            <td class="px-4 py-4 whitespace-nowrap text-base text-gray-900 w-16">
+                            <td class="px-4 py-4 whitespace-nowrap text-gray-900 w-16" style="font-size: 1.3rem;">
                                 {{ ($books->currentPage() - 1) * $books->perPage() + $index + 1 }}
                             </td>
                             <td class="px-6 py-4 w-2/5">
-                                <div class="text-base font-medium text-gray-900">
+                                <div class="font-medium text-gray-900" style="font-size: 1.3rem;">
                                     <a href="{{ route('book.read', $book->id) }}" 
                                        class="text-green-700 hover:text-green-900 hover:underline transition-colors duration-200">
                                         {!! $this->highlightText($book->title, $search) !!}
                                     </a>
                                 </div>
                                 @if($book->subtitle)
-                                    <div class="text-sm text-gray-500">{!! $this->highlightText($book->subtitle, $search) !!}</div>
+                                    <div class="text-gray-500" style="font-size: 1.1rem;">{!! $this->highlightText($book->subtitle, $search) !!}</div>
                                 @endif
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap w-1/4">
-                                <div class="text-base text-gray-900">
+                                <div class="text-gray-900" style="font-size: 1.3rem;">
                                     @if($book->author)
                                         <a href="{{ route('authors.details', $book->author->id) }}" 
                                            class="text-green-700 hover:text-green-900 hover:underline transition-colors duration-200">
@@ -78,7 +78,7 @@
                                 </div>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap w-1/4">
-                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-sm font-medium bg-green-100 text-green-800">
+                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full font-medium bg-green-100 text-green-800" style="font-size: 1.1rem;">
                                     {{ $book->section->name ?? 'غير محدد' }}
                                 </span>
                             </td>
@@ -90,8 +90,8 @@
                                     <svg class="mx-auto h-12 w-12 text-gray-400 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                                     </svg>
-                                    <p class="text-lg font-medium text-gray-900 mb-1">لا توجد كتب متوفرة</p>
-                                    <p class="text-sm text-gray-500">
+                                    <p class="font-medium text-gray-900 mb-1" style="font-size: 1.3rem;">لا توجد كتب متوفرة</p>
+                                    <p class="text-gray-500" style="font-size: 1.1rem;">
                                         {{ $search ? 'جرب البحث بكلمات أخرى' : 'سيتم إضافة الكتب قريباً' }}
                                     </p>
                                 </div>
