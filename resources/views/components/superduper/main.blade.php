@@ -253,8 +253,8 @@
             </div>
         </div>
     @else
-        {{-- إشعار الإصدار التجريبي - فوق الـ Header --}}
-        @include('partials.top-beta-notice')
+        {{-- إشعار الإصدار التجريبي البسيط - فوق الـ Header --}}
+        @include('partials.simple-beta-banner')
         
         <x-superduper.header />
 
