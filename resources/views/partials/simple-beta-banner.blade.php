@@ -1,17 +1,14 @@
 {{-- إشعار الإصدار التجريبي البسيط --}}
-<div class="fixed top-0 left-0 right-0 z-60 bg-green-800 text-white py-3 shadow-lg" dir="rtl">
+<div id="betaBanner" class="bg-green-800 text-white py-3 shadow-lg relative z-40" dir="rtl">
     <div class="container mx-auto px-4">
         <div class="flex items-center justify-between gap-4">
             {{-- المحتوى الرئيسي --}}
             <div class="flex items-center gap-3 flex-1">
-                {{-- أيقونة البيتا --}}
-                <div class="bg-white text-green-800 rounded-full w-8 h-8 flex items-center justify-center font-bold text-sm shadow-md">
-                    <span>β</span>
-                </div>
+
                 
                 {{-- النص الرئيسي --}}
                 <div class="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-3">
-                    <h3 class="font-bold text-lg"> الإصدار التجريبي الأولي للمكتبة الكاملة</h3>
+                    <h3 class="text-white font-bold text-lg"> الإصدار التجريبي الأولي للمكتبة الكاملة</h3>
                     <span class="text-sm opacity-90">
                         • نعمل على تطوير تجربتك باستمرار - شاركنا آرائك لنحسن الخدمة
                     </span>
@@ -42,14 +39,16 @@
         background: linear-gradient(135deg, #166534 0%, #15803d 50%, #166534 100%);
     }
     
-    /* تعديل موضع الـ Header ليكون تحت الإشعار */
-    header.fixed {
-        top: 64px !important; /* ارتفاع الإشعار تقريباً */
+    /* حل مشكلة الـ Header المتحرك */
+    /* تعديل موضع الـ Header ليبدأ بعد الإشعار */
+    body:has(#betaBanner) header.fixed {
+        position: relative !important;
+        top: 0 !important;
     }
     
-    /* إضافة مساحة علوية للـ main content */
-    body {
-        padding-top: 128px !important; /* ارتفاع الإشعار + Header */
+    /* إزالة الـ padding العلوي من الـ body */
+    body:has(#betaBanner) {
+        padding-top: 0 !important;
     }
     
     /* تأثير بسيط للحركة */
@@ -82,6 +81,21 @@
 </style>
 
 <script>
+    // حل مشكلة الـ Header المتحرك بـ JavaScript
+    document.addEventListener('DOMContentLoaded', function() {
+        const header = document.querySelector('header.fixed');
+        const betaBanner = document.getElementById('betaBanner');
+        
+        if (header && betaBanner) {
+            // تحويل الـ Header من fixed إلى relative عند وجود الإشعار
+            header.style.position = 'relative';
+            header.style.top = '0';
+            
+            // إزالة أي padding علوي قد يكون موجود في الـ body
+            document.body.style.paddingTop = '0';
+        }
+    });
+    
     // التأكد من توفر وظيفة فتح نموذج الملاحظات
     function openFeedbackPanel() {
         // البحث عن الزر العائم أولاً
