@@ -1,5 +1,5 @@
 {{-- الزر العائم للملاحظات والشكاوى --}}
-<div id="feedbackFloatingButton" class="fixed bottom-6 left-6 z-50">
+<div id="feedbackFloatingButton" class="fixed bottom-6 left-6 z-[10000]">
     <button onclick="openFeedbackPanel()" 
             class="group bg-green-800 hover:bg-green-900 text-white font-bold py-4 px-6 rounded-full shadow-2xl transition-all duration-300 transform hover:scale-110 hover:-translate-y-1 flex items-center gap-3"
             title="إرسال ملاحظة أو شكوى">
@@ -9,7 +9,7 @@
 </div>
 
 {{-- نموذج الإرسال (Slide Panel) --}}
-<div id="feedbackPanel" class="fixed inset-y-0 left-0 z-[9999] w-full sm:w-96 bg-white shadow-2xl transform -translate-x-full transition-transform duration-300 ease-in-out" dir="rtl">
+<div id="feedbackPanel" class="fixed inset-y-0 left-0 z-[10001] w-full sm:w-96 bg-white shadow-2xl transform -translate-x-full transition-transform duration-300 ease-in-out" dir="rtl">
     <div class="h-full flex flex-col">
         {{-- Header --}}
         <div class="bg-gradient-to-r from-green-800 to-green-900 text-white p-6">
@@ -126,7 +126,7 @@
 </div>
 
 {{-- Toast Notification --}}
-<div id="feedbackToast" class="fixed top-6 right-6 z-[10000] hidden transform transition-all duration-300">
+<div id="feedbackToast" class="fixed top-6 right-6 z-[10002] hidden transform transition-all duration-300">
     <div class="bg-white rounded-lg shadow-2xl border-r-4 p-4 max-w-md" id="toastContent">
         {{-- Content will be inserted here --}}
     </div>

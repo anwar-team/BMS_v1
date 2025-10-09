@@ -35,6 +35,7 @@ Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::post('/feedback', [FeedbackComplaintController::class, 'store'])->name('feedback.store');
 Route::get('/test-feedback', fn() => view('test-feedback'))->name('test.feedback');
 Route::get('/test-beta-notices', fn() => view('test-beta-notices'))->name('test.beta.notices');
+Route::get('/test-floating-button', fn() => view('test-floating-button'))->name('test.floating.button');
 
 Route::get('/blog', BlogList::class)->name('blog');
 
