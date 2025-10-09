@@ -253,6 +253,9 @@
             </div>
         </div>
     @else
+        {{-- إشعار الإصدار التجريبي - فوق الـ Header --}}
+        @include('partials.top-beta-notice')
+        
         <x-superduper.header />
 
         <main>
