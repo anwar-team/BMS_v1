@@ -603,6 +603,85 @@ class UltraFastSearchService
 	}
 
 	/**
+	 * Get filters from database when Elasticsearch is not available
+	 */
+	private function getDatabaseFilters(string $filterType = 'all', int $limit = 100): array
+	{
+		$formatted = [
+			'books' => [],
+			'sections' => [],
+			'authors' => []
+		];
+
+		try {
+			// Get authors from database
+			if ($filterType === 'all' || $filterType === 'authors') {
+				$authors = \App\Models\Author::select('id', 'name')
+					->withCount(['books as count' => function($query) {
+						$query->whereNotNull('id');
+					}])
+					->having('count', '>', 0)
+					->orderByDesc('count')
+					->limit($limit)
+					->get();
+
+				foreach ($authors as $author) {
+					$formatted['authors'][] = [
+						'id' => $author->id,
+						'name' => $author->name,
+						'count' => $author->count
+					];
+				}
+			}
+
+			// Get books from database
+			if ($filterType === 'all' || $filterType === 'books') {
+				$books = \App\Models\Book::select('id', 'title')
+					->withCount(['pages as count' => function($query) {
+						$query->whereNotNull('id');
+					}])
+					->having('count', '>', 0)
+					->orderByDesc('count')
+					->limit($limit)
+					->get();
+
+				foreach ($books as $book) {
+					$formatted['books'][] = [
+						'id' => $book->id,
+						'name' => $book->title,
+						'count' => $book->count
+					];
+				}
+			}
+
+			// Get sections from database
+			if ($filterType === 'all' || $filterType === 'sections') {
+				$sections = \App\Models\BookSection::select('id', 'name')
+					->withCount(['pages as count' => function($query) {
+						$query->whereNotNull('id');
+					}])
+					->having('count', '>', 0)
+					->orderByDesc('count')
+					->limit($limit)
+					->get();
+
+				foreach ($sections as $section) {
+					$formatted['sections'][] = [
+						'id' => $section->id,
+						'name' => $section->name,
+						'count' => $section->count
+					];
+				}
+			}
+
+		} catch (\Exception $e) {
+			\Illuminate\Support\Facades\Log::error('Database filter fallback failed: ' . $e->getMessage());
+		}
+
+		return $formatted;
+	}
+
+	/**
 	 * Context7: Format aggregations into user-friendly filter options
 	 */
 	private function formatAvailableFilters(array $aggregations): array
