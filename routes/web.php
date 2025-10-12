@@ -36,7 +36,7 @@ Route::get('/contact-us', ContactUs::class)->name('contact-us');
 // ===================================================================
 
 // Feedback & Complaints Routes (Public)
-//Route::post('/feedback', [FeedbackComplaintController::class, 'store'])->name('feedback.store');
+Route::post('/feedback', [FeedbackComplaintController::class, 'store'])->name('feedback.store');
 //Route::get('/test-feedback', fn() => view('test-feedback'))->name('test.feedback');
 //Route::get('/test-beta-notices', fn() => view('test-beta-notices'))->name('test.beta.notices');
 //Route::get('/test-floating-button', fn() => view('test-floating-button'))->name('test.floating.button');
