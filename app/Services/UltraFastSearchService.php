@@ -553,6 +553,25 @@ class UltraFastSearchService
 				];
 			}
 
+			// Add author aggregation
+			if ($filterType === 'all' || $filterType === 'authors') {
+				$aggregations['authors'] = [
+					'terms' => [
+						'field' => 'author_ids',
+						'size' => $limit,
+						'order' => ['_count' => 'desc']
+					],
+					'aggs' => [
+						'sample_name' => [
+							'top_hits' => [
+								'size' => 1,
+								'_source' => ['author_names']
+							]
+						]
+					]
+				];
+			}
+
 			if ($filterType === 'all' || $filterType === 'sections') {
 				$aggregations['sections'] = [
 					'terms' => [
@@ -588,7 +607,8 @@ class UltraFastSearchService
 	{
 		$formatted = [
 			'books' => [],
-			'sections' => []
+			'sections' => [],
+			'authors' => []
 		];
 
 		// Format book filters
@@ -613,6 +633,25 @@ class UltraFastSearchService
 				$formatted['sections'][] = [
 					'id' => $bucket['key'],
 					'name' => $this->getSectionName($bucket['key']),
+					'count' => $bucket['doc_count']
+				];
+			}
+		}
+
+		// Format author filters
+		if (isset($aggregations['authors']['buckets'])) {
+			foreach ($aggregations['authors']['buckets'] as $bucket) {
+				$name = 'مؤلف غير محدد';
+				if (isset($bucket['sample_name']['hits']['hits'][0]['_source']['author_names'])) {
+					$name = $bucket['sample_name']['hits']['hits'][0]['_source']['author_names'];
+					// If author_names is an array, get the first name
+					if (is_array($name)) {
+						$name = $name[0] ?? 'مؤلف غير محدد';
+					}
+				}
+				$formatted['authors'][] = [
+					'id' => $bucket['key'],
+					'name' => $name,
 					'count' => $bucket['doc_count']
 				];
 			}
