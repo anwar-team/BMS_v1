@@ -312,7 +312,7 @@
                                                             </button>
                                                         </div>
                                                         
-                                                        <!-- فلترة حسب المؤلف -->
+                                                        <!-- فلترة حسب المؤلف 
                                                         <div style="display: none;">
                                                             <button type="button" class="filter-category-btn w-full flex items-center justify-between p-2 text-sm font-medium text-gray-700 hover:bg-gray-50 rounded-md" data-filter="author">
                                                                 <span>المؤلف</span>
@@ -321,8 +321,8 @@
                                                                 </svg>
                                                             </button>
                                                         </div>
-                                                        
-                                                        <!-- فلترة حسب تاريخ الوفاة -->
+                                                        -->
+                                                        <!-- فلترة حسب تاريخ الوفاة 
                                                         <div style="display: none;">
                                                             <button type="button" class="filter-category-btn w-full flex items-center justify-between p-2 text-sm font-medium text-gray-700 hover:bg-gray-50 rounded-md" data-filter="death_date">
                                                                 <span>تاريخ الوفاة</span>
@@ -331,6 +331,7 @@
                                                                 </svg>
                                                             </button>
                                                         </div>
+                                                        -->
                                                     </div>
                                                 </div>
                                             </div>
