@@ -313,7 +313,7 @@
                                                         </div>
                                                         
                                                         <!-- فلترة حسب المؤلف -->
-                                                        <div>
+                                                        <div style="display: none;">
                                                             <button type="button" class="filter-category-btn w-full flex items-center justify-between p-2 text-sm font-medium text-gray-700 hover:bg-gray-50 rounded-md" data-filter="author">
                                                                 <span>المؤلف</span>
                                                                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -323,7 +323,7 @@
                                                         </div>
                                                         
                                                         <!-- فلترة حسب تاريخ الوفاة -->
-                                                        <div>
+                                                        <div style="display: none;">
                                                             <button type="button" class="filter-category-btn w-full flex items-center justify-between p-2 text-sm font-medium text-gray-700 hover:bg-gray-50 rounded-md" data-filter="death_date">
                                                                 <span>تاريخ الوفاة</span>
                                                                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
