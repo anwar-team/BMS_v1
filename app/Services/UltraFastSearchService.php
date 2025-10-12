@@ -596,7 +596,9 @@ class UltraFastSearchService
 			return $this->formatAvailableFilters($response['aggregations'] ?? []);
 
 		} catch (\Exception $e) {
-			return ['error' => $e->getMessage()];
+			// Fallback to database when Elasticsearch is not available
+			\Illuminate\Support\Facades\Log::warning('Elasticsearch not available, falling back to database: ' . $e->getMessage());
+			return $this->getDatabaseFilters($filterType, $limit);
 		}
 	}
 

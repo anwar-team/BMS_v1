@@ -21,7 +21,7 @@ class SearchController extends Controller
     public function getAvailableFilters(Request $request, UltraFastSearchService $searchService)
     {
         $validated = $request->validate([
-            'type' => 'nullable|in:all,books,sections',
+            'type' => 'nullable|in:all,books,sections,authors',
             'limit' => 'nullable|integer|min:10|max:200'
         ]);
 
