@@ -1029,7 +1029,7 @@ class BookResource extends Resource
                     ->label('عرض الكتاب')
                     ->icon('heroicon-o-book-open')
                     ->color('success')
-                    ->url(fn (Book $record): string => 'https://home.anwaralolmaa.com/book?id=' . $record->id)
+                    ->url(fn (Book $record): string => 'https://home.anwaralolmaa.com/book/' . $record->id)
                     ->openUrlInNewTab(),
                 
                 
