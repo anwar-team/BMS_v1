@@ -645,12 +645,12 @@ class BookResource extends Resource
         return $table
             ->columns([
                 // الأعمدة الثابتة (غير قابلة للإخفاء)
-                ImageColumn::make('cover_image')
-                    ->label('الغلاف')
-                    ->circular()
-                    ->size(60)
-                    ->defaultImageUrl(url('/images/default-book-cover.png'))
-                    ->toggleable(),
+                //ImageColumn::make('cover_image')
+                //    ->label('الغلاف')
+                //    ->circular()
+                //    ->size(60)
+                //    ->defaultImageUrl(url('/images/default-book-cover.png'))
+                //    ->toggleable(),
                 
                 TextColumn::make('title')
                     ->label('عنوان الكتاب')
@@ -915,16 +915,6 @@ class BookResource extends Resource
                     ])
                     ->placeholder('جميع الأدوار'),
 
-                TernaryFilter::make('has_cover_image')
-                    ->label('صورة الغلاف')
-                    ->placeholder('الكل')
-                    ->trueLabel('مع صورة غلاف')
-                    ->falseLabel('بدون صورة غلاف')
-                    ->queries(
-                        true: fn (Builder $query) => $query->whereNotNull('cover_image'),
-                        false: fn (Builder $query) => $query->whereNull('cover_image'),
-                        blank: fn (Builder $query) => $query,
-                    ),
 
                 TernaryFilter::make('has_source_url')
                     ->label('رابط المصدر')
