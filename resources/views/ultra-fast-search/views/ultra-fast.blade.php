@@ -1,5 +1,12 @@
 <x-superduper.main>
     <head>
+        {{-- SEO Meta Tags --}}
+        <x-seo-meta 
+            title="البحث الفوري في الكتب الإسلامية"
+            description="ابحث في آلاف الكتب الإسلامية والعربية مع نظام بحث متقدم وسريع. المكتبة الكاملة تقدم لك محرك بحث قوي في التراث الإسلامي"
+            keywords="بحث في الكتب الإسلامية, كتب إسلامية, مكتبة إسلامية, التراث الإسلامي, بحث متقدم, كتب عربية"
+        />
+        
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta name="csrf-token" content="{{ csrf_token() }}">

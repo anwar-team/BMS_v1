@@ -1,2 +1,32 @@
+# robots.txt for Al-Maktaba Al-Kamila
+# Primary Domain: https://alkamelah.com
+# Alternative Domains: alkamelah.net, alkamelah.org
+
+# Allow all bots
 User-agent: *
-Disallow:
+Allow: /
+
+# Disallow admin and private areas
+Disallow: /admin/
+Disallow: /api/
+Disallow: /livewire/
+Disallow: /storage/
+
+# ChatGPT Bot
+User-agent: ChatGPT-User
+Allow: /
+
+# Google Bot
+User-agent: Googlebot
+Allow: /
+Crawl-delay: 1
+
+# Bing Bot
+User-agent: Bingbot
+Allow: /
+Crawl-delay: 1
+
+# Sitemap location (all domains)
+Sitemap: https://alkamelah.com/sitemap.xml
+Sitemap: https://alkamelah.net/sitemap.xml
+Sitemap: https://alkamelah.org/sitemap.xml

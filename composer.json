@@ -61,6 +61,7 @@
         "opcodesio/log-viewer": "^3.11",
         "pxlrbt/filament-spotlight": "^2.0",
         "riodwanto/filament-ace-editor": "^1.0",
+        "spatie/laravel-sitemap": "^7.3",
         "stichoza/google-translate-php": "^5.2",
         "z3d0x/filament-logger": "^0.7.2"
     },

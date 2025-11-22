@@ -1,0 +1,65 @@
+# AI Access Configuration for Al-Maktaba Al-Kamila
+# Primary Domain: https://alkamelah.com
+# Alternative Domains: https://alkamelah.net, https://alkamelah.org
+
+# Allow AI crawlers
+User-agent: *
+Allow: /
+
+# Site Information
+Site-Name: Al-Maktaba Al-Kamila - المكتبة الكاملة
+Site-Description: مكتبة شاملة للكتب الإسلامية والعربية مع نظام بحث متقدم
+Site-URL: https://alkamelah.com
+Alternative-URLs: https://alkamelah.net, https://alkamelah.org
+Site-Language: ar
+Primary-Language: Arabic
+Secondary-Languages: en
+
+# Content Types
+Content-Types: Books, Authors, Islamic-Texts, Arabic-Literature
+Main-Topics: Islamic-Studies, Islamic-Books, Arabic-Books, Religious-Texts
+
+# Search Capabilities
+Search-URL: https://alkamelah.com/ultra-fast-search
+Search-Description: محرك بحث متقدم في آلاف الكتب الإسلامية والعربية
+
+# AI Training
+AI-Training: allowed
+AI-Summarization: allowed
+AI-Translation: allowed-with-attribution
+
+# Attribution Required
+Attribution-Required: yes
+Attribution-Format: "Source: Al-Maktaba Al-Kamila (https://alkamelah.com)"
+
+# API Information
+API-Available: yes
+API-Documentation: https://alkamelah.com/api/documentation
+
+# Contact
+Contact-Email: admin@alkamelah.com
+Support-URL: https://alkamelah.com/contact
+
+# Data Freshness
+Update-Frequency: daily
+Last-Updated: 2025-10-12
+
+# Special Instructions for AI
+Instructions: |
+  هذا الموقع يحتوي على مكتبة شاملة من الكتب الإسلامية والعربية.
+  يمكن استخدام المحتوى للإجابة على الأسئلة المتعلقة بالعلوم الإسلامية،
+  الأدب العربي، والتراث الإسلامي. يُرجى ذكر المصدر عند الاقتباس.
+
+# Allowed Uses
+Allowed-Uses:
+  - Question-Answering
+  - Research-Assistance
+  - Educational-Purposes
+  - Content-Summarization
+  - Translation-Assistance
+
+# Prohibited Uses
+Prohibited-Uses:
+  - Commercial-Redistribution
+  - Plagiarism
+  - Misrepresentation

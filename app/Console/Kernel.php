@@ -12,7 +12,17 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule): void
     {
-        // $schedule->command('inspire')->hourly();
+        // Generate sitemap daily at 2 AM
+        $schedule->command('sitemap:generate')
+            ->dailyAt('02:00')
+            ->withoutOverlapping()
+            ->onOneServer();
+
+        // Warm cache every hour
+        $schedule->command('cache:warm')
+            ->hourly()
+            ->withoutOverlapping()
+            ->onOneServer();
     }
 
     /**

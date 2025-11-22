@@ -253,11 +253,13 @@
             </div>
         </div>
     @else
-        {{-- إشعار الإصدار التجريبي البسيط - فوق الـ Header --}}
+    
+    <!--
+    {{-- إشعار الإصدار التجريبي البسيط - فوق الـ Header --}}
         @include('partials.simple-beta-banner')
         
         <x-superduper.header />
-
+    -->
         <main>
             {{ $slot }}
         </main>
