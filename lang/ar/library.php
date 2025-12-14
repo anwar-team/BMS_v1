@@ -1,0 +1,263 @@
+<?php
+
+return [
+    /*
+    |--------------------------------------------------------------------------
+    | Books & Authors Arabic Translations
+    |--------------------------------------------------------------------------
+    */
+    
+    'books' => [
+        'title' => 'الكتب',
+        'singular' => 'كتاب',
+        'plural' => 'كتب',
+        'navigation_label' => 'الكتب',
+        'navigation_group' => 'إدارة المكتبة',
+        'create_book' => 'إنشاء كتاب جديد',
+        'edit_book' => 'تحرير الكتاب',
+        'view_book' => 'عرض الكتاب',
+        'books_list' => 'قائمة الكتب',
+        'author_books' => 'كتب المؤلف',
+        
+        'fields' => [
+            'title' => 'عنوان الكتاب',
+            'subtitle' => 'العنوان الفرعي',
+            'description' => 'وصف الكتاب',
+            'content' => 'محتوى الكتاب',
+            'isbn' => 'الرقم الدولي للكتاب',
+            'author' => 'المؤلف',
+            'authors' => 'المؤلفين',
+            'publisher' => 'الناشر',
+            'publication_date' => 'تاريخ النشر',
+            'pages' => 'عدد الصفحات',
+            'language' => 'اللغة',
+            'category' => 'الفئة',
+            'categories' => 'الفئات',
+            'tags' => 'العلامات',
+            'price' => 'السعر',
+            'rating' => 'التقييم',
+            'downloads' => 'التحميلات',
+            'views' => 'المشاهدات',
+            'reads' => 'القراءات',
+            'cover_image' => 'صورة الغلاف',
+            'file' => 'ملف الكتاب',
+            'format' => 'تنسيق الملف',
+            'size' => 'حجم الملف',
+            'status' => 'الحالة',
+            'featured' => 'مميز',
+            'free' => 'مجاني',
+            'premium' => 'مدفوع',
+            'slug' => 'الرابط المختصر',
+            'meta_title' => 'عنوان SEO',
+            'meta_description' => 'وصف SEO',
+            'keywords' => 'الكلمات المفتاحية',
+        ],
+        
+        'status' => [
+            'draft' => 'مسودة',
+            'published' => 'منشور',
+            'archived' => 'مؤرشف',
+            'pending' => 'في الانتظار',
+            'reviewing' => 'قيد المراجعة',
+        ],
+        
+        'actions' => [
+            'create' => 'إضافة كتاب جديد',
+            'edit' => 'تحرير الكتاب',
+            'view' => 'عرض الكتاب',
+            'delete' => 'حذف الكتاب',
+            'publish' => 'نشر الكتاب',
+            'unpublish' => 'إلغاء النشر',
+            'download' => 'تحميل الكتاب',
+            'read_online' => 'قراءة اونلاين',
+            'add_to_favorites' => 'إضافة للمفضلة',
+            'share' => 'مشاركة',
+            'print' => 'طباعة',
+            'duplicate' => 'نسخ',
+            'archive' => 'أرشفة',
+            'restore' => 'استعادة',
+        ],
+        
+        'filters' => [
+            'all_books' => 'جميع الكتب',
+            'published_books' => 'الكتب المنشورة',
+            'draft_books' => 'المسودات',
+            'featured_books' => 'الكتب المميزة',
+            'free_books' => 'الكتب المجانية',
+            'premium_books' => 'الكتب المدفوعة',
+            'by_category' => 'حسب الفئة',
+            'by_author' => 'حسب المؤلف',
+            'by_language' => 'حسب اللغة',
+            'by_rating' => 'حسب التقييم',
+            'recently_added' => 'المضافة حديثاً',
+            'most_downloaded' => 'الأكثر تحميلاً',
+            'most_viewed' => 'الأكثر مشاهدة',
+        ],
+    ],
+    
+    'authors' => [
+        'title' => 'المؤلفين',
+        'singular' => 'مؤلف',
+        'plural' => 'مؤلفين',
+        'navigation_label' => 'المؤلفين',
+        'navigation_group' => 'إدارة المكتبة',
+        'create_author' => 'إنشاء مؤلف جديد',
+        'edit_author' => 'تحرير المؤلف',
+        'view_author' => 'عرض المؤلف',
+        'authors_list' => 'قائمة المؤلفين',
+        
+        'fields' => [
+            'name' => 'اسم المؤلف',
+            'full_name' => 'الاسم الكامل',
+            'bio' => 'نبذة عن المؤلف',
+            'biography' => 'السيرة الذاتية',
+            'birth_date' => 'تاريخ الميلاد',
+            'death_date' => 'تاريخ الوفاة',
+            'nationality' => 'الجنسية',
+            'photo' => 'صورة المؤلف',
+            'website' => 'الموقع الشخصي',
+            'email' => 'البريد الإلكتروني',
+            'social_links' => 'الروابط الاجتماعية',
+            'books_count' => 'عدد الكتب',
+            'popular_books' => 'الكتب الشائعة',
+            'latest_books' => 'أحدث الكتب',
+            'awards' => 'الجوائز',
+            'specialization' => 'التخصص',
+            'slug' => 'الرابط المختصر',
+            'status' => 'الحالة',
+            'featured' => 'مؤلف مميز',
+        ],
+        
+        'status' => [
+            'active' => 'نشط',
+            'inactive' => 'غير نشط',
+            'deceased' => 'متوفى',
+            'featured' => 'مميز',
+        ],
+        
+        'actions' => [
+            'create' => 'إضافة مؤلف جديد',
+            'edit' => 'تحرير المؤلف',
+            'view' => 'عرض المؤلف',
+            'delete' => 'حذف المؤلف',
+            'view_books' => 'عرض كتب المؤلف',
+            'feature' => 'جعل مميز',
+            'unfeature' => 'إزالة التمييز',
+        ],
+    ],
+    
+    'categories' => [
+        'title' => 'فئات الكتب',
+        'singular' => 'فئة',
+        'plural' => 'فئات',
+        'navigation_label' => 'الفئات',
+        'navigation_group' => 'إدارة المكتبة',
+        
+        'fields' => [
+            'name' => 'اسم الفئة',
+            'description' => 'وصف الفئة',
+            'slug' => 'الرابط المختصر',
+            'parent_category' => 'الفئة الأب',
+            'subcategories' => 'الفئات الفرعية',
+            'books_count' => 'عدد الكتب',
+            'icon' => 'أيقونة الفئة',
+            'color' => 'لون الفئة',
+            'featured' => 'فئة مميزة',
+            'sort_order' => 'ترتيب العرض',
+            'status' => 'الحالة',
+            'meta_title' => 'عنوان SEO',
+            'meta_description' => 'وصف SEO',
+        ],
+        
+        'actions' => [
+            'create' => 'إضافة فئة جديدة',
+            'edit' => 'تحرير الفئة',
+            'view' => 'عرض الفئة',
+            'delete' => 'حذف الفئة',
+            'view_books' => 'عرض كتب الفئة',
+        ],
+    ],
+    
+    'publishers' => [
+        'title' => 'دور النشر',
+        'singular' => 'دار نشر',
+        'plural' => 'دور نشر',
+        'navigation_label' => 'دور النشر',
+        'navigation_group' => 'إدارة المكتبة',
+        
+        'fields' => [
+            'name' => 'اسم دار النشر',
+            'description' => 'وصف دار النشر',
+            'website' => 'الموقع الإلكتروني',
+            'email' => 'البريد الإلكتروني',
+            'phone' => 'رقم الهاتف',
+            'address' => 'العنوان',
+            'logo' => 'شعار دار النشر',
+            'established_year' => 'سنة التأسيس',
+            'books_count' => 'عدد الكتب المنشورة',
+            'status' => 'الحالة',
+            'featured' => 'دار نشر مميزة',
+        ],
+        
+        'actions' => [
+            'create' => 'إضافة دار نشر جديدة',
+            'edit' => 'تحرير دار النشر',
+            'view' => 'عرض دار النشر',
+            'delete' => 'حذف دار النشر',
+            'view_books' => 'عرض كتب دار النشر',
+        ],
+    ],
+    
+    'reviews' => [
+        'title' => 'مراجعات الكتب',
+        'singular' => 'مراجعة',
+        'plural' => 'مراجعات',
+        'navigation_label' => 'المراجعات',
+        
+        'fields' => [
+            'book' => 'الكتاب',
+            'user' => 'المستخدم',
+            'rating' => 'التقييم',
+            'review' => 'نص المراجعة',
+            'status' => 'الحالة',
+            'helpful_votes' => 'الأصوات المفيدة',
+        ],
+        
+        'status' => [
+            'pending' => 'في الانتظار',
+            'approved' => 'موافق عليها',
+            'rejected' => 'مرفوضة',
+        ],
+        
+        'actions' => [
+            'approve' => 'الموافقة',
+            'reject' => 'الرفض',
+            'delete' => 'الحذف',
+        ],
+    ],
+    
+    'reading_lists' => [
+        'title' => 'قوائم القراءة',
+        'singular' => 'قائمة قراءة',
+        'plural' => 'قوائم قراءة',
+        'my_reading_list' => 'قائمة قراءاتي',
+        'wish_list' => 'قائمة الأمنيات',
+        'favorites' => 'المفضلة',
+        'currently_reading' => 'أقرأ حالياً',
+        'completed' => 'مكتملة',
+        'want_to_read' => 'أريد قراءتها',
+    ],
+    
+    'statistics' => [
+        'total_books' => 'إجمالي الكتب',
+        'total_authors' => 'إجمالي المؤلفين',
+        'total_categories' => 'إجمالي الفئات',
+        'total_downloads' => 'إجمالي التحميلات',
+        'total_views' => 'إجمالي المشاهدات',
+        'most_popular_book' => 'أشهر كتاب',
+        'most_active_author' => 'أنشط مؤلف',
+        'top_category' => 'أهم فئة',
+        'recent_additions' => 'الإضافات الحديثة',
+        'trending_now' => 'الرائج الآن',
+    ],
+];

@@ -1,0 +1,185 @@
+{
+    "index_patterns": [
+        "pages_new_search*"
+    ],
+    "priority": 100,
+    "template": {
+        "settings": {
+            "number_of_shards": 1,
+            "number_of_replicas": 0,
+            "refresh_interval": "1s",
+            "max_result_window": 100000,
+            "analysis": {
+                "char_filter": {
+                    "arabic_normalization_char_filter": {
+                        "type": "mapping",
+                        "mappings": [
+                            "أ => ا",
+                            "إ => ا",
+                            "آ => ا",
+                            "ؤ => و",
+                            "ئ => ي",
+                            "ة => ه",
+                            "ى => ي"
+                        ]
+                    }
+                },
+                "filter": {
+                    "arabic_stop_words": {
+                        "type": "stop",
+                        "stopwords": [
+                            "في",
+                            "من",
+                            "إلى",
+                            "على",
+                            "عن",
+                            "مع",
+                            "أو",
+                            "أم",
+                            "هل",
+                            "قد",
+                            "لم",
+                            "لن",
+                            "إن",
+                            "أن",
+                            "كان",
+                            "التي",
+                            "الذي"
+                        ]
+                    },
+                    "arabic_stemmer": {
+                        "type": "stemmer",
+                        "language": "arabic"
+                    }
+                },
+                "analyzer": {
+                    "arabic_exact": {
+                        "type": "custom",
+                        "tokenizer": "keyword",
+                        "filter": [
+                            "lowercase"
+                        ]
+                    },
+                    "arabic_flexible": {
+                        "type": "custom",
+                        "tokenizer": "standard",
+                        "char_filter": [
+                            "arabic_normalization_char_filter"
+                        ],
+                        "filter": [
+                            "lowercase",
+                            "arabic_normalization",
+                            "arabic_stop_words"
+                        ]
+                    },
+                    "arabic_stemmed": {
+                        "type": "custom",
+                        "tokenizer": "standard",
+                        "char_filter": [
+                            "arabic_normalization_char_filter"
+                        ],
+                        "filter": [
+                            "lowercase",
+                            "arabic_normalization",
+                            "arabic_stemmer"
+                        ]
+                    }
+                }
+            }
+        },
+        "mappings": {
+            "properties": {
+                "id": {
+                    "type": "integer"
+                },
+                "content": {
+                    "type": "text",
+                    "analyzer": "arabic_flexible",
+                    "fields": {
+                        "exact": {
+                            "type": "text",
+                            "analyzer": "arabic_exact"
+                        },
+                        "flexible": {
+                            "type": "text",
+                            "analyzer": "arabic_flexible"
+                        },
+                        "stemmed": {
+                            "type": "text",
+                            "analyzer": "arabic_stemmed"
+                        },
+                        "keyword": {
+                            "type": "keyword",
+                            "ignore_above": 256
+                        }
+                    }
+                },
+                "page_number": {
+                    "type": "integer"
+                },
+                "book_id": {
+                    "type": "integer"
+                },
+                "book_title": {
+                    "type": "text",
+                    "analyzer": "arabic_flexible",
+                    "fields": {
+                        "exact": {
+                            "type": "keyword"
+                        },
+                        "flexible": {
+                            "type": "text",
+                            "analyzer": "arabic_flexible"
+                        }
+                    }
+                },
+                "book_author": {
+                    "type": "text",
+                    "analyzer": "arabic_flexible",
+                    "fields": {
+                        "exact": {
+                            "type": "keyword"
+                        }
+                    }
+                },
+                "author_names": {
+                    "type": "text",
+                    "analyzer": "arabic_flexible"
+                },
+                "author_ids": {
+                    "type": "keyword"
+                },
+                "book_section": {
+                    "type": "keyword"
+                },
+                "book_section_id": {
+                    "type": "keyword"
+                },
+                "book_category": {
+                    "type": "keyword"
+                },
+                "difficulty_level": {
+                    "type": "keyword"
+                },
+                "language": {
+                    "type": "keyword"
+                },
+                "content_length": {
+                    "type": "integer"
+                },
+                "search_boost": {
+                    "type": "float"
+                },
+                "last_modified": {
+                    "type": "date"
+                },
+                "created_date": {
+                    "type": "date"
+                },
+                "document_id": {
+                    "type": "keyword"
+                }
+            }
+        }
+    }
+}

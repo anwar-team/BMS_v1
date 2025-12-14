@@ -1,0 +1,51 @@
+services:
+  logstash:
+    build: 
+      context: ./docker
+      dockerfile: Dockerfile
+    container_name: bms_logstash_arabic
+    environment:
+      - ELASTIC_HOST=145.223.98.97:9201
+      - DB_HOST=145.223.98.97
+      - DB_DATABASE=bms
+      - DB_USERNAME=bms
+      - DB_PASSWORD=bms2025
+      - XPACK_MONITORING_ENABLED=false
+      - LANG=en_US.UTF-8
+      - LC_ALL=en_US.UTF-8
+      - LS_JAVA_OPTS=-Xmx4g -Xms4g -XX:+UseG1GC -XX:MaxGCPauseMillis=200
+    ports:
+      - "5044:5044"  # Beats input
+      - "9600:9600"  # API monitoring
+    volumes:
+      - ./config:/usr/share/logstash/config
+      - ./config/pipeline:/usr/share/logstash/pipeline:ro
+      - logstash_data:/usr/share/logstash/data
+      - logstash_logs:/usr/share/logstash/logs
+    networks:
+      - bms_network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:9600 || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 60s
+    deploy:
+      resources:
+        limits:
+          memory: 6G
+          cpus: '4.0'
+        reservations:
+          memory: 5G
+          cpus: '2.0'
+
+volumes:
+  logstash_data:
+    driver: local
+  logstash_logs:
+    driver: local
+
+networks:
+  bms_network:
+    driver: bridge

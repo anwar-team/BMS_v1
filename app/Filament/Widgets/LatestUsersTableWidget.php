@@ -1,0 +1,85 @@
+<?php
+
+namespace App\Filament\Widgets;
+
+use App\Models\User;
+use Filament\Tables;
+use Filament\Tables\Table;
+use Filament\Widgets\TableWidget as BaseWidget;
+use Illuminate\Database\Eloquent\Builder;
+
+class LatestUsersTableWidget extends BaseWidget
+{
+    protected static ?string $heading = null;
+    protected static ?int $sort = 7;
+    protected int | string | array $columnSpan = 'full';
+    
+    // Disable automatic refresh
+    protected static ?string $pollingInterval = null;
+
+    public function table(Table $table): Table
+    {
+        return $table
+            ->heading('أحدث المستخدمين')
+            ->query(
+                User::query()
+                    ->with('roles')
+                    ->latest()
+                    ->limit(10)
+            )
+            ->columns([
+                Tables\Columns\TextColumn::make('first_name')
+                    ->label('الاسم الأول')
+                    ->searchable()
+                    ->sortable(),
+
+                Tables\Columns\TextColumn::make('last_name')
+                    ->label('الاسم الأخير')
+                    ->searchable()
+                    ->sortable(),
+
+                Tables\Columns\TextColumn::make('username')
+                    ->label('اسم المستخدم')
+                    ->searchable()
+                    ->sortable(),
+
+                Tables\Columns\TextColumn::make('email')
+                    ->label('البريد الإلكتروني')
+                    ->searchable()
+                    ->sortable()
+                    ->limit(25),
+
+                Tables\Columns\TextColumn::make('roles.name')
+                    ->label('الأدوار')
+                    ->badge()
+                    ->separator(', ')
+                    ->formatStateUsing(fn (string $state): string => match ($state) {
+                        'super_admin' => 'مدير عام',
+                        'admin' => 'مدير',
+                        'editor' => 'محرر',
+                        'author' => 'مؤلف',
+                        default => $state,
+                    })
+                    ->color(fn (string $state): string => match ($state) {
+                        'super_admin' => 'danger',
+                        'admin' => 'warning',
+                        'editor' => 'info',
+                        'author' => 'success',
+                        default => 'gray',
+                    }),
+
+                Tables\Columns\TextColumn::make('created_at')
+                    ->label('تاريخ التسجيل')
+                    ->dateTime('d/m/Y H:i')
+                    ->sortable(),
+            ])
+            ->actions([
+                Tables\Actions\Action::make('edit')
+                    ->label('تعديل')
+                    ->icon('heroicon-m-pencil-square')
+                    ->url(fn (User $record): string => route('filament.admin.resources.users.edit', $record))
+                    ->openUrlInNewTab(),
+            ])
+            ->paginated(false);
+    }
+}

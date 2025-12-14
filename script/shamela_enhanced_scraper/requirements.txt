@@ -1,0 +1,21 @@
+# متطلبات سكربت استخراج المكتبة الشاملة المحسن
+# Enhanced Shamela Scraper Requirements
+
+# HTTP client for async requests
+aiohttp>=3.8.0
+
+# HTML parsing
+beautifulsoup4>=4.11.0
+lxml>=4.9.0
+
+# Database connectivity
+mysql-connector-python>=8.0.0
+
+# Text processing
+python-slugify>=6.0.0
+
+# Optional: Progress bars (for future enhancements)
+tqdm>=4.64.0
+
+# Optional: Rich text formatting (for better CLI output)
+rich>=12.0.0

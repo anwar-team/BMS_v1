@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>اختبار البحث - خيارات الترتيب</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+    </style>
+</head>
+<body class="bg-gray-100 p-8">
+    <div class="max-w-4xl mx-auto">
+        <h1 class="text-3xl font-bold text-center mb-8">🧪 اختبار خيارات البحث والترتيب</h1>
+        
+        <div class="bg-white rounded-lg shadow-lg p-6 mb-6">
+            <h2 class="text-xl font-semibold mb-4">⚙️ إعدادات البحث</h2>
+            
+            <!-- نوع البحث -->
+            <div class="mb-6">
+                <h3 class="font-medium mb-3">نوع البحث:</h3>
+                <div class="space-y-2">
+                    <label class="flex items-center gap-2 p-3 border rounded hover:bg-emerald-50 cursor-pointer">
+                        <input type="radio" name="searchType" value="flexible_match" checked>
+                        <span>🔄 البحث المرن (مع اللواصق)</span>
+                    </label>
+                    <label class="flex items-center gap-2 p-3 border rounded hover:bg-blue-50 cursor-pointer">
+                        <input type="radio" name="searchType" value="exact_match">
+                        <span>🎯 البحث المطابق (حرفي 100%)</span>
+                    </label>
+                    <label class="flex items-center gap-2 p-3 border rounded hover:bg-purple-50 cursor-pointer">
+                        <input type="radio" name="searchType" value="morphological">
+                        <span>🌳 البحث الصرفي (جذور ومشتقات)</span>
+                    </label>
+                </div>
+            </div>
+            
+            <!-- ترتيب الكلمات -->
+            <div class="mb-6">
+                <h3 class="font-medium mb-3">ترتيب الكلمات:</h3>
+                <div class="space-y-2">
+                    <label class="flex items-center gap-2 p-3 border rounded hover:bg-gray-50 cursor-pointer">
+                        <input type="radio" name="wordOrder" value="consecutive">
+                        <span>📏 متتالية (بدون كلمات بينها)</span>
+                    </label>
+                    <label class="flex items-center gap-2 p-3 border rounded hover:bg-gray-50 cursor-pointer">
+                        <input type="radio" name="wordOrder" value="same_paragraph">
+                        <span>📄 نفس الفقرة (مع كلمات بينها)</span>
+                    </label>
+                    <label class="flex items-center gap-2 p-3 border rounded hover:bg-gray-50 cursor-pointer">
+                        <input type="radio" name="wordOrder" value="any_order" checked>
+                        <span>🔀 أي ترتيب (في أي مكان)</span>
+                    </label>
+                </div>
+            </div>
+            
+            <!-- حقل البحث -->
+            <div class="mb-4">
+                <label class="block font-medium mb-2">كلمة البحث:</label>
+                <input type="text" id="searchQuery" class="w-full p-3 border rounded-lg" placeholder="مثال: قال رسول الله">
+            </div>
+            
+            <!-- زر البحث -->
+            <button onclick="testSearch()" class="w-full bg-emerald-600 text-white p-3 rounded-lg hover:bg-emerald-700 font-semibold">
+                🔍 بحث الآن
+            </button>
+        </div>
+        
+        <!-- النتائج -->
+        <div id="results" class="bg-white rounded-lg shadow-lg p-6 hidden">
+            <h2 class="text-xl font-semibold mb-4">📊 النتائج</h2>
+            <div id="resultsContent"></div>
+        </div>
+        
+        <!-- القيم المرسلة -->
+        <div id="sentParams" class="bg-blue-50 border border-blue-200 rounded-lg p-6 mt-6 hidden">
+            <h2 class="text-xl font-semibold mb-4">📤 القيم المرسلة للـ API</h2>
+            <pre id="paramsContent" class="bg-white p-4 rounded border overflow-x-auto"></pre>
+        </div>
+    </div>
+    
+    <script>
+        async function testSearch() {
+            const query = document.getElementById('searchQuery').value.trim();
+            
+            if (!query) {
+                alert('الرجاء إدخال كلمة بحث!');
+                return;
+            }
+            
+            // قراءة القيم
+            const searchType = document.querySelector('input[name="searchType"]:checked').value;
+            const wordOrder = document.querySelector('input[name="wordOrder"]:checked').value;
+            
+            // بناء الـ URL
+            const params = new URLSearchParams({
+                q: query,
+                search_type: searchType,
+                word_order: wordOrder,
+                per_page: 5
+            });
+            
+            // عرض القيم المرسلة
+            const sentParams = document.getElementById('sentParams');
+            const paramsContent = document.getElementById('paramsContent');
+            sentParams.classList.remove('hidden');
+            paramsContent.textContent = JSON.stringify({
+                query: query,
+                search_type: searchType,
+                word_order: wordOrder,
+                url: `/api/ultra-search?${params}`
+            }, null, 2);
+            
+            // إرسال الطلب
+            try {
+                const response = await fetch(`/api/ultra-search?${params}`);
+                const data = await response.json();
+                
+                const results = document.getElementById('results');
+                const resultsContent = document.getElementById('resultsContent');
+                results.classList.remove('hidden');
+                
+                if (data.success && data.data && data.data.length > 0) {
+                    resultsContent.innerHTML = `
+                        <div class="mb-4 p-3 bg-green-50 border border-green-200 rounded">
+                            <p class="font-semibold text-green-800">✅ نجح البحث!</p>
+                            <p class="text-sm text-green-600">عدد النتائج: ${data.pagination.total}</p>
+                            <p class="text-sm text-green-600">وقت البحث: ${data.search_time}</p>
+                        </div>
+                        
+                        <div class="space-y-4">
+                            ${data.data.map((result, index) => `
+                                <div class="border rounded-lg p-4 hover:shadow-md">
+                                    <div class="flex items-start gap-3">
+                                        <div class="bg-gray-100 px-3 py-1 rounded-full text-sm font-medium">${index + 1}</div>
+                                        <div class="flex-1">
+                                            <h3 class="font-semibold text-lg mb-2">${result.book_title || 'كتاب غير محدد'}</h3>
+                                            <p class="text-gray-700 mb-2">${result.content}</p>
+                                            <div class="flex items-center gap-3 text-sm text-gray-500">
+                                                <span>📖 صفحة ${result.page_number}</span>
+                                                <span>✍️ ${result.author_name || 'غير محدد'}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    `;
+                } else {
+                    resultsContent.innerHTML = `
+                        <div class="p-4 bg-yellow-50 border border-yellow-200 rounded text-center">
+                            <p class="text-yellow-800">⚠️ لا توجد نتائج للبحث</p>
+                            <p class="text-sm text-yellow-600 mt-2">${data.message || ''}</p>
+                        </div>
+                    `;
+                }
+                
+            } catch (error) {
+                const results = document.getElementById('results');
+                const resultsContent = document.getElementById('resultsContent');
+                results.classList.remove('hidden');
+                resultsContent.innerHTML = `
+                    <div class="p-4 bg-red-50 border border-red-200 rounded text-center">
+                        <p class="text-red-800 font-semibold">❌ خطأ في البحث</p>
+                        <p class="text-sm text-red-600 mt-2">${error.message}</p>
+                    </div>
+                `;
+            }
+        }
+        
+        // تفعيل البحث بالضغط على Enter
+        document.getElementById('searchQuery').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                testSearch();
+            }
+        });
+    </script>
+</body>
+</html>
